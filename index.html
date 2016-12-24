@@ -34,18 +34,6 @@
 <div class="col-xs-12">
   <section>
     <h1 class="page-header">RuleJS</h1>
-
-    <h2>JS Library to parse excel formulas (based on <a href="https://github.com/zaach/jison" target="_blank">jison parser</a> and <a href="https://github.com/sutoiku/formula.js" target="_blank">formula</a>).</h2>
-    <p>Supported formulas are listed below.</p>
-  </section>
-
-  <section>
-    <p>List of supported formulas:</p>
-    <div id="suportedList" class="col-xs-6" style="height: 400px; overflow-y: scroll;"></div>
-  </section>
-
-  <div class="clearfix"></div>
-
   <section>
     <h1 class="page-header">Demo</h1>
     <p>Try to parse the formula by typing ex. <code>AND(1,0)</code> into input below and press <kbd>Parse</kbd> button.</p>
@@ -187,34 +175,6 @@
         error.innerText = parsed.error;
       }
     });
-
-    var listFormulas = (function() {
-      var container = document.querySelector('#suportedList'),
-          ul = document.createElement('ul');
-
-      container.appendChild(ul);
-
-      //var methods = [];
-      //for (var method in rules.helper.SUPPORTED_FORMULAS) {
-      //  methods.push(method);
-      //}
-      //methods.sort();
-
-      var methods = rules.helper.SUPPORTED_FORMULAS.sort();
-
-      methods.forEach(function (item) {
-        var li = document.createElement('li'),
-            a = document.createElement('a');
-
-        a.href = 'http://www.stoic.com/pages/formula/function?function=' + item;
-        a.target = '_blank';
-        a.innerHTML = item;
-
-        li.appendChild(a);
-        ul.appendChild(li);
-      });
-
-    })();
 
   })();
 </script>

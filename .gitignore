@@ -1,0 +1,14 @@
+.DS_Store
+.idea
+.idea/*
+*.iml
+*.pyc
+*.pyo
+*.profi
+*.module-cache
+node_modules/
+dist/
+build/
+npm-debug.log
+output/
+test_output

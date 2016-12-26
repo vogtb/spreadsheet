@@ -151,28 +151,28 @@ var mine = (function () {
       })[0];
     };
 
-    this.updateItem = function (item, props) {
-      if (instance.utils.isString(item)) {
-        item = instance.matrix.getItem(new A1CellKey(item));
+    this.updateItem = function (cell, props) {
+      if (instance.utils.isString(cell)) {
+        cell = instance.matrix.getItem(new A1CellKey(cell));
       }
 
-      if (item && props) {
+      if (cell && props) {
         for (var p in props) {
-          if (item[p] && instance.utils.isArray(item[p])) {
+          if (cell[p] && instance.utils.isArray(cell[p])) {
             if (instance.utils.isArray(props[p])) {
               props[p].forEach(function (i) {
-                if (item[p].indexOf(i) === -1) {
-                  item[p].push(i);
+                if (cell[p].indexOf(i) === -1) {
+                  cell[p].push(i);
                 }
               });
             } else {
 
-              if (item[p].indexOf(props[p]) === -1) {
-                item[p].push(props[p]);
+              if (cell[p].indexOf(props[p]) === -1) {
+                cell[p].push(props[p]);
               }
             }
           } else {
-            item[p] = props[p];
+            cell[p] = props[p];
           }
         }
       }
@@ -199,14 +199,14 @@ var mine = (function () {
     };
 
 
-    this.updateCellItem = function (id, props) {
-      var item = instance.matrix.getItem(new A1CellKey(id));
+    this.updateCellItem = function (key: A1CellKey, props) {
+      var item = instance.matrix.getItem(key);
 
       instance.matrix.updateItem(item, props);
     };
 
-    this.getDependencies = function (id) {
-      var getDependencies = function (id) {
+    this.getDependencies = function (id: string) {
+      var getDependencies = function (id: string) {
         var filtered = instance.matrix.data.filter(function (cell) {
           if (cell.deps) {
             return cell.deps.indexOf(id) > -1;
@@ -225,7 +225,7 @@ var mine = (function () {
 
       var allDependencies = [];
 
-      var getTotalDependencies = function (id) {
+      var getTotalDependencies = function (id: string) {
         var deps = getDependencies(id);
 
         if (deps.length) {
@@ -262,13 +262,13 @@ var mine = (function () {
       });
     };
 
-    var calculateCellFormula = function (formula, id) {
+    var calculateCellFormula = function (formula: string, id: string) {
       // to avoid double translate formulas, update item data in parser
       var parsed = parse(formula, id),
         value = parsed.result,
         error = parsed.error;
 
-      instance.matrix.updateCellItem(id, {value: value, error: error});
+      instance.matrix.updateCellItem(new A1CellKey(id), {value: value, error: error});
 
       return parsed;
     };
@@ -610,12 +610,13 @@ var mine = (function () {
 
     cellValue: function (cell) {
       var value,
-        element = this,
+        origin = this,
         item = instance.matrix.getItem(new A1CellKey(cell));
+
       // get value
       value = item ? item.value : "0"; // TODO: fix this, it's sloppy.
       //update dependencies
-      instance.matrix.updateCellItem(element, {deps: [cell]});
+      instance.matrix.updateCellItem(new A1CellKey(origin), {deps: [cell]});
       // check references error
       if (item && item.deps) {
         if (item.deps.indexOf(cell) !== -1) {
@@ -639,16 +640,16 @@ var mine = (function () {
       throw Error('NOT_AVAILABLE');
     },
 
-    cellRangeValue: function (start, end) {
+    cellRangeValue: function (start: string, end: string) {
       var coordsStart = instance.utils.cellCoords(start),
         coordsEnd = instance.utils.cellCoords(end),
-        element = this;
+        origin = this;
 
       // iterate cells to get values and indexes
       var cells = instance.utils.iterateCells.call(this, coordsStart, coordsEnd),
         result = [];
       //update dependencies
-      instance.matrix.updateCellItem(element, {deps: cells.index});
+      instance.matrix.updateCellItem(new A1CellKey(origin), {deps: cells.index});
 
       result.push(cells.value);
       return result;
@@ -667,22 +668,17 @@ var mine = (function () {
     }
   };
 
-  var parse = function (formula, element) {
+  var parse = function (formula, key) {
     var result = null,
       error = null;
 
     try {
 
-      parser.setObj(element);
+      parser.setObj(key);
       result = parser.parse(formula);
 
-      var id;
+      var id = key;
 
-      if (element instanceof HTMLElement) {
-        id = element.getAttribute('id');
-      } else if (element && element.id) {
-        id = element.id;
-      }
 
       var deps = instance.matrix.getDependencies(id);
 

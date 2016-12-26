@@ -1,3 +1,40 @@
+/**
+ * A1-notation style cell id. Used to index the cells.
+ * */
+var A1CellKey = (function () {
+    function A1CellKey(key) {
+        this.row = parseInt(key.match(/\d+$/)[0], 10);
+        this.column = key.replace(this.row.toString(), '');
+        this.x = lettersToNumber(this.column);
+        this.y = this.row - 1;
+    }
+    A1CellKey.of = function (x, y) {
+        return new A1CellKey(numberToLetters(x + 1) + (y + 1).toString());
+    };
+    A1CellKey.prototype.toString = function () {
+        return this.column + "" + this.row;
+    };
+    A1CellKey.prototype.getColumn = function () {
+        return this.column;
+    };
+    A1CellKey.prototype.getRow = function () {
+        return this.row;
+    };
+    A1CellKey.prototype.getX = function () {
+        return this.x;
+    };
+    A1CellKey.prototype.getY = function () {
+        return this.y;
+    };
+    return A1CellKey;
+}());
+function lettersToNumber(letters) {
+    return letters.toLowerCase().charCodeAt(0) - 97;
+}
+function numberToLetters(num) {
+    var mod = num % 26, pow = num / 26 | 0, out = mod ? String.fromCharCode(64 + mod) : (--pow, 'Z');
+    return pow ? numberToLetters(pow) + out : out;
+}
 var mine = (function () {
     'use strict';
     var instance = this;
@@ -57,9 +94,9 @@ var mine = (function () {
         //   formulaEdit: false
         // };
         this.data = [];
-        this.getItem = function (id) {
+        this.getItem = function (key) {
             return instance.matrix.data.filter(function (item) {
-                return item.id === id;
+                return item.id === key.toString();
             })[0];
         };
         this.removeItem = function (id) {
@@ -69,7 +106,7 @@ var mine = (function () {
         };
         this.updateItem = function (item, props) {
             if (instance.utils.isString(item)) {
-                item = instance.matrix.getItem(item);
+                item = instance.matrix.getItem(new A1CellKey(item));
             }
             if (item && props) {
                 for (var p in props) {
@@ -106,10 +143,10 @@ var mine = (function () {
             else {
                 instance.matrix.updateItem(cellExist, item);
             }
-            return instance.matrix.getItem(cellId);
+            return instance.matrix.getItem(new A1CellKey(cellId));
         };
         this.updateCellItem = function (id, props) {
-            var item = instance.matrix.getItem(id);
+            var item = instance.matrix.getItem(new A1CellKey(id));
             instance.matrix.updateItem(item, props);
         };
         this.getDependencies = function (id) {
@@ -134,7 +171,7 @@ var mine = (function () {
                     deps.forEach(function (refId) {
                         if (allDependencies.indexOf(refId) === -1) {
                             allDependencies.push(refId);
-                            var item = instance.matrix.getItem(refId);
+                            var item = instance.matrix.getItem(new A1CellKey(refId));
                             if (item.deps.length) {
                                 getTotalDependencies(refId);
                             }
@@ -151,7 +188,7 @@ var mine = (function () {
         var recalculateCellDependencies = function (cell) {
             var allDependencies = instance.matrix.getCellDependencies(cell);
             allDependencies.forEach(function (refId) {
-                var currentCell = instance.matrix.getItem(refId);
+                var currentCell = instance.matrix.getItem(new A1CellKey(refId));
                 if (currentCell && currentCell.formula) {
                     calculateCellFormula(currentCell.formula, currentCell.id);
                 }
@@ -441,7 +478,7 @@ var mine = (function () {
             throw Error('NAME');
         },
         cellValue: function (cell) {
-            var value, element = this, item = instance.matrix.getItem(cell);
+            var value, element = this, item = instance.matrix.getItem(new A1CellKey(cell));
             // get value
             value = item ? item.value : "0"; // TODO: fix this, it's sloppy.
             //update dependencies

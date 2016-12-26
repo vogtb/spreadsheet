@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowUnreachableCode": true,
+    "allowUnusedLabels": true,
+    "outDir": "ts"
+  },
+  "files": [
+    "ts/sheet.ts"
+  ]
+}

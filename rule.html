@@ -17,6 +17,7 @@
   <script src="lib/formulajs/formula.js"></script>
 
   <script src="js/parser.js"></script>
+  <script src="js/mine.js"></script>
   <script src="js/ruleJS.js"></script>
   <style>
     .table input[type=text] {
@@ -38,7 +39,7 @@
     <h1 class="page-header">Demo</h1>
     <p>Try to parse the formula by typing ex. <code>AND(1,0)</code> into input below and press <kbd>Parse</kbd> button.</p>
 
-    <div class="col-xs-6" style="padding: 0px;" id="demo1">
+    <div class="col-xs-12" style="padding: 0px;" id="demo1">
 
       <input type="text" id="X1" placeholder="ex. AND(1,0)"><button>Parse</button>
 
@@ -145,6 +146,8 @@
     </div>
 
   </section>
+  </section>
+
 </div>
 
 <script>
@@ -152,29 +155,6 @@
 
     var rules = new ruleJS('demo1');
     rules.init();
-
-    var button = document.querySelector('button'),
-        input = document.querySelector('input[type=text]'),
-        result = document.querySelector('#result'),
-        error = document.querySelector('#error');
-
-    button.addEventListener('click', function () {
-      result.parentNode.style.display = 'none';
-      error.parentNode.style.display = 'none';
-
-      var formula = input.value;
-      var parsed = rules.parse(formula, input);
-
-      if (parsed.result !== null) {
-        result.parentNode.style.display = '';
-        result.innerText = parsed.result;
-      }
-
-      if (parsed.error) {
-        error.parentNode.style.display = '';
-        error.innerText = parsed.error;
-      }
-    });
 
   })();
 </script>

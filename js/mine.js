@@ -1,6 +1,3 @@
-var storage = {};
-
-
 var mine = (function () {
   'use strict';
   var instance = this;
@@ -128,7 +125,7 @@ var mine = (function () {
     };
 
 
-    this.updateElementItem = function (id, props) {
+    this.updateCellItem = function (id, props) {
       var item = instance.matrix.getItem(id);
 
       instance.matrix.updateItem(item, props);
@@ -176,35 +173,35 @@ var mine = (function () {
       return allDependencies;
     };
 
-    this.getElementDependencies = function (cell) {
+    this.getCellDependencies = function (cell) {
       return instance.matrix.getDependencies(cell.id);
     };
 
-    var recalculateElementDependencies = function (cell) {
-      var allDependencies = instance.matrix.getElementDependencies(cell);
+    var recalculateCellDependencies = function (cell) {
+      var allDependencies = instance.matrix.getCellDependencies(cell);
 
       allDependencies.forEach(function (refId) {
         var currentCell = instance.matrix.getItem(refId);
         if (currentCell && currentCell.formula) {
-          calculateElementFormula(currentCell.formula, currentCell.id);
+          calculateCellFormula(currentCell.formula, currentCell.id);
         }
       });
     };
 
-    var calculateElementFormula = function (formula, id) {
+    var calculateCellFormula = function (formula, id) {
       // to avoid double translate formulas, update item data in parser
       var parsed = parse(formula, id),
         value = parsed.result,
         error = parsed.error;
 
-      instance.matrix.updateElementItem(id, {value: value, error: error});
+      instance.matrix.updateCellItem(id, {value: value, error: error});
 
       return parsed;
     };
 
-    var registerElementInMatrix = function (cell) {
+    var registerCellInMatrix = function (cell) {
       instance.matrix.addItem(cell);
-      calculateElementFormula(cell.formula, cell.id);
+      calculateCellFormula(cell.formula, cell.id);
     };
 
     this.scan = function () {
@@ -223,10 +220,11 @@ var mine = (function () {
             id: id,
             formula: input[y][x].toString()
           };
-          registerElementInMatrix(cell);
-          recalculateElementDependencies(cell);
+          registerCellInMatrix(cell);
+          recalculateCellDependencies(cell);
         }
       }
+      console.log(this.data);
     };
   };
 
@@ -538,37 +536,12 @@ var mine = (function () {
 
     cellValue: function (cell) {
       var value,
-        fnCellValue = instance.custom.cellValue,
         element = this,
         item = instance.matrix.getItem(cell);
-
-      // check if custom cellValue fn exists
-      if (instance.utils.isFunction(fnCellValue)) {
-
-        var cellCoords = instance.utils.cellCoords(cell),
-          cellId = instance.utils.translateCellCoords({row: element.row, col: element.col});
-
-        // get value
-        value = item ? item.value : fnCellValue(cellCoords.row, cellCoords.col);
-
-        if (instance.utils.isNull(value)) {
-          value = 0;
-        }
-
-        if (cellId) {
-          //update dependencies
-          instance.matrix.updateItem(cellId, {deps: [cell]});
-        }
-
-      } else {
-
-        // get value
-        value = item ? item.value : document.getElementById(cell).value;
-
-        //update dependencies
-        instance.matrix.updateElementItem(element, {deps: [cell]});
-      }
-
+      // get value
+      value = item ? item.value : "0"; // TODO: fix this, it's sloppy.
+      //update dependencies
+      instance.matrix.updateCellItem(element, {deps: [cell]});
       // check references error
       if (item && item.deps) {
         if (item.deps.indexOf(cellId) !== -1) {
@@ -593,28 +566,15 @@ var mine = (function () {
     },
 
     cellRangeValue: function (start, end) {
-      var fnCellValue = instance.custom.cellValue,
-        coordsStart = instance.utils.cellCoords(start),
+      var coordsStart = instance.utils.cellCoords(start),
         coordsEnd = instance.utils.cellCoords(end),
         element = this;
 
       // iterate cells to get values and indexes
       var cells = instance.utils.iterateCells.call(this, coordsStart, coordsEnd),
         result = [];
-
-      // check if custom cellValue fn exists
-      if (instance.utils.isFunction(fnCellValue)) {
-
-        var cellId = instance.utils.translateCellCoords({row: element.row, col: element.col});
-
-        //update dependencies
-        instance.matrix.updateItem(cellId, {deps: cells.index});
-
-      } else {
-
-        //update dependencies
-        instance.matrix.updateElementItem(element, {deps: cells.index});
-      }
+      //update dependencies
+      instance.matrix.updateCellItem(element, {deps: cells.index});
 
       result.push(cells.value);
       return result;

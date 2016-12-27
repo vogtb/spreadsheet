@@ -107,13 +107,10 @@ var mine = (function () {
   'use strict';
   var instance = this;
 
+  // Will be overwritten, but needs to be initialized, and have some functions for tsc compilation.
   var parser = {
-    setObj: function (obj: string) {
-
-    },
-    parse: function (thing: any) {
-
-    }
+    setObj: function (obj: string) {},
+    parse: function (formula: string) {}
   };
 
   var FormulaParser = function(handler) {
@@ -164,51 +161,42 @@ var mine = (function () {
     }
   };
 
-  var Matrix = function () {
 
-    // var item = {
-    //   id: '',
-    //   formula: '',
-    //   value: '',
-    //   error: '',
-    //   deps: [],
-    //   formulaEdit: false
-    // };
-
-    this.data = [];
-
-    this.getItem = function (key: A1CellKey) {
-      return instance.matrix.data.filter(function (item) {
-        return item.id === key.toString();
+  class Matrix {
+    public data: Array<Cell>;
+    constructor() {
+      this.data = [];
+    }
+    getItem(key: A1CellKey) {
+      return this.data.filter(function (cell) {
+        return cell.id === key.toString();
       })[0];
-    };
-
-    this.addItem = function (cell: Cell) {
-      var cellId = cell.id,
-        coords = instance.utils.cellCoords(cellId);
+    }
+    addItem(cell: Cell) {
+      var cellId = cell.id;
+      var key = new A1CellKey(cellId);
+      var coords = instance.utils.cellCoords(cellId);
 
       cell.row = coords.row;
       cell.col = coords.col;
 
-      var existingCell = instance.matrix.data.filter(function (cell) {
+      var existingCell = this.data.filter(function (cell) {
         return cell.id === cellId;
       })[0];
 
       if (!existingCell) {
-        instance.matrix.data.push(cell);
+        this.data.push(cell);
       } else {
-        // instance.matrix.updateItem(cellExist, item);
-        instance.matrix.getItem(cellId).updateDependencies(cell.dependencies);
-        instance.matrix.getItem(cellId).setValue(cell.value);
-        instance.matrix.getItem(cellId).setError(cell.error);
+        this.getItem(key).updateDependencies(cell.dependencies);
+        this.getItem(key).setValue(cell.value);
+        this.getItem(key).setError(cell.error);
       }
 
-      return instance.matrix.getItem(new A1CellKey(cellId));
-    };
-
-    this.getDependencies = function (id: string) {
+      return this.getItem(new A1CellKey(cellId));
+    }
+    getDependencies(id: string) {
       var getDependencies = function (id: string) {
-        var filtered = instance.matrix.data.filter(function (cell) {
+        var filtered = this.data.filter(function (cell) {
           if (cell.deps) {
             return cell.deps.indexOf(id) > -1;
           }
@@ -222,10 +210,8 @@ var mine = (function () {
         });
 
         return deps;
-      };
-
+      }.bind(this);
       var allDependencies = [];
-
       var getTotalDependencies = function (id: string) {
         var deps = getDependencies(id);
 
@@ -234,53 +220,21 @@ var mine = (function () {
             if (allDependencies.indexOf(refId) === -1) {
               allDependencies.push(refId);
 
-              var item = instance.matrix.getItem(new A1CellKey(refId));
+              var item = this.getItem(new A1CellKey(refId));
               if (item.deps.length) {
                 getTotalDependencies(refId);
               }
             }
           });
         }
-      };
-
+      }.bind(this);
       getTotalDependencies(id);
-
       return allDependencies;
-    };
-
-    this.getCellDependencies = function (cell: Cell) {
-      return instance.matrix.getDependencies(cell.id);
-    };
-
-    var recalculateCellDependencies = function (cell: Cell) {
-      var allDependencies = instance.matrix.getCellDependencies(cell);
-
-      allDependencies.forEach(function (refId) {
-        var currentCell = instance.matrix.getItem(new A1CellKey(refId));
-        if (currentCell && currentCell.formula) {
-          calculateCellFormula(currentCell);
-        }
-      });
-    };
-
-    var calculateCellFormula = function (cell: Cell) {
-      // to avoid double translate formulas, update item data in parser
-      var parsed = parse(cell.formula, cell.id);
-      var key =  new A1CellKey(cell.id);
-
-      // instance.matrix.updateCellItem(key, {value: value, error: error});
-      instance.matrix.getItem(key).setValue(parsed.result);
-      instance.matrix.getItem(key).setError(parsed.error);
-
-      return parsed;
-    };
-
-    var registerCellInMatrix = function (cell: Cell) {
-      instance.matrix.addItem(cell);
-      calculateCellFormula(cell);
-    };
-
-    this.scan = function () {
+    }
+    getCellDependencies(cell: Cell) {
+      return this.getDependencies(cell.id);
+    }
+    scan() {
       var input = [
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "SUM(A1:D1, H1)"],
         [-1, -10, 2, 4, 100, 1, 50, 20, 200, -100, "MAX(A2:J2)"],
@@ -292,19 +246,44 @@ var mine = (function () {
         for (var x = 0; x < input[0].length; x++) {
           // set the cell here
           var id = utils.XYtoA1(x, y);
-          var cell = {
-            id: id,
-            formula: input[y][x].toString()
-          };
-          var trueCell = new Cell(input[y][x].toString(), id);
-          registerCellInMatrix(trueCell);
-          recalculateCellDependencies(trueCell);
+          var cell = new Cell(input[y][x].toString(), id);
+          registerCellInMatrix(cell);
+          recalculateCellDependencies(cell);
         }
       }
       this.data.forEach(function (item) {
         console.log(item.id, item.formula, item.value);
-      })
-    };
+      });
+    }
+  }
+
+
+  var recalculateCellDependencies = function (cell: Cell) {
+    var allDependencies = instance.matrix.getCellDependencies(cell);
+
+    allDependencies.forEach(function (refId) {
+      var currentCell = instance.matrix.getItem(new A1CellKey(refId));
+      if (currentCell && currentCell.formula) {
+        calculateCellFormula(currentCell);
+      }
+    });
+  };
+
+  var calculateCellFormula = function (cell: Cell) {
+    // to avoid double translate formulas, update item data in parser
+    var parsed = parse(cell.formula, cell.id);
+    var key =  new A1CellKey(cell.id);
+
+    // instance.matrix.updateCellItem(key, {value: value, error: error});
+    instance.matrix.getItem(key).setValue(parsed.result);
+    instance.matrix.getItem(key).setError(parsed.error);
+
+    return parsed;
+  };
+
+  var registerCellInMatrix = function (cell: Cell) {
+    instance.matrix.addItem(cell);
+    calculateCellFormula(cell);
   };
 
   var utils = {

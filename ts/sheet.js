@@ -35,11 +35,34 @@ function numberToLetters(num) {
     var mod = num % 26, pow = num / 26 | 0, out = mod ? String.fromCharCode(64 + mod) : (--pow, 'Z');
     return pow ? numberToLetters(pow) + out : out;
 }
+var Cell = (function () {
+    function Cell(formula, id) {
+        this.formula = formula;
+        this.value = "";
+        this.dependencies = [];
+        this.error = null;
+        this.id = id;
+    }
+    Cell.prototype.updateDependencies = function (dependencies) {
+        for (var index in dependencies) {
+            if (this.dependencies.indexOf(dependencies[index]) === -1) {
+                this.dependencies.push(dependencies[index]);
+            }
+        }
+    };
+    Cell.prototype.setValue = function (value) {
+        this.value = value;
+    };
+    Cell.prototype.setError = function (error) {
+        this.error = error;
+    };
+    return Cell;
+}());
 var mine = (function () {
     'use strict';
     var instance = this;
     var parser = {
-        setObj: function (thing) {
+        setObj: function (obj) {
         },
         parse: function (thing) {
         }
@@ -99,50 +122,23 @@ var mine = (function () {
                 return item.id === key.toString();
             })[0];
         };
-        this.updateItem = function (cell, props) {
-            if (instance.utils.isString(cell)) {
-                cell = instance.matrix.getItem(new A1CellKey(cell));
-            }
-            if (cell && props) {
-                for (var p in props) {
-                    if (cell[p] && instance.utils.isArray(cell[p])) {
-                        if (instance.utils.isArray(props[p])) {
-                            props[p].forEach(function (i) {
-                                if (cell[p].indexOf(i) === -1) {
-                                    cell[p].push(i);
-                                }
-                            });
-                        }
-                        else {
-                            if (cell[p].indexOf(props[p]) === -1) {
-                                cell[p].push(props[p]);
-                            }
-                        }
-                    }
-                    else {
-                        cell[p] = props[p];
-                    }
-                }
-            }
-        };
-        this.addItem = function (item) {
-            var cellId = item.id, coords = instance.utils.cellCoords(cellId);
-            item.row = coords.row;
-            item.col = coords.col;
-            var cellExist = instance.matrix.data.filter(function (cell) {
+        this.addItem = function (cell) {
+            var cellId = cell.id, coords = instance.utils.cellCoords(cellId);
+            cell.row = coords.row;
+            cell.col = coords.col;
+            var existingCell = instance.matrix.data.filter(function (cell) {
                 return cell.id === cellId;
             })[0];
-            if (!cellExist) {
-                instance.matrix.data.push(item);
+            if (!existingCell) {
+                instance.matrix.data.push(cell);
             }
             else {
-                instance.matrix.updateItem(cellExist, item);
+                // instance.matrix.updateItem(cellExist, item);
+                instance.matrix.getItem(cellId).updateDependencies(cell.dependencies);
+                instance.matrix.getItem(cellId).setValue(cell.value);
+                instance.matrix.getItem(cellId).setError(cell.error);
             }
             return instance.matrix.getItem(new A1CellKey(cellId));
-        };
-        this.updateCellItem = function (key, props) {
-            var item = instance.matrix.getItem(key);
-            instance.matrix.updateItem(item, props);
         };
         this.getDependencies = function (id) {
             var getDependencies = function (id) {
@@ -185,19 +181,22 @@ var mine = (function () {
             allDependencies.forEach(function (refId) {
                 var currentCell = instance.matrix.getItem(new A1CellKey(refId));
                 if (currentCell && currentCell.formula) {
-                    calculateCellFormula(currentCell.formula, currentCell.id);
+                    calculateCellFormula(currentCell);
                 }
             });
         };
-        var calculateCellFormula = function (formula, id) {
+        var calculateCellFormula = function (cell) {
             // to avoid double translate formulas, update item data in parser
-            var parsed = parse(formula, id), value = parsed.result, error = parsed.error;
-            instance.matrix.updateCellItem(new A1CellKey(id), { value: value, error: error });
+            var parsed = parse(cell.formula, cell.id);
+            var key = new A1CellKey(cell.id);
+            // instance.matrix.updateCellItem(key, {value: value, error: error});
+            instance.matrix.getItem(key).setValue(parsed.result);
+            instance.matrix.getItem(key).setError(parsed.error);
             return parsed;
         };
         var registerCellInMatrix = function (cell) {
             instance.matrix.addItem(cell);
-            calculateCellFormula(cell.formula, cell.id);
+            calculateCellFormula(cell);
         };
         this.scan = function () {
             var input = [
@@ -215,8 +214,9 @@ var mine = (function () {
                         id: id,
                         formula: input[y][x].toString()
                     };
-                    registerCellInMatrix(cell);
-                    recalculateCellDependencies(cell);
+                    var trueCell = new Cell(input[y][x].toString(), id);
+                    registerCellInMatrix(trueCell);
+                    recalculateCellDependencies(trueCell);
                 }
             }
             console.log(this.data);
@@ -477,7 +477,8 @@ var mine = (function () {
             // get value
             value = item ? item.value : "0"; // TODO: fix this, it's sloppy.
             //update dependencies
-            instance.matrix.updateCellItem(new A1CellKey(origin), { deps: [cell] });
+            // instance.matrix.updateCellItem(new A1CellKey(origin), {deps: [cell]});
+            instance.matrix.getItem(new A1CellKey(origin)).updateDependencies([cell]);
             // check references error
             if (item && item.deps) {
                 if (item.deps.indexOf(cell) !== -1) {
@@ -501,7 +502,8 @@ var mine = (function () {
             // iterate cells to get values and indexes
             var cells = instance.utils.iterateCells.call(this, coordsStart, coordsEnd), result = [];
             //update dependencies
-            instance.matrix.updateCellItem(new A1CellKey(origin), { deps: cells.index });
+            // instance.matrix.updateCellItem(new A1CellKey(origin), {deps: cells.index});
+            instance.matrix.getItem(new A1CellKey(origin)).updateDependencies([cells.index]);
             result.push(cells.value);
             return result;
         },
@@ -516,16 +518,18 @@ var mine = (function () {
         }
     };
     var parse = function (formula, key) {
-        var result = null, error = null;
+        var result = null;
+        var error = null;
         try {
             parser.setObj(key);
             result = parser.parse(formula);
-            var id = key;
-            var deps = instance.matrix.getDependencies(id);
-            if (deps.indexOf(id) !== -1) {
+            var deps = instance.matrix.getDependencies(key);
+            if (deps.indexOf(key) !== -1) {
                 result = null;
                 deps.forEach(function (id) {
-                    instance.matrix.updateItem(id, { value: null, error: Exception.get('REF') });
+                    // instance.matrix.updateItem(id, {value: null, error: Exception.get('REF')});
+                    instance.matrix.getItem(new A1CellKey(id)).setError(Exception.get('REF'));
+                    instance.matrix.getItem(new A1CellKey(id)).setValue(null);
                 });
                 throw Error('REF');
             }

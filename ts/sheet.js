@@ -58,7 +58,7 @@ var Cell = (function () {
     };
     return Cell;
 }());
-var mine = (function () {
+var Sheet = (function () {
     'use strict';
     var instance = this;
     // Will be overwritten, but needs to be initialized, and have some functions for tsc compilation.

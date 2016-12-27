@@ -103,7 +103,7 @@ class Cell {
 
 
 
-var mine = (function () {
+var Sheet = (function () {
   'use strict';
   var instance = this;
 

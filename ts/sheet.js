@@ -219,7 +219,9 @@ var mine = (function () {
                     recalculateCellDependencies(trueCell);
                 }
             }
-            console.log(this.data);
+            this.data.forEach(function (item) {
+                console.log(item.id, item.formula, item.value);
+            });
         };
     };
     var utils = {

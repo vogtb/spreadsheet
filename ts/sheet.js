@@ -448,8 +448,8 @@ var mine = (function () {
             fn = fn.toUpperCase();
             args = args || [];
             if (instance.helper.SUPPORTED_FORMULAS.indexOf(fn) > -1) {
-                if (instance.formulas[fn]) {
-                    return instance.formulas[fn].apply(this, args);
+                if (Formula[fn]) {
+                    return Formula[fn].apply(this, args);
                 }
             }
             throw Error('NAME');
@@ -459,8 +459,8 @@ var mine = (function () {
             var str = args[0];
             if (str) {
                 str = str.toUpperCase();
-                if (instance.formulas[str]) {
-                    return ((typeof instance.formulas[str] === 'function') ? instance.formulas[str].apply(this, args) : instance.formulas[str]);
+                if (Formula[str]) {
+                    return ((typeof Formula[str] === 'function') ? Formula[str].apply(this, args) : Formula[str]);
                 }
             }
             throw Error('NAME');
@@ -544,9 +544,7 @@ var mine = (function () {
     var init = function () {
         instance = this;
         parser = FormulaParser(instance);
-        instance.formulas = Formula;
         instance.matrix = new Matrix();
-        instance.custom = {};
         instance.matrix.scan();
     };
     return {

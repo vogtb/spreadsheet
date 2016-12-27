@@ -1,20 +1,7 @@
-interface P {
-  yy: any;
-  lexer: any;
-  parse: any;
-  parseError: any;
-}
+/// <reference path="parser.d.ts"/>
+import { Parser } from "./Parser";
 
-declare var Parser: P;
-declare var Formula: any;
-
-
-
-
-
-
-
-
+import * as Formula from "formulajs"
 
 /**
  * A1-notation style cell id. Used to index the cells.
@@ -61,8 +48,6 @@ function numberToLetters(num: number): string {
     out = mod ? String.fromCharCode(64 + mod) : (--pow, 'Z');
   return pow ? numberToLetters(pow) + out : out;
 }
-
-
 
 
 class Cell {
@@ -702,3 +687,7 @@ var Sheet = (function () {
   };
 
 });
+
+export {
+  Sheet
+}

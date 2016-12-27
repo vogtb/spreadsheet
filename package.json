@@ -1,0 +1,13 @@
+{
+  "name": "spreadsheet",
+  "version": "1.0.0",
+  "description": "TypeScript implementation of a spreadsheet.",
+  "scripts": {
+    "build": "tsc && cp lib/parser.js output/"
+  },
+  "author": "vogtb <bvogt at gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "formulajs": "^1.0.8"
+  }
+}

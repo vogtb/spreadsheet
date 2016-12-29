@@ -196,16 +196,6 @@ var Sheet = (function () {
       return !instance.utils.isUndefined(value) && !instance.utils.isNull(value);
     },
 
-    getCellAlphaNum: function (cell) {
-      var num = cell.match(/\d+$/),
-        alpha = cell.replace(num, '');
-
-      return {
-        alpha: alpha,
-        num: parseInt(num[0], 10)
-      }
-    },
-
     toNum: function (chr) {
       chr = instance.utils.clearFormula(chr);
       var base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', i, j, result = 0;
@@ -252,10 +242,6 @@ var Sheet = (function () {
 
     clearFormula: function (formula) {
       return formula.replace(/\$/g, '');
-    },
-
-    translateCellCoords: function (coords) {
-      return instance.utils.toChar(coords.col) + '' + parseInt(coords.row + 1, 10);
     },
 
     iterateCells: function (startCell, endCell, callback) {

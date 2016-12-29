@@ -1,3 +1,5 @@
+import {A1CellKey} from "./A1CellKey";
+
 class Cell {
   public formula: string;
   public value: string;
@@ -7,11 +9,15 @@ class Cell {
   public row: number;
   public col: number;
   constructor(formula: string, id: string) {
+    var key = new A1CellKey(id);
+
     this.formula = formula;
     this.value = "";
     this.dependencies = [];
     this.error = null;
     this.id = id;
+    this.row = key.getY();
+    this.col = key.getX();
   }
   updateDependencies(dependencies: Array<string>) {
     for (var index in dependencies) {

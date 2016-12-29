@@ -6,6 +6,6 @@
     "outDir": "output"
   },
   "files": [
-    "ts/main.ts"
+    "src/Main.ts"
   ]
 }

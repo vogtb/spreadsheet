@@ -15,3 +15,8 @@ one.updateDependencies(["B2", "C1", "D12", "D13"]);
 assertArrayEquals(one.dependencies, ["B2", "C1", "D12", "D13"]);
 one.updateDependencies(["M4"]);
 assertArrayEquals(one.dependencies, ["B2", "C1", "D12", "D13", "M4"]);
+
+//Test setValue
+var v = new Cell("0", "A1");
+v.setValue("100");
+assertEquals("100", v.value);

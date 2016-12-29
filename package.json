@@ -4,7 +4,7 @@
   "description": "TypeScript implementation of a spreadsheet.",
   "scripts": {
     "build": "tsc && cp lib/parser.js output/",
-    "test": "tsc --outDir test_output tests/*.ts && node test_output/tests/*.js && echo Tests Pass"
+    "test": "tsc --outDir test_output tests/*.ts && "
   },
   "author": "vogtb <bvogt at gmail.com>",
   "license": "MIT",

@@ -2,6 +2,7 @@
 import { Parser } from "./Parser";
 import { A1CellKey } from "./A1CellKey"
 import { Cell } from "./Cell"
+import { Errors } from "./Errors"
 import * as Formula from "formulajs"
 
 var Sheet = (function () {
@@ -41,27 +42,6 @@ var Sheet = (function () {
 
     return newParser;
   };
-
-  var Exception = {
-    errors: [
-      {type: 'NULL', output: '#NULL'},
-      {type: 'DIV_ZERO', output: '#DIV/0!'},
-      {type: 'VALUE', output: '#VALUE!'},
-      {type: 'REF', output: '#REF!'},
-      {type: 'NAME', output: '#NAME?'},
-      {type: 'NUM', output: '#NUM!'},
-      {type: 'NOT_AVAILABLE', output: '#N/A!'},
-      {type: 'ERROR', output: '#ERROR'}
-    ],
-    get: function (type) {
-      var error = Exception.errors.filter(function (item) {
-        return item.type === type || item.output === type;
-      })[0];
-
-      return error ? error.output : null;
-    }
-  };
-
 
   class Matrix {
     public data: Array<Cell>;
@@ -568,17 +548,17 @@ var Sheet = (function () {
         result = null;
         deps.forEach(function (id) {
           // instance.matrix.updateItem(id, {value: null, error: Exception.get('REF')});
-          instance.matrix.getItem(new A1CellKey(id)).setError(Exception.get('REF'));
+          instance.matrix.getItem(new A1CellKey(id)).setError(Errors.get('REF'));
           instance.matrix.getItem(new A1CellKey(id)).setValue(null);
         });
         throw Error('REF');
       }
     } catch (ex) {
-      var message = Exception.get(ex.message);
+      var message = Errors.get(ex.message);
       if (message) {
         error = message;
       } else {
-        error = Exception.get('ERROR');
+        error = Errors.get('ERROR');
       }
     }
 

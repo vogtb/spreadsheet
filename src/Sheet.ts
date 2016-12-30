@@ -554,20 +554,15 @@ var Sheet = (function () {
     }
   };
 
-  var init = function () {
+  this.init = function () {
     instance = this;
     parser = FormulaParser(instance);
     instance.matrix = new Matrix();
     instance.matrix.scan();
   };
-
-  return {
-    init: init,
-    utils: utils,
-    helper: helper,
-    parse: parse
-  };
-
+  this.utils = utils;
+  this.helper = helper;
+  this.parse = parse;
 });
 
 export {

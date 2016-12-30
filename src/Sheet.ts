@@ -44,14 +44,12 @@ var Sheet = (function () {
   };
 
   class Matrix {
-    public data: Array<Cell>;
+    public data: Object;
     constructor() {
-      this.data = [];
+      this.data = {};
     }
     getItem(key: A1CellKey) {
-      return this.data.filter(function (cell) {
-        return cell.id === key.toString();
-      })[0];
+      return this.data[key.toString()];
     }
     addItem(cell: Cell) {
       var cellId = cell.id;
@@ -61,12 +59,8 @@ var Sheet = (function () {
       cell.row = coords.row;
       cell.col = coords.col;
 
-      var existingCell = this.data.filter(function (cell) {
-        return cell.id === cellId;
-      })[0];
-
-      if (!existingCell) {
-        this.data.push(cell);
+      if (!(cellId in this.data)) {
+        this.data[cellId] = cell;
       } else {
         this.getItem(key).updateDependencies(cell.dependencies);
         this.getItem(key).setValue(cell.value);
@@ -77,11 +71,15 @@ var Sheet = (function () {
     }
     getDependencies(id: string) {
       var getDependencies = function (id: string) {
-        var filtered = this.data.filter(function (cell) {
-          if (cell.deps) {
-            return cell.deps.indexOf(id) > -1;
+        var filtered = [];
+        for (var key in this.data) {
+          var cell = this.data[key];
+          if (cell.dependencies) {
+            if (cell.dependencies.indexOf(id) > -1) {
+              filtered.push(cell)
+            }
           }
-        });
+        }
 
         var deps = [];
         filtered.forEach(function (cell) {
@@ -132,9 +130,9 @@ var Sheet = (function () {
           recalculateCellDependencies(cell);
         }
       }
-      this.data.forEach(function (item) {
-        console.log(item.id, item.formula, item.value);
-      });
+      for (var key in this.data) {
+        console.log(this.data[key].id, this.data[key].formula, this.data[key].value);
+      }
     }
   }
 

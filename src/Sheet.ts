@@ -53,10 +53,6 @@ var Sheet = (function () {
     addItem(cell: Cell) {
       var cellId = cell.id;
       var key = new A1CellKey(cellId);
-      var coords = instance.utils.cellCoords(cellId);
-
-      cell.row = coords.row;
-      cell.col = coords.col;
 
       if (!(cellId in this.data)) {
         this.data[cellId] = cell;
@@ -136,7 +132,6 @@ var Sheet = (function () {
     var parsed = parse(cell.formula, cell.id);
     var key =  new A1CellKey(cell.id);
 
-    // instance.matrix.updateCellItem(key, {value: value, error: error});
     instance.matrix.getItem(key).setValue(parsed.result);
     instance.matrix.getItem(key).setError(parsed.error);
 
@@ -174,11 +169,11 @@ var Sheet = (function () {
     },
 
     isSet: function (value) {
-      return !instance.utils.isUndefined(value) && !instance.utils.isNull(value);
+      return !utils.isUndefined(value) && !utils.isNull(value);
     },
 
     toNum: function (chr) {
-      chr = instance.utils.clearFormula(chr);
+      chr = utils.clearFormula(chr);
       var base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', i, j, result = 0;
 
       for (i = 0, j = chr.length - 1; i < chr.length; i += 1, j -= 1) {
@@ -217,7 +212,7 @@ var Sheet = (function () {
 
       return {
         row: parseInt(num[0], 10) - 1,
-        col: instance.utils.toNum(alpha)
+        col: utils.toNum(alpha)
       };
     },
 
@@ -267,7 +262,7 @@ var Sheet = (function () {
 
       for (var column = cols.start; column <= cols.end; column++) {
         for (var row = rows.start; row <= rows.end; row++) {
-          var cellIndex = instance.utils.toChar(column) + (row + 1),
+          var cellIndex = utils.toChar(column) + (row + 1),
             cellValue = instance.helper.cellValue.call(this, cellIndex);
 
           result.index.push(cellIndex);
@@ -275,7 +270,7 @@ var Sheet = (function () {
         }
       }
 
-      if (instance.utils.isFunction(callback)) {
+      if (utils.isFunction(callback)) {
         return callback.apply(callback, [result]);
       } else {
         return result;
@@ -448,7 +443,6 @@ var Sheet = (function () {
       // get value
       value = item ? item.value : "0"; // TODO: fix this, it's sloppy.
       //update dependencies
-      // instance.matrix.updateCellItem(new A1CellKey(origin), {deps: [cell]});
       instance.matrix.getItem(new A1CellKey(origin)).updateDependencies([cell]);
       // check references error
       if (item && item.dependencies) {
@@ -463,7 +457,7 @@ var Sheet = (function () {
       }
 
       // return value if is set
-      if (instance.utils.isSet(value)) {
+      if (utils.isSet(value)) {
         var result = instance.helper.number(value);
 
         return !isNaN(result) ? result : value;
@@ -474,8 +468,8 @@ var Sheet = (function () {
     },
 
     cellRangeValue: function (start: string, end: string) {
-      var coordsStart = instance.utils.cellCoords(start),
-        coordsEnd = instance.utils.cellCoords(end),
+      var coordsStart = utils.cellCoords(start),
+        coordsEnd = utils.cellCoords(end),
         origin = this;
 
       // iterate cells to get values and indexes
@@ -545,7 +539,8 @@ var Sheet = (function () {
       [-1, -10, 2, 4, 100, 1, 50, 20, 200, -100, "MAX(A2:J2)"],
       [-1, -40, -53, 1, 10, 30, 10, 301, -1, -20, "MIN(A3:J3)"],
       [20, 50, 100, 20, 1, 5, 15, 25, 45, 23, "AVERAGE(A4:J4)"],
-      [0, 10, 1, 10, 2, 10, 3, 10, 4, 10, "SUMIF(A5:J5,'>5')"]
+      [0, 10, 1, 10, 2, 10, 3, 10, 4, 10, "SUMIF(A5:J5,'>5')"],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "SUM(K1, K2, K3, K4)"]
     ];
     for (var y = 0; y < input.length; y++) {
       for (var x = 0; x < input[0].length; x++) {
@@ -557,9 +552,11 @@ var Sheet = (function () {
   };
 
   this.toString = function () {
+    var toReturn = "";
     for (var key in this.matrix.data) {
-      console.log(this.matrix.data[key].id, this.matrix.data[key].formula, this.matrix.data[key].value);
+      toReturn += this.matrix.data[key].id + " " + this.matrix.data[key].formula + " " + this.matrix.data[key].value + "\n";
     }
+    return toReturn;
   };
 
   parser  = FormulaParser(instance);

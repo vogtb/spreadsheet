@@ -6,7 +6,6 @@ import { Errors } from "./Errors"
 import * as Formula from "formulajs"
 
 var Sheet = (function () {
-  'use strict';
   var instance = this;
 
   // Will be overwritten, but needs to be initialized, and have some functions for tsc compilation.
@@ -113,26 +112,10 @@ var Sheet = (function () {
     getCellDependencies(cell: Cell) {
       return this.getDependencies(cell.id);
     }
-    scan() {
-      var input = [
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "SUM(A1:D1, H1)"],
-        [-1, -10, 2, 4, 100, 1, 50, 20, 200, -100, "MAX(A2:J2)"],
-        [-1, -40, -53, 1, 10, 30, 10, 301, -1, -20, "MIN(A3:J3)"],
-        [20, 50, 100, 20, 1, 5, 15, 25, 45, 23, "AVERAGE(A4:J4)"],
-        [0, 10, 1, 10, 2, 10, 3, 10, 4, 10, "SUMIF(A5:J5,'>5')"]
-      ];
-      for (var y = 0; y < input.length; y++) {
-        for (var x = 0; x < input[0].length; x++) {
-          // set the cell here
-          var id = utils.XYtoA1(x, y);
-          var cell = new Cell(input[y][x].toString(), id);
-          registerCellInMatrix(cell);
-          recalculateCellDependencies(cell);
-        }
-      }
-      for (var key in this.data) {
-        console.log(this.data[key].id, this.data[key].formula, this.data[key].value);
-      }
+    setCell(cellKeyString: string, formula: string) {
+      var cell = new Cell(formula, cellKeyString);
+      registerCellInMatrix(cell);
+      recalculateCellDependencies(cell);
     }
   }
 
@@ -552,15 +535,39 @@ var Sheet = (function () {
     }
   };
 
-  this.init = function () {
-    instance = this;
-    parser = FormulaParser(instance);
-    instance.matrix = new Matrix();
-    instance.matrix.scan();
+  var setCell = function (cellKeyString: string, value: string) {
+    instance.matrix.setCell(cellKeyString, value);
   };
+
+  this.load = function () {
+    var input = [
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "SUM(A1:D1, H1)"],
+      [-1, -10, 2, 4, 100, 1, 50, 20, 200, -100, "MAX(A2:J2)"],
+      [-1, -40, -53, 1, 10, 30, 10, 301, -1, -20, "MIN(A3:J3)"],
+      [20, 50, 100, 20, 1, 5, 15, 25, 45, 23, "AVERAGE(A4:J4)"],
+      [0, 10, 1, 10, 2, 10, 3, 10, 4, 10, "SUMIF(A5:J5,'>5')"]
+    ];
+    for (var y = 0; y < input.length; y++) {
+      for (var x = 0; x < input[0].length; x++) {
+        // set the cell here
+        var id = utils.XYtoA1(x, y);
+        this.setCell(id, input[y][x].toString());
+      }
+    }
+  };
+
+  this.toString = function () {
+    for (var key in this.matrix.data) {
+      console.log(this.matrix.data[key].id, this.matrix.data[key].formula, this.matrix.data[key].value);
+    }
+  };
+
+  parser  = FormulaParser(instance);
+  instance.matrix = new Matrix();
   this.utils = utils;
   this.helper = helper;
   this.parse = parse;
+  this.setCell = setCell;
 });
 
 export {

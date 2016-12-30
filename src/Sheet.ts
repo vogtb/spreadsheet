@@ -99,11 +99,11 @@ var Sheet = (function () {
               allDependencies.push(refId);
 
               var item = this.getItem(new A1CellKey(refId));
-              if (item.deps.length) {
+              if (item.dependencies.length) {
                 getTotalDependencies(refId);
               }
             }
-          });
+          }.bind(this));
         }
       }.bind(this);
       getTotalDependencies(id);
@@ -451,8 +451,8 @@ var Sheet = (function () {
       // instance.matrix.updateCellItem(new A1CellKey(origin), {deps: [cell]});
       instance.matrix.getItem(new A1CellKey(origin)).updateDependencies([cell]);
       // check references error
-      if (item && item.deps) {
-        if (item.deps.indexOf(cell) !== -1) {
+      if (item && item.dependencies) {
+        if (item.dependencies.indexOf(cell) !== -1) {
           throw Error('REF');
         }
       }

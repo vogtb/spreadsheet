@@ -8,4 +8,12 @@ Things I should do.
 
 ### `setValue()`, `getValue()` on a sheet
 
-## `load()` array of array of values for a sheet
+### Remove A1CellKey. It is unnecessary.
+
+### Write documentation for A1CellKey
+
+### Write documentation for Cell
+
+### Write documentation for Sheet
+
+### Write documentation for Matrix

@@ -530,18 +530,18 @@ var Sheet = (function () {
   };
 
   var setCell = function (cellKeyString: string, value: string) {
-    instance.matrix.setCell(cellKeyString, value);
+    instance.matrix.setCell(cellKeyString, value.toString());
   };
 
-  this.load = function () {
-    var input = [
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "SUM(A1:D1, H1)"],
-      [-1, -10, 2, 4, 100, 1, 50, 20, 200, -100, "MAX(A2:J2)"],
-      [-1, -40, -53, 1, 10, 30, 10, 301, -1, -20, "MIN(A3:J3)"],
-      [20, 50, 100, 20, 1, 5, 15, 25, 45, 23, "AVERAGE(A4:J4)"],
-      [0, 10, 1, 10, 2, 10, 3, 10, 4, 10, "SUMIF(A5:J5,'>5')"],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "SUM(K1, K2, K3, K4)"]
-    ];
+  var getCell = function (cellKeyString: string) : Cell {
+    var cell = instance.matrix.getItem(new A1CellKey(cellKeyString));
+    if (cell === undefined) {
+      return null;
+    }
+    return cell;
+  };
+
+  this.load = function (input: Array<Array<any>>) {
     for (var y = 0; y < input.length; y++) {
       for (var x = 0; x < input[0].length; x++) {
         // set the cell here
@@ -565,6 +565,7 @@ var Sheet = (function () {
   this.helper = helper;
   this.parse = parse;
   this.setCell = setCell;
+  this.getCell = getCell;
 });
 
 export {

@@ -110,7 +110,12 @@ var Sheet = (function () {
       return this.getDependencies(cell.id);
     }
     setCell(cellKeyString: string, formula: string) {
-      var cell = new Cell(formula, cellKeyString);
+      var cell = new Cell(cellKeyString);
+      if (formula.charAt(0) === "=") {
+        cell.setFormula(formula.substr(1));
+      } else {
+        cell.setValue(formula);
+      }
       registerCellInMatrix(cell);
       recalculateCellDependencies(cell);
     }
@@ -141,7 +146,9 @@ var Sheet = (function () {
 
   var registerCellInMatrix = function (cell: Cell) {
     instance.matrix.addItem(cell);
-    calculateCellFormula(cell);
+    if (cell.formula !== null) {
+      calculateCellFormula(cell);
+    }
   };
 
   var utils = {
@@ -535,7 +542,7 @@ var Sheet = (function () {
   this.toString = function () {
     var toReturn = "";
     for (var key in this.matrix.data) {
-      toReturn += this.matrix.data[key].id + " " + this.matrix.data[key].formula + " " + this.matrix.data[key].value + " " + this.matrix.data[key].error + "\n";
+      toReturn += this.matrix.data[key].toString() + "\n";
     }
     return toReturn;
   };

@@ -8,10 +8,10 @@ class Cell {
   public id: string;
   public row: number;
   public col: number;
-  constructor(formula: string, id: string) {
+  constructor(id: string) {
     var key = new A1CellKey(id);
 
-    this.formula = formula;
+    this.formula = null;
     this.value = "";
     this.dependencies = [];
     this.error = null;
@@ -26,6 +26,9 @@ class Cell {
       }
     }
   }
+  setFormula(formula: string) {
+    this.formula = formula;
+  }
   setValue(value: string) {
     this.value = value;
   }
@@ -37,6 +40,9 @@ class Cell {
       return this.value;
     }
     return this.error.toString()
+  }
+  toString() : string {
+    return "id=" + this.id + ", value=" + this.value + ", formula=" + this.formula + ", error=" + this.error;
   }
 }
 

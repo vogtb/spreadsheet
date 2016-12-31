@@ -1,6 +1,5 @@
 /// <reference path="parser.d.ts"/>
 import { Parser } from "./Parser";
-import { A1CellKey } from "./A1CellKey"
 import { SUPPORTED_FORMULAS } from "./SupportedFormulas"
 import { Cell } from "./Cell"
 import { Errors } from "./Errors"
@@ -48,22 +47,21 @@ var Sheet = (function () {
     constructor() {
       this.data = {};
     }
-    getCell(key: A1CellKey) {
-      return this.data[key.toString()];
+    getCell(key: string) {
+      return this.data[key];
     }
     addCell(cell: Cell) {
       var cellId = cell.id;
-      var key = new A1CellKey(cellId);
 
       if (!(cellId in this.data)) {
         this.data[cellId] = cell;
       } else {
-        this.getCell(key).updateDependencies(cell.dependencies);
-        this.getCell(key).setValue(cell.value);
-        this.getCell(key).setError(cell.error);
+        this.getCell(cellId).updateDependencies(cell.dependencies);
+        this.getCell(cellId).setValue(cell.value);
+        this.getCell(cellId).setError(cell.error);
       }
 
-      return this.getCell(new A1CellKey(cellId));
+      return this.getCell(cellId);
     }
     getDependencies(id: string) {
       var getDependencies = function (id: string) {
@@ -95,7 +93,7 @@ var Sheet = (function () {
             if (allDependencies.indexOf(refId) === -1) {
               allDependencies.push(refId);
 
-              var cell = this.getCell(new A1CellKey(refId));
+              var cell = this.getCell(refId);
               if (cell.dependencies.length) {
                 getTotalDependencies(refId);
               }
@@ -126,7 +124,7 @@ var Sheet = (function () {
     var allDependencies = instance.matrix.getCellDependencies(cell);
 
     allDependencies.forEach(function (refId) {
-      var currentCell = instance.matrix.getCell(new A1CellKey(refId));
+      var currentCell = instance.matrix.getCell(refId);
       if (currentCell && currentCell.formula) {
         calculateCellFormula(currentCell);
       }
@@ -136,10 +134,9 @@ var Sheet = (function () {
   var calculateCellFormula = function (cell: Cell) {
     // to avoid double translate formulas, update cell data in parser
     var parsed = parse(cell.formula, cell.id);
-    var key =  new A1CellKey(cell.id);
 
-    instance.matrix.getCell(key).setValue(parsed.result);
-    instance.matrix.getCell(key).setError(parsed.error);
+    instance.matrix.getCell(cell.id).setValue(parsed.result);
+    instance.matrix.getCell(cell.id).setError(parsed.error);
 
     return parsed;
   };
@@ -427,12 +424,12 @@ var Sheet = (function () {
     cellValue: function (cellId) {
       var value,
         origin = this,
-        cell = instance.matrix.getCell(new A1CellKey(cellId));
+        cell = instance.matrix.getCell(cellId);
 
       // get value
       value = cell ? cell.value : "0"; // TODO: fix this, it's sloppy.
       //update dependencies
-      instance.matrix.getCell(new A1CellKey(origin)).updateDependencies([cellId]);
+      instance.matrix.getCell(origin).updateDependencies([cellId]);
       // check references error
       if (cell && cell.dependencies) {
         if (cell.dependencies.indexOf(cellId) !== -1) {
@@ -465,7 +462,7 @@ var Sheet = (function () {
       var cells = instance.utils.iterateCells.call(this, coordsStart, coordsEnd),
         result = [];
       //update dependencies
-      instance.matrix.getCell(new A1CellKey(origin)).updateDependencies(cells.index);
+      instance.matrix.getCell(origin).updateDependencies(cells.index);
 
       result.push(cells.value);
       return result;
@@ -496,8 +493,8 @@ var Sheet = (function () {
       if (deps.indexOf(key) !== -1) {
         result = null;
         deps.forEach(function (id) {
-          instance.matrix.getCell(new A1CellKey(id)).setError(Errors.get('REF'));
-          instance.matrix.getCell(new A1CellKey(id)).setValue(null);
+          instance.matrix.getCell(id).setError(Errors.get('REF'));
+          instance.matrix.getCell(id).setValue(null);
         });
         throw Error('REF');
       }
@@ -521,7 +518,7 @@ var Sheet = (function () {
   };
 
   var getCell = function (cellKeyString: string) : Cell {
-    var cell = instance.matrix.getCell(new A1CellKey(cellKeyString));
+    var cell = instance.matrix.getCell(cellKeyString);
     if (cell === undefined) {
       return null;
     }

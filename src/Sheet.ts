@@ -48,22 +48,22 @@ var Sheet = (function () {
     constructor() {
       this.data = {};
     }
-    getItem(key: A1CellKey) {
+    getCell(key: A1CellKey) {
       return this.data[key.toString()];
     }
-    addItem(cell: Cell) {
+    addCell(cell: Cell) {
       var cellId = cell.id;
       var key = new A1CellKey(cellId);
 
       if (!(cellId in this.data)) {
         this.data[cellId] = cell;
       } else {
-        this.getItem(key).updateDependencies(cell.dependencies);
-        this.getItem(key).setValue(cell.value);
-        this.getItem(key).setError(cell.error);
+        this.getCell(key).updateDependencies(cell.dependencies);
+        this.getCell(key).setValue(cell.value);
+        this.getCell(key).setError(cell.error);
       }
 
-      return this.getItem(new A1CellKey(cellId));
+      return this.getCell(new A1CellKey(cellId));
     }
     getDependencies(id: string) {
       var getDependencies = function (id: string) {
@@ -95,8 +95,8 @@ var Sheet = (function () {
             if (allDependencies.indexOf(refId) === -1) {
               allDependencies.push(refId);
 
-              var item = this.getItem(new A1CellKey(refId));
-              if (item.dependencies.length) {
+              var cell = this.getCell(new A1CellKey(refId));
+              if (cell.dependencies.length) {
                 getTotalDependencies(refId);
               }
             }
@@ -126,7 +126,7 @@ var Sheet = (function () {
     var allDependencies = instance.matrix.getCellDependencies(cell);
 
     allDependencies.forEach(function (refId) {
-      var currentCell = instance.matrix.getItem(new A1CellKey(refId));
+      var currentCell = instance.matrix.getCell(new A1CellKey(refId));
       if (currentCell && currentCell.formula) {
         calculateCellFormula(currentCell);
       }
@@ -134,18 +134,18 @@ var Sheet = (function () {
   };
 
   var calculateCellFormula = function (cell: Cell) {
-    // to avoid double translate formulas, update item data in parser
+    // to avoid double translate formulas, update cell data in parser
     var parsed = parse(cell.formula, cell.id);
     var key =  new A1CellKey(cell.id);
 
-    instance.matrix.getItem(key).setValue(parsed.result);
-    instance.matrix.getItem(key).setError(parsed.error);
+    instance.matrix.getCell(key).setValue(parsed.result);
+    instance.matrix.getCell(key).setError(parsed.error);
 
     return parsed;
   };
 
   var registerCellInMatrix = function (cell: Cell) {
-    instance.matrix.addItem(cell);
+    instance.matrix.addCell(cell);
     if (cell.formula !== null) {
       calculateCellFormula(cell);
     }
@@ -424,25 +424,25 @@ var Sheet = (function () {
       throw Error('NAME');
     },
 
-    cellValue: function (cell) {
+    cellValue: function (cellId) {
       var value,
         origin = this,
-        item = instance.matrix.getItem(new A1CellKey(cell));
+        cell = instance.matrix.getCell(new A1CellKey(cellId));
 
       // get value
-      value = item ? item.value : "0"; // TODO: fix this, it's sloppy.
+      value = cell ? cell.value : "0"; // TODO: fix this, it's sloppy.
       //update dependencies
-      instance.matrix.getItem(new A1CellKey(origin)).updateDependencies([cell]);
+      instance.matrix.getCell(new A1CellKey(origin)).updateDependencies([cellId]);
       // check references error
-      if (item && item.dependencies) {
-        if (item.dependencies.indexOf(cell) !== -1) {
+      if (cell && cell.dependencies) {
+        if (cell.dependencies.indexOf(cellId) !== -1) {
           throw Error('REF');
         }
       }
 
       // check if any error occurs
-      if (item && item.error) {
-        throw Error(item.error);
+      if (cell && cell.error) {
+        throw Error(cell.error);
       }
 
       // return value if is set
@@ -465,7 +465,7 @@ var Sheet = (function () {
       var cells = instance.utils.iterateCells.call(this, coordsStart, coordsEnd),
         result = [];
       //update dependencies
-      instance.matrix.getItem(new A1CellKey(origin)).updateDependencies(cells.index);
+      instance.matrix.getCell(new A1CellKey(origin)).updateDependencies(cells.index);
 
       result.push(cells.value);
       return result;
@@ -496,9 +496,8 @@ var Sheet = (function () {
       if (deps.indexOf(key) !== -1) {
         result = null;
         deps.forEach(function (id) {
-          // instance.matrix.updateItem(id, {value: null, error: Exception.get('REF')});
-          instance.matrix.getItem(new A1CellKey(id)).setError(Errors.get('REF'));
-          instance.matrix.getItem(new A1CellKey(id)).setValue(null);
+          instance.matrix.getCell(new A1CellKey(id)).setError(Errors.get('REF'));
+          instance.matrix.getCell(new A1CellKey(id)).setValue(null);
         });
         throw Error('REF');
       }
@@ -522,7 +521,7 @@ var Sheet = (function () {
   };
 
   var getCell = function (cellKeyString: string) : Cell {
-    var cell = instance.matrix.getItem(new A1CellKey(cellKeyString));
+    var cell = instance.matrix.getCell(new A1CellKey(cellKeyString));
     if (cell === undefined) {
       return null;
     }

@@ -77,7 +77,6 @@ assertEquals(SUM_REF_FORMULA, K6.formula);
 assertEquals(null, K6.error);
 assertArrayEquals(['K1', 'K2', 'K3', 'K4'], K6.dependencies);
 
-
 //Test REF error
 var sheet  = new Sheet();
 sheet.setCell("A1", "200");
@@ -98,6 +97,15 @@ assertArrayEquals(['A1', 'B1'], B2.dependencies);
 var sheet  = new Sheet();
 sheet.setCell("A1", "1");
 sheet.setCell("A2", "SUM(A1, NN)");
+var A2 = sheet.getCell("A2");
+assertEquals(null, A2.value);
+assertEquals(Errors.get("NAME"), A2.error);
+assertArrayEquals(['A1'], A2.dependencies);
+
+// Test unsupported formula
+var sheet  = new Sheet();
+sheet.setCell("A1", "1");
+sheet.setCell("A2", "BEN(A1)");
 var A2 = sheet.getCell("A2");
 assertEquals(null, A2.value);
 assertEquals(Errors.get("NAME"), A2.error);

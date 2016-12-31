@@ -2,28 +2,21 @@
  * A1-notation style cell id. Used to index the cells.
  * */
 class A1CellKey {
-  private column: string;
-  private row: number;
   private x: number;
   private y: number;
+  private key: string;
 
   constructor(key: string) {
-    this.row = parseInt(key.match(/\d+$/)[0], 10);
-    this.column = key.replace(this.row.toString(), '');
-    this.x = lettersToNumber(this.column);
-    this.y = this.row - 1;
+    this.key = key;
+    var row = parseInt(key.match(/\d+$/)[0], 10);
+    this.x = lettersToNumber(key.replace(row.toString(), ''));
+    this.y = row - 1;
   }
   static of(x: number, y: number): A1CellKey {
     return new A1CellKey(numberToLetters(x+1) + (y+1).toString());
   }
   toString(): string {
-    return this.column + "" + this.row;
-  }
-  getColumn(): string {
-    return this.column;
-  }
-  getRow(): number {
-    return this.row;
+    return this.key;
   }
   getX(): number {
     return this.x;

@@ -3,24 +3,21 @@ import { assertEquals } from "./utils/Asserts"
 
 //Test constructor
 var one = new A1CellKey("A1");
-assertEquals("A", one.getColumn());
-assertEquals(1, one.getRow());
 assertEquals(0, one.getX());
 assertEquals(0, one.getY());
+assertEquals("A1", one.toString());
 var two = new A1CellKey("Z4563534");
-assertEquals("Z", two.getColumn());
-assertEquals(4563534, two.getRow());
 assertEquals(25, two.getX());
 assertEquals(4563533, two.getY());
+assertEquals("Z4563534", two.toString());
+
 
 //Test static constructor
 var one = A1CellKey.of(0, 0);
-assertEquals("A", one.getColumn());
-assertEquals(1, one.getRow());
 assertEquals(0, one.getX());
 assertEquals(0, one.getY());
+assertEquals("A1", one.toString());
 var two = A1CellKey.of(25, 4563533);
-assertEquals("Z", two.getColumn());
-assertEquals(4563534, two.getRow());
 assertEquals(25, two.getX());
 assertEquals(4563533, two.getY());
+assertEquals("Z4563534", two.toString());

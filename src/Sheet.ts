@@ -476,8 +476,7 @@ var Sheet = (function () {
       var cells = instance.utils.iterateCells.call(this, coordsStart, coordsEnd),
         result = [];
       //update dependencies
-      // instance.matrix.updateCellItem(new A1CellKey(origin), {deps: cells.index});
-      instance.matrix.getItem(new A1CellKey(origin)).updateDependencies([cells.index]);
+      instance.matrix.getItem(new A1CellKey(origin)).updateDependencies(cells.index);
 
       result.push(cells.value);
       return result;

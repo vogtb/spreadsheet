@@ -32,6 +32,12 @@ class Cell {
   setError(error: any) {
     this.error = error;
   }
+  getRenderedValue() : string {
+    if (this.error !== null) {
+      return this.value;
+    }
+    return this.error.toString()
+  }
 }
 
 export {

@@ -535,7 +535,7 @@ var Sheet = (function () {
   this.toString = function () {
     var toReturn = "";
     for (var key in this.matrix.data) {
-      toReturn += this.matrix.data[key].id + " " + this.matrix.data[key].formula + " " + this.matrix.data[key].value + "\n";
+      toReturn += this.matrix.data[key].id + " " + this.matrix.data[key].formula + " " + this.matrix.data[key].value + " " + this.matrix.data[key].error + "\n";
     }
     return toReturn;
   };

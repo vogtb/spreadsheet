@@ -1,11 +1,11 @@
 class Cell {
-  public formula: string;
-  public value: string;
-  public dependencies: Array<string>;
-  public error: any;
-  public id: string;
-  public row: number;
-  public col: number;
+  private formula: string;
+  private value: string;
+  private dependencies: Array<string>;
+  private error: any;
+  private id: string;
+  private row: number;
+  private col: number;
   constructor(id: string) {
     var key = parseKey(id);
 
@@ -24,14 +24,35 @@ class Cell {
       }
     }
   }
+  getDependencies() : Array<string> {
+    return this.dependencies;
+  }
+  getColumn() : number {
+    return this.col;
+  }
+  getRow() : number {
+    return this.row;
+  }
+  getId() : string {
+    return this.id;
+  }
   setFormula(formula: string) {
     this.formula = formula;
+  }
+  getFormula() : string {
+    return this.formula;
   }
   setValue(value: string) {
     this.value = value;
   }
+  getValue() : string {
+    return this.value;
+  }
   setError(error: any) {
     this.error = error;
+  }
+  getError() : any {
+    return this.error;
   }
   getRenderedValue() : string {
     if (this.error !== null) {
@@ -47,15 +68,12 @@ class Cell {
 function toNum(chr) {
   chr = chr.replace(/\$/g, '');
   var base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', i, j, result = 0;
-
   for (i = 0, j = chr.length - 1; i < chr.length; i += 1, j -= 1) {
     result += Math.pow(base.length, j) * (base.indexOf(chr[i]) + 1);
   }
-
   if (result) {
     --result;
   }
-
   return result;
 }
 

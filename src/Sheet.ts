@@ -51,14 +51,14 @@ var Sheet = (function () {
       return this.data[key];
     }
     addCell(cell: Cell) {
-      var cellId = cell.id;
+      var cellId = cell.getId();
 
       if (!(cellId in this.data)) {
         this.data[cellId] = cell;
       } else {
-        this.getCell(cellId).updateDependencies(cell.dependencies);
-        this.getCell(cellId).setValue(cell.value);
-        this.getCell(cellId).setError(cell.error);
+        this.getCell(cellId).updateDependencies(cell.getDependencies());
+        this.getCell(cellId).setValue(cell.getValue());
+        this.getCell(cellId).setError(cell.getError());
       }
 
       return this.getCell(cellId);
@@ -105,7 +105,7 @@ var Sheet = (function () {
       return allDependencies;
     }
     getCellDependencies(cell: Cell) {
-      return this.getDependencies(cell.id);
+      return this.getDependencies(cell.getId());
     }
     setCell(cellKeyString: string, formula: string) {
       var cell = new Cell(cellKeyString);
@@ -133,17 +133,17 @@ var Sheet = (function () {
 
   var calculateCellFormula = function (cell: Cell) {
     // to avoid double translate formulas, update cell data in parser
-    var parsed = parse(cell.formula, cell.id);
+    var parsed = parse(cell.getFormula(), cell.getId());
 
-    instance.matrix.getCell(cell.id).setValue(parsed.result);
-    instance.matrix.getCell(cell.id).setError(parsed.error);
+    instance.matrix.getCell(cell.getId()).setValue(parsed.result);
+    instance.matrix.getCell(cell.getId()).setError(parsed.error);
 
     return parsed;
   };
 
   var registerCellInMatrix = function (cell: Cell) {
     instance.matrix.addCell(cell);
-    if (cell.formula !== null) {
+    if (cell.getFormula() !== null) {
       calculateCellFormula(cell);
     }
   };

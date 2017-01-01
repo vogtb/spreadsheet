@@ -6,7 +6,7 @@ class Cell {
   private formula: string;
   private value: string;
   private dependencies: Array<string>;
-  private error: any;
+  private error: string;
   private id: string;
   private row: number;
   private col: number;
@@ -109,15 +109,15 @@ class Cell {
    * Set error for this cell. Usually in the case of a parse error when parsing the formula.
    * @param error to set.
    */
-  setError(error: any) {
+  setError(error: string) {
     this.error = error;
   }
 
   /**
-   * Get the error for this cell. If the formula is parsed properly, or is null, this could be null.
-   * @returns {any} error to return, could be Null.
+   * Get the error for this cell. If the formula is not parsed properly, or is null, this could be null.
+   * @returns {string} error to return, could be null.
    */
-  getError() : any {
+  getError() : string {
     return this.error;
   }
 
@@ -128,9 +128,9 @@ class Cell {
    */
   getRenderedValue() : string {
     if (this.error !== null) {
-      return this.value.toString();
+      return this.value;
     }
-    return this.error.toString();
+    return this.error;
   }
 
   /**

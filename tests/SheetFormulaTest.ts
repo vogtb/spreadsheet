@@ -9,10 +9,10 @@ sheet.setCell("A3", "=CONCATENATE(A1, A2)");
 sheet.setCell("B1", "1000");
 sheet.setCell("B2", "=CONCATENATE(A1, B1)");
 var cell = sheet.getCell("A3");
-assertEquals("Hello, World!", cell.value);
-assertEquals(null, cell.error)
-assertArrayEquals(['A1', 'A2'], cell.dependencies);
+assertEquals("Hello, World!", cell.getValue());
+assertEquals(null, cell.getError());
+assertArrayEquals(['A1', 'A2'], cell.getDependencies());
 var cell = sheet.getCell("B2");
-assertEquals("Hello, 1000", cell.value);
-assertEquals(null, cell.error)
-assertArrayEquals(['A1', 'B1'], cell.dependencies);
+assertEquals("Hello, 1000", cell.getValue());
+assertEquals(null, cell.getError());
+assertArrayEquals(['A1', 'B1'], cell.getDependencies());

@@ -5,6 +5,10 @@ import { Cell } from "./Cell"
 import { Errors } from "./Errors"
 import * as Formula from "formulajs"
 
+/**
+ * Model representing a spreadsheet. When values/cells are added, dependencies recalculated, and true-values of those
+ * cells will be updated.
+ */
 var Sheet = (function () {
   var instance = this;
 
@@ -14,6 +18,14 @@ var Sheet = (function () {
     parse: function (formula: string) {}
   };
 
+  /**
+   * Creates a new FormulaParser, which parses formulas, and does minimal error handling.
+   *
+   * @param handler should be this instance. Needs access to helper.fixedCellValue, helper.cellValue,
+   * helper.cellRangeValue, and helper.fixedCellRangeValue
+   * @returns formula parser instance for use with parser.js
+   * @constructor
+   */
   var FormulaParser = function(handler) {
     var formulaLexer = function () {};
     formulaLexer.prototype = Parser.lexer;
@@ -42,14 +54,32 @@ var Sheet = (function () {
     return newParser;
   };
 
+  /**
+   * Holds cell values, and allows for the updating and manipulation of those cells.
+   */
   class Matrix {
+    /**
+     * Holds cells inside an object for quick access.
+     */
     public data: Object;
     constructor() {
       this.data = {};
     }
-    getCell(key: string) {
+
+    /**
+     * Gets the cell corresponding to the key. If the value is not defined, will return undefined.
+     * @param key to look up cell
+     * @returns {Cell} to return, if it exists. Returns undefined if key not in matrix.
+     */
+    getCell(key: string) : Cell {
       return this.data[key];
     }
+
+    /**
+     * Add cell to matrix. If it exists, update the necessary values. If it doesn't exist add it.
+     * @param cell to add to matrix.
+     * @returns {Cell} Returns the cell after it has been added.
+     */
     addCell(cell: Cell) {
       var cellId = cell.getId();
 
@@ -63,6 +93,12 @@ var Sheet = (function () {
 
       return this.getCell(cellId);
     }
+
+    /**
+     * Get all dependencies for a specific cell.
+     * @param id of cell
+     * @returns {Array} of A1-format cell ID dependencies, in no particular oder.
+     */
     getDependencies(id: string) {
       var getDependencies = function (id: string) {
         var filtered = [];
@@ -94,7 +130,7 @@ var Sheet = (function () {
               allDependencies.push(refId);
 
               var cell = this.getCell(refId);
-              if (cell.dependencies.length) {
+              if (cell.getDependencies().length) {
                 getTotalDependencies(refId);
               }
             }
@@ -104,11 +140,14 @@ var Sheet = (function () {
       getTotalDependencies(id);
       return allDependencies;
     }
-    getCellDependencies(cell: Cell) {
-      return this.getDependencies(cell.getId());
-    }
-    setCell(cellKeyString: string, formula: string) {
-      var cell = new Cell(cellKeyString);
+
+    /**
+     * Set a cell in this matrix. Could update an existing cell, or add a new one.
+     * @param id to of cell to create of update
+     * @param formula of cell to create or update
+     */
+    setCell(id: string, formula: string) {
+      var cell = new Cell(id);
       if (formula.charAt(0) === "=") {
         cell.setFormula(formula.substr(1));
       } else {
@@ -119,18 +158,26 @@ var Sheet = (function () {
     }
   }
 
-
+  /**
+   * Recalculate a cell's dependencies. Involves recalculating cell formulas for ALL dependencies.
+   * @param cell to recalculate dependencies
+   */
   var recalculateCellDependencies = function (cell: Cell) {
-    var allDependencies = instance.matrix.getCellDependencies(cell);
+    var allDependencies = instance.matrix.getDependencies(cell.getId());
 
     allDependencies.forEach(function (refId) {
       var currentCell = instance.matrix.getCell(refId);
-      if (currentCell && currentCell.formula) {
+      if (currentCell && currentCell.getFormula()) {
         calculateCellFormula(currentCell);
       }
     });
   };
 
+  /**
+   * Calculate a cell's formula by parsing it, and updating it's value and error fields.
+   * @param cell to calculate
+   * @returns {{error: null, result: null}} parsed result
+   */
   var calculateCellFormula = function (cell: Cell) {
     // to avoid double translate formulas, update cell data in parser
     var parsed = parse(cell.getFormula(), cell.getId());
@@ -141,6 +188,10 @@ var Sheet = (function () {
     return parsed;
   };
 
+  /**
+   * Register a cell in the matrix, and calculate its formula if it has one.
+   * @param cell to register
+   */
   var registerCellInMatrix = function (cell: Cell) {
     instance.matrix.addCell(cell);
     if (cell.getFormula() !== null) {
@@ -427,19 +478,19 @@ var Sheet = (function () {
         cell = instance.matrix.getCell(cellId);
 
       // get value
-      value = cell ? cell.value : "0"; // TODO: fix this, it's sloppy.
+      value = cell ? cell.getValue() : "0"; // TODO: fix this, it's sloppy.
       //update dependencies
       instance.matrix.getCell(origin).updateDependencies([cellId]);
       // check references error
-      if (cell && cell.dependencies) {
-        if (cell.dependencies.indexOf(cellId) !== -1) {
+      if (cell && cell.getDependencies()) {
+        if (cell.getDependencies().indexOf(cellId) !== -1) {
           throw Error('REF');
         }
       }
 
       // check if any error occurs
-      if (cell && cell.error) {
-        throw Error(cell.error);
+      if (cell && cell.getError()) {
+        throw Error(cell.getError());
       }
 
       // return value if is set
@@ -481,16 +532,22 @@ var Sheet = (function () {
     }
   };
 
-  var parse = function (formula, key) {
+  /**
+   * Parse a formula for a particular cell. Involves calculating all dependencies and potentially updating them as well.
+   * @param formula to parse
+   * @param cellId necessary for dependency access
+   * @returns {{error: null, result: null}} a parsed value including an error, and potential resulting value
+   */
+  var parse = function (formula, cellId) {
     var result = null;
     var error = null;
 
     try {
-      parser.setObj(key);
+      parser.setObj(cellId);
       result = parser.parse(formula);
-      var deps = instance.matrix.getDependencies(key);
+      var deps = instance.matrix.getDependencies(cellId);
 
-      if (deps.indexOf(key) !== -1) {
+      if (deps.indexOf(cellId) !== -1) {
         result = null;
         deps.forEach(function (id) {
           instance.matrix.getCell(id).setError(Errors.get('REF'));
@@ -513,18 +570,32 @@ var Sheet = (function () {
     }
   };
 
-  var setCell = function (cellKeyString: string, value: string) {
-    instance.matrix.setCell(cellKeyString, value.toString());
+  /**
+   * Set a cell value by A1-format cell ID
+   * @param id of cel to set
+   * @param value raw input to update the cell with
+   */
+  var setCell = function (id: string, value: string) {
+    instance.matrix.setCell(id, value.toString());
   };
 
-  var getCell = function (cellKeyString: string) : Cell {
-    var cell = instance.matrix.getCell(cellKeyString);
+  /**
+   * Get a cell by A1-format cell ID, if it exists in the Sheet. If not return null.
+   * @param id to lookup the cell
+   * @returns {Cell} cell found, or null.
+   */
+  var getCell = function (id: string) : Cell {
+    var cell = instance.matrix.getCell(id);
     if (cell === undefined) {
       return null;
     }
     return cell;
   };
 
+  /**
+   * Load a matrix into this sheet. Matrix values can be of any type, as long as they have a toString()
+   * @param input matrix
+   */
   this.load = function (input: Array<Array<any>>) {
     for (var y = 0; y < input.length; y++) {
       for (var x = 0; x < input[0].length; x++) {
@@ -535,6 +606,10 @@ var Sheet = (function () {
     }
   };
 
+  /**
+   * Render this Sheet as a string in which each row is a cell.
+   * @returns {string}
+   */
   this.toString = function () {
     var toReturn = "";
     for (var key in this.matrix.data) {

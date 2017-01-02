@@ -14,4 +14,4 @@ Things I should do.
 * If I add a cell with a decimal, what's the most precision I can get?
 
 ### Parsing interesting values
-* `10 + 10 + 10` should be parsed to 0, or null, not 10. We should do some regex checking before calling `parseInt`
+* Expand tests greatly.

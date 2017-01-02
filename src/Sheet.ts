@@ -4,6 +4,7 @@ import { SUPPORTED_FORMULAS } from "./SupportedFormulas"
 import { Cell } from "./Cell"
 import { Errors } from "./Errors"
 import * as Formula from "formulajs"
+import { Helpers } from "./Helpers";
 
 /**
  * Model representing a spreadsheet. When values/cells are added, dependencies recalculated, and true-values of those
@@ -341,18 +342,7 @@ var Sheet = (function () {
   };
 
   var helper = {
-    number: function (num) {
-      switch (typeof num) {
-        case 'number':
-          return num;
-        case 'string':
-          if (!isNaN(num)) {
-            return num.indexOf('.') > -1 ? parseFloat(num) : parseInt(num, 10);
-          }
-      }
-
-      return num;
-    },
+    number: Helpers.number,
 
     string: function (str) {
       return str.substring(1, str.length - 1);

@@ -12,3 +12,4 @@ assertEquals(111, Helpers.number("000111"));
 assertEquals("10 + 10", Helpers.number("10 + 10"));
 assertEquals("10/10", Helpers.number("10/10"));
 assertEquals("10*10", Helpers.number("10*10"));
+assertEquals(10.18239817293872, Helpers.number("10.18239817293871982379817157562"));

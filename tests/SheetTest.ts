@@ -123,3 +123,25 @@ assertEquals("99.8", A4.getValue());
 assertEquals("SUM(A1:A3, MAX(A1, A3))", A4.getFormula());
 assertEquals(null, A4.getError());
 assertArrayEquals(['A1', 'A2', 'A3'], A4.getDependencies());
+
+// Test dependency calculation propagation
+var sheet  = new Sheet();
+sheet.setCell("A1", "1");
+sheet.setCell("A2", "=SUM(A1, 100)");
+var A2 = sheet.getCell("A2");
+assertEquals(101, A2.getValue());
+assertArrayEquals(['A1'], A2.getDependencies());
+sheet.setCell("A1", "2");
+assertEquals(102, A2.getValue());
+assertArrayEquals(['A1'], A2.getDependencies());
+
+// Test cell formula update
+var sheet  = new Sheet();
+sheet.setCell("A1", "1");
+sheet.setCell("A2", "=SUM(A1, 100)");
+var A2 = sheet.getCell("A2");
+assertEquals(101, A2.getValue());
+assertArrayEquals(['A1'], A2.getDependencies());
+sheet.setCell("A2", "=MAX(A1, 100)");
+assertEquals(100, A2.getValue());
+assertArrayEquals(['A1'], A2.getDependencies());

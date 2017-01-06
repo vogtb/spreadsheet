@@ -1,6 +1,6 @@
 /// <reference path="parser.d.ts"/>
 import { Parser } from "./Parser";
-import { SUPPORTED_FORMULAS } from "./SupportedFormulas"
+import {SUPPORTED_FORMULAS, OverrideFormulas} from "./SupportedFormulas"
 import { Cell } from "./Cell"
 import { Errors } from "./Errors"
 import * as Formula from "formulajs"
@@ -438,7 +438,9 @@ var Sheet = (function () {
     callFunction: function (fn, args) {
       fn = fn.toUpperCase();
       args = args || [];
-
+      if (fn in OverrideFormulas) {
+        return OverrideFormulas[fn].apply(this, args);
+      }
       if (SUPPORTED_FORMULAS.indexOf(fn) > -1) {
         if (Formula[fn]) {
           return Formula[fn].apply(this, args);

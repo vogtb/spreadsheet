@@ -16,7 +16,13 @@ const SUPPORTED_FORMULAS = [
   'TAN', 'TANH', 'TRUE', 'TRUNC',
   'XOR'
 ];
+const OverrideFormulas = {
+  ATAN2: function (x, y) {
+    return Math.atan2(y, x);
+  }
+};
 
 export {
-  SUPPORTED_FORMULAS
+  SUPPORTED_FORMULAS,
+  OverrideFormulas
 }

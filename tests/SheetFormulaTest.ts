@@ -9,15 +9,15 @@ function testFormula(formula: string, expectation: any) {
   assertEquals(expectation, cell.getValue());
 }
 
-function testFormulaWithDependencies(formula: string, expectation: any, pairs: Array<Array<string>>) {
+function testFormulaToArray(formula: string, expectation: any) {
   var sheet  = new Sheet();
-  for (var pair of pairs) {
-    sheet.setCell(pair[0], pair[1]);
-  }
   sheet.setCell("A1", formula);
   var cell = sheet.getCell("A1");
   assertEquals(null, cell.getError());
-  assertEquals(expectation, cell.getValue());
+  var values = cell.getValue();
+  for (var index in values) {
+    assertEquals(values[index], expectation[index]);
+  }
 }
 
 // Test ABS formula
@@ -68,10 +68,54 @@ testFormula("=AVERAGE(10, 20, 4.1)", 11.366666666666667);
 testFormula("=AVERAGEA(10, 20, 4.1)", 11.366666666666667);
 
 // Test AVERAGEIF
-testFormulaWithDependencies("=AVERAGEIF(B1:B3, '>2')", 7.5, [["B1", "1"], ["B2", "5"], ["B3", "10"]]);
+testFormula("=AVERAGEIF([1, 5, 10], '>2')", 7.5);
+
+// Test BASE
+testFormula('=BASE(15, 2, 10)', '0000001111');
 
 // Test BIN2DEC
 testFormula("=BIN2DEC(1010101010)", -342);
+
+// Test BESSELI
+testFormula('=BESSELI(1, 2)', 0.13574766658069928);
+
+// Test BESSELJ
+testFormula('=BESSELJ(1, 2)', 0.11490348499246938);
+
+// Test BESSELK
+testFormula('=BESSELK(1, 2)', 1.6248388844172295);
+
+// Test BESSELY
+testFormula('=BESSELY(1, 2)', -1.6506826133039476);
+
+// Test BETADIST
+testFormula('=BETADIST(2, 8, 10, true, 1, 3)', 0.6854705810117458);
+
+// Test BETAINV
+testFormula('=BETAINV(0.6854705810117458, 8, 10, 1, 3)', 1.9999999999999996);
+
+// Test BINOMDISTRANGE
+// TODO: This should work.
+// testFormula('=BINOMDISTRANGE(60, 0.75, 45, 50)', 0.52363);
+
+// Test BINOMINV
+// TODO: This should work.
+// testFormula('=BINOMINV(6, 0.5, 0.75)', 4);
+
+// Test BITAND
+testFormula('=BITAND(42, 24)', 8);
+
+// Test BITLSHIFT
+testFormula('=BITLSHIFT(42, 24)', 704643072);
+
+// Test BITOR
+testFormula('=BITOR(42, 24)', 58);
+
+// Test BITRSHIFT
+testFormula('=BITRSHIFT(42, 2)', 10);
+
+// Test BITXOR
+testFormula('=BITXOR(42, 24)', 50);
 
 // Test BIN2HEX
 testFormula("=BIN2HEX(1010101010)", "fffffffeaa");
@@ -79,11 +123,28 @@ testFormula("=BIN2HEX(1010101010)", "fffffffeaa");
 // Test BIN2OCT
 testFormula("=BIN2OCT(1010101010)", "7777777252");
 
+// Test DECIMAL
+testFormula('=DECIMAL(199.99999)', 199);
+
 // Test BINOMDIST
 // TODO: This. FormulaJS implementation differs from GS.
 
 // Test CEIL
 testFormula("=CEILING(22.22, 0.1)", 22.3);
+
+// Test CEILINGMATH
+testFormula('=CEILINGMATH(1001.112131)', 1002);
+
+// Test CEILINGPRECISE
+testFormula('=CEILINGPRECISE(1001.112131)', 1002);
+
+// Test CHISQDIST
+// TODO: This should work.
+// testFormula('=CHISQDIST(0.5, 1, true)', 55);
+
+// Test CHISQINV
+// TODO: This should work.
+// testFormula('=CHISQINV(0.5, 1, true)', 44);
 
 // Test CHAR
 testFormula("=CHAR(97)", "a");
@@ -94,14 +155,28 @@ testFormula("=CODE('a')", 97);
 // Test COMBIN
 testFormula("=COMBIN(4, 2)", 6);
 
+// Test COMBINA
+testFormula('=COMBINA(4, 3)', 20);
+
+// Test COMPLEX
+testFormula('=COMPLEX(3, 4)', '3+4i');
+
 // Test CONCATENATE
 testFormula('=CONCATENATE("hey", " ", "there")', "hey there");
+
+// Test CONFIDENCENORM
+// TODO: This should work.
+// testFormula('=CONFIDENCE(0.05, 1.6, 250)', 0.1983344105);
+
+// Test CONFIDENCET
+// TODO: This should work.
+// testFormula('=CONFIDENCET(0.05, 1, 50)', 0.2842);
 
 // Test CONVERT
 testFormula('=CONVERT(5.1, "mm", "m")', 0.0050999999999999995);
 
 // Test CORREL
-testFormulaWithDependencies('=CORREL(B1:B2,B3:B4)', 1, [["B1", "9"], ["B2", "5"], ["B3", "10"], ["B4", "4"]]);
+testFormula('=CORREL([9, 5],[10, 4])', 1);
 
 // Test COS
 testFormula("=COS(PI())", -1);
@@ -109,8 +184,14 @@ testFormula("=COS(PI())", -1);
 // Test COSH
 testFormula("=COSH(PI())", 11.591953275521522);
 
+// Test COT
+testFormula('=COT(30)', -0.15611995216165922);
+
+// Test COTH
+testFormula('=COTH(2)', 1.0373147207275482);
+
 // Test COUNT
-testFormulaWithDependencies('=COUNT(B1:B3)', 3, [["B1", "1"], ["B2", "5"], ["B3", "10"]]);
+testFormula('=COUNT([1, 5, 10])', 3);
 
 // Test COUNTA
 testFormula("=COUNTA(10, 10, 22)", 3);
@@ -119,13 +200,28 @@ testFormula("=COUNTA(10, 10, 22)", 3);
 // TODO: Fix COUNTBLANK. Does not work properly.
 
 // Test COUNTIF
-testFormulaWithDependencies('=COUNTIF(B1:B3, ">4")', 2, [["B1", "1"], ["B2", "5"], ["B3", "10"]]);
+testFormula('=COUNTIF([1, 5, 10], ">4")', 2);
 
 // Test COUNTIFS
-testFormulaWithDependencies('=COUNTIFS(B1:B3, ">4", C1:C3, ">4")', 2, [["B1", "1"], ["B2", "5"], ["B3", "10"], ["C1", "1"], ["C2", "5"], ["C3", "10"]]);
+testFormula('=COUNTIFS([1, 5, 10], ">4", [1, 5, 10], ">4")', 2);
+
+// Test COUNTIN
+testFormula('=COUNTIN([1,3,1],1)', 2);
 
 // Test COUNTUNIQUE
-testFormulaWithDependencies('=COUNTUNIQUE(B1:B3)', 2, [["B1", "1"], ["B2", "1"], ["B3", "10"]]);
+testFormula('=COUNTUNIQUE([1, 1, 10])', 2);
+
+// Test COVARIANCEP
+testFormula('=COVARIANCEP([3,2,4,5,6], [9,7,12,15,17])', 5.2);
+
+// Test COVARIANCES
+testFormula('=COVARIANCES([2,4,8], [5,11,12])', 9.666666666666668);
+
+// Test CSC
+testFormula('=CSC(15)', 1.5377805615408537);
+
+// Test CSCH
+testFormula('=CSCH(1.5)', 0.46964244059522464);
 
 // Test CUMIPMT
 testFormula("=CUMIPMT(0.12, 12, 100, 1, 5, 0)", -54.39423242396348);
@@ -229,3 +325,114 @@ testFormula('=FISHERINV(0.962)', 0.7451676440945232);
 
 // Test IF
 testFormula('=IF("m" = "m", "hit", "miss")', 'hit');
+
+// Test INT
+testFormula('=INT(99.33)', 99);
+
+// Test ISEVEN
+testFormula('=ISEVEN(4)', true);
+
+// Test ISODD
+testFormula('=ISODD(3)', true);
+
+// Test LN
+testFormula('=LN(100)', 4.605170185988092);
+
+// Test LOG
+testFormula('=LOG(256, 2)', 8);
+
+// Test LOG10
+testFormula('=LOG10(100)', 2);
+
+// Test MAX
+testFormula('=MAX(100, 22)', 100);
+
+// Test MAXA
+testFormula('=MAXA(100, 22, 44)', 100);
+
+// Test MEDIAN
+testFormula('=MEDIAN(100, 22, 54)', 54);
+
+// Test MIN
+testFormula('=MIN(100, 22, 44)', 22);
+
+// Test MINA
+testFormula('=MINA(100, 22, 44)', 22);
+
+// Test MOD
+testFormula('=MOD(10, 3)', 1);
+
+// Test NOT
+testFormula('=NOT(TRUE())', false);
+
+// Test ODD
+testFormula('=ODD(2)', 3);
+
+// Test OR
+testFormula('=OR("m" = "p", "n" = "n")', true);
+
+// Test PI()
+testFormula('=PI()', 3.141592653589793);
+
+// Test POWER
+testFormula('=POWER(4, 10)', 1048576);
+
+// Test ROUND
+testFormula('=ROUND(99.44, 1)', 99.4);
+
+// Test ROUNDDOWN
+testFormula('=ROUNDDOWN(99.46, 1)', 99.4);
+
+// Test ROUNDUP
+testFormula('=ROUNDUP(99.46, 1)', 99.5);
+
+// Test SIN
+// TODO: This shuld work.
+// testFormula('=SIN(PI())', 0);
+
+// Test SINH
+testFormula('=SINH(PI())', 11.548739357257752);
+
+// Test SPLIT
+testFormulaToArray('=SPLIT("1,2,3", ",", TRUE)', [ '1', '2', '3' ]);
+
+// Test SQRT
+testFormula('=SQRT(9)', 3);
+
+// Test SQRTPI
+testFormula('=SQRTPI(9)', 5.317361552716548);
+
+// Test SUM
+testFormula('=SUM(10, 10)', 20);
+
+// Test SUMIF
+testFormula('=SUMIF([1, 5, 10], ">2")', 15);
+
+// Test SUMPRODUCT
+testFormula('=SUMPRODUCT([1, 5, 10])', 16);
+
+// Test SUMSQ
+testFormula('=SUMSQ([1, 5, 10], 10)', 226);
+
+// Test SUMX2MY2
+testFormula('=SUMX2MY2([1, 5, 10], [1, 5, 10])', 0);
+
+// Test SUMX2PY2
+// TODO: This should work.
+// testFormulaWithDependencies('=SUMX2PY2(B1:B3, C1:C3)', 0, [["B1", "1"], ["B2", "5"], ["B3", "10"], ["C1", "1"], ["C2", "5"], ["C3", "10"]]);
+
+// Test TAN
+// TODO: This should work.
+// testFormula('=TAN(PI())', 0);
+
+// Test TANH
+testFormula('=TANH(PI())', 0.99627207622075);
+
+// Test TRUE
+testFormula('=TRUE()', true);
+
+// Test TRUE
+testFormula('=TRUNC(3.1415, 2)', 3.14);
+
+// Test XOR
+testFormula('=XOR(1, 1)', false);

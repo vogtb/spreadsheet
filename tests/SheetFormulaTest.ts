@@ -9,6 +9,14 @@ function testFormula(formula: string, expectation: any) {
   assertEquals(expectation, cell.getValue());
 }
 
+function testFormulaDate(formula: string, expectation: any) {
+  var sheet  = new Sheet();
+  sheet.setCell("A1", formula);
+  var cell = sheet.getCell("A1");
+  assertEquals(null, cell.getError());
+  assertEquals(expectation, cell.getValue().getTime());
+}
+
 function testFormulaToArray(formula: string, expectation: any) {
   var sheet  = new Sheet();
   sheet.setCell("A1", formula);
@@ -230,8 +238,7 @@ testFormula("=CUMIPMT(0.12, 12, 100, 1, 5, 0)", -54.39423242396348);
 testFormula("=CUMPRINC(0.12, 12, 100, 1, 5, 0)", -26.324171373034403);
 
 // Test DATE
-// TODO: DATE should parse dates correctly. Is this a display issue or a parsing issue?
-// testFormula("=DATE(1992, 6, 24)", "6/24/1992");
+testFormulaDate("=DATE(1992, 6, 24)", new Date("6/24/1992").getTime());
 
 // Test DATEVALUE
 // TODO: DATEVALUE should work.

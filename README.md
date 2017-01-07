@@ -8,3 +8,6 @@ Things I should do.
 
 ### Parsing interesting values
 * Expand tests greatly.
+
+### Parsing dates
+* Use moment as storage for dates.

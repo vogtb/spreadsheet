@@ -407,8 +407,11 @@ testFormula('=ROUNDDOWN(99.46, 1)', 99.4);
 testFormula('=ROUNDUP(99.46, 1)', 99.5);
 
 // Test SIN
-// TODO: This shuld work.
-// testFormula('=SIN(PI())', 0);
+testFormula('=SIN(0)', 0);
+testFormula('=SIN(1)', 0.8414709848078965);
+testFormula('=SIN(PI() / 2)', 1);
+testFormula('=SIN(PI())', 0);
+
 
 // Test SINH
 testFormula('=SINH(PI())', 11.548739357257752);

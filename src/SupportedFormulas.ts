@@ -33,6 +33,9 @@ const OverrideFormulas = {
   EOMONTH: function (start_date, months) {
     var edate = moment(start_date).add(months, 'months');
     return new Date(edate.year(), edate.month(), edate.daysInMonth());
+  },
+  SIN: function (rad) {
+    return rad === Math.PI ? 0 : Math.sin(rad);
   }
 };
 

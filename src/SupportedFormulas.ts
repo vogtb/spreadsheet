@@ -28,6 +28,10 @@ const OverrideFormulas = {
   },
   EDATE: function (start_date: Date, months) {
     return moment(start_date).add(months, 'months').toDate();
+  },
+  EOMONTH: function (start_date, months) {
+    var edate = moment(start_date).add(months, 'months');
+    return new Date(edate.year(), edate.month(), edate.daysInMonth());
   }
 };
 

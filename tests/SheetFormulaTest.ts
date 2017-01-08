@@ -295,7 +295,7 @@ testFormulaToDate('=EDATE(DATE(1992, 6, 24), 1)', new Date('Fri Jul 24 1992 00:0
 testFormula('=EFFECT(0.99, 12)', 1.5890167507927795);
 
 // EOMONTH
-// TODO: This should work
+testFormulaToDate('=EOMONTH(DATE(1992, 6, 24), 1)', new Date('7/31/1992').getTime());
 
 // Test ERF
 testFormula('=ERF(2)', 0.9953222650189527);

@@ -328,8 +328,14 @@ testFormula('=FDIST(15.35, 7, 6, true)', 0.9980694465675269);
 
 
 // Test FINV
-// TODO: This should work.
-// testFormula('=FINV(0.88,1.013, 1.01)', 0.03638945475);
+// TODO: In GS, this is really called F.INV
+/*
+ * FINV Calculates the inverse of the right-tailed F probability distribution. Also called the Fisher-Snedecor distribution or Snedecor’s F distribution.
+ * F.INV Calculates the inverse of the left-tailed F probability distribution. Also called the Fisher-Snedecor distribution or Snedecor’s F distribution.
+ *
+ * F.INV is left-tailed. FINV is right-tailed.
+ */
+testFormula('=FINV(0.42, 2, 3)', 0.6567804059458624);
 
 // Test FISHER
 testFormula('=FISHER(0.962)', 1.972066740199461);

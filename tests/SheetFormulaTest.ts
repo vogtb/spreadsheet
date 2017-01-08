@@ -33,7 +33,9 @@ testFormula("=ABS(-10)", 10);
 testFormula("=ABS(0)", 0);
 
 // Test ACCRINT
-// TODO: this
+// TODO: The second one is really close, but should be correct. Fix this.
+testFormula("=ACCRINT(DATE(2011, 1, 1), DATE(2011, 2, 1), DATE(2014, 7, 1), 0.1, 1000, 1, 0)", 350);
+// testFormula('=ACCRINT(DATE(2010, 1, 1), DATE(2010, 2, 1), DATE(2012, 12, 31), 0.05, 100, 4)', 14.98611111);
 
 // Test ACOS
 testFormula("=ACOS(0)", 1.5707963267948966);
@@ -289,7 +291,7 @@ testFormula('=DOLLARFR(100.1, 32)', 100.032);
 testFormula('=AND(10)', true);
 
 // Test EDATE
-testFormulaToDate('=EDATE(DATE(1992, 6, 24), 1)', new Date('Fri Jul 24 1992 00:00:00 GMT-0500 (CDT)').getTime());
+testFormulaToDate('=EDATE(DATE(1992, 6, 24), 1)', new Date('7/24/1992').getTime());
 
 // Test EFFECT
 testFormula('=EFFECT(0.99, 12)', 1.5890167507927795);
@@ -464,3 +466,6 @@ testFormula('=TRUNC(3.1415, 2)', 3.14);
 
 // Test XOR
 testFormula('=XOR(1, 1)', false);
+
+// Test YEARFRAC
+testFormula('=YEARFRAC(DATE(1969,7,16), DATE(1969,7,24), 1)', 0.021917808219178082);

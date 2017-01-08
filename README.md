@@ -9,7 +9,6 @@ Things I should do.
 * Include fail state values for all formulas
 
 ### Write formulas for missing ones
-* EDATE
 * EOMONTH
 * FDIST
 * FINV

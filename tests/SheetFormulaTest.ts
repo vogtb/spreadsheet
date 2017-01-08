@@ -289,7 +289,7 @@ testFormula('=DOLLARFR(100.1, 32)', 100.032);
 testFormula('=AND(10)', true);
 
 // Test EDATE
-// TODO: This should work
+testFormulaToDate('=EDATE(DATE(1992, 6, 24), 1)', new Date('Fri Jul 24 1992 00:00:00 GMT-0500 (CDT)').getTime());
 
 // Test EFFECT
 testFormula('=EFFECT(0.99, 12)', 1.5890167507927795);

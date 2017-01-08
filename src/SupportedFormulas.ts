@@ -1,3 +1,6 @@
+/// <reference path="../node_modules/moment/moment.d.ts"/>
+import * as moment from "moment";
+
 const SUPPORTED_FORMULAS = [
   'ABS', 'ACCRINT', 'ACOS', 'ACOSH', 'ACOTH', 'AND', 'ARABIC', 'ASIN', 'ASINH', 'ATAN', 'ATAN2', 'ATANH', 'AVEDEV', 'AVERAGE', 'AVERAGEA', 'AVERAGEIF',
   'BASE', 'BESSELI', 'BESSELJ', 'BESSELK', 'BESSELY', 'BETADIST', 'BETAINV', 'BIN2DEC', 'BIN2HEX', 'BIN2OCT', 'BINOMDIST', 'BINOMDISTRANGE', 'BINOMINV', 'BITAND', 'BITLSHIFT', 'BITOR', 'BITRSHIFT', 'BITXOR',
@@ -22,6 +25,9 @@ const OverrideFormulas = {
   },
   DATEVALUE: function (dateString: string) : Date {
     return new Date(dateString);
+  },
+  EDATE: function (start_date: Date, months) {
+    return moment(start_date).add(months, 'months').toDate();
   }
 };
 

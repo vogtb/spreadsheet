@@ -19,6 +19,9 @@ const SUPPORTED_FORMULAS = [
 const OverrideFormulas = {
   ATAN2: function (x, y) {
     return Math.atan2(y, x);
+  },
+  DATEVALUE: function (dateString: string) : Date {
+    return new Date(dateString);
   }
 };
 

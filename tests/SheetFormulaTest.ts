@@ -9,7 +9,7 @@ function testFormula(formula: string, expectation: any) {
   assertEquals(expectation, cell.getValue());
 }
 
-function testFormulaDate(formula: string, expectation: any) {
+function testFormulaToDate(formula: string, expectation: any) {
   var sheet  = new Sheet();
   sheet.setCell("A1", formula);
   var cell = sheet.getCell("A1");
@@ -238,20 +238,19 @@ testFormula("=CUMIPMT(0.12, 12, 100, 1, 5, 0)", -54.39423242396348);
 testFormula("=CUMPRINC(0.12, 12, 100, 1, 5, 0)", -26.324171373034403);
 
 // Test DATE
-testFormulaDate("=DATE(1992, 6, 24)", new Date("6/24/1992").getTime());
+testFormulaToDate("=DATE(1992, 6, 24)", new Date("6/24/1992").getTime());
 
 // Test DATEVALUE
-// TODO: DATEVALUE should work.
-// testFormula('=DATEVALUE("1992-6-24")', 33779);
+testFormulaToDate('=DATEVALUE("1992-6-24")', new Date("6/24/1992").getTime());
 
 // Test DAY
-// TODO: This should work
+testFormula('=DAY(DATEVALUE("1992-6-24"))', 24);
 
 // Test DAYS
-// TODO: This should work
+testFormula('=DAYS(DATEVALUE("1993-6-24"), DATEVALUE("1992-6-24"))', 365);
 
 // Test DAYS360
-// TODO: This should work
+testFormula('=DAYS360(DATE(1969, 7, 16), DATE(1970, 7, 24), 1)', 368);
 
 // Test DB
 testFormula("=DB(100, 50, 10, 2, 12)", 6.2511);

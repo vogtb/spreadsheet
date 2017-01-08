@@ -9,7 +9,7 @@ Things I should do.
 * Include fail state values for all formulas
 
 ### Write formulas for missing ones
-* FDIST
+* FDIST vs F.DIST, differentiate.
 * FINV
 * SIN
 * SUMX2PY2

@@ -316,8 +316,16 @@ testFormula('=EXPONDIST(4, 0.5, false)', 0.06766764161830635);
 testFormula('=FALSE()', false);
 
 // Test FDIST
-// TODO: This should work.
-// testFormula('=FDIST(15.35, 7, 6)', 0.001930553432);
+// TODO: In GS, this is really called F.DIST
+/*
+ * F.DIST Calculates the left-tailed F probability distribution (degree of diversity) for two data sets with given input x. Alternately called Fisher-Snedecor distribution or Snedecor's F distribution.
+ * FDIST Calculates the right-tailed F probability distribution (degree of diversity) for two data sets with given input x. Alternately called Fisher-Snedecor distribution or Snedecor's F distribution.
+ *
+ * F.DIST is left-tailed. FDIST is right-tailed.
+ */
+testFormula('=FDIST(15.35, 7, 6, false)', 0.0003451054686025578);
+testFormula('=FDIST(15.35, 7, 6, true)', 0.9980694465675269);
+
 
 // Test FINV
 // TODO: This should work.

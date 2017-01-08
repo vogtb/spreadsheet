@@ -445,8 +445,10 @@ testFormula('=SUMX2MY2([1, 5, 10], [1, 5, 10])', 0);
 // testFormulaWithDependencies('=SUMX2PY2(B1:B3, C1:C3)', 0, [["B1", "1"], ["B2", "5"], ["B3", "10"], ["C1", "1"], ["C2", "5"], ["C3", "10"]]);
 
 // Test TAN
-// TODO: This should work.
-// testFormula('=TAN(PI())', 0);
+testFormula('=TAN(0)', 0);
+testFormula('=TAN(1)', 1.5574077246549023);
+testFormula('=TAN(PI() / 2)', 16331239353195370);
+testFormula('=TAN(PI())', 0);
 
 // Test TANH
 testFormula('=TANH(PI())', 0.99627207622075);

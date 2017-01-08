@@ -36,6 +36,9 @@ const OverrideFormulas = {
   },
   SIN: function (rad) {
     return rad === Math.PI ? 0 : Math.sin(rad);
+  },
+  TAN: function (rad) {
+    return rad === Math.PI ? 0 : Math.tan(rad);
   }
 };
 

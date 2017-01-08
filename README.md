@@ -5,9 +5,14 @@ TypeScript implementation of a spreadsheet.
 Things I should do.
 
 ### Write tests for supported formulas.
+* Write more thorough tests for all formulas
+* Include fail state values for all formulas
 
-### Parsing interesting values
-* Expand tests greatly.
-
-### Parsing dates
-* Use moment as storage for dates.
+### Write formulas for missing ones
+* EDATE
+* EOMONTH
+* FDIST
+* FINV
+* SIN
+* SUMX2PY2
+* TAN

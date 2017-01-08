@@ -438,11 +438,14 @@ testFormula('=SUMPRODUCT([1, 5, 10])', 16);
 testFormula('=SUMSQ([1, 5, 10], 10)', 226);
 
 // Test SUMX2MY2
-testFormula('=SUMX2MY2([1, 5, 10], [1, 5, 10])', 0);
+testFormula('=SUMX2MY2([1,2,3],[4,5,6])', -63);
 
 // Test SUMX2PY2
+testFormula('=SUMX2PY2([1, 2, 3], [4, 5, 6])', 91);
+
+// Test SUMXMY2
 // TODO: This should work.
-// testFormulaWithDependencies('=SUMX2PY2(B1:B3, C1:C3)', 0, [["B1", "1"], ["B2", "5"], ["B3", "10"], ["C1", "1"], ["C2", "5"], ["C3", "10"]]);
+// testFormula('=SUMXMY2([1,2,3],[4,5,6])', 27);
 
 // Test TAN
 testFormula('=TAN(0)', 0);

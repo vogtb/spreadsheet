@@ -35,7 +35,7 @@ testFormula("=ABS(0)", 0);
 // Test ACCRINT
 // TODO: The second one is really close, but should be correct. Fix this.
 testFormula("=ACCRINT(DATE(2011, 1, 1), DATE(2011, 2, 1), DATE(2014, 7, 1), 0.1, 1000, 1, 0)", 350);
-// testFormula('=ACCRINT(DATE(2010, 1, 1), DATE(2010, 2, 1), DATE(2012, 12, 31), 0.05, 100, 4)', 14.98611111);
+// testFormula('=ACCRINT(DATE(2000, 1, 1), DATE(2000, 2, 1), DATE(2002, 12, 31), 0.05, 100, 4)', 14.98611111);
 
 // Test ACOS
 testFormula("=ACOS(0)", 1.5707963267948966);
@@ -472,4 +472,9 @@ testFormula('=TRUNC(3.1415, 2)', 3.14);
 testFormula('=XOR(1, 1)', false);
 
 // Test YEARFRAC
-testFormula('=YEARFRAC(DATE(1969,7,16), DATE(1969,7,24), 1)', 0.021917808219178082);
+testFormula('=YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 0)', 18.994444444444444);
+// testFormula('=YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 1)', 18.99587544); // This is slightly off
+testFormula('=YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 2)', 19.272222222222222);
+testFormula('=YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 3)', 19.008219178082193);
+testFormula('=YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 4)', 18.994444444444444);
+

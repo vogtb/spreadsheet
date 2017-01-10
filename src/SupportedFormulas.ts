@@ -1,5 +1,6 @@
 /// <reference path="../node_modules/moment/moment.d.ts"/>
 import * as moment from "moment";
+import * as Formula from "formulajs"
 
 const SUPPORTED_FORMULAS = [
   'ABS', 'ACCRINT', 'ACOS', 'ACOSH', 'ACOTH', 'AND', 'ARABIC', 'ASIN', 'ASINH', 'ATAN', 'ATAN2', 'ATANH', 'AVEDEV', 'AVERAGE', 'AVERAGEA', 'AVERAGEIF',
@@ -21,6 +22,8 @@ const SUPPORTED_FORMULAS = [
 ];
 
 const OverrideFormulas = {
+  "F.DIST": Formula["FDIST"],
+  "F.INV": Formula["FINV"],
   ATAN2: function (x, y) {
     return Math.atan2(y, x);
   },

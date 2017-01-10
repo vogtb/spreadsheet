@@ -9,8 +9,8 @@ Things I should do.
 * Include fail state values for all formulas
 
 ### Write formulas for missing ones
-* FDIST vs F.DIST, differentiate.
-* FINV vs F.INV, differentiate.
+* FDIST
+* FINV
 * SUM_ formulas
 * ACCRINT
 

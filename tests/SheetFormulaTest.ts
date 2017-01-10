@@ -317,27 +317,31 @@ testFormula('=EXPONDIST(4, 0.5, false)', 0.06766764161830635);
 // Test FALSE
 testFormula('=FALSE()', false);
 
+// Test F.DIST
+
+testFormula('=F.DIST(15.35, 7, 6, false)', 0.0003451054686025578);
+testFormula('=F.DIST(15.35, 7, 6, true)', 0.9980694465675269);
+
 // Test FDIST
-// TODO: In GS, this is really called F.DIST
+// TODO: This should work.
 /*
  * F.DIST Calculates the left-tailed F probability distribution (degree of diversity) for two data sets with given input x. Alternately called Fisher-Snedecor distribution or Snedecor's F distribution.
  * FDIST Calculates the right-tailed F probability distribution (degree of diversity) for two data sets with given input x. Alternately called Fisher-Snedecor distribution or Snedecor's F distribution.
  *
  * F.DIST is left-tailed. FDIST is right-tailed.
  */
-testFormula('=FDIST(15.35, 7, 6, false)', 0.0003451054686025578);
-testFormula('=FDIST(15.35, 7, 6, true)', 0.9980694465675269);
 
+// Test F.INV
+testFormula('=F.INV(0.42, 2, 3)', 0.6567804059458624);
 
 // Test FINV
-// TODO: In GS, this is really called F.INV
+// TODO: This should work.
 /*
  * FINV Calculates the inverse of the right-tailed F probability distribution. Also called the Fisher-Snedecor distribution or Snedecor’s F distribution.
  * F.INV Calculates the inverse of the left-tailed F probability distribution. Also called the Fisher-Snedecor distribution or Snedecor’s F distribution.
  *
  * F.INV is left-tailed. FINV is right-tailed.
  */
-testFormula('=FINV(0.42, 2, 3)', 0.6567804059458624);
 
 // Test FISHER
 testFormula('=FISHER(0.962)', 1.972066740199461);

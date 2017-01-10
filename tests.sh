@@ -2,6 +2,7 @@
 
 echo "$(date) Compiling Tests"
 tsc --outDir test_output tests/*.ts
+cp lib/parser.js test_output/src/
 
 echo "$(date) Running All Tests"
 for test_file in test_output/tests/*.js

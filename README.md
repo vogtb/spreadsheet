@@ -14,5 +14,12 @@ Things I should do.
 * SUM_ formulas
 * ACCRINT
 
-### Moment.js issue.
-There are an awful lot of tests that fail when we use formulajs' version of moment. We should probably replace it.
+# Refactor SheetFormulaTest.ts into FormulaTest.ts
+There's no reason the formulas need to be strings. Involves refactoring SupportedFormulas.ts and where we uses
+the "override" formulas.
+
+### Date-Time issues
+Here are a couple of the issues with Dates and so on:
+* There seem to be a few issues where someone did something sloppy inside formulaJS, and timezones, daylight-savings,
+and leap years are being taken into account when they shouldn't be. For now I think I should just let it go.
+The resulting errors from these bugs aren't that bad. I'll mark them down, and investigate them individually.

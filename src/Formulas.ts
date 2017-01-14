@@ -21,7 +21,7 @@ const SUPPORTED_FORMULAS = [
   'XOR'
 ];
 
-const OverrideFormulas = {
+const CustomFormulas = {
   "F.DIST": Formula["FDIST"],
   "F.INV": Formula["FINV"],
   ATAN2: function (x, y) {
@@ -78,23 +78,23 @@ const OverrideFormulas = {
     switch (basis) {
       case 0:
         // US (NASD) 30/360
-        factor = OverrideFormulas.YEARFRAC(issue, settlement, basis);
+        factor = CustomFormulas.YEARFRAC(issue, settlement, basis);
         break;
       case 1:
         // Actual/actual
-        factor = OverrideFormulas.YEARFRAC(issue, settlement, basis);
+        factor = CustomFormulas.YEARFRAC(issue, settlement, basis);
         break;
       case 2:
         // Actual/360
-        factor = OverrideFormulas.YEARFRAC(issue, settlement, basis);
+        factor = CustomFormulas.YEARFRAC(issue, settlement, basis);
         break;
       case 3:
         // Actual/365
-        factor = OverrideFormulas.YEARFRAC(issue, settlement, basis);
+        factor = CustomFormulas.YEARFRAC(issue, settlement, basis);
         break;
       case 4:
         // European 30/360
-        factor = OverrideFormulas.YEARFRAC(issue, settlement, basis);
+        factor = CustomFormulas.YEARFRAC(issue, settlement, basis);
         break;
     }
     return par * rate * factor;
@@ -208,7 +208,19 @@ const OverrideFormulas = {
   }
 };
 
+var Formulas = {
+  exists: function(fn: string) {
+    return ((fn in CustomFormulas) || SUPPORTED_FORMULAS.indexOf(fn) > -1);
+  },
+  get: function(fn: string) {
+    if (fn in CustomFormulas) {
+      return CustomFormulas[fn];
+    }
+    return Formula[fn];
+  }
+};
+
 export {
-  SUPPORTED_FORMULAS,
-  OverrideFormulas
+  Formulas,
+  CustomFormulas
 }

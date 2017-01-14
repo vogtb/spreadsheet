@@ -1,10 +1,10 @@
 /// <reference path="parser.d.ts"/>
 import { Parser } from "./Parser";
-import {SUPPORTED_FORMULAS, OverrideFormulas} from "./SupportedFormulas"
 import { Cell } from "./Cell"
 import { Errors } from "./Errors"
-import * as Formula from "formulajs"
 import { Helpers } from "./Helpers";
+import { Formulas } from "./Formulas";
+
 
 /**
  * Model representing a spreadsheet. When values/cells are added, dependencies recalculated, and true-values of those
@@ -438,13 +438,8 @@ var Sheet = (function () {
     callFunction: function (fn, args) {
       fn = fn.toUpperCase();
       args = args || [];
-      if (fn in OverrideFormulas) {
-        return OverrideFormulas[fn].apply(this, args);
-      }
-      if (SUPPORTED_FORMULAS.indexOf(fn) > -1) {
-        if (Formula[fn]) {
-          return Formula[fn].apply(this, args);
-        }
+      if (Formulas.exists(fn)) {
+        return Formulas.get(fn).apply(this, args);
       }
 
       throw Error('NAME');
@@ -456,8 +451,8 @@ var Sheet = (function () {
 
       if (str) {
         str = str.toUpperCase();
-        if (Formula[str]) {
-          return ((typeof Formula[str] === 'function') ? Formula[str].apply(this, args) : Formula[str]);
+        if (Formulas.exists(str)) {
+          return ((typeof Formulas.get(str) === 'function') ? Formulas.get(str).apply(this, args) : Formulas.get(str));
         }
       }
 

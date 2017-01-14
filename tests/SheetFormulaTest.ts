@@ -241,6 +241,12 @@ testFormula("=CUMPRINC(0.12, 12, 100, 1, 5, 0)", -26.324171373034403);
 
 // Test DATE
 testFormulaToDate("=DATE(1992, 6, 24)", new Date("6/24/1992").getTime());
+testFormulaToDate("=DATE(1992, 13, 24)", new Date("1/24/1993").getTime());
+testFormulaToDate("=DATE(1992, 6, 44)", new Date("7/14/1992").getTime());
+testFormulaToDate("=DATE(2, 6, 44)", new Date("7/14/1902").getTime());
+testFormulaToDate("=DATE(2, 33, 44)", new Date("10/14/1904").getTime());
+testFormulaToDate("=DATE(1976, 2, 29)", new Date("2/29/1976").getTime());
+testFormulaToDate("=DATE(1976, 2, 30)", new Date("3/1/1976").getTime());
 
 // Test DATEVALUE
 testFormulaToDate('=DATEVALUE("1992-6-24")', new Date("6/24/1992").getTime());

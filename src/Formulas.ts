@@ -23,7 +23,6 @@ const SUPPORTED_FORMULAS = [
 ];
 
 const CustomFormulas = {
-  ABS: RawFormulas.ABS,
   "F.DIST": Formula["FDIST"],
   "F.INV": Formula["FINV"],
   ATAN2: function (x, y) {
@@ -212,9 +211,12 @@ const CustomFormulas = {
 
 var Formulas = {
   exists: function(fn: string) {
-    return ((fn in CustomFormulas) || SUPPORTED_FORMULAS.indexOf(fn) > -1);
+    return ((fn in CustomFormulas) || SUPPORTED_FORMULAS.indexOf(fn) > -1 || (fn in RawFormulas));
   },
   get: function(fn: string) {
+    if (fn in RawFormulas) {
+      return RawFormulas[fn];
+    }
     if (fn in CustomFormulas) {
       return CustomFormulas[fn];
     }

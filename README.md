@@ -14,10 +14,6 @@ Things I should do.
 * SUM_ formulas
 * ACCRINT
 
-# Refactor SheetFormulaTest.ts into FormulaTest.ts
-There's no reason the formulas need to be strings. Involves refactoring SupportedFormulas.ts and where we uses
-the "override" formulas.
-
 ### Date-Time issues
 Here are a couple of the issues with Dates and so on:
 * There seem to be a few issues where someone did something sloppy inside formulaJS, and timezones, daylight-savings,

@@ -18,7 +18,12 @@ function assertArrayEquals(expected: Array<any>, actual: Array<any>) {
   }
 }
 
+function assertEqualsDates(one: Date, expectation: Date) {
+  assertEquals(one.getTime(), expectation.getTime());
+}
+
 export {
   assertEquals,
-  assertArrayEquals
+  assertArrayEquals,
+  assertEqualsDates
 }

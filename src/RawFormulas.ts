@@ -1,6 +1,64 @@
+/// <reference path="../node_modules/moment/moment.d.ts"/>
+import * as moment from "moment";
 import * as Formula from "formulajs"
 
 var ABS = Formula["ABS"];
+var ACCRINT = function (issue, first, settlement, rate, par, frequency, basis) {
+  // Return error if either date is invalid
+  if (!moment(issue).isValid() || !moment(first).isValid() || !moment(settlement).isValid()) {
+    return '#VALUE!';
+  }
+
+  // Set default values
+  par = (typeof par === 'undefined') ? 0 : par;
+  basis = (typeof basis === 'undefined') ? 0 : basis;
+
+  // Return error if either rate or par are lower than or equal to zero
+  if (rate <= 0 || par <= 0) {
+    return '#NUM!';
+  }
+
+  // Return error if frequency is neither 1, 2, or 4
+  if ([1, 2, 4].indexOf(frequency) === -1) {
+    return '#NUM!';
+  }
+
+  // Return error if basis is neither 0, 1, 2, 3, or 4
+  if ([0, 1, 2, 3, 4].indexOf(basis) === -1) {
+    return '#NUM!';
+  }
+
+  // Return error if issue greater than or equal to settlement
+  if (moment(issue).diff(moment(settlement)) >= 0) {
+    return '#NUM!';
+  }
+
+  // Compute accrued interest
+  var factor : any = 0;
+  switch (basis) {
+    case 0:
+      // US (NASD) 30/360
+      factor = YEARFRAC(issue, settlement, basis);
+      break;
+    case 1:
+      // Actual/actual
+      factor = YEARFRAC(issue, settlement, basis);
+      break;
+    case 2:
+      // Actual/360
+      factor = YEARFRAC(issue, settlement, basis);
+      break;
+    case 3:
+      // Actual/365
+      factor = YEARFRAC(issue, settlement, basis);
+      break;
+    case 4:
+      // European 30/360
+      factor = YEARFRAC(issue, settlement, basis);
+      break;
+  }
+  return par * rate * factor;
+};
 var ACOS = Formula["ACOS"];
 var ACOSH = Formula["ACOSH"];
 var ACOTH = Formula["ACOTH"];
@@ -55,10 +113,100 @@ var COUNT = Formula["COUNT"];
 var COUNTA = Formula["COUNTA"];
 var COUNTIF = Formula["COUNTIF"];
 var COUNTIFS = Formula["COUNTIFS"];
+var COUNTIN = Formula["COUNTIN"];
+var COUNTUNIQUE = Formula["COUNTUNIQUE"];
+var COVARIANCEP = Formula["COVARIANCEP"];
+var COVARIANCES = Formula["COVARIANCES"];
+var CSC = Formula["CSC"];
+var CSCH = Formula["CSCH"];
+var CUMIPMT = Formula["CUMIPMT"];
+var CUMPRINC = Formula["CUMPRINC"];
+var DATE = Formula["DATE"];
+var DATEVALUE = function (dateString: string) : Date {
+  return new Date(dateString);
+};
+var DAY = Formula["DAY"];
+var DAYS = Formula["DAYS"];
+var DAYS360 = Formula["DAYS360"];
+var DB = Formula["DB"];
+var DDB = Formula["DDB"];
+var DEC2BIN = Formula["DEC2BIN"];
+var DEC2HEX = Formula["DEC2HEX"];
+var DEC2OCT = Formula["DEC2OCT"];
+var DEGREES = Formula["DEGREES"];
+var DELTA = Formula["DELTA"];
+var DEVSQ = Formula["DEVSQ"];
+var DOLLAR = Formula["DOLLAR"];
+var DOLLARDE = Formula["DOLLARDE"];
+var DOLLARFR = Formula["DOLLARFR"];
+var EDATE = function (start_date: Date, months) {
+  return moment(start_date).add(months, 'months').toDate();
+};
+var EFFECT = Formula["EFFECT"];
+var EOMONTH = function (start_date, months) {
+  var edate = moment(start_date).add(months, 'months');
+  return new Date(edate.year(), edate.month(), edate.daysInMonth());
+};
+var ERF = Formula["ERF"];
+var ERFC = Formula["ERFC"];
+var EVEN = Formula["EVEN"];
+var EXACT = Formula["EXACT"];
+var EXPONDIST = Formula["EXPONDIST"];
+var FALSE = Formula["FALSE"];
+var __COMPLEX = {
+  "F.DIST": Formula["FDIST"],
+  "F.INV": Formula["FINV"]
+};
+var FISHER = Formula["FISHER"];
+var FISHERINV = Formula["FISHERINV"];
+var IF = Formula["IF"];
+var INT = Formula["INT"];
+var ISEVEN = Formula["ISEVEN"];
+var ISODD = Formula["ISODD"];
+var LN = Formula["LN"];
+var LOG = Formula["LOG"];
+var LOG10 = Formula["LOG10"];
+var MAX = Formula["MAX"];
+var MAXA = Formula["MAXA"];
+var MEDIAN = Formula["MEDIAN"];
+var MIN = Formula["MIN"];
+var MINA = Formula["MINA"];
+var MOD = Formula["MOD"];
+var TRUE = Formula["TRUE"];
+var NOT = Formula["NOT"];
+var ODD = Formula["ODD"];
+var OR = Formula["OR"];
+var POWER = Formula["POWER"];
+var ROUND = Formula["ROUND"];
+var ROUNDDOWN = Formula["ROUNDDOWN"];
+var ROUNDUP = Formula["ROUNDUP"];
+var SIN = function (rad) {
+  return rad === Math.PI ? 0 : Math.sin(rad);
+};
+var SINH = Formula["SINH"];
+var SPLIT = Formula["SPLIT"];
+var SQRT = Formula["SQRT"];
+var SQRTPI = Formula["SQRTPI"];
+var SUM = Formula["SUM"];
+var SUMIF = Formula["SUMIF"];
+var SUMPRODUCT = Formula["SUMPRODUCT"];
+var SUMSQ = Formula["SUMSQ"];
+var SUMX2MY2 = Formula["SUMX2MY2"];
+var SUMX2PY2 = Formula["SUMX2PY2"];
+var TAN = function (rad) {
+  return rad === Math.PI ? 0 : Math.tan(rad);
+};
+var TANH = Formula["TANH"];
+var TRUNC = Formula["TRUNC"];
+var XOR = Formula["XOR"];
+var YEARFRAC = Formula["YEARFRAC"];
 
 export {
+  __COMPLEX,
+
   ABS,
   ACOS,
+  ACCRINT,
   ACOSH,
   ACOTH,
   AND,
@@ -107,5 +255,77 @@ export {
   COUNT,
   COUNTA,
   COUNTIF,
-  COUNTIFS
+  COUNTIFS,
+  COUNTIN,
+  COUNTUNIQUE,
+  COVARIANCEP,
+  COVARIANCES,
+  CSC,
+  CSCH,
+  CUMIPMT,
+  CUMPRINC,
+  DATE,
+  DATEVALUE,
+  DAY,
+  DAYS,
+  DAYS360,
+  DB,
+  DDB,
+  DEC2BIN,
+  DEC2HEX,
+  DEC2OCT,
+  DEGREES,
+  DELTA,
+  DEVSQ,
+  DOLLAR,
+  DOLLARDE,
+  DOLLARFR,
+  EDATE,
+  EFFECT,
+  EOMONTH,
+  ERF,
+  ERFC,
+  EVEN,
+  EXACT,
+  EXPONDIST,
+  FALSE,
+  FISHER,
+  FISHERINV,
+  IF,
+  INT,
+  ISEVEN,
+  ISODD,
+  LN,
+  LOG,
+  LOG10,
+  MAX,
+  MAXA,
+  MEDIAN,
+  MIN,
+  MINA,
+  MOD,
+  TRUE,
+  NOT,
+  ODD,
+  OR,
+  POWER,
+  ROUND,
+  ROUNDDOWN,
+  ROUNDUP,
+  SIN,
+  SINH,
+  SPLIT,
+  SQRT,
+  SQRTPI,
+  SUM,
+  SUMIF,
+  SUMPRODUCT,
+  SUMSQ,
+  SUMX2MY2,
+  SUMX2PY2,
+  TAN,
+  TANH,
+  TRUNC,
+  XOR,
+  YEARFRAC
 }

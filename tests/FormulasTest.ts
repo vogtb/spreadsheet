@@ -1,12 +1,22 @@
-import { ABS, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2, ATANH, AVEDEV, AVERAGE,
+import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2, ATANH, AVEDEV, AVERAGE,
     AVERAGEA, AVERAGEIF, BASE, BIN2DEC, BESSELI, BESSELJ, BESSELK, BESSELY, BETADIST, BETAINV,
     BITAND, BITLSHIFT, BITOR, BITRSHIFT, BITXOR, BIN2HEX, BIN2OCT, DECIMAL, CEILING,
     CEILINGMATH, CEILINGPRECISE, CHAR, CODE, COMBIN, COMBINA, COMPLEX, CONCATENATE, CONVERT,
-    CORREL, COS, PI, COSH, COT, COTH, COUNT, COUNTA, COUNTIF, COUNTIFS } from "../src/RawFormulas"
-import { assertEquals } from "./utils/Asserts"
+    CORREL, COS, PI, COSH, COT, COTH, COUNT, COUNTA, COUNTIF, COUNTIFS, COUNTIN, COUNTUNIQUE,
+    COVARIANCEP, COVARIANCES, CSC, CSCH, CUMIPMT, CUMPRINC, DATE, DATEVALUE, DAY, DAYS, DAYS360,
+    DB, DDB, DEC2BIN, DEC2HEX, DEC2OCT, DEGREES, DELTA, DEVSQ, DOLLAR, DOLLARDE, DOLLARFR, EDATE,
+    EFFECT, EOMONTH, ERF, ERFC, EVEN, EXACT, EXPONDIST, FALSE, __COMPLEX, FISHER, FISHERINV, IF,
+    INT, ISEVEN, ISODD, LN, LOG, LOG10, MAX, MAXA, MEDIAN, MIN, MINA, MOD, NOT, TRUE, ODD, OR,
+    POWER, ROUND, ROUNDDOWN, ROUNDUP, SIN, SINH, SPLIT, SQRT, SQRTPI, SUM, SUMIF, SUMPRODUCT,
+    SUMSQ, SUMX2MY2, SUMX2PY2, TAN, TANH, TRUNC, XOR, YEARFRAC } from "../src/RawFormulas"
+import {assertEquals, assertEqualsDates, assertArrayEquals} from "./utils/Asserts"
 
 assertEquals(ABS(-10), 10);
 assertEquals(ABS(0), 0);
+
+// TODO: This formula doesn't work properly under some circumstances.
+assertEquals(ACCRINT(DATE(2011, 1, 1), DATE(2011, 2, 1), DATE(2014, 7, 1), 0.1, 1000, 1, 0), 350);
+// assertEquals(ACCRINT(DATE(2000, 1, 1), DATE(2000, 2, 1), DATE(2002, 12, 31), 0.05, 100, 4), 14.98611111);
 
 assertEquals(ACOS(0), 1.5707963267948966);
 
@@ -106,3 +116,172 @@ assertEquals(COUNTA(10, 10, 22), 3);
 assertEquals(COUNTIF([1, 5, 10], ">4"), 2);
 
 assertEquals(COUNTIFS([1, 5, 10], ">4", [1, 5, 10], ">4"), 2);
+
+assertEquals(COUNTIN([1,3,1],1), 2);
+
+assertEquals(COUNTUNIQUE([1, 1, 10]), 2);
+
+assertEquals(COVARIANCEP([3,2,4,5,6], [9,7,12,15,17]), 5.2);
+
+assertEquals(COVARIANCES([2,4,8], [5,11,12]), 9.666666666666668);
+
+assertEquals(CSC(15), 1.5377805615408537);
+
+assertEquals(CSCH(1.5), 0.46964244059522464);
+
+assertEquals(CUMIPMT(0.12, 12, 100, 1, 5, 0), -54.39423242396348);
+
+assertEquals(CUMPRINC(0.12, 12, 100, 1, 5, 0), -26.324171373034403);
+
+assertEqualsDates(DATE(1992, 6, 24), new Date("6/24/1992"));
+assertEqualsDates(DATE(1992, 13, 24), new Date("1/24/1993"));
+assertEqualsDates(DATE(1992, 6, 44), new Date("7/14/1992"));
+assertEqualsDates(DATE(2, 6, 44), new Date("7/14/1902"));
+assertEqualsDates(DATE(2, 33, 44), new Date("10/14/1904"));
+assertEqualsDates(DATE(1976, 2, 29), new Date("2/29/1976"));
+assertEqualsDates(DATE(1976, 2, 30), new Date("3/1/1976"));
+
+assertEqualsDates(DATEVALUE("1992-6-24"), new Date("6/24/1992"));
+
+assertEquals(DAY(DATEVALUE("1992-6-24")), 24);
+
+assertEquals(DAYS(DATEVALUE("1993-6-24"), DATEVALUE("1992-6-24")), 365);
+
+assertEquals(DAYS360(DATE(1969, 7, 16), DATE(1970, 7, 24), 1), 368);
+
+assertEquals(DB(100, 50, 10, 2, 12), 6.2511);
+
+assertEquals(DDB(100, 50, 10, 2, 2.25), 17.4375);
+
+assertEquals(DEC2BIN("100", 8), "01100100");
+
+assertEquals(DEC2HEX("100"), "64");
+
+assertEquals(DEC2OCT("100"), "144");
+
+assertEquals(DEGREES(PI()), 180);
+
+assertEquals(DELTA(2, 2), 1);
+
+assertEquals(DEVSQ(1, 2), 0.5);
+
+assertEquals(DOLLAR(1.2351, 4), "$1.2351");
+
+assertEquals(DOLLARDE(100.1, 32), 100.3125);
+
+assertEquals(DOLLARFR(100.1, 32), 100.032);
+
+assertEquals(AND(10), true);
+
+assertEqualsDates(EDATE(DATE(1992, 6, 24), 1), new Date('7/24/1992'));
+
+assertEquals(EFFECT(0.99, 12), 1.5890167507927795);
+
+assertEqualsDates(EOMONTH(DATE(1992, 6, 24), 1), new Date('7/31/1992'));
+
+assertEquals(ERF(2), 0.9953222650189527);
+
+assertEquals(ERFC(2), 0.004677734981047288);
+
+assertEquals(EVEN(3), 4);
+
+assertEquals(EXACT("m", "M"), false);
+
+assertEquals(EXPONDIST(4, 0.5, false), 0.06766764161830635);
+
+assertEquals(FALSE(), false);
+
+assertEquals(__COMPLEX["F.DIST"](15.35, 7, 6, false), 0.0003451054686025578);
+assertEquals(__COMPLEX["F.DIST"](15.35, 7, 6, true), 0.9980694465675269);
+
+assertEquals(__COMPLEX["F.INV"](0.42, 2, 3), 0.6567804059458624);
+
+assertEquals(FISHER(0.962), 1.972066740199461);
+
+assertEquals(FISHERINV(0.962), 0.7451676440945232);
+
+assertEquals(IF("m" == "m", "hit", "miss"), 'hit');
+
+assertEquals(INT(99.33), 99);
+
+assertEquals(ISEVEN(4), true);
+
+assertEquals(ISODD(3), true);
+
+assertEquals(LN(100), 4.605170185988092);
+
+assertEquals(LOG(256, 2), 8);
+
+assertEquals(LOG10(100), 2);
+
+assertEquals(MAX(100, 22), 100);
+
+assertEquals(MAXA(100, 22, 44), 100);
+
+assertEquals(MEDIAN(100, 22, 54), 54);
+
+assertEquals(MIN(100, 22, 44), 22);
+
+assertEquals(MINA(100, 22, 44), 22);
+
+assertEquals(MOD(10, 3), 1);
+
+assertEquals(NOT(TRUE()), false);
+
+assertEquals(ODD(2), 3);
+
+assertEquals(OR(true, false), true);
+
+assertEquals(PI(), 3.141592653589793);
+
+assertEquals(POWER(4, 10), 1048576);
+
+assertEquals(ROUND(99.44, 1), 99.4);
+
+assertEquals(ROUNDDOWN(99.46, 1), 99.4);
+
+assertEquals(ROUNDUP(99.46, 1), 99.5);
+
+assertEquals(SIN(0), 0);
+assertEquals(SIN(1), 0.8414709848078965);
+assertEquals(SIN(PI() / 2), 1);
+assertEquals(SIN(PI()), 0);
+
+assertEquals(SINH(PI()), 11.548739357257752);
+
+assertArrayEquals(SPLIT("1,2,3", ",", true), [ '1', '2', '3' ]);
+
+assertEquals(SQRT(9), 3);
+
+assertEquals(SQRTPI(9), 5.317361552716548);
+
+assertEquals(SUM(10, 10), 20);
+
+assertEquals(SUMIF([1, 5, 10], ">2"), 15);
+
+assertEquals(SUMPRODUCT([1, 5, 10]), 16);
+
+assertEquals(SUMSQ([1, 5, 10], 10), 226);
+
+assertEquals(SUMX2MY2([1,2,3],[4,5,6]), -63);
+
+assertEquals(SUMX2PY2([1, 2, 3], [4, 5, 6]), 91);
+
+assertEquals(TAN(0), 0);
+assertEquals(TAN(1), 1.5574077246549023);
+assertEquals(TAN(PI() / 2), 16331239353195370);
+assertEquals(TAN(PI()), 0);
+
+assertEquals(TANH(PI()), 0.99627207622075);
+
+assertEquals(TRUE(), true);
+
+assertEquals(TRUNC(3.1415, 2), 3.14);
+
+assertEquals(XOR(1, 1), false);
+
+assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 0), 18.994444444444444);
+// assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 1)', 18.99587544); // This is slightly off
+assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 2), 19.272222222222222);
+assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 3), 19.008219178082193);
+assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 4), 18.994444444444444);

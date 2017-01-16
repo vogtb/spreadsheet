@@ -9,10 +9,30 @@ import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2
     INT, ISEVEN, ISODD, LN, LOG, LOG10, MAX, MAXA, MEDIAN, MIN, MINA, MOD, NOT, TRUE, ODD, OR,
     POWER, ROUND, ROUNDDOWN, ROUNDUP, SIN, SINH, SPLIT, SQRT, SQRTPI, SUM, SUMIF, SUMPRODUCT,
     SUMSQ, SUMX2MY2, SUMX2PY2, TAN, TANH, TRUNC, XOR, YEARFRAC } from "../src/RawFormulas"
+import * as ERRORS from "../src/Errors"
 import {assertEquals, assertEqualsDates, assertArrayEquals} from "./utils/Asserts"
 
+function catchAndAssertEquals(toExecute, expected) {
+  try {
+    toExecute();
+  } catch (actualError) {
+    if (actualError.message != expected) {
+      console.log(expected, "not equal to", actualError.message);
+    }
+  }
+}
+
 assertEquals(ABS(-10), 10);
+assertEquals(ABS(-10.111), 10.111);
 assertEquals(ABS(0), 0);
+assertEquals(ABS(false), 0);
+assertEquals(ABS("-44"), 44);
+catchAndAssertEquals(function() {
+  return ABS();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  return ABS("str");
+}, ERRORS.VALUE_ERROR);
 
 // TODO: This formula doesn't work properly under some circumstances.
 assertEquals(ACCRINT(DATE(2011, 1, 1), DATE(2011, 2, 1), DATE(2014, 7, 1), 0.1, 1000, 1, 0), 350);

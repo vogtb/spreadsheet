@@ -1,3 +1,21 @@
+class CellError extends Error {
+  public message: string;
+  public text: string;
+  constructor(message: string, text: string) {
+    super(message);
+    this.message = message;
+    this.text = text;
+  }
+}
+
+var NULL_ERROR = "#NULL!";
+var DIV_ZERO_ERROR = "#DIV/0!";
+var VALUE_ERROR = "#VALUE!";
+var REF_ERROR = "#REF!";
+var NAME_ERROR = "#NAME!";
+var NUM_ERROR = "#NUM!";
+var NA_ERROR = "#N/A";
+
 var Errors = {
   errors: {
     'NULL': '#NULL',
@@ -14,6 +32,7 @@ var Errors = {
     '#NUM!': '#NUM!',
     'NOT_AVAILABLE': '#N/A!',
     '#N/A!': '#N/A!',
+    '#N/A': '#N/A',
     'ERROR': '#ERROR',
     '#ERROR': '#ERROR'
   },
@@ -26,5 +45,13 @@ var Errors = {
 };
 
 export {
-  Errors
+  Errors,
+  CellError,
+  DIV_ZERO_ERROR,
+  NULL_ERROR,
+  VALUE_ERROR,
+  REF_ERROR,
+  NAME_ERROR,
+  NUM_ERROR,
+  NA_ERROR
 }

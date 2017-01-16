@@ -117,7 +117,14 @@ var ACOS = function (value?) {
   return Math.acos(value);
 };
 
-var ACOSH = Formula["ACOSH"];
+var ACOSH = function (value?) {
+  checkArgumentsLength(arguments, 1);
+  value = valueToNumber(value);
+  if (value < 1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". It should be greater than or equal to 1.");
+  }
+  return Math.log(value + Math.sqrt(value * value - 1));
+};
 var ACOTH = Formula["ACOTH"];
 var AND = Formula["AND"];
 var ARABIC = Formula["ARABIC"];

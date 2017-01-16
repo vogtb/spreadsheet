@@ -22,7 +22,7 @@ function catchAndAssertEquals(toExecute, expected) {
   }
 }
 
-
+// Test ABS
 assertEquals(ABS(-10), 10);
 assertEquals(ABS(-10.111), 10.111);
 assertEquals(ABS(0), 0);
@@ -36,10 +36,12 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
+// Test ACCRINT
 // TODO: This formula doesn't work properly under some circumstances.
 assertEquals(ACCRINT(DATE(2011, 1, 1), DATE(2011, 2, 1), DATE(2014, 7, 1), 0.1, 1000, 1, 0), 350);
 
 
+// Test ACOS
 assertEquals(ACOS(0), 1.5707963267948966);
 assertEquals(ACOS(-1), 3.141592653589793);
 assertEquals(ACOS(1), 0);
@@ -53,7 +55,20 @@ catchAndAssertEquals(function() {
 }, ERRORS.NUM_ERROR);
 
 
+// Test ACOSH
 assertEquals(ACOSH(22), 3.783672704329451);
+assertEquals(ACOSH(1), 0);
+assertEquals(ACOSH("11"), 3.0889699048446033);
+catchAndAssertEquals(function() {
+  return ACOSH(-1);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  return ACOSH("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  return ACOSH(false);
+}, ERRORS.NUM_ERROR);
+
 
 assertEquals(ACOTH(22), 0.04548588910286339);
 

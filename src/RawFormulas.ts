@@ -17,6 +17,18 @@ function checkArgumentsLength(args: any, length: number) {
 }
 
 /**
+ * Checks to see if the arguments are at least a certain length.
+ * @param args to check length of
+ * @param length expected length
+ */
+function checkArgumentsAtLeastLength(args: any, length: number) {
+  if (args.length < length) {
+    throw new CellError(ERRORS.NA_ERROR, "Wrong number of arguments to ABS. Expected 1 arguments, but got " + args.length + " arguments.");
+  }
+}
+
+
+/**
  * Converts any value to a number or throws an error if it cannot coerce it to the number type
  * @param value to convert
  * @returns {number} to return. Will always return a number or throw an error. Never returns undefined.
@@ -160,7 +172,28 @@ var ACOTH = function (value?) {
 };
 
 
-var AND = Formula["AND"];
+/**
+ * Returns true if all of the provided arguments are logically true, and false if any of the provided arguments are logically false.
+ * @param values At least one expression or reference to a cell containing an expression that represents some logical value, i.e. TRUE or FALSE, or an expression that can be coerced to a logical value.
+ * @returns {boolean} if all values are logically true.
+ * @constructor
+ */
+var AND = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+  var result = true;
+  for (var i = 0; i < values.length; i++) {
+    if (typeof values[i] === "string") {
+      throw new CellError(ERRORS.VALUE_ERROR, "AND expects boolean values. But '" + values[i] + "' is a text and cannot be coerced to a boolean.")
+    }
+    if (!values[i]) {
+      result = false;
+      break;
+    }
+  }
+  return result;
+};
+
+
 var ARABIC = Formula["ARABIC"];
 var ASIN = Formula["ASIN"];
 var ASINH = Formula["ASINH"];

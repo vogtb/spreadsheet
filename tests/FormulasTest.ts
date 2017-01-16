@@ -85,8 +85,21 @@ catchAndAssertEquals(function() {
 }, ERRORS.NUM_ERROR);
 
 
+// Test AND
 assertEquals(AND(10, 10), true);
 assertEquals(AND(10, 0), false);
+assertEquals(AND(10, false), false);
+assertEquals(AND(0, 0), false);
+catchAndAssertEquals(function() {
+  return AND(1, "");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  return AND();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  return AND(1, "str");
+}, ERRORS.VALUE_ERROR);
+
 
 assertEquals(ARABIC("XIV"), 14);
 

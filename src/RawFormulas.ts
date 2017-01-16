@@ -23,7 +23,7 @@ function checkArgumentsLength(args: any, length: number) {
  */
 function valueToNumber(value: any) : number {
   if (typeof value === "number") {
-    return Math.abs(value);
+    return value;
   } else if (typeof value === "string") {
     if (value.indexOf(".") > -1) {
       var fl = parseFloat(value);
@@ -105,7 +105,18 @@ var ACCRINT = function (issue, first, settlement, rate, par, frequency, basis) {
   }
   return par * rate * factor;
 };
-var ACOS = Formula["ACOS"];
+
+var ACOS = function (value?) {
+  checkArgumentsLength(arguments, 1);
+  value = valueToNumber(value);
+  if (value === -1) {
+    return Math.PI;
+  } else if (value > 1 || value < -1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". Valid values are between -1 and 1 inclusive.");
+  }
+  return Math.acos(value);
+};
+
 var ACOSH = Formula["ACOSH"];
 var ACOTH = Formula["ACOTH"];
 var AND = Formula["AND"];

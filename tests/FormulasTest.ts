@@ -22,6 +22,7 @@ function catchAndAssertEquals(toExecute, expected) {
   }
 }
 
+
 assertEquals(ABS(-10), 10);
 assertEquals(ABS(-10.111), 10.111);
 assertEquals(ABS(0), 0);
@@ -34,11 +35,23 @@ catchAndAssertEquals(function() {
   return ABS("str");
 }, ERRORS.VALUE_ERROR);
 
+
 // TODO: This formula doesn't work properly under some circumstances.
 assertEquals(ACCRINT(DATE(2011, 1, 1), DATE(2011, 2, 1), DATE(2014, 7, 1), 0.1, 1000, 1, 0), 350);
-// assertEquals(ACCRINT(DATE(2000, 1, 1), DATE(2000, 2, 1), DATE(2002, 12, 31), 0.05, 100, 4), 14.98611111);
+
 
 assertEquals(ACOS(0), 1.5707963267948966);
+assertEquals(ACOS(-1), 3.141592653589793);
+assertEquals(ACOS(1), 0);
+assertEquals(ACOS("-1"), 3.141592653589793);
+assertEquals(ACOS(false), 1.5707963267948966);
+catchAndAssertEquals(function() {
+  return ACOS("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  return ACOS(2);
+}, ERRORS.NUM_ERROR);
+
 
 assertEquals(ACOSH(22), 3.783672704329451);
 

@@ -106,7 +106,19 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
+// Test ARABIC
 assertEquals(ARABIC("XIV"), 14);
+assertEquals(ARABIC("M"), 1000);
+assertEquals(ARABIC("-IV"), -4);
+catchAndAssertEquals(function() {
+  return ARABIC("b");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  return ARABIC(false);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  return ARABIC(10);
+}, ERRORS.VALUE_ERROR);
 
 assertEquals(ASIN(0.1), 0.1001674211615598);
 

@@ -120,6 +120,7 @@ catchAndAssertEquals(function() {
   return ARABIC(10);
 }, ERRORS.VALUE_ERROR);
 
+
 // Test ASIN
 assertEquals(ASIN(0), 0);
 assertEquals(ASIN(1), 1.5707963267948966);
@@ -133,7 +134,16 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
-assertEquals(ASINH(0.1), 0.09983407889920758);
+// Test ASINH
+assertEquals(ASINH(1), 0.8813735870195429);
+assertEquals(ASINH(0), 0);
+assertEquals(ASINH("1"), 0.8813735870195429);
+assertEquals(ASINH(false), 0);
+assertEquals(ASINH(true), 0.8813735870195429);
+catchAndAssertEquals(function() {
+  return ASINH("str");
+}, ERRORS.VALUE_ERROR);
+
 
 assertEquals(ATAN(0.1), 0.09966865249116204);
 

@@ -245,8 +245,19 @@ var ASIN = function (value?) {
   return Math.asin(value);
 };
 
+/**
+ * Returns the inverse hyperbolic sine of a number.
+ * @param value The value for which to calculate the inverse hyperbolic sine.
+ * @returns {number} inverse hyperbolic sine of input
+ * @constructor
+ */
+var ASINH = function (value?) {
+  checkArgumentsLength(arguments, 1);
+  value = valueToNumber(value);
+  return Math.log(value + Math.sqrt(value * value + 1));
+};
 
-var ASINH = Formula["ASINH"];
+
 var ATAN = Formula["ATAN"];
 var ATAN2 = function (x, y) {
   return Math.atan2(y, x);

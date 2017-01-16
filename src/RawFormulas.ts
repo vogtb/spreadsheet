@@ -144,7 +144,22 @@ var ACOSH = function (value?) {
   return Math.log(value + Math.sqrt(value * value - 1));
 };
 
-var ACOTH = Formula["ACOTH"];
+/**
+ * Calculate the hyperbolic arc-cotangent of a value
+ * @param value number not between -1 and 1 inclusively.
+ * @returns {number} hyperbolic arc-cotangent
+ * @constructor
+ */
+var ACOTH = function (value?) {
+  checkArgumentsLength(arguments, 1);
+  value = valueToNumber(value);
+  if (value <= 1 && value >= -1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". Valid values cannot be between -1 and 1 inclusive.")
+  }
+  return 0.5 * Math.log((value + 1) / (value - 1));
+};
+
+
 var AND = Formula["AND"];
 var ARABIC = Formula["ARABIC"];
 var ASIN = Formula["ASIN"];

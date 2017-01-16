@@ -70,7 +70,20 @@ catchAndAssertEquals(function() {
 }, ERRORS.NUM_ERROR);
 
 
+// Test ACOTH
 assertEquals(ACOTH(22), 0.04548588910286339);
+assertEquals(ACOTH(-1.1), -1.522261218861711);
+assertEquals(ACOTH("-22"), -0.04548588910286338);
+catchAndAssertEquals(function() {
+  return ACOTH(-1);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  return ACOTH("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  return ACOTH(false);
+}, ERRORS.NUM_ERROR);
+
 
 assertEquals(AND(10, 10), true);
 assertEquals(AND(10, 0), false);

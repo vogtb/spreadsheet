@@ -43,6 +43,12 @@ function valueToNumber(value: any) : number {
   return 0;
 }
 
+/**
+ * Returns the absolute value of a number.
+ * @param value to get the absolute value of.
+ * @returns {number} absolute value
+ * @constructor
+ */
 var ABS = function (value?) {
   checkArgumentsLength(arguments, 1);
   value = valueToNumber(value);
@@ -106,6 +112,12 @@ var ACCRINT = function (issue, first, settlement, rate, par, frequency, basis) {
   return par * rate * factor;
 };
 
+/**
+ * Returns the inverse cosine of a value, in radians.
+ * @param value The value for which to calculate the inverse cosine. Must be between -1 and 1, inclusive.
+ * @returns {number} inverse cosine of value
+ * @constructor
+ */
 var ACOS = function (value?) {
   checkArgumentsLength(arguments, 1);
   value = valueToNumber(value);
@@ -117,6 +129,12 @@ var ACOS = function (value?) {
   return Math.acos(value);
 };
 
+/**
+ * Returns the inverse hyperbolic cosine of a number.
+ * @param value The value for which to calculate the inverse hyperbolic cosine. Must be greater than or equal to 1.
+ * @returns {number} to find the inverse hyperbolic cosine for.
+ * @constructor
+ */
 var ACOSH = function (value?) {
   checkArgumentsLength(arguments, 1);
   value = valueToNumber(value);
@@ -125,6 +143,7 @@ var ACOSH = function (value?) {
   }
   return Math.log(value + Math.sqrt(value * value - 1));
 };
+
 var ACOTH = Formula["ACOTH"];
 var AND = Formula["AND"];
 var ARABIC = Formula["ARABIC"];

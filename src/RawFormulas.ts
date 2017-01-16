@@ -228,7 +228,24 @@ var ARABIC = function (text?) {
   return r;
 };
 
-var ASIN = Formula["ASIN"];
+/**
+ * Returns the inverse sine of a value, in radians.
+ * @param value The value for which to calculate the inverse sine. Must be between -1 and 1, inclusive.
+ * @returns {number} inverse sine of input value
+ * @constructor
+ */
+var ASIN = function (value?) {
+  checkArgumentsLength(arguments, 1);
+  value = valueToNumber(value);
+  if (value === -1) {
+    return Math.PI;
+  } else if (value > 1 || value < -1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". Valid values are between -1 and 1 inclusive.");
+  }
+  return Math.asin(value);
+};
+
+
 var ASINH = Formula["ASINH"];
 var ATAN = Formula["ATAN"];
 var ATAN2 = function (x, y) {

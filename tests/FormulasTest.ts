@@ -120,7 +120,18 @@ catchAndAssertEquals(function() {
   return ARABIC(10);
 }, ERRORS.VALUE_ERROR);
 
-assertEquals(ASIN(0.1), 0.1001674211615598);
+// Test ASIN
+assertEquals(ASIN(0), 0);
+assertEquals(ASIN(1), 1.5707963267948966);
+assertEquals(ASIN("1"), 1.5707963267948966);
+assertEquals(ASIN(false), 0);
+catchAndAssertEquals(function() {
+  return ASIN(2);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  return ASIN("str");
+}, ERRORS.VALUE_ERROR);
+
 
 assertEquals(ASINH(0.1), 0.09983407889920758);
 

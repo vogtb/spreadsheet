@@ -184,8 +184,12 @@ var AND = function (...values) {
   for (var i = 0; i < values.length; i++) {
     if (typeof values[i] === "string") {
       throw new CellError(ERRORS.VALUE_ERROR, "AND expects boolean values. But '" + values[i] + "' is a text and cannot be coerced to a boolean.")
-    }
-    if (!values[i]) {
+    } else if (values[i] instanceof Array) {
+      if (!AND.apply(this, values[i])) {
+        result = false;
+        break;
+      }
+    } else if (!values[i]) {
       result = false;
       break;
     }

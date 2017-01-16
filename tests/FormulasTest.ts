@@ -99,6 +99,11 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   return AND(1, "str");
 }, ERRORS.VALUE_ERROR);
+assertEquals(AND(0, [1, 1]), false);
+assertEquals(AND(1, [1, 1]), true);
+catchAndAssertEquals(function() {
+  return AND(1, [1, "str"]);
+}, ERRORS.VALUE_ERROR);
 
 
 assertEquals(ARABIC("XIV"), 14);

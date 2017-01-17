@@ -258,10 +258,42 @@ var ASINH = function (value?) {
 };
 
 
-var ATAN = Formula["ATAN"];
+/**
+ * Returns the inverse tangent of a value, in radians.
+ * @param value The value for which to calculate the inverse tangent.
+ * @returns {number} inverse tangent of input value
+ * @constructor
+ */
+var ATAN = function (value?) {
+  checkArgumentsLength(arguments, 1);
+  value = valueToNumber(value);
+  if (value === -1) {
+    return Math.PI;
+  } else if (value > 1 || value < -1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". Valid values are between -1 and 1 inclusive.");
+  }
+  return Math.atan(value);
+};
+
+
+/**
+ * Returns the angle between the x-axis and a line segment from the origin (0,0) to specified coordinate pair (x,y), in radians.
+ * @param x The x coordinate of the endpoint of the line segment for which to calculate the angle from the x-axis.
+ * @param y The y coordinate of the endpoint of the line segment for which to calculate the angle from the x-axis.
+ * @returns {number} angle in radians
+ * @constructor
+ */
 var ATAN2 = function (x, y) {
+  checkArgumentsLength(arguments, 2);
+  x = valueToNumber(x);
+  y = valueToNumber(y);
+  if (x === 0 && y === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function ATAN2 caused a divide by zero error.");
+  }
   return Math.atan2(y, x);
 };
+
+
 var ATANH = Formula["ATANH"];
 var AVEDEV = Formula["AVEDEV"];
 var AVERAGE = Formula["AVERAGE"];

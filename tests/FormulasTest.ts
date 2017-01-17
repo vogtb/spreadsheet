@@ -145,9 +145,30 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
-assertEquals(ATAN(0.1), 0.09966865249116204);
+// Test ATAN
+assertEquals(ATAN(1), 0.7853981633974483);
+assertEquals(ATAN(0), 0);
+assertEquals(ATAN("1"), 0.7853981633974483);
+assertEquals(ATAN(false), 0);
+assertEquals(ATAN(true), 0.7853981633974483);
+catchAndAssertEquals(function() {
+  return ASINH("str");
+}, ERRORS.VALUE_ERROR);
 
+// Test ATAN2
 assertEquals(ATAN2(4, 3), 0.6435011087932844);
+assertEquals(ATAN2(-1, -1), -2.356194490192345);
+catchAndAssertEquals(function() {
+  return ATAN2(0, 0);
+}, ERRORS.DIV_ZERO_ERROR);
+assertEquals(ATAN2(1, 0), 0);
+assertEquals(ATAN2(0, 1), 1.5707963267948966);
+assertEquals(ATAN2(-1, "-1"), -2.356194490192345);
+assertEquals(ATAN2(true, false), 0);
+assertEquals(ATAN2(true, true), 0.7853981633974483);
+catchAndAssertEquals(function() {
+  return ATAN2("str", false);
+}, ERRORS.VALUE_ERROR);
 
 assertEquals(ATANH(0.44), 0.47223080442042564);
 

@@ -294,7 +294,25 @@ var ATAN2 = function (x, y) {
 };
 
 
-var ATANH = Formula["ATANH"];
+/**
+ * Returns the inverse hyperbolic tangent of a number.
+ * @param value The value for which to calculate the inverse hyperbolic tangent. Must be between -1 and 1, exclusive.
+ * @returns {number} inverse hyperbolic tangent of input
+ * @constructor
+ */
+var ATANH = function (value?) : number {
+  checkArgumentsLength(arguments, 1);
+  value = valueToNumber(value);
+  if (value >= 1 || value <= -1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function ATANH parameter 1 value is " + value + ". Valid values are between -1 and 1 exclusive.");
+  }
+  if (Math.abs(value) < 1) {
+
+  }
+  return Math["atanh"](value);
+};
+
+
 var AVEDEV = Formula["AVEDEV"];
 var AVERAGE = Formula["AVERAGE"];
 var AVERAGEA = Formula["AVERAGEA"];

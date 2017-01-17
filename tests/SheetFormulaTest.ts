@@ -66,7 +66,7 @@ testFormula("=ATAN(0.1)", 0.09966865249116204);
 testFormula("=ATAN2(4, 3)", 0.6435011087932844);
 
 // Test ATANH
-testFormula("=ATANH(0.44)", 0.47223080442042564);
+testFormula("=ATANH(0.51)", 0.5627297693521489);
 
 // Test AVEDEV
 testFormula("=AVEDEV(1, 2, 4, 56.7)", 20.3875);

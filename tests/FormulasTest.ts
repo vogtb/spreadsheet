@@ -170,7 +170,20 @@ catchAndAssertEquals(function() {
   return ATAN2("str", false);
 }, ERRORS.VALUE_ERROR);
 
+
+// Test ATANH
+assertEquals(ATANH(0.51), 0.5627297693521489);
 assertEquals(ATANH(0.44), 0.47223080442042564);
+assertEquals(ATANH(0), 0);
+assertEquals(ATANH("0.1"), 0.10033534773107562);
+assertEquals(ATANH(false), 0);
+catchAndAssertEquals(function() {
+  return ATANH(true);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  return ATANH("str");
+}, ERRORS.VALUE_ERROR);
+
 
 assertEquals(AVEDEV(1, 2, 4, 56.7), 20.3875);
 

@@ -401,7 +401,24 @@ assertEquals(SQRT(9), 3);
 
 assertEquals(SQRTPI(9), 5.317361552716548);
 
+
+// Test SUM
+assertEquals(SUM(10), 10);
 assertEquals(SUM(10, 10), 20);
+assertEquals(SUM(10, [5, 5]), 20);
+assertEquals(SUM("10", [5, 5]), 20);
+assertEquals(SUM(false, [10, 10]), 20);
+assertEquals(SUM(true, [10, 10]), 21);
+catchAndAssertEquals(function() {
+  return SUM([10, 10], "");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  return SUM([10, 10], "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  return SUM();
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(SUMIF([1, 5, 10], ">2"), 15);
 

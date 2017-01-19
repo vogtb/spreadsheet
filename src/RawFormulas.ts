@@ -429,7 +429,25 @@ var SINH = Formula["SINH"];
 var SPLIT = Formula["SPLIT"];
 var SQRT = Formula["SQRT"];
 var SQRTPI = Formula["SQRTPI"];
-var SUM = Formula["SUM"];
+
+/**
+ * Returns the sum of a series of numbers and/or cells.
+ * @param values The first number or range to add together.
+ * @returns {number} The sum of the series
+ * @constructor
+ */
+var SUM = function (...values) : number {
+  checkArgumentsAtLeastLength(values, 1);
+  var result = 0;
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      result = result + SUM.apply(this, values[i]);
+    } else {
+      result = result + valueToNumber(values[i]);
+    }
+  }
+  return result;
+};
 var SUMIF = Formula["SUMIF"];
 var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMSQ = Formula["SUMSQ"];

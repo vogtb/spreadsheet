@@ -187,7 +187,24 @@ catchAndAssertEquals(function() {
 
 assertEquals(AVEDEV(1, 2, 4, 56.7), 20.3875);
 
-assertEquals(AVERAGE(10, 20, 4.1), 11.366666666666667);
+assertEquals(AVERAGE(1, 2, 4, 55), 15.5);
+assertEquals(AVERAGE(1, 2, 4, "55"), 15.5);
+assertEquals(AVERAGE(1, 2, 4, 55, false), 12.4);
+assertEquals(AVERAGE(1, 2, 4, 55, true), 12.6);
+assertEquals(AVERAGE(1, 2, 4, 55, 0), 12.4);
+assertEquals(AVERAGE(1, 2, 4, 55, 1), 12.6);
+catchAndAssertEquals(function() {
+  return AVERAGE(1, 2, 4, "str");
+}, ERRORS.VALUE_ERROR);
+assertEquals(AVERAGE([1, 2, 4, 55, "str"]), 15.5);
+assertEquals(AVERAGE([1, 2, 4, 55, "22"]), 15.5);
+assertEquals(AVERAGE([0]), 0);
+catchAndAssertEquals(function() {
+  return AVERAGE();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  return AVERAGE([]);
+}, ERRORS.REF_ERROR);
 
 assertEquals(AVERAGEA(10, 20, 4.1), 11.366666666666667);
 

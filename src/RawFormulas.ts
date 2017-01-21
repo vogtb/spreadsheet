@@ -27,6 +27,21 @@ function checkArgumentsAtLeastLength(args: any, length: number) {
   }
 }
 
+/**
+ * Filter out all strings from an array.
+ * @param arr to filter
+ * @returns {Array} filtered array
+ */
+function filterOutStringValues(arr: Array<any>) : Array<any> {
+  var toReturn = [];
+  for (var i = 0; i < arr.length; i++) {
+    if (typeof arr[i] !== "string") {
+      toReturn.push(arr[i]);
+    }
+  }
+  return toReturn;
+}
+
 
 /**
  * Converts any value to a number or throws an error if it cannot coerce it to the number type
@@ -314,7 +329,33 @@ var ATANH = function (value?) : number {
 
 
 var AVEDEV = Formula["AVEDEV"];
-var AVERAGE = Formula["AVERAGE"];
+
+/**
+ * Returns the numerical average value in a dataset, ignoring text.
+ * @param values The values or ranges to consider when calculating the average value.
+ * @returns {number} the average value of this dataset.
+ * @constructor
+ */
+var AVERAGE = function (...values) : number {
+  checkArgumentsAtLeastLength(values, 1);
+  var result = 0;
+  var count = 0;
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      var filtered = filterOutStringValues(values[i]);
+      result = result + SUM.apply(this, filtered);
+      count += filtered.length;
+    } else {
+      result = result + valueToNumber(values[i]);
+      count++;
+    }
+  }
+  return result / count;
+
+};
 var AVERAGEA = Formula["AVERAGEA"];
 var AVERAGEIF = Formula["AVERAGEIF"];
 var BASE = Formula["BASE"];

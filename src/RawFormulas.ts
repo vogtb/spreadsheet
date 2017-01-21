@@ -55,13 +55,13 @@ function valueToNumber(value: any) : number {
     if (value.indexOf(".") > -1) {
       var fl = parseFloat(value);
       if (isNaN(fl)) {
-        throw new CellError(ERRORS.VALUE_ERROR, "Function ____ parameter 1 expects number values, but is text and cannot be coerced to a number.");
+        throw new CellError(ERRORS.VALUE_ERROR, "Function ____ expects number values, but is text and cannot be coerced to a number.");
       }
       return fl;
     }
     var fl = parseInt(value);
     if (isNaN(fl)) {
-      throw new CellError(ERRORS.VALUE_ERROR, "Function ____ parameter 1 expects number values, but is text and cannot be coerced to a number.");
+      throw new CellError(ERRORS.VALUE_ERROR, "Function ____ expects number values, but is text and cannot be coerced to a number.");
     }
     return fl;
   } else if (typeof value === "boolean") {
@@ -449,7 +449,29 @@ var ISODD = Formula["ISODD"];
 var LN = Formula["LN"];
 var LOG = Formula["LOG"];
 var LOG10 = Formula["LOG10"];
-var MAX = Formula["MAX"];
+
+/**
+ * Returns the maximum value in a numeric dataset.
+ * @param values The values or range(s) to consider when calculating the maximum value.
+ * @returns {number} the maximum value of the dataset
+ * @constructor
+ */
+var MAX = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+  var maxSoFar = -Infinity;
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      maxSoFar = Math.max(MAX.apply(this, values[i]), maxSoFar);
+    } else {
+      maxSoFar = Math.max(valueToNumber(values[i]), maxSoFar);
+    }
+  }
+  return maxSoFar;
+};
+
 var MAXA = Formula["MAXA"];
 var MEDIAN = Formula["MEDIAN"];
 var MIN = Formula["MIN"];

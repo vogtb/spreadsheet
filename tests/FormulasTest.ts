@@ -187,6 +187,8 @@ catchAndAssertEquals(function() {
 
 assertEquals(AVEDEV(1, 2, 4, 56.7), 20.3875);
 
+
+// Test AVERAGE
 assertEquals(AVERAGE(1, 2, 4, 55), 15.5);
 assertEquals(AVERAGE(1, 2, 4, "55"), 15.5);
 assertEquals(AVERAGE(1, 2, 4, 55, false), 12.4);
@@ -377,7 +379,26 @@ assertEquals(LOG(256, 2), 8);
 
 assertEquals(LOG10(100), 2);
 
+
+// Test MAX
 assertEquals(MAX(100, 22), 100);
+assertEquals(MAX(100, "22"), 100);
+assertEquals(MAX(-100, false), 0);
+assertEquals(MAX(-100, true), 1);
+assertEquals(MAX(100, [101, 2]), 101);
+catchAndAssertEquals(function() {
+  return MAX(100, []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  return MAX([]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  return MAX();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  return MAX(100, "str");
+}, ERRORS.VALUE_ERROR);
+
 
 assertEquals(MAXA(100, 22, 44), 100);
 

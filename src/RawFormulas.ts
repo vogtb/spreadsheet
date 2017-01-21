@@ -464,7 +464,10 @@ var MAX = function (...values) {
       if (values[i].length === 0) {
         throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
       }
-      maxSoFar = Math.max(MAX.apply(this, values[i]), maxSoFar);
+      var filtered = filterOutStringValues(values[i]);
+      if (filtered.length !== 0) {
+        maxSoFar = Math.max(MAX.apply(this, filtered), maxSoFar);
+      }
     } else {
       maxSoFar = Math.max(valueToNumber(values[i]), maxSoFar);
     }
@@ -474,7 +477,34 @@ var MAX = function (...values) {
 
 var MAXA = Formula["MAXA"];
 var MEDIAN = Formula["MEDIAN"];
-var MIN = Formula["MIN"];
+
+
+/**
+ * Returns the minimum value in a numeric dataset.
+ * @param values The value(s) or range(s) to consider when calculating the minimum value.
+ * @returns {number} the minimum value of the dataset
+ * @constructor
+ */
+var MIN = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+  var minSoFar = Infinity;
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      var filtered = filterOutStringValues(values[i]);
+      if (filtered.length !== 0) {
+        minSoFar = Math.min(MIN.apply(this, filtered), minSoFar);
+      }
+    } else {
+      minSoFar = Math.min(valueToNumber(values[i]), minSoFar);
+    }
+  }
+  return minSoFar;
+};
+
+
 var MINA = Formula["MINA"];
 var MOD = Formula["MOD"];
 var TRUE = Formula["TRUE"];

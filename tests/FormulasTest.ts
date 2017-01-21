@@ -386,6 +386,8 @@ assertEquals(MAX(100, "22"), 100);
 assertEquals(MAX(-100, false), 0);
 assertEquals(MAX(-100, true), 1);
 assertEquals(MAX(100, [101, 2]), 101);
+assertEquals(MAX(100, [101, 2, "10000"]), 101);
+assertEquals(MAX(100, ["10000"]), 100);
 catchAndAssertEquals(function() {
   return MAX(100, []);
 }, ERRORS.REF_ERROR);
@@ -404,7 +406,28 @@ assertEquals(MAXA(100, 22, 44), 100);
 
 assertEquals(MEDIAN(100, 22, 54), 54);
 
+
+// Test MIN
 assertEquals(MIN(100, 22, 44), 22);
+assertEquals(MIN(100, "22"), 22);
+assertEquals(MIN(100, false), 0);
+assertEquals(MIN(100, true), 1);
+assertEquals(MIN(100, [101, 2]), 2);
+assertEquals(MIN(100, [101, 2, "-10"]), 2);
+assertEquals(MIN(100, ["-10"]), 100);
+catchAndAssertEquals(function() {
+  return MIN(100, []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  return MIN([]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  return MIN();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  return MIN(100, "str");
+}, ERRORS.VALUE_ERROR);
+
 
 assertEquals(MINA(100, 22, 44), 22);
 

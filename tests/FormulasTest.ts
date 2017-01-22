@@ -348,7 +348,24 @@ assertEquals(ERF(2), 0.9953222650189527);
 
 assertEquals(ERFC(2), 0.004677734981047288);
 
+// Test EVEN
 assertEquals(EVEN(3), 4);
+assertEquals(EVEN(4), 4);
+assertEquals(EVEN(5), 6);
+assertEquals(EVEN("4"), 4);
+assertEquals(EVEN(false), 0);
+assertEquals(EVEN(true), 2);
+assertEquals(EVEN([11, 22]), 12);
+assertEquals(EVEN([10, 22, "str"]), 10);
+catchAndAssertEquals(function() {
+  EVEN();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  EVEN(1, 2, 3);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  EVEN("str");
+}, ERRORS.VALUE_ERROR);
 
 assertEquals(EXACT("m", "M"), false);
 

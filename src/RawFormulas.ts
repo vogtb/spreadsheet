@@ -433,7 +433,26 @@ var EOMONTH = function (start_date, months) {
 };
 var ERF = Formula["ERF"];
 var ERFC = Formula["ERFC"];
-var EVEN = Formula["EVEN"];
+
+
+/**
+ * Rounds a number up to the nearest even integer.
+ * @param values[0] The value to round to the next greatest even number.
+ * @returns {number} next greatest even number
+ * @constructor
+ */
+var EVEN = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  if (values[0] instanceof Array) {
+    if (values[0].length === 0) {
+      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+    }
+    return EVEN(values[0][0]);
+  }
+  var X = valueToNumber(values[0]);
+  return X % 2 === 1 ? X + 1 : X;
+};
+
 var EXACT = Formula["EXACT"];
 var EXPONDIST = Formula["EXPONDIST"];
 var FALSE = Formula["FALSE"];

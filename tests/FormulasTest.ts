@@ -367,7 +367,32 @@ catchAndAssertEquals(function() {
   EVEN("str");
 }, ERRORS.VALUE_ERROR);
 
+// Test EXACT
 assertEquals(EXACT("m", "M"), false);
+assertEquals(EXACT("m", "m"), true);
+assertEquals(EXACT("m", false), false);
+assertEquals(EXACT(false, false), true);
+assertEquals(EXACT(10, 10), true);
+assertEquals(EXACT(10, "10"), true);
+assertEquals(EXACT(10, "str"), false);
+assertEquals(EXACT([10], [10]), true);
+assertEquals(EXACT(["str"], [10, 22]), false);
+catchAndAssertEquals(function() {
+  EXACT([], []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  EXACT([]);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  EXACT("m");
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  EXACT(10, 10, 10);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  EXACT(false);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(EXPONDIST(4, 0.5, false), 0.06766764161830635);
 

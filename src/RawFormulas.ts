@@ -42,6 +42,23 @@ function filterOutStringValues(arr: Array<any>) : Array<any> {
   return toReturn;
 }
 
+/**
+ * Convert a value to string.
+ * @param value of any type, including array. array cannot be empty.
+ * @returns {string} string representation of value
+ */
+function valueToString(value: any) : string {
+  if (typeof value === "number") {
+    return value.toString();
+  } else if (typeof value === "string") {
+    return value;
+  } else if (typeof value === "boolean") {
+    return value ? "TRUE" : "FALSE";
+  } else if (value instanceof Array) {
+    return valueToString(value[0]);
+  }
+}
+
 
 /**
  * Converts any value to a number or throws an error if it cannot coerce it to the number type
@@ -453,7 +470,35 @@ var EVEN = function (...values) : number {
   return X % 2 === 1 ? X + 1 : X;
 };
 
-var EXACT = Formula["EXACT"];
+
+/**
+ * Tests whether two strings are identical, returning true if they are.
+ * @param values[0] The first string to compare
+ * @param values[1] The second string to compare
+ * @returns {boolean}
+ * @constructor
+ */
+var EXACT = function (...values) {
+  checkArgumentsLength(values, 2);
+  var one = values[0];
+  var two = values[1];
+  if (one instanceof Array) {
+    if (one.length === 0) {
+      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+    }
+  }
+  if (two instanceof Array) {
+    if (two.length === 0) {
+      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+    }
+  }
+  one = valueToString(one);
+  two = valueToString(two);
+  return one === two;
+};
+
+
+
 var EXPONDIST = Formula["EXPONDIST"];
 var FALSE = Formula["FALSE"];
 var __COMPLEX = {

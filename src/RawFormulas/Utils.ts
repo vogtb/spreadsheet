@@ -84,7 +84,39 @@ function valueToNumber(value: any) : number {
 }
 
 
+/**
+ * Converts string values in array to 0
+ * @param arr to convert
+ * @returns {Array} array in which all string values have been converted to 0.
+ */
+function stringValuesToZeros(arr: Array<any>) : Array<any> {
+  var toReturn = [];
+  for (var i = 0; i < arr.length; i++) {
+    if (typeof arr[i] !== "string") {
+      toReturn.push(arr[i]);
+    } else {
+      toReturn.push(0);
+    }
+  }
+  return toReturn;
+}
+
+
+/**
+ * Flatten an array of arrays of ...
+ * @param values array of values
+ * @returns {Array} flattened array
+ */
+function flatten(values: Array<any>) : Array<any> {
+  return values.reduce(function (flat, toFlatten) {
+    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+  }, []);
+}
+
+
 export {
+  stringValuesToZeros,
+  flatten,
   valueToNumber,
   valueToString,
   filterOutStringValues,

@@ -13,6 +13,8 @@ import {
   ATAN2,
   ATANH,
   AVERAGE,
+  AVERAGEA,
+  AVEDEV,
   EVEN,
   MAX,
   MAXA,
@@ -32,100 +34,6 @@ import {
 import {checkArgumentsAtLeastLength, filterOutStringValues, valueToNumber} from "./Utils";
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
-
-
-function flatten(values: Array<any>) : Array<any> {
-  return values.reduce(function (flat, toFlatten) {
-    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
-  }, []);
-}
-
-/**
- * Converts string values in array to 0
- * @param arr to convert
- * @returns {Array} array in which all string values have been converted to 0.
- */
-function stringValuesToZeros(arr: Array<any>) : Array<any> {
-  var toReturn = [];
-  for (var i = 0; i < arr.length; i++) {
-    if (typeof arr[i] !== "string") {
-      toReturn.push(arr[i]);
-    } else {
-      toReturn.push(0);
-    }
-  }
-  return toReturn;
-}
-
-/**
- * Calculates the average of the magnitudes of deviations of data from a dataset's mean.
- * @param values The value(s) or range(s)
- * @returns {number} average of the magnitudes of deviations of data from a dataset's mean
- * @constructor
- */
-var AVEDEV = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
-
-  // Sort to array-values, and non-array-values
-  var arrayValues = [];
-  var nonArrayValues = [];
-  for (var i = 0; i < values.length; i++) {
-    var X = values[i];
-    if (X instanceof Array) {
-      if (X.length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
-      }
-      arrayValues.push(X);
-    } else {
-      nonArrayValues.push(valueToNumber(X));
-    }
-  }
-
-  // Remove string values from array-values, but not from non-array-values, and concat.
-  var flatValues = filterOutStringValues(flatten(arrayValues)).map(function (value) {
-    return valueToNumber(value);
-  }).concat(nonArrayValues);
-
-  // Calculating mean
-  var result = 0;
-  var count = 0;
-  for (var i = 0; i < flatValues.length; i++) {
-    result = result + valueToNumber(flatValues[i]);
-    count++;
-  }
-  var mean = result / count;
-
-  for (var i = 0; i < flatValues.length; i++) {
-    flatValues[i] = ABS(valueToNumber(flatValues[i]) - mean);
-  }
-  return SUM(flatValues) / flatValues.length;
-};
-
-/**
- * Returns the numerical average value in a dataset, coercing text values in ranges to 0 values.
- * @param values value(s) or range(s) to consider when calculating the average value.
- * @returns {number} the numerical average value in a dataset
- * @constructor
- */
-var AVERAGEA = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
-  var result = 0;
-  var count = 0;
-  for (var i = 0; i < values.length; i++) {
-    if (values[i] instanceof Array) {
-      if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
-      }
-      var filtered = stringValuesToZeros(values[i]);
-      result = result + SUM.apply(this, filtered);
-      count += filtered.length;
-    } else {
-      result = result + valueToNumber(values[i]);
-      count++;
-    }
-  }
-  return result / count;
-};
 
 var ACCRINT = Formula["ACCRINT"];
 var AVERAGEIF = Formula["AVERAGEIF"];

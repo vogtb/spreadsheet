@@ -1,5 +1,5 @@
 import * as Formula from "formulajs"
-import * as RawFormulas from "./RawFormulas";
+import * as RawFormulas from "./RawFormulas/RawFormulas";
 
 const SUPPORTED_FORMULAS = [
   'ABS', 'ACCRINT', 'ACOS', 'ACOSH', 'ACOTH', 'AND', 'ARABIC', 'ASIN', 'ASINH', 'ATAN', 'ATAN2', 'ATANH', 'AVEDEV', 'AVERAGE', 'AVERAGEA', 'AVERAGEIF',

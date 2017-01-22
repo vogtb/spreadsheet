@@ -230,7 +230,28 @@ catchAndAssertEquals(function() {
   AVERAGE([]);
 }, ERRORS.REF_ERROR);
 
-assertEquals(AVERAGEA(10, 20, 4.1), 11.366666666666667);
+
+// Test AVERAGEA
+assertEquals(AVERAGEA(1, 2, 4, 55), 15.5);
+assertEquals(AVERAGEA(1, 2, 4, "55"), 15.5);
+assertEquals(AVERAGEA(1, 2, 4, 55, false), 12.4);
+assertEquals(AVERAGEA(1, 2, 4, 55, true), 12.6);
+assertEquals(AVERAGEA(1, 2, 4, 55, 0), 12.4);
+assertEquals(AVERAGEA(1, 2, 4, 55, 1), 12.6);
+catchAndAssertEquals(function() {
+  AVERAGEA(1, 2, 4, "str");
+}, ERRORS.VALUE_ERROR);
+assertEquals(AVERAGEA([1, 2, 4, 55, "str"]), 12.4);
+assertEquals(AVERAGEA([1, 2, 4, 55, "22"]), 12.4);
+assertEquals(AVERAGEA([1, 2, 4, 55, 0]), 12.4);
+assertEquals(AVERAGEA([0]), 0);
+catchAndAssertEquals(function() {
+  AVERAGEA();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  AVERAGEA([]);
+}, ERRORS.REF_ERROR);
+
 
 assertEquals(AVERAGEIF([1, 5, 10], '>2'), 7.5);
 

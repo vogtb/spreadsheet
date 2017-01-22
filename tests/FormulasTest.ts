@@ -29,10 +29,10 @@ assertEquals(ABS(0), 0);
 assertEquals(ABS(false), 0);
 assertEquals(ABS("-44"), 44);
 catchAndAssertEquals(function() {
-  return ABS();
+  ABS();
 }, ERRORS.NA_ERROR);
 catchAndAssertEquals(function() {
-  return ABS("str");
+  ABS("str");
 }, ERRORS.VALUE_ERROR);
 
 
@@ -48,10 +48,10 @@ assertEquals(ACOS(1), 0);
 assertEquals(ACOS("-1"), 3.141592653589793);
 assertEquals(ACOS(false), 1.5707963267948966);
 catchAndAssertEquals(function() {
-  return ACOS("str");
+  ACOS("str");
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  return ACOS(2);
+  ACOS(2);
 }, ERRORS.NUM_ERROR);
 
 
@@ -60,13 +60,13 @@ assertEquals(ACOSH(22), 3.783672704329451);
 assertEquals(ACOSH(1), 0);
 assertEquals(ACOSH("11"), 3.0889699048446033);
 catchAndAssertEquals(function() {
-  return ACOSH(-1);
+  ACOSH(-1);
 }, ERRORS.NUM_ERROR);
 catchAndAssertEquals(function() {
-  return ACOSH("str");
+  ACOSH("str");
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  return ACOSH(false);
+  ACOSH(false);
 }, ERRORS.NUM_ERROR);
 
 
@@ -75,13 +75,13 @@ assertEquals(ACOTH(22), 0.04548588910286339);
 assertEquals(ACOTH(-1.1), -1.522261218861711);
 assertEquals(ACOTH("-22"), -0.04548588910286338);
 catchAndAssertEquals(function() {
-  return ACOTH(-1);
+  ACOTH(-1);
 }, ERRORS.NUM_ERROR);
 catchAndAssertEquals(function() {
-  return ACOTH("str");
+  ACOTH("str");
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  return ACOTH(false);
+  ACOTH(false);
 }, ERRORS.NUM_ERROR);
 
 
@@ -91,18 +91,18 @@ assertEquals(AND(10, 0), false);
 assertEquals(AND(10, false), false);
 assertEquals(AND(0, 0), false);
 catchAndAssertEquals(function() {
-  return AND(1, "");
+  AND(1, "");
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  return AND();
+  AND();
 }, ERRORS.NA_ERROR);
 catchAndAssertEquals(function() {
-  return AND(1, "str");
+  AND(1, "str");
 }, ERRORS.VALUE_ERROR);
 assertEquals(AND(0, [1, 1]), false);
 assertEquals(AND(1, [1, 1]), true);
 catchAndAssertEquals(function() {
-  return AND(1, [1, "str"]);
+  AND(1, [1, "str"]);
 }, ERRORS.VALUE_ERROR);
 
 
@@ -111,13 +111,13 @@ assertEquals(ARABIC("XIV"), 14);
 assertEquals(ARABIC("M"), 1000);
 assertEquals(ARABIC("-IV"), -4);
 catchAndAssertEquals(function() {
-  return ARABIC("b");
+  ARABIC("b");
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  return ARABIC(false);
+  ARABIC(false);
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  return ARABIC(10);
+  ARABIC(10);
 }, ERRORS.VALUE_ERROR);
 
 
@@ -127,10 +127,10 @@ assertEquals(ASIN(1), 1.5707963267948966);
 assertEquals(ASIN("1"), 1.5707963267948966);
 assertEquals(ASIN(false), 0);
 catchAndAssertEquals(function() {
-  return ASIN(2);
+  ASIN(2);
 }, ERRORS.NUM_ERROR);
 catchAndAssertEquals(function() {
-  return ASIN("str");
+  ASIN("str");
 }, ERRORS.VALUE_ERROR);
 
 
@@ -141,7 +141,7 @@ assertEquals(ASINH("1"), 0.8813735870195429);
 assertEquals(ASINH(false), 0);
 assertEquals(ASINH(true), 0.8813735870195429);
 catchAndAssertEquals(function() {
-  return ASINH("str");
+  ASINH("str");
 }, ERRORS.VALUE_ERROR);
 
 
@@ -152,14 +152,14 @@ assertEquals(ATAN("1"), 0.7853981633974483);
 assertEquals(ATAN(false), 0);
 assertEquals(ATAN(true), 0.7853981633974483);
 catchAndAssertEquals(function() {
-  return ASINH("str");
+  ASINH("str");
 }, ERRORS.VALUE_ERROR);
 
 // Test ATAN2
 assertEquals(ATAN2(4, 3), 0.6435011087932844);
 assertEquals(ATAN2(-1, -1), -2.356194490192345);
 catchAndAssertEquals(function() {
-  return ATAN2(0, 0);
+  ATAN2(0, 0);
 }, ERRORS.DIV_ZERO_ERROR);
 assertEquals(ATAN2(1, 0), 0);
 assertEquals(ATAN2(0, 1), 1.5707963267948966);
@@ -167,7 +167,7 @@ assertEquals(ATAN2(-1, "-1"), -2.356194490192345);
 assertEquals(ATAN2(true, false), 0);
 assertEquals(ATAN2(true, true), 0.7853981633974483);
 catchAndAssertEquals(function() {
-  return ATAN2("str", false);
+  ATAN2("str", false);
 }, ERRORS.VALUE_ERROR);
 
 
@@ -178,10 +178,10 @@ assertEquals(ATANH(0), 0);
 assertEquals(ATANH("0.1"), 0.10033534773107562);
 assertEquals(ATANH(false), 0);
 catchAndAssertEquals(function() {
-  return ATANH(true);
+  ATANH(true);
 }, ERRORS.NUM_ERROR);
 catchAndAssertEquals(function() {
-  return ATANH("str");
+  ATANH("str");
 }, ERRORS.VALUE_ERROR);
 
 
@@ -196,16 +196,16 @@ assertEquals(AVERAGE(1, 2, 4, 55, true), 12.6);
 assertEquals(AVERAGE(1, 2, 4, 55, 0), 12.4);
 assertEquals(AVERAGE(1, 2, 4, 55, 1), 12.6);
 catchAndAssertEquals(function() {
-  return AVERAGE(1, 2, 4, "str");
+  AVERAGE(1, 2, 4, "str");
 }, ERRORS.VALUE_ERROR);
 assertEquals(AVERAGE([1, 2, 4, 55, "str"]), 15.5);
 assertEquals(AVERAGE([1, 2, 4, 55, "22"]), 15.5);
 assertEquals(AVERAGE([0]), 0);
 catchAndAssertEquals(function() {
-  return AVERAGE();
+  AVERAGE();
 }, ERRORS.NA_ERROR);
 catchAndAssertEquals(function() {
-  return AVERAGE([]);
+  AVERAGE([]);
 }, ERRORS.REF_ERROR);
 
 assertEquals(AVERAGEA(10, 20, 4.1), 11.366666666666667);
@@ -389,22 +389,53 @@ assertEquals(MAX(100, [101, 2]), 101);
 assertEquals(MAX(100, [101, 2, "10000"]), 101);
 assertEquals(MAX(100, ["10000"]), 100);
 catchAndAssertEquals(function() {
-  return MAX(100, []);
+  MAX(100, []);
 }, ERRORS.REF_ERROR);
 catchAndAssertEquals(function() {
-  return MAX([]);
+  MAX([]);
 }, ERRORS.REF_ERROR);
 catchAndAssertEquals(function() {
-  return MAX();
+  MAX();
 }, ERRORS.NA_ERROR);
 catchAndAssertEquals(function() {
-  return MAX(100, "str");
+  MAX(100, "str");
 }, ERRORS.VALUE_ERROR);
 
 
 assertEquals(MAXA(100, 22, 44), 100);
 
+
+// Tes MEDIAN
 assertEquals(MEDIAN(100, 22, 54), 54);
+assertEquals(MEDIAN(100, 22, "54"), 54);
+assertEquals(MEDIAN(100, 22), 61);
+assertEquals(MEDIAN(2), 2);
+assertEquals(MEDIAN(false), false);
+assertEquals(MEDIAN(1, 1, 2, 6, 6, 9, 5), 5);
+assertEquals(MEDIAN(6, 6, 1, 1, 2, 9), 4);
+assertEquals(MEDIAN(1, 1, 2, [5, 6, 6, 9]), 5);
+catchAndAssertEquals(function() {
+  MEDIAN(1, 1, 2, 5, "mmm", 6, 6, 9);
+}, ERRORS.VALUE_ERROR);
+assertEquals(MEDIAN(1, 1, 2, [5, "mmm", 6, 6, 9]), 5);
+assertEquals(MEDIAN(1, 1, 2, ["mm"]), 1);
+catchAndAssertEquals(function() {
+  MEDIAN(1, 1, 2, ["mm"]);
+}, ERRORS.REF_ERROR);
+assertEquals(MEDIAN(100, 22, 1, 14), 18);
+assertEquals(MEDIAN(100, 22, 1, 1), 11.5);
+assertEquals(MEDIAN(100, 22, 1), 22);
+assertEquals(MEDIAN(100, 22, [54]), 54);
+assertEquals(MEDIAN(100, 22, ["str"]), 61);
+catchAndAssertEquals(function() {
+  MEDIAN(10, 22, "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  MEDIAN();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  MEDIAN(["str"]);
+}, ERRORS.NUM_ERROR);
 
 
 // Test MIN
@@ -416,16 +447,16 @@ assertEquals(MIN(100, [101, 2]), 2);
 assertEquals(MIN(100, [101, 2, "-10"]), 2);
 assertEquals(MIN(100, ["-10"]), 100);
 catchAndAssertEquals(function() {
-  return MIN(100, []);
+  MIN(100, []);
 }, ERRORS.REF_ERROR);
 catchAndAssertEquals(function() {
-  return MIN([]);
+  MIN([]);
 }, ERRORS.REF_ERROR);
 catchAndAssertEquals(function() {
-  return MIN();
+  MIN();
 }, ERRORS.NA_ERROR);
 catchAndAssertEquals(function() {
-  return MIN(100, "str");
+  MIN(100, "str");
 }, ERRORS.VALUE_ERROR);
 
 
@@ -471,13 +502,13 @@ assertEquals(SUM("10", [5, 5]), 20);
 assertEquals(SUM(false, [10, 10]), 20);
 assertEquals(SUM(true, [10, 10]), 21);
 catchAndAssertEquals(function() {
-  return SUM([10, 10], "");
+  SUM([10, 10], "");
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  return SUM([10, 10], "str");
+  SUM([10, 10], "str");
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  return SUM();
+  SUM();
 }, ERRORS.NA_ERROR);
 
 

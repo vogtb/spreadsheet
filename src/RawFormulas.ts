@@ -476,7 +476,49 @@ var MAX = function (...values) {
 };
 
 var MAXA = Formula["MAXA"];
-var MEDIAN = Formula["MEDIAN"];
+
+
+/**
+ * Returns the median value in a numeric dataset.
+ * @param values The value(s) or range(s) to consider when calculating the median value.
+ * @returns {number} the median value of the dataset
+ * @constructor
+ */
+var MEDIAN = function (...values) : number {
+  checkArgumentsAtLeastLength(values, 1);
+  if (values.length === 1) {
+    return valueToNumber(values[0]);
+  }
+  var sortedArray = [];
+  values.forEach(function (currentValue) {
+    if (currentValue instanceof Array) {
+      if (currentValue.length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      var filtered = filterOutStringValues(currentValue);
+      sortedArray = sortedArray.concat(filtered);
+    } else {
+      sortedArray.push(currentValue);
+    }
+  });
+  sortedArray = sortedArray.sort(function (a, b) {
+    var aN = valueToNumber(a);
+    var bN = valueToNumber(b);
+    return aN - bN;
+  });
+  // even number of values
+  if (sortedArray.length % 2 === 0) {
+    if (sortedArray.length === 2) {
+      return AVERAGE(sortedArray[0], sortedArray[1]);
+    }
+    var top = sortedArray[sortedArray.length / 2];
+    var bottom = sortedArray[(sortedArray.length / 2) - 1];
+    return AVERAGE(top, bottom);
+  } else {
+    // odd number of values
+    return sortedArray[Math.round(sortedArray.length / 2) - 1];
+  }
+};
 
 
 /**

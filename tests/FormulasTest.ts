@@ -492,7 +492,44 @@ assertEquals(MOD(10.1, 3), 1.0999999999999996);
 assertEquals(MOD(10, 3.1), 0.6999999999999997);
 
 
+// Test NOT
 assertEquals(NOT(TRUE()), false);
+assertEquals(NOT(""), true);
+catchAndAssertEquals(function() {
+  NOT(" ");
+}, ERRORS.VALUE_ERROR);
+assertEquals(NOT(100), false);
+assertEquals(NOT(0), true);
+assertEquals(NOT(-1), false);
+assertEquals(NOT(1), false);
+catchAndAssertEquals(function() {
+  NOT("0");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  NOT([]);
+}, ERRORS.REF_ERROR);
+assertEquals(NOT([10]), false);
+assertEquals(NOT([0, 0]), true);
+assertEquals(NOT([0, false]), true);
+assertEquals(NOT([false, 0]), true);
+assertEquals(NOT([10, "str"]), false);
+catchAndAssertEquals(function() {
+  NOT("str");
+}, ERRORS.VALUE_ERROR);
+assertEquals(NOT([""]), true);
+assertEquals(NOT([0]), true);
+assertEquals(NOT([1]), false);
+assertEquals(NOT([0, 1]), true);
+catchAndAssertEquals(function() {
+  NOT("1.2");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  NOT();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  NOT(false, false);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(ODD(2), 3);
 

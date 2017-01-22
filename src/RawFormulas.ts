@@ -70,6 +70,7 @@ function valueToNumber(value: any) : number {
   return 0;
 }
 
+
 /**
  * Returns the absolute value of a number.
  * @param value to get the absolute value of.
@@ -585,8 +586,46 @@ var MOD = function (...values) : number {
 };
 
 
-var TRUE = Formula["TRUE"];
-var NOT = Formula["NOT"];
+/**
+ * Returns true.
+ * @returns {boolean} true boolean
+ * @constructor
+ */
+var TRUE = function () : boolean {
+  return true;
+};
+
+
+/**
+ * Returns the opposite of a logical value - NOT(TRUE) returns FALSE; NOT(FALSE) returns TRUE.
+ * @param values[0] An expression or reference to a cell holding an expression that represents some logical value.
+ * @returns {boolean} opposite of a logical value input
+ * @constructor
+ */
+var NOT = function (...values) : boolean {
+  checkArgumentsLength(values, 1);
+  var X = values[0];
+  if (typeof(X) === "boolean") {
+    return !X;
+  }
+  if (typeof(X) === "string") {
+    if (X === "") {
+      return true;
+    }
+    throw new CellError(ERRORS.VALUE_ERROR, "Function NOT parameter 1 expects boolean values. But '" + X + "' is a text and cannot be coerced to a boolean.")
+  }
+  if (typeof(X) === "number") {
+    return X === 0;
+  }
+  if (X instanceof Array) {
+    if (X.length === 0) {
+      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+    }
+    return NOT(X[0]);
+  }
+};
+
+
 var ODD = Formula["ODD"];
 var OR = Formula["OR"];
 var POWER = Formula["POWER"];

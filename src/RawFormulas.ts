@@ -556,7 +556,16 @@ var MIN = function (...values) {
 };
 
 
-var MINA = Formula["MINA"];
+/**
+ * Returns the minimum numeric value in a dataset.
+ * @param values The value(s) or range(s) to consider when calculating the minimum value.
+ * @returns {number} the minimum value in the dataset
+ * @constructor
+ */
+var MINA = function (...values) : number {
+  return MIN.apply(this, values);
+};
+
 var MOD = Formula["MOD"];
 var TRUE = Formula["TRUE"];
 var NOT = Formula["NOT"];

@@ -460,7 +460,9 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
+// Test MINA
 assertEquals(MINA(100, 22, 44), 22);
+
 
 assertEquals(MOD(10, 3), 1);
 

@@ -531,7 +531,25 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test ODD
 assertEquals(ODD(2), 3);
+assertEquals(ODD(4), 5);
+assertEquals(ODD(5), 5);
+assertEquals(ODD("4"), 5);
+assertEquals(ODD(false), 1);
+assertEquals(ODD(true), 1);
+assertEquals(ODD([10, 22]), 11);
+assertEquals(ODD([10, 22, "str"]), 11);
+catchAndAssertEquals(function() {
+  ODD();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ODD(1, 2, 3);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ODD("str");
+}, ERRORS.VALUE_ERROR);
+
 
 assertEquals(OR(true, false), true);
 

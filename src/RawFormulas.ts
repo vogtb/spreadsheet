@@ -626,7 +626,25 @@ var NOT = function (...values) : boolean {
 };
 
 
-var ODD = Formula["ODD"];
+/**
+ * Rounds a number up to the nearest odd integer.
+ * @param values[0] The value to round to the next greatest odd number.
+ * @returns {number} value to round up to next greatest odd number.
+ * @constructor
+ */
+var ODD = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  if (values[0] instanceof Array) {
+    if (values[0].length === 0) {
+      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+    }
+    return ODD(values[0][0]);
+  }
+  var X = valueToNumber(values[0]);
+  return X % 2 === 1 ? X : X + 1;
+};
+
+
 var OR = Formula["OR"];
 var POWER = Formula["POWER"];
 var ROUND = Formula["ROUND"];

@@ -29,9 +29,58 @@ import {
   TRUE,
   NOT
 } from "./Logical"
+import {checkArgumentsAtLeastLength, filterOutStringValues, valueToNumber} from "./Utils";
+import { CellError } from "../Errors"
+import * as ERRORS from "../Errors"
+
+
+function flatten(values: Array<any>) : Array<any> {
+  return values.reduce(function (flat, toFlatten) {
+    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+  }, []);
+}
+
+var AVEDEV = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+
+  // Sort to array-values, and non-array-values
+  var arrayValues = [];
+  var nonArrayValues = [];
+  for (var i = 0; i < values.length; i++) {
+    var X = values[i];
+    if (X instanceof Array) {
+      if (X.length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      arrayValues.push(X);
+    } else {
+      nonArrayValues.push(valueToNumber(X));
+    }
+  }
+
+  // Remove string values from array-values, but not from non-array-values, and concat.
+  var flatValues = filterOutStringValues(flatten(arrayValues)).map(function (value) {
+    return valueToNumber(value);
+  }).concat(nonArrayValues);
+
+
+  // Calculating mean
+  var result = 0;
+  var count = 0;
+  for (var i = 0; i < flatValues.length; i++) {
+    result = result + valueToNumber(flatValues[i]);
+    count++;
+  }
+  var mean = result / count;
+
+  for (var i = 0; i < flatValues.length; i++) {
+    flatValues[i] = ABS(valueToNumber(flatValues[i]) - mean);
+  }
+  return SUM(flatValues) / flatValues.length;
+};
+
 
 var ACCRINT = Formula["ACCRINT"];
-var AVEDEV = Formula["AVEDEV"];
 var AVERAGEA = Formula["AVERAGEA"];
 var AVERAGEIF = Formula["AVERAGEIF"];
 var BASE = Formula["BASE"];

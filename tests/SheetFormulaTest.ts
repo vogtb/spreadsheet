@@ -69,7 +69,7 @@ testFormula("=ATAN2(4, 3)", 0.6435011087932844);
 testFormula("=ATANH(0.51)", 0.5627297693521489);
 
 // Test AVEDEV
-testFormula("=AVEDEV(1, 2, 4, 56.7)", 20.3875);
+testFormula("=AVEDEV(1, 2, 4, 56.7)", 20.387500000000003);
 
 // Test AVERAGE
 testFormula("=AVERAGE(10, 20, 4.1)", 11.366666666666667);

@@ -185,7 +185,29 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
-assertEquals(AVEDEV(1, 2, 4, 56.7), 20.3875);
+// Test AVEDEV
+assertEquals(AVEDEV(1, 2, 4, 55), 19.75);
+assertEquals(AVEDEV(1, 2, 4, "55"), 19.75);
+assertEquals(AVEDEV([1, 2, 4, "55"]), 1.1111111111111112);
+assertEquals(AVEDEV([1, 2, 4, "55"], [10, 10, "str"]), 3.6799999999999997);
+assertEquals(AVEDEV([1, 2, 4, "55"], [10, 10]), 3.6799999999999997);
+assertEquals(AVEDEV(1, 2, 4, "55", [10, [10]]), 13.777777777777777);
+assertEquals(AVEDEV(1, 2, 4, "55", 10, 10), 13.77777777777778);
+assertEquals(AVEDEV(1, 2, 4, 55, false), 17.040000000000003);
+assertEquals(AVEDEV(1, 2, 4, 55, 0), 17.040000000000003);
+assertEquals(AVEDEV(1, 2, 4, 55, true), 16.959999999999997);
+assertEquals(AVEDEV(1, 2, 4, 55, 1), 16.959999999999997);
+assertEquals(AVEDEV([1, 2, 4, 55, 0]), 17.040000000000003);
+assertEquals(AVEDEV([1, 2, 4, 55], 0), 17.040000000000003);
+catchAndAssertEquals(function() {
+  AVEDEV();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  AVEDEV(10, 10, "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  AVEDEV(10, 10, {});
+}, ERRORS.REF_ERROR);
 
 
 // Test AVERAGE

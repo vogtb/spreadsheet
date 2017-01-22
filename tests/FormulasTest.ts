@@ -464,7 +464,33 @@ catchAndAssertEquals(function() {
 assertEquals(MINA(100, 22, 44), 22);
 
 
+// Test MOD
 assertEquals(MOD(10, 3), 1);
+catchAndAssertEquals(function() {
+  MOD(10, 3, 10);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  MOD([10, 3]);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  MOD(0, 0);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  MOD(10);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  MOD(10, false);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  MOD(10, 0);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  MOD(10, "str");
+}, ERRORS.VALUE_ERROR);
+assertEquals(MOD(10, "3"), 1);
+assertEquals(MOD(10.1, 3), 1.0999999999999996);
+assertEquals(MOD(10, 3.1), 0.6999999999999997);
+
 
 assertEquals(NOT(TRUE()), false);
 

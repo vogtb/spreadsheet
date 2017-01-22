@@ -566,7 +566,25 @@ var MINA = function (...values) : number {
   return MIN.apply(this, values);
 };
 
-var MOD = Formula["MOD"];
+
+/**
+ * Returns the result of the modulo operator, the remainder after a division operation.
+ * @param values[0] The number to be divided to find the remainder.
+ * @param values[1] The number to divide by.
+ * @returns {number}
+ * @constructor
+ */
+var MOD = function (...values) : number {
+  checkArgumentsLength(values, 2);
+  var oneN = valueToNumber(values[0]);
+  var twoN =  valueToNumber(values[1]);
+  if (twoN === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function MOD parameter 2 cannot be zero.");
+  }
+  return oneN % twoN;
+};
+
+
 var TRUE = Formula["TRUE"];
 var NOT = Formula["NOT"];
 var ODD = Formula["ODD"];

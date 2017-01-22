@@ -401,7 +401,7 @@ catchAndAssertEquals(function() {
   MAX(100, "str");
 }, ERRORS.VALUE_ERROR);
 
-
+// Test MAXA
 assertEquals(MAXA(100, 22, 44), 100);
 
 

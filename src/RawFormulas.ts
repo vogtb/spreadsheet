@@ -475,7 +475,16 @@ var MAX = function (...values) {
   return maxSoFar;
 };
 
-var MAXA = Formula["MAXA"];
+
+/**
+ * Returns the maximum numeric value in a dataset.
+ * @param values The value(s) or range(s) to consider when calculating the maximum value.
+ * @returns {number} maximum value of the dataset
+ * @constructor
+ */
+var MAXA = function (...values) : number {
+  return MAX.apply(this, values);
+};
 
 
 /**

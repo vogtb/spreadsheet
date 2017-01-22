@@ -461,6 +461,15 @@ var SUM = function (...values) : number {
   return result;
 };
 
+/**
+ * The value Pi.
+ * @returns {number} Pi.
+ * @constructor
+ */
+var PI = function () {
+  return Math.PI;
+};
+
 export {
   ABS,
   ACOS,
@@ -483,5 +492,6 @@ export {
   MINA,
   MOD,
   ODD,
-  SUM
+  SUM,
+  PI
 }

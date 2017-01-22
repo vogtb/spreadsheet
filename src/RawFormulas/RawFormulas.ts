@@ -23,7 +23,8 @@ import {
   MINA,
   MOD,
   ODD,
-  SUM
+  SUM,
+  PI
 } from "./Math";
 import {
   AND,
@@ -65,9 +66,6 @@ var CONCATENATE = Formula["CONCATENATE"];
 var CONVERT = Formula["CONVERT"];
 var CORREL = Formula["CORREL"];
 var COS = Formula["COS"];
-var PI = function () {
-  return Math.PI;
-};
 var COSH = Formula["COSH"];
 var COT = Formula["COT"];
 var COTH = Formula["COTH"];
@@ -111,10 +109,6 @@ var EOMONTH = function (start_date, months) {
 };
 var ERF = Formula["ERF"];
 var ERFC = Formula["ERFC"];
-
-
-
-
 var EXPONDIST = Formula["EXPONDIST"];
 var FALSE = Formula["FALSE"];
 var __COMPLEX = {
@@ -130,9 +124,6 @@ var ISODD = Formula["ISODD"];
 var LN = Formula["LN"];
 var LOG = Formula["LOG"];
 var LOG10 = Formula["LOG10"];
-
-
-
 var OR = Formula["OR"];
 var POWER = Formula["POWER"];
 var ROUND = Formula["ROUND"];

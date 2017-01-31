@@ -667,7 +667,23 @@ assertEquals(SIN([[1]]), 0.8414709848078965);
 assertEquals(SIN([1, "str"]), 0.8414709848078965);
 
 
-assertEquals(SINH(PI()), 11.548739357257752);
+// Test SINH
+assertEquals(SINH(PI()), 11.548739357257748);
+assertEquals(SINH(1), 1.1752011936438014);
+assertEquals(SINH(false), 0);
+assertEquals(SINH(true), 1.1752011936438014);
+assertEquals(SINH(""), 0);
+assertEquals(SINH("0"), 0);
+catchAndAssertEquals(function() {
+  SINH("str");
+}, ERRORS.VALUE_ERROR);
+assertEquals(SINH([10]), 11013.232874703393);
+assertEquals(SINH([[10]]), 11013.232874703393);
+catchAndAssertEquals(function() {
+  SIN([[]]);
+}, ERRORS.REF_ERROR);
+assertEquals(SINH([[10, "str"]]), 11013.232874703393);
+
 
 assertArrayEquals(SPLIT("1,2,3", ",", true), [ '1', '2', '3' ]);
 

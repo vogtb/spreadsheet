@@ -426,7 +426,7 @@ testFormula('=SIN(PI())', 0);
 
 
 // Test SINH
-testFormula('=SINH(PI())', 11.548739357257752);
+testFormula('=SINH(PI())', 11.548739357257748);
 
 // Test SPLIT
 testFormulaToArray('=SPLIT("1,2,3", ",", TRUE)', [ '1', '2', '3' ]);

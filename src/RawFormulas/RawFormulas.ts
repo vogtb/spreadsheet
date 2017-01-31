@@ -142,7 +142,19 @@ var SIN = function (...values) {
   return rad === Math.PI ? 0 : Math.sin(rad);
 };
 
-var SINH = Formula["SINH"];
+/**
+ * Returns the hyperbolic sine of any real number.
+ * @param values[0] real number to find the hyperbolic sine of
+ * @returns {number} hyperbolic sine
+ * @constructor
+ */
+var SINH = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var rad = firstValueAsNumber(values[0]);
+  return Math["sinh"](rad);
+};
+
+
 var SPLIT = Formula["SPLIT"];
 var SQRT = Formula["SQRT"];
 var SQRTPI = Formula["SQRTPI"];

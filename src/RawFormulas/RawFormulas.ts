@@ -32,7 +32,7 @@ import {
   TRUE,
   NOT
 } from "./Logical"
-import {checkArgumentsAtLeastLength, filterOutStringValues, valueToNumber} from "./Utils";
+import {checkArgumentsAtLeastLength, filterOutStringValues, valueToNumber, checkArgumentsLength, firstValueAsNumber} from "./Utils";
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
 
@@ -129,9 +129,19 @@ var POWER = Formula["POWER"];
 var ROUND = Formula["ROUND"];
 var ROUNDDOWN = Formula["ROUNDDOWN"];
 var ROUNDUP = Formula["ROUNDUP"];
-var SIN = function (rad) {
+
+/**
+ * Returns the sine of an angle provided in radians.
+ * @param values[0] The angle to find the sine of, in radians.
+ * @returns {number} Sine of angle.
+ * @constructor
+ */
+var SIN = function (...values) {
+  checkArgumentsLength(values, 1);
+  var rad = firstValueAsNumber(values[0]);
   return rad === Math.PI ? 0 : Math.sin(rad);
 };
+
 var SINH = Formula["SINH"];
 var SPLIT = Formula["SPLIT"];
 var SQRT = Formula["SQRT"];

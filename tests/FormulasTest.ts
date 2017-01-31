@@ -11,6 +11,7 @@ import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2
     SUMSQ, SUMX2MY2, SUMX2PY2, TAN, TANH, TRUNC, XOR, YEARFRAC } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals, assertEqualsDates, assertArrayEquals} from "./utils/Asserts"
+import {firstValueAsNumber} from "../src/RawFormulas/Utils";
 
 function catchAndAssertEquals(toExecute, expected) {
   try {
@@ -648,10 +649,23 @@ assertEquals(ROUNDDOWN(99.46, 1), 99.4);
 
 assertEquals(ROUNDUP(99.46, 1), 99.5);
 
+
+// Test SIN
 assertEquals(SIN(0), 0);
 assertEquals(SIN(1), 0.8414709848078965);
 assertEquals(SIN(PI() / 2), 1);
 assertEquals(SIN(PI()), 0);
+assertEquals(SIN(true), 0.8414709848078965);
+assertEquals(SIN(false), 0);
+assertEquals(SIN("0"), 0);
+assertEquals(SIN(""), 0);
+catchAndAssertEquals(function() {
+  SIN("str");
+}, ERRORS.VALUE_ERROR);
+assertEquals(SIN([1]), 0.8414709848078965);
+assertEquals(SIN([[1]]), 0.8414709848078965);
+assertEquals(SIN([1, "str"]), 0.8414709848078965);
+
 
 assertEquals(SINH(PI()), 11.548739357257752);
 

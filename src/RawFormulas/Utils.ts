@@ -55,6 +55,21 @@ function valueToString(value: any) : string {
   }
 }
 
+/**
+ * Takes any input type and will throw a REF_ERROR or coerce it into a number.
+ * @param input to attempt to coerce into a number
+ * @returns {number} number representation of the input
+ */
+function firstValueAsNumber(input: any) : number {
+  if (input instanceof Array) {
+    if (input.length === 0) {
+      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+    }
+    return firstValueAsNumber(input[0]);
+  }
+  return valueToNumber(input);
+}
+
 
 /**
  * Converts any value to a number or throws an error if it cannot coerce it to the number type
@@ -65,6 +80,9 @@ function valueToNumber(value: any) : number {
   if (typeof value === "number") {
     return value;
   } else if (typeof value === "string") {
+    if (value === "") {
+      return 0;
+    }
     if (value.indexOf(".") > -1) {
       var fl = parseFloat(value);
       if (isNaN(fl)) {
@@ -119,6 +137,7 @@ export {
   flatten,
   valueToNumber,
   valueToString,
+  firstValueAsNumber,
   filterOutStringValues,
   checkArgumentsAtLeastLength,
   checkArgumentsLength

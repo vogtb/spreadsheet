@@ -296,7 +296,26 @@ assertEquals(CEILINGPRECISE(1001.112131), 1002);
 
 assertEquals(CHAR(97), "a");
 
+
+// Test CODE
 assertEquals(CODE('a'), 97);
+assertEquals(CODE('aa'), 97);
+assertEquals(CODE('aM'), 97);
+assertEquals(CODE('#'), 35);
+assertEquals(CODE(false), 70);
+assertEquals(CODE(true), 84);
+catchAndAssertEquals(function() {
+  CODE();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  CODE("a", "m");
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  CODE("");
+}, ERRORS.VALUE_ERROR);
+assertEquals(CODE(['a']), 97);
+assertEquals(CODE([['a'], 'p']), 97);
+
 
 assertEquals(COMBIN(4, 2), 6);
 

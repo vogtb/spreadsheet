@@ -51,7 +51,7 @@ function valueToString(value: any) : string {
   } else if (typeof value === "boolean") {
     return value ? "TRUE" : "FALSE";
   } else if (value instanceof Array) {
-    return valueToString(value[0]);
+    return valueToString(value[0]); // TODO: Take this out. It's stupid. We should handle arrays at a different level.
   }
 }
 
@@ -68,6 +68,21 @@ function firstValueAsNumber(input: any) : number {
     return firstValueAsNumber(input[0]);
   }
   return valueToNumber(input);
+}
+
+/**
+ * Takes any input type and will throw a REF_ERROR or coerce it into a string.
+ * @param input to attempt to coerce into a string
+ * @returns {number} number representation of the input
+ */
+function firstValueAsString(input: any) : string {
+  if (input instanceof Array) {
+    if (input.length === 0) {
+      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+    }
+    return firstValueAsString(input[0]);
+  }
+  return valueToString(input);
 }
 
 
@@ -138,6 +153,7 @@ export {
   valueToNumber,
   valueToString,
   firstValueAsNumber,
+  firstValueAsString,
   filterOutStringValues,
   checkArgumentsAtLeastLength,
   checkArgumentsLength

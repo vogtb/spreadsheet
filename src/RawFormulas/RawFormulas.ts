@@ -32,7 +32,7 @@ import {
   TRUE,
   NOT
 } from "./Logical"
-import {checkArgumentsAtLeastLength, filterOutStringValues, valueToNumber, checkArgumentsLength, firstValueAsNumber} from "./Utils";
+import {checkArgumentsAtLeastLength, filterOutStringValues, valueToNumber, checkArgumentsLength, firstValueAsNumber, firstValueAsString} from "./Utils";
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
 
@@ -58,7 +58,18 @@ var CEILING = Formula["CEILING"];
 var CEILINGMATH = Formula["CEILINGMATH"];
 var CEILINGPRECISE = Formula["CEILINGPRECISE"];
 var CHAR = Formula["CHAR"];
-var CODE = Formula["CODE"];
+
+/**
+ * Returns the numeric Unicode map value of the first character in the string provided.
+ * @param values[0] The string whose first character's Unicode map value will be returned.
+ * @returns {number} number of the first character's Unicode value
+ * @constructor
+ */
+var CODE = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var text = firstValueAsString(values[0]);
+  return text.charCodeAt(0);
+};
 var COMBIN = Formula["COMBIN"];
 var COMBINA = Formula["COMBINA"];
 var COMPLEX = Formula["COMPLEX"];

@@ -294,7 +294,27 @@ assertEquals(CEILINGMATH(1001.112131), 1002);
 
 assertEquals(CEILINGPRECISE(1001.112131), 1002);
 
+
+// Test CHAR
 assertEquals(CHAR(97), "a");
+assertEquals(CHAR("97"), "a");
+assertEquals(CHAR([97, "m"]), "a");
+assertEquals(CHAR([[97], "m"]), "a");
+catchAndAssertEquals(function() {
+  CHAR([[], [97], "m"]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  CHAR(false);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  CHAR(10000000);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  CHAR(0);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  CHAR();
+}, ERRORS.NA_ERROR);
 
 
 // Test CODE

@@ -57,7 +57,19 @@ var DECIMAL = Formula["DECIMAL"];
 var CEILING = Formula["CEILING"];
 var CEILINGMATH = Formula["CEILINGMATH"];
 var CEILINGPRECISE = Formula["CEILINGPRECISE"];
-var CHAR = Formula["CHAR"];
+
+
+/**
+ * Convert a number into a character according to the current Unicode table.
+ * @param values[0] The number of the character to look up from the current Unicode table in decimal format.
+ * @returns {string} character corresponding to Unicode number
+ * @constructor
+ */
+var CHAR = function (...values) : string {
+  checkArgumentsLength(values, 1);
+  var n = firstValueAsNumber(values[0]);
+  return String.fromCharCode(n);
+};
 
 /**
  * Returns the numeric Unicode map value of the first character in the string provided.

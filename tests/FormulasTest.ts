@@ -575,7 +575,25 @@ assertEquals(FISHERINV(0.962), 0.7451676440945232);
 
 assertEquals(IF("m" == "m", "hit", "miss"), 'hit');
 
+
+// Test INT
 assertEquals(INT(99.33), 99);
+assertEquals(INT(99.99), 99);
+assertEquals(INT(true), 1);
+assertEquals(INT(false), 0);
+assertEquals(INT(""), 0);
+assertEquals(INT([1.1, "str"]), 1);
+catchAndAssertEquals(function() {
+  INT(100, 10);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  INT();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  INT("str");
+}, ERRORS.VALUE_ERROR);
+
+
 
 assertEquals(ISEVEN(4), true);
 

@@ -194,7 +194,19 @@ var __COMPLEX = {
 var FISHER = Formula["FISHER"];
 var FISHERINV = Formula["FISHERINV"];
 var IF = Formula["IF"];
-var INT = Formula["INT"];
+
+/**
+ * Rounds a number down to the nearest integer that is less than or equal to it.
+ * @param values[0] The value to round down to the nearest integer.
+ * @returns {number} Rounded number
+ * @constructor
+ */
+var INT = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var x = firstValueAsNumber(values[0]);
+  return Math.floor(x);
+};
+
 var ISEVEN = Formula["ISEVEN"];
 var ISODD = Formula["ISODD"];
 var LN = Formula["LN"];

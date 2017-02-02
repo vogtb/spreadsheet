@@ -349,7 +349,25 @@ assertEquals(CONVERT(5.1, "mm", "m"), 0.0050999999999999995);
 
 assertEquals(CORREL([9, 5],[10, 4]), 1);
 
+
+// Test COS
 assertEquals(COS(PI()), -1);
+assertEquals(COS(1), 0.5403023058681398);
+assertEquals(COS(false), 1);
+assertEquals(COS(true), 0.5403023058681398);
+assertEquals(COS(""), 1);
+assertEquals(COS("0"), 1);
+catchAndAssertEquals(function() {
+  COS("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  COS();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  COS(1, 1);
+}, ERRORS.NA_ERROR);
+assertEquals(COS([0, "str"]), 1);
+
 
 assertEquals(COSH(PI()), 11.591953275521522);
 

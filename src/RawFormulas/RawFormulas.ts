@@ -88,7 +88,19 @@ var COMPLEX = Formula["COMPLEX"];
 var CONCATENATE = Formula["CONCATENATE"];
 var CONVERT = Formula["CONVERT"];
 var CORREL = Formula["CORREL"];
-var COS = Formula["COS"];
+
+/**
+ * Returns the cosine of an angle provided in radians.
+ * @param values[0] The angle to find the cosine of, in radians.
+ * @returns {number} cosine of angle
+ * @constructor
+ */
+var COS = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var rad = firstValueAsNumber(values[0]);
+  return Math.cos(rad);
+};
+
 var COSH = Formula["COSH"];
 var COT = Formula["COT"];
 var COTH = Formula["COTH"];

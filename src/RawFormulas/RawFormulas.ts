@@ -207,7 +207,22 @@ var INT = function (...values) : number {
   return Math.floor(x);
 };
 
-var ISEVEN = Formula["ISEVEN"];
+
+/**
+ * Checks whether the provided value is even.
+ * @param values[0] The value to be verified as even.
+ * @returns {boolean} whether this value is even or not
+ * @constructor
+ */
+var ISEVEN = function (...values) : boolean {
+  checkArgumentsLength(values, 1);
+  if (values[0] === "") {
+    throw new CellError(ERRORS.VALUE_ERROR, "Function ISEVEN parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.")
+  }
+  var x = firstValueAsNumber(values[0]);
+  return Math.floor(x) % 2 === 0;
+};
+
 var ISODD = Formula["ISODD"];
 var LN = Formula["LN"];
 var LOG = Formula["LOG"];

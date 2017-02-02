@@ -594,8 +594,23 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
-
+// Test ISEVEN
 assertEquals(ISEVEN(4), true);
+assertEquals(ISEVEN(3), false);
+assertEquals(ISEVEN(4.1), true);
+assertEquals(ISEVEN(false), true);
+assertEquals(ISEVEN(true), false);
+assertEquals(ISEVEN([4]), true);
+catchAndAssertEquals(function() {
+  ISEVEN(100, 10);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ISEVEN();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ISEVEN("");
+}, ERRORS.VALUE_ERROR);
+
 
 assertEquals(ISODD(3), true);
 

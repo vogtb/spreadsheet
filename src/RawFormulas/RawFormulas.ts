@@ -129,7 +129,22 @@ var COT = function (...values) : number {
 };
 
 
-var COTH = Formula["COTH"];
+/**
+ * Return the hyperbolic cotangent of a value, defined as coth(x) = 1 / tanh(x).
+ * @param values[0] value to calculate the hyperbolic cotangent value of
+ * @returns {number} hyperbolic cotangent
+ * @constructor
+ */
+var COTH = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var x = firstValueAsNumber(values[0]);
+  if (x === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function COTH caused a divide by zero error.");
+  }
+  return 1 / Math["tanh"](x);
+};
+
+
 var COUNT = Formula["COUNT"];
 var COUNTA = Formula["COUNTA"];
 var COUNTIF = Formula["COUNTIF"];

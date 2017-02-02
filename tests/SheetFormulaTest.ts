@@ -198,7 +198,7 @@ testFormula("=COSH(PI())", 11.591953275521522);
 testFormula('=COT(30)', -0.15611995216165922);
 
 // Test COTH
-testFormula('=COTH(2)', 1.0373147207275482);
+testFormula('=COTH(2)', 1.037314720727548);
 
 // Test COUNT
 testFormula('=COUNT([1, 5, 10])', 3);

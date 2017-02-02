@@ -413,7 +413,32 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
-assertEquals(COTH(2), 1.0373147207275482);
+// Test COTH
+assertEquals(COTH(30), 1);
+assertEquals(COTH(1), 1.3130352854993315);
+assertEquals(COTH(true), 1.3130352854993315);
+assertEquals(COTH([1, "str"]), 1.3130352854993315);
+assertEquals(COTH(-1), -1.3130352854993315);
+catchAndAssertEquals(function() {
+  COTH(false);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  COTH(0);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  COTH("");
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  COTH("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  COTH();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  COTH(1, 1);
+}, ERRORS.NA_ERROR);
+
+
 
 assertEquals(COUNT([1, 5, 10]), 3);
 

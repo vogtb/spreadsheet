@@ -113,7 +113,22 @@ var COSH = function (...values) : number {
   return Math["cosh"](r);
 };
 
-var COT = Formula["COT"];
+/**
+ * Returns the cotangent of any real number. Defined as cot(x) = 1 / tan(x).
+ * @param values[0] number to calculate the cotangent for
+ * @returns {number} cotangent
+ * @constructor
+ */
+var COT = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var x = firstValueAsNumber(values[0]);
+  if (x === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function COT caused a divide by zero error.");
+  }
+  return 1 / Math.tan(x);
+};
+
+
 var COTH = Formula["COTH"];
 var COUNT = Formula["COUNT"];
 var COUNTA = Formula["COUNTA"];

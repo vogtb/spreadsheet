@@ -388,7 +388,30 @@ catchAndAssertEquals(function() {
 assertEquals(COSH([0, "str"]), 1);
 
 
+// Test COT
 assertEquals(COT(30), -0.15611995216165922);
+assertEquals(COT(1), 0.6420926159343306);
+assertEquals(COT(true), 0.6420926159343306);
+assertEquals(COT([1, "str"]), 0.6420926159343306);
+catchAndAssertEquals(function() {
+  COT(false);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  COT(0);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  COT("");
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  COT("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  COT();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  COT(1, 1);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(COTH(2), 1.0373147207275482);
 

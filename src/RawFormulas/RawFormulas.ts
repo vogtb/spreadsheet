@@ -223,7 +223,23 @@ var ISEVEN = function (...values) : boolean {
   return Math.floor(x) % 2 === 0;
 };
 
-var ISODD = Formula["ISODD"];
+
+/**
+ * Checks whether the provided value is odd.
+ * @param values[0] The value to be verified as odd.
+ * @returns {boolean} whether this value is odd or not
+ * @constructor
+ */
+var ISODD = function (...values) : boolean {
+  checkArgumentsLength(values, 1);
+  if (values[0] === "") {
+    throw new CellError(ERRORS.VALUE_ERROR, "Function ISODD parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.")
+  }
+  var x = firstValueAsNumber(values[0]);
+  return Math.floor(x) % 2 === 1;
+};
+
+
 var LN = Formula["LN"];
 var LOG = Formula["LOG"];
 var LOG10 = Formula["LOG10"];

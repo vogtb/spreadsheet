@@ -612,7 +612,22 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
+// Test ISODD
+assertEquals(ISODD(4), false);
 assertEquals(ISODD(3), true);
+assertEquals(ISODD(4.1), false);
+assertEquals(ISODD(false), false);
+assertEquals(ISODD(true), true);
+assertEquals(ISODD([4]), false);
+catchAndAssertEquals(function() {
+  ISODD(100, 10);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ISODD();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ISODD("");
+}, ERRORS.VALUE_ERROR);
 
 assertEquals(LN(100), 4.605170185988092);
 

@@ -97,11 +97,22 @@ var CORREL = Formula["CORREL"];
  */
 var COS = function (...values) : number {
   checkArgumentsLength(values, 1);
-  var rad = firstValueAsNumber(values[0]);
-  return Math.cos(rad);
+  var r = firstValueAsNumber(values[0]);
+  return Math.cos(r);
 };
 
-var COSH = Formula["COSH"];
+/**
+ * Returns the hyperbolic cosine of any real number.
+ * @param values[0] Any real value to calculate the hyperbolic cosine of.
+ * @returns {number} the hyperbolic cosine of the input
+ * @constructor
+ */
+var COSH = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var r = firstValueAsNumber(values[0]);
+  return Math["cosh"](r);
+};
+
 var COT = Formula["COT"];
 var COTH = Formula["COTH"];
 var COUNT = Formula["COUNT"];

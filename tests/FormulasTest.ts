@@ -369,7 +369,24 @@ catchAndAssertEquals(function() {
 assertEquals(COS([0, "str"]), 1);
 
 
+// Test COSH
 assertEquals(COSH(PI()), 11.591953275521522);
+assertEquals(COSH(1), 1.5430806348152437);
+assertEquals(COSH(false), 1);
+assertEquals(COSH(0), 1);
+assertEquals(COSH(true), 1.5430806348152437);
+assertEquals(COSH(""), 1);
+catchAndAssertEquals(function() {
+  COSH("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  COSH();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  COSH(1, 1);
+}, ERRORS.NA_ERROR);
+assertEquals(COSH([0, "str"]), 1);
+
 
 assertEquals(COT(30), -0.15611995216165922);
 

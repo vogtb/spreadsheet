@@ -809,7 +809,30 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
+// Test OR
 assertEquals(OR(true, false), true);
+assertEquals(OR(false, false), false);
+assertEquals(OR(1, 0), true);
+assertEquals(OR([1, 0]), true);
+assertEquals(OR(false, 0, -10), true);
+assertEquals(OR([false, 0, -10]), true);
+assertEquals(OR([false, 0, [-10]]), true);
+catchAndAssertEquals(function() {
+  OR([false, 0, []]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  OR(false, "d");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  OR(false, "10");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  OR(false, "1.1");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  OR();
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(PI(), 3.141592653589793);
 

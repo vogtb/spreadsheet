@@ -46,7 +46,15 @@ import {
   CHAR,
   CODE
 } from "./Misc";
-import {checkArgumentsAtLeastLength, filterOutStringValues, valueToNumber, checkArgumentsLength, firstValueAsNumber, firstValueAsString} from "./Utils";
+import {
+  checkArgumentsAtLeastLength,
+  filterOutStringValues,
+  valueToNumber,
+  checkArgumentsLength,
+  firstValueAsNumber,
+  firstValueAsString,
+  valueToBoolean
+} from "./Utils";
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
 
@@ -129,7 +137,32 @@ var IF = Formula["IF"];
 var LN = Formula["LN"];
 var LOG = Formula["LOG"];
 var LOG10 = Formula["LOG10"];
-var OR = Formula["OR"];
+
+
+/**
+ * Returns true if any of the provided arguments are logically true, and false if all of the provided arguments are logically false.
+ * TODO: Should this allow the acceptance of functions that return true or false?
+ * @param values An expression or reference to a cell containing an expression that represents some logical value, i.e. TRUE or FALSE, or an expression that can be coerced to a logical value.
+ * @returns {boolean}
+ * @constructor
+ */
+var OR = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      if (OR.apply(this, values[i])) {
+        return true;
+      }
+    } else if (valueToBoolean(values[i])) {
+      return true;
+    }
+  }
+  return false;
+};
+
 var POWER = Formula["POWER"];
 var ROUND = Formula["ROUND"];
 var ROUNDDOWN = Formula["ROUNDDOWN"];

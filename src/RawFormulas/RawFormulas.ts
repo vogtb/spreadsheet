@@ -163,7 +163,20 @@ var OR = function (...values) {
   return false;
 };
 
-var POWER = Formula["POWER"];
+/**
+ * Returns a number raised to a power.
+ * @param values[0] The number to raise to the exponent power.
+ * @param values[1] The exponent to raise base to.
+ * @returns {number} resulting number
+ * @constructor
+ */
+var POWER = function (...values) : number {
+  checkArgumentsLength(values, 2);
+  var n = firstValueAsNumber(values[0]);
+  var p = firstValueAsNumber(values[1]);
+  return Math.pow(n, p);
+};
+
 var ROUND = Formula["ROUND"];
 var ROUNDDOWN = Formula["ROUNDDOWN"];
 var ROUNDUP = Formula["ROUNDUP"];

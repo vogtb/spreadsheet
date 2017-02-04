@@ -836,7 +836,26 @@ catchAndAssertEquals(function() {
 
 assertEquals(PI(), 3.141592653589793);
 
+
+// Test POWER
 assertEquals(POWER(4, 10), 1048576);
+assertEquals(POWER(4, false), 1);
+assertEquals(POWER(4, true), 4);
+assertEquals(POWER([4], [10]), 1048576);
+assertEquals(POWER([4], [10, "str"]), 1048576);
+catchAndAssertEquals(function() {
+  POWER(4, "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  POWER();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  POWER(4);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  POWER(4, 10, 22);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(ROUND(99.44, 1), 99.4);
 

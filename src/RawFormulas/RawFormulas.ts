@@ -36,7 +36,6 @@ import {
   SQRT,
   PI,
   POWER,
-  OR,
   LOG,
   LOG10,
   TAN,
@@ -46,7 +45,8 @@ import {
   AND,
   EXACT,
   TRUE,
-  NOT
+  NOT,
+  OR
 } from "./Logical";
 import {
   CHAR,
@@ -152,7 +152,37 @@ var SUMSQ = Formula["SUMSQ"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var TRUNC = Formula["TRUNC"];
-var XOR = Formula["XOR"];
+
+/**
+ * Exclusive or or exclusive disjunction is a logical operation that outputs true only when inputs differ.
+ * @param values to check for exclusivity.
+ * @returns {boolean} returns true if only one input is considered logically true.
+ * @constructor
+ */
+var XOR = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+  var alreadyTruthy = false;
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      if (XOR.apply(this, values[i])) {
+        if (alreadyTruthy) {
+          return false;
+        }
+        alreadyTruthy = true;
+      }
+    } else if (valueToBoolean(values[i])) {
+      if (alreadyTruthy) {
+        return false;
+      }
+      alreadyTruthy = true;
+    }
+  }
+  return alreadyTruthy;
+};
+
 var YEARFRAC = Formula["YEARFRAC"];
 
 export {

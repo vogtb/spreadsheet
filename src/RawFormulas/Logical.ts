@@ -1,4 +1,4 @@
-import { checkArgumentsAtLeastLength, checkArgumentsLength, valueToString } from "./Utils"
+import { checkArgumentsAtLeastLength, checkArgumentsLength, valueToString, valueToBoolean } from "./Utils"
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
 
@@ -91,9 +91,34 @@ var NOT = function (...values) : boolean {
   }
 };
 
+/**
+ * Returns true if any of the provided arguments are logically true, and false if all of the provided arguments are logically false.
+ * TODO: Should this allow the acceptance of functions that return true or false?
+ * @param values An expression or reference to a cell containing an expression that represents some logical value, i.e. TRUE or FALSE, or an expression that can be coerced to a logical value.
+ * @returns {boolean}
+ * @constructor
+ */
+var OR = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      if (OR.apply(this, values[i])) {
+        return true;
+      }
+    } else if (valueToBoolean(values[i])) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export {
   AND,
   EXACT,
   TRUE,
-  NOT
+  NOT,
+  OR
 }

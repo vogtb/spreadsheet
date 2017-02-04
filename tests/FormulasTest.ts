@@ -1041,11 +1041,32 @@ assertEquals(TANH([1, 44]), 0.7615941559557649);
 assertEquals(TANH([1, "str"]), 0.7615941559557649);
 
 
+// Test TRUE
 assertEquals(TRUE(), true);
 
 assertEquals(TRUNC(3.1415, 2), 3.14);
 
+// Test XOR
 assertEquals(XOR(1, 1), false);
+assertEquals(XOR(1, 0), true);
+assertEquals(XOR(0, 0, 0), false);
+assertEquals(XOR(0, 0, 1), true);
+assertEquals(XOR(0, 0, [0, 0, 1]), true);
+assertEquals(XOR(0, 1, [0, 0, 1]), false);
+catchAndAssertEquals(function() {
+  XOR("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  XOR();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  XOR(1, []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  XOR([]);
+}, ERRORS.REF_ERROR);
+
+
 
 assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 0), 18.994444444444444);
 // assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 1)', 18.99587544); // This is slightly off

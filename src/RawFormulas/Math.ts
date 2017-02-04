@@ -5,14 +5,14 @@ import * as ERRORS from "../Errors"
 
 /**
  * Returns the absolute value of a number.
- * @param value to get the absolute value of.
+ * @param values[0] to get the absolute value of.
  * @returns {number} absolute value
  * @constructor
  */
-var ABS = function (value?) {
-  checkArgumentsLength(arguments, 1);
-  value = valueToNumber(value);
-  return Math.abs(value);
+var ABS = function (...values) {
+  checkArgumentsLength(values, 1);
+  var v = valueToNumber(values[0]);
+  return Math.abs(v);
 };
 
 /**
@@ -335,9 +335,6 @@ var MAXA = function (...values) : number {
  */
 var MEDIAN = function (...values) : number {
   checkArgumentsAtLeastLength(values, 1);
-  if (values.length === 1) {
-    return valueToNumber(values[0]);
-  }
   var sortedArray = [];
   values.forEach(function (currentValue) {
     if (currentValue instanceof Array) {
@@ -355,6 +352,12 @@ var MEDIAN = function (...values) : number {
     var bN = valueToNumber(b);
     return aN - bN;
   });
+  if (sortedArray.length === 1) {
+    return valueToNumber(sortedArray[0]);
+  }
+  if (sortedArray.length === 0) {
+    throw new CellError(ERRORS.NUM_ERROR, "MEDIAN has no valid input data.");
+  }
   // even number of values
   if (sortedArray.length % 2 === 0) {
     if (sortedArray.length === 2) {
@@ -455,6 +458,9 @@ var SUM = function (...values) : number {
     if (values[i] instanceof Array) {
       result = result + SUM.apply(this, values[i]);
     } else {
+      if (values[i] === "") {
+        throw new CellError(ERRORS.VALUE_ERROR, "Function SUM parameter "+i+" expects number values. But '"+values[i]+"' is a text and cannot be coerced to a number.");
+      }
       result = result + valueToNumber(values[i]);
     }
   }

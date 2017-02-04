@@ -68,6 +68,9 @@ var CEILINGPRECISE = Formula["CEILINGPRECISE"];
 var CHAR = function (...values) : string {
   checkArgumentsLength(values, 1);
   var n = firstValueAsNumber(values[0]);
+  if (n < 1 || n > 1114112) { //limit
+    throw new CellError(ERRORS.NUM_ERROR, "Function CHAR parameter 1 value " + n + " is out of range.");
+  }
   return String.fromCharCode(n);
 };
 
@@ -80,6 +83,9 @@ var CHAR = function (...values) : string {
 var CODE = function (...values) : number {
   checkArgumentsLength(values, 1);
   var text = firstValueAsString(values[0]);
+  if (text === "") {
+    throw new CellError(ERRORS.VALUE_ERROR, "Function CODE parameter 1 value should be non-empty.");
+  }
   return text.charCodeAt(0);
 };
 var COMBIN = Formula["COMBIN"];
@@ -217,7 +223,7 @@ var INT = function (...values) : number {
 var ISEVEN = function (...values) : boolean {
   checkArgumentsLength(values, 1);
   if (values[0] === "") {
-    throw new CellError(ERRORS.VALUE_ERROR, "Function ISEVEN parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.")
+    throw new CellError(ERRORS.VALUE_ERROR, "Function ISEVEN parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
   }
   var x = firstValueAsNumber(values[0]);
   return Math.floor(x) % 2 === 0;
@@ -233,7 +239,7 @@ var ISEVEN = function (...values) : boolean {
 var ISODD = function (...values) : boolean {
   checkArgumentsLength(values, 1);
   if (values[0] === "") {
-    throw new CellError(ERRORS.VALUE_ERROR, "Function ISODD parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.")
+    throw new CellError(ERRORS.VALUE_ERROR, "Function ISODD parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
   }
   var x = firstValueAsNumber(values[0]);
   return Math.floor(x) % 2 === 1;
@@ -275,7 +281,23 @@ var SINH = function (...values) : number {
 
 
 var SPLIT = Formula["SPLIT"];
-var SQRT = Formula["SQRT"];
+
+
+/**
+ * Returns the positive square root of a positive number.
+ * @param values[0] The number for which to calculate the positive square root.
+ * @returns {number} square root
+ * @constructor
+ */
+var SQRT = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var x = firstValueAsNumber(values[0]);
+  if (x < 0) {
+    throw new CellError(ERRORS.VALUE_ERROR, "Function SQRT parameter 1 expects number values. But '" + values[0] + "' is a text and cannot be coerced to a number.");
+  }
+  return Math.sqrt(x);
+};
+
 var SQRTPI = Formula["SQRTPI"];
 var SUMIF = Formula["SUMIF"];
 var SUMPRODUCT = Formula["SUMPRODUCT"];

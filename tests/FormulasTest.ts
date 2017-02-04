@@ -14,12 +14,17 @@ import {assertEquals, assertEqualsDates, assertArrayEquals} from "./utils/Assert
 import {firstValueAsNumber} from "../src/RawFormulas/Utils";
 
 function catchAndAssertEquals(toExecute, expected) {
+  var toThrow = null;
   try {
     toExecute();
+    toThrow = true;
   } catch (actualError) {
     if (actualError.message != expected) {
       console.log(expected, "not equal to", actualError.message);
     }
+  }
+  if (toThrow) {
+    throw new Error("expected error: " + expected);
   }
 }
 
@@ -207,7 +212,7 @@ catchAndAssertEquals(function() {
   AVEDEV(10, 10, "str");
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  AVEDEV(10, 10, {});
+  AVEDEV(10, 10, []);
 }, ERRORS.REF_ERROR);
 
 
@@ -675,9 +680,6 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 assertEquals(MEDIAN(1, 1, 2, [5, "mmm", 6, 6, 9]), 5);
 assertEquals(MEDIAN(1, 1, 2, ["mm"]), 1);
-catchAndAssertEquals(function() {
-  MEDIAN(1, 1, 2, ["mm"]);
-}, ERRORS.REF_ERROR);
 assertEquals(MEDIAN(100, 22, 1, 14), 18);
 assertEquals(MEDIAN(100, 22, 1, 1), 11.5);
 assertEquals(MEDIAN(100, 22, 1), 22);
@@ -857,7 +859,27 @@ assertEquals(SINH([[10, "str"]]), 11013.232874703393);
 
 assertArrayEquals(SPLIT("1,2,3", ",", true), [ '1', '2', '3' ]);
 
+
+// Test SQRT
 assertEquals(SQRT(9), 3);
+assertEquals(SQRT("9"), 3);
+assertEquals(SQRT(4), 2);
+assertEquals(SQRT(false), 0);
+assertEquals(SQRT(true), 1);
+assertEquals(SQRT(""), 0);
+catchAndAssertEquals(function() {
+  SQRT("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  SQRT(-9);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  SQRT();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  SQRT(4, 4);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(SQRTPI(9), 5.317361552716548);
 

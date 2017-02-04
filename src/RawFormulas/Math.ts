@@ -1,5 +1,5 @@
 import { checkArgumentsLength, checkArgumentsAtLeastLength, valueToNumber, filterOutStringValues, flatten,
-    stringValuesToZeros} from "./Utils"
+    stringValuesToZeros, firstValueAsNumber} from "./Utils"
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
 
@@ -468,6 +468,143 @@ var SUM = function (...values) : number {
 };
 
 /**
+ * Returns the positive square root of a positive number.
+ * @param values[0] The number for which to calculate the positive square root.
+ * @returns {number} square root
+ * @constructor
+ */
+var SQRT = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var x = firstValueAsNumber(values[0]);
+  if (x < 0) {
+    throw new CellError(ERRORS.VALUE_ERROR, "Function SQRT parameter 1 expects number values. But '" + values[0] + "' is a text and cannot be coerced to a number.");
+  }
+  return Math.sqrt(x);
+};
+
+/**
+ * Returns the cosine of an angle provided in radians.
+ * @param values[0] The angle to find the cosine of, in radians.
+ * @returns {number} cosine of angle
+ * @constructor
+ */
+var COS = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var r = firstValueAsNumber(values[0]);
+  return Math.cos(r);
+};
+
+/**
+ * Returns the hyperbolic cosine of any real number.
+ * @param values[0] Any real value to calculate the hyperbolic cosine of.
+ * @returns {number} the hyperbolic cosine of the input
+ * @constructor
+ */
+var COSH = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var r = firstValueAsNumber(values[0]);
+  return Math["cosh"](r);
+};
+
+/**
+ * Returns the cotangent of any real number. Defined as cot(x) = 1 / tan(x).
+ * @param values[0] number to calculate the cotangent for
+ * @returns {number} cotangent
+ * @constructor
+ */
+var COT = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var x = firstValueAsNumber(values[0]);
+  if (x === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function COT caused a divide by zero error.");
+  }
+  return 1 / Math.tan(x);
+};
+
+/**
+ * Return the hyperbolic cotangent of a value, defined as coth(x) = 1 / tanh(x).
+ * @param values[0] value to calculate the hyperbolic cotangent value of
+ * @returns {number} hyperbolic cotangent
+ * @constructor
+ */
+var COTH = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var x = firstValueAsNumber(values[0]);
+  if (x === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function COTH caused a divide by zero error.");
+  }
+  return 1 / Math["tanh"](x);
+};
+
+/**
+ * Rounds a number down to the nearest integer that is less than or equal to it.
+ * @param values[0] The value to round down to the nearest integer.
+ * @returns {number} Rounded number
+ * @constructor
+ */
+var INT = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var x = firstValueAsNumber(values[0]);
+  return Math.floor(x);
+};
+
+
+/**
+ * Checks whether the provided value is even.
+ * @param values[0] The value to be verified as even.
+ * @returns {boolean} whether this value is even or not
+ * @constructor
+ */
+var ISEVEN = function (...values) : boolean {
+  checkArgumentsLength(values, 1);
+  if (values[0] === "") {
+    throw new CellError(ERRORS.VALUE_ERROR, "Function ISEVEN parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
+  }
+  var x = firstValueAsNumber(values[0]);
+  return Math.floor(x) % 2 === 0;
+};
+
+
+/**
+ * Checks whether the provided value is odd.
+ * @param values[0] The value to be verified as odd.
+ * @returns {boolean} whether this value is odd or not
+ * @constructor
+ */
+var ISODD = function (...values) : boolean {
+  checkArgumentsLength(values, 1);
+  if (values[0] === "") {
+    throw new CellError(ERRORS.VALUE_ERROR, "Function ISODD parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
+  }
+  var x = firstValueAsNumber(values[0]);
+  return Math.floor(x) % 2 === 1;
+};
+
+/**
+ * Returns the sine of an angle provided in radians.
+ * @param values[0] The angle to find the sine of, in radians.
+ * @returns {number} Sine of angle.
+ * @constructor
+ */
+var SIN = function (...values) {
+  checkArgumentsLength(values, 1);
+  var rad = firstValueAsNumber(values[0]);
+  return rad === Math.PI ? 0 : Math.sin(rad);
+};
+
+/**
+ * Returns the hyperbolic sine of any real number.
+ * @param values[0] real number to find the hyperbolic sine of
+ * @returns {number} hyperbolic sine
+ * @constructor
+ */
+var SINH = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var rad = firstValueAsNumber(values[0]);
+  return Math["sinh"](rad);
+};
+
+/**
  * The value Pi.
  * @returns {number} Pi.
  * @constructor
@@ -490,7 +627,14 @@ export {
   AVERAGE,
   AVERAGEA,
   AVEDEV,
+  COT,
+  COTH,
+  COSH,
+  COS,
   EVEN,
+  INT,
+  ISEVEN,
+  ISODD,
   MAX,
   MAXA,
   MEDIAN,
@@ -498,6 +642,9 @@ export {
   MINA,
   MOD,
   ODD,
+  SIN,
+  SINH,
   SUM,
+  SQRT,
   PI
 }

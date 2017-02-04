@@ -934,8 +934,27 @@ assertEquals(TAN([1, 44]), 1.5574077246549023);
 assertEquals(TAN([1, "str"]), 1.5574077246549023);
 
 
+// Test TANH
+assertEquals(TANH(0), 0);
+assertEquals(TANH(1), 0.7615941559557649);
+assertEquals(TANH(PI() / 2), 0.9171523356672744);
+assertEquals(TANH(PI()), 0.9962720762207501);
+assertEquals(TANH(false), 0);
+assertEquals(TANH(true), 0.7615941559557649);
+assertEquals(TANH(""), 0);
+assertEquals(TANH("0"), 0);
+catchAndAssertEquals(function() {
+  TANH("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  TANH();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  TANH(1, 1);
+}, ERRORS.NA_ERROR);
+assertEquals(TANH([1, 44]), 0.7615941559557649);
+assertEquals(TANH([1, "str"]), 0.7615941559557649);
 
-assertEquals(TANH(PI()), 0.99627207622075);
 
 assertEquals(TRUE(), true);
 

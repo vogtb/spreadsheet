@@ -148,13 +148,25 @@ var SUMX2PY2 = Formula["SUMX2PY2"];
  * @returns {number} tangent in radians
  * @constructor
  */
-var TAN = function (...values) {
+var TAN = function (...values) : number {
   checkArgumentsLength(values, 1);
   var rad = firstValueAsNumber(values[0]);
   return rad === Math.PI ? 0 : Math.tan(rad);
 };
 
-var TANH = Formula["TANH"];
+/**
+ * Returns the hyperbolic tangent of any real number.
+ * @param values[0] Any real value to calculate the hyperbolic tangent of.
+ * @returns {number} hyperbolic tangent
+ * @constructor
+ */
+var TANH = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var rad = firstValueAsNumber(values[0]);
+  return Math["tanh"](rad);
+};
+
+
 var TRUNC = Formula["TRUNC"];
 var XOR = Formula["XOR"];
 var YEARFRAC = Formula["YEARFRAC"];

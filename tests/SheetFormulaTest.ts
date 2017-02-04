@@ -466,7 +466,7 @@ testFormula('=TAN(PI() / 2)', 16331239353195370);
 testFormula('=TAN(PI())', 0);
 
 // Test TANH
-testFormula('=TANH(PI())', 0.99627207622075);
+testFormula('=TANH(PI())', 0.9962720762207501);
 
 // Test TRUE
 testFormula('=TRUE()', true);

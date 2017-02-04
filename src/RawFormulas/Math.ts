@@ -1,5 +1,5 @@
 import { checkArgumentsLength, checkArgumentsAtLeastLength, valueToNumber, filterOutStringValues, flatten,
-    stringValuesToZeros, firstValueAsNumber} from "./Utils"
+    stringValuesToZeros, firstValueAsNumber, valueToBoolean} from "./Utils"
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
 
@@ -446,6 +446,20 @@ var ODD = function (...values) : number {
 };
 
 /**
+ * Returns a number raised to a power.
+ * @param values[0] The number to raise to the exponent power.
+ * @param values[1] The exponent to raise base to.
+ * @returns {number} resulting number
+ * @constructor
+ */
+var POWER = function (...values) : number {
+  checkArgumentsLength(values, 2);
+  var n = firstValueAsNumber(values[0]);
+  var p = firstValueAsNumber(values[1]);
+  return Math.pow(n, p);
+};
+
+/**
  * Returns the sum of a series of numbers and/or cells.
  * @param values The first number or range to add together.
  * @returns {number} The sum of the series
@@ -613,6 +627,99 @@ var PI = function () {
   return Math.PI;
 };
 
+/**
+ * Returns the the logarithm of a number, base 10.
+ * @param values[0] The value for which to calculate the logarithm, base 10.
+ * @returns {number} logarithm of the number, in base 10.
+ * @constructor
+ */
+var LOG10 = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var n = firstValueAsNumber(values[0]);
+  if (n < 1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function LOG10 parameter 1 value is " + n + ". It should be greater than 0.");
+  }
+  var ln = Math.log(n);
+  var lb = Math.log(10);
+  return ln / lb;
+};
+
+/**
+ * Returns the the logarithm of a number given a base.
+ * @param values[0] The value for which to calculate the logarithm given base.
+ * @param values[1] The base to use for calculation of the logarithm. Defaults to 10.
+ * @returns {number}
+ * @constructor
+ */
+var LOG = function (...values) : number {
+  checkArgumentsAtLeastLength(values, 1);
+  var n = firstValueAsNumber(values[0]);
+  var b = 10;
+  if (values.length > 1) {
+    b = firstValueAsNumber(values[1]);
+    if (b < 1) {
+      throw new CellError(ERRORS.NUM_ERROR, "Function LOG parameter 2 value is " + b + ". It should be greater than 0.");
+    }
+  }
+  if (b < 2) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function LOG caused a divide by zero error.");
+  }
+  var ln = Math.log(n);
+  var lb = Math.log(b);
+  if (lb === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function LOG caused a divide by zero error.");
+  }
+  return ln / lb;
+};
+
+/**
+ * Returns true if any of the provided arguments are logically true, and false if all of the provided arguments are logically false.
+ * TODO: Should this allow the acceptance of functions that return true or false?
+ * @param values An expression or reference to a cell containing an expression that represents some logical value, i.e. TRUE or FALSE, or an expression that can be coerced to a logical value.
+ * @returns {boolean}
+ * @constructor
+ */
+var OR = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      if (OR.apply(this, values[i])) {
+        return true;
+      }
+    } else if (valueToBoolean(values[i])) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
+ * Returns the tangent of an angle provided in radians.
+ * @param values The angle to find the tangent of, in radians.
+ * @returns {number} tangent in radians
+ * @constructor
+ */
+var TAN = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var rad = firstValueAsNumber(values[0]);
+  return rad === Math.PI ? 0 : Math.tan(rad);
+};
+
+/**
+ * Returns the hyperbolic tangent of any real number.
+ * @param values[0] Any real value to calculate the hyperbolic tangent of.
+ * @returns {number} hyperbolic tangent
+ * @constructor
+ */
+var TANH = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var rad = firstValueAsNumber(values[0]);
+  return Math["tanh"](rad);
+};
+
 export {
   ABS,
   ACOS,
@@ -646,5 +753,11 @@ export {
   SINH,
   SUM,
   SQRT,
-  PI
+  PI,
+  POWER,
+  OR,
+  LOG,
+  LOG10,
+  TAN,
+  TANH
 }

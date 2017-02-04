@@ -636,7 +636,32 @@ catchAndAssertEquals(function() {
 
 assertEquals(LN(100), 4.605170185988092);
 
+
+// Test LOG
 assertEquals(LOG(256, 2), 8);
+assertEquals(LOG(100), 2);
+assertEquals(LOG(100), 2);
+assertEquals(LOG(256, 10), 2.408239965311849);
+assertEquals(LOG(256), 2.408239965311849);
+assertEquals(LOG("100"), 2);
+assertEquals(LOG(1, 2), 0);
+catchAndAssertEquals(function() {
+  LOG("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  LOG(256, 0);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  LOG(256, 1);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  LOG(256, false);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  LOG(256, true);
+}, ERRORS.DIV_ZERO_ERROR);
+
+
 
 assertEquals(LOG10(100), 2);
 

@@ -135,9 +135,35 @@ var FISHER = Formula["FISHER"];
 var FISHERINV = Formula["FISHERINV"];
 var IF = Formula["IF"];
 var LN = Formula["LN"];
-var LOG = Formula["LOG"];
 var LOG10 = Formula["LOG10"];
 
+/**
+ * Returns the the logarithm of a number given a base.
+ * @param values[0] The value for which to calculate the logarithm given base.
+ * @param values[1] The base to use for calculation of the logarithm. Defaults to 10.
+ * @returns {number}
+ * @constructor
+ */
+var LOG = function (...values) : number {
+  checkArgumentsAtLeastLength(values, 1);
+  var n = firstValueAsNumber(values[0]);
+  var b = 10;
+  if (values.length > 1) {
+    b = firstValueAsNumber(values[1]);
+    if (b < 1) {
+      throw new CellError(ERRORS.NUM_ERROR, "Function LOG parameter 2 value is " + b + ". It should be greater than 0.");
+    }
+  }
+  if (b < 2) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function LOG caused a divide by zero error.");
+  }
+  var ln = Math.log(n);
+  var lb = Math.log(b);
+  if (lb === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function LOG caused a divide by zero error.");
+  }
+  return ln / lb;
+};
 
 /**
  * Returns true if any of the provided arguments are logically true, and false if all of the provided arguments are logically false.

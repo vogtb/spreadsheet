@@ -662,8 +662,26 @@ catchAndAssertEquals(function() {
 }, ERRORS.DIV_ZERO_ERROR);
 
 
-
+// Test LOG10
 assertEquals(LOG10(100), 2);
+assertEquals(LOG10("100"), 2);
+assertEquals(LOG10(1), 0);
+assertEquals(LOG10(10.1), 1.0043213737826424);
+catchAndAssertEquals(function() {
+  LOG10(false);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  LOG10("");
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  LOG10("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  LOG10();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  LOG10(10, 10);
+}, ERRORS.NA_ERROR);
 
 
 // Test MAX

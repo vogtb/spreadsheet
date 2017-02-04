@@ -135,7 +135,24 @@ var FISHER = Formula["FISHER"];
 var FISHERINV = Formula["FISHERINV"];
 var IF = Formula["IF"];
 var LN = Formula["LN"];
-var LOG10 = Formula["LOG10"];
+
+
+/**
+ * Returns the the logarithm of a number, base 10.
+ * @param values[0] The value for which to calculate the logarithm, base 10.
+ * @returns {number} logarithm of the number, in base 10.
+ * @constructor
+ */
+var LOG10 = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var n = firstValueAsNumber(values[0]);
+  if (n < 1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function LOG10 parameter 1 value is " + n + ". It should be greater than 0.");
+  }
+  var ln = Math.log(n);
+  var lb = Math.log(10);
+  return ln / lb;
+};
 
 /**
  * Returns the the logarithm of a number given a base.

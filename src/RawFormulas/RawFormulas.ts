@@ -141,9 +141,19 @@ var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMSQ = Formula["SUMSQ"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
-var TAN = function (rad) {
+
+/**
+ * Returns the tangent of an angle provided in radians.
+ * @param values The angle to find the tangent of, in radians.
+ * @returns {number} tangent in radians
+ * @constructor
+ */
+var TAN = function (...values) {
+  checkArgumentsLength(values, 1);
+  var rad = firstValueAsNumber(values[0]);
   return rad === Math.PI ? 0 : Math.tan(rad);
 };
+
 var TANH = Formula["TANH"];
 var TRUNC = Formula["TRUNC"];
 var XOR = Formula["XOR"];

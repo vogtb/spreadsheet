@@ -912,10 +912,28 @@ assertEquals(SUMX2MY2([1,2,3],[4,5,6]), -63);
 
 assertEquals(SUMX2PY2([1, 2, 3], [4, 5, 6]), 91);
 
+// Test TAN
 assertEquals(TAN(0), 0);
 assertEquals(TAN(1), 1.5574077246549023);
 assertEquals(TAN(PI() / 2), 16331239353195370);
 assertEquals(TAN(PI()), 0);
+assertEquals(TAN(false), 0);
+assertEquals(TAN(true), 1.5574077246549023);
+assertEquals(TAN(""), 0);
+assertEquals(TAN("0"), 0);
+catchAndAssertEquals(function() {
+  TAN("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  TAN();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  TAN(1, 1);
+}, ERRORS.NA_ERROR);
+assertEquals(TAN([1, 44]), 1.5574077246549023);
+assertEquals(TAN([1, "str"]), 1.5574077246549023);
+
+
 
 assertEquals(TANH(PI()), 0.99627207622075);
 

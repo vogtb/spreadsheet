@@ -46,6 +46,7 @@ import {
   AND,
   EXACT,
   TRUE,
+  FALSE,
   NOT,
   OR
 } from "./Logical";
@@ -133,7 +134,6 @@ var EOMONTH = function (start_date, months) {
 var ERF = Formula["ERF"];
 var ERFC = Formula["ERFC"];
 var EXPONDIST = Formula["EXPONDIST"];
-var FALSE = Formula["FALSE"];
 var __COMPLEX = {
   "F.DIST": Formula["FDIST"],
   "F.INV": Formula["FINV"]

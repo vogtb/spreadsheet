@@ -63,6 +63,15 @@ var TRUE = function () : boolean {
 };
 
 /**
+ * Returns false.
+ * @returns {boolean} false boolean
+ * @constructor
+ */
+var FALSE = function () : boolean {
+  return false;
+};
+
+/**
  * Returns the opposite of a logical value - NOT(TRUE) returns FALSE; NOT(FALSE) returns TRUE.
  * @param values[0] An expression or reference to a cell holding an expression that represents some logical value.
  * @returns {boolean} opposite of a logical value input
@@ -119,6 +128,7 @@ export {
   AND,
   EXACT,
   TRUE,
+  FALSE,
   NOT,
   OR
 }

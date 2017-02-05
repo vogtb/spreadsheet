@@ -673,6 +673,21 @@ var LOG = function (...values) : number {
 };
 
 /**
+ * Returns the logarithm of a number, base e (Euler's number).
+ * @param values[0] The value for which to calculate the logarithm, base e.
+ * @returns {number} logarithm calculated
+ * @constructor
+ */
+var LN = function (...values) : number {
+  checkArgumentsLength(values, 1);
+  var n = firstValueAsNumber(values[0]);
+  if (n < 1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function LN parameter 1 value is " + n + ". It should be greater than 0.");
+  }
+  return Math.log(n);
+};
+
+/**
  * Returns the tangent of an angle provided in radians.
  * @param values The angle to find the tangent of, in radians.
  * @returns {number} tangent in radians
@@ -733,6 +748,7 @@ export {
   POWER,
   LOG,
   LOG10,
+  LN,
   TAN,
   TANH
 }

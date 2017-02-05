@@ -634,7 +634,24 @@ catchAndAssertEquals(function() {
   ISODD("");
 }, ERRORS.VALUE_ERROR);
 
+
+// Test LN
 assertEquals(LN(100), 4.605170185988092);
+assertEquals(LN("100"), 4.605170185988092);
+assertEquals(LN(1), 0);
+assertEquals(LN(true), 0);
+catchAndAssertEquals(function() {
+  LN(false);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  LN("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  LN();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  LN(10, 10);
+}, ERRORS.NA_ERROR);
 
 
 // Test LOG

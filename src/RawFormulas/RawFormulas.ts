@@ -38,6 +38,7 @@ import {
   POWER,
   LOG,
   LOG10,
+  LN,
   TAN,
   TANH
 } from "./Math";
@@ -140,7 +141,6 @@ var __COMPLEX = {
 var FISHER = Formula["FISHER"];
 var FISHERINV = Formula["FISHERINV"];
 var IF = Formula["IF"];
-var LN = Formula["LN"];
 var ROUND = Formula["ROUND"];
 var ROUNDDOWN = Formula["ROUNDDOWN"];
 var ROUNDUP = Formula["ROUNDUP"];
@@ -152,6 +152,7 @@ var SUMSQ = Formula["SUMSQ"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var TRUNC = Formula["TRUNC"];
+var YEARFRAC = Formula["YEARFRAC"];
 
 /**
  * Exclusive or or exclusive disjunction is a logical operation that outputs true only when inputs differ.
@@ -182,8 +183,6 @@ var XOR = function (...values) {
   }
   return alreadyTruthy;
 };
-
-var YEARFRAC = Formula["YEARFRAC"];
 
 export {
   __COMPLEX,

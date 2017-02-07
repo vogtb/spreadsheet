@@ -56,6 +56,7 @@ import {
 } from "./Misc";
 import {
   checkArgumentsAtLeastLength,
+  checkArgumentsAtWithin,
   valueCanCoerceToNumber,
   filterOutStringValues,
   valueToNumber,
@@ -164,7 +165,22 @@ var DEC2BIN = Formula["DEC2BIN"];
 var DEC2HEX = Formula["DEC2HEX"];
 var DEC2OCT = Formula["DEC2OCT"];
 var DEGREES = Formula["DEGREES"];
-var DELTA = Formula["DELTA"];
+
+/**
+ * Compare two numeric values, returning 1 if they're equal.
+ * @param values[0] The first number to compare.
+ * @param values[1] The second number to compare.
+ * @returns {number} 1 if they're equal, 0 if they're not equal.
+ * @constructor
+ */
+var DELTA = function (...values) : number {
+  checkArgumentsAtWithin(values, 1, 2);
+  if (values.length === 1) {
+    return valueToNumber(values[0]) === 0 ? 1 : 0;
+  }
+  return valueToNumber(values[0]) === valueToNumber(values[1]) ? 1 : 0;
+};
+
 var DEVSQ = Formula["DEVSQ"];
 var DOLLAR = Formula["DOLLAR"];
 var DOLLARDE = Formula["DOLLARDE"];

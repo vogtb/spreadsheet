@@ -521,7 +521,31 @@ assertEquals(DEC2OCT("100"), "144");
 
 assertEquals(DEGREES(PI()), 180);
 
+
+// Test DELTA
 assertEquals(DELTA(2, 2), 1);
+assertEquals(DELTA(2, 1), 0);
+assertEquals(DELTA(2), 0);
+assertEquals(DELTA("", ""), 1);
+assertEquals(DELTA(false), 1);
+assertEquals(DELTA(true), 0);
+assertEquals(DELTA(2.2, 2.1), 0);
+assertEquals(DELTA(1, true), 1);
+assertEquals(DELTA(0, false), 1);
+assertEquals(DELTA(true, true), 1);
+catchAndAssertEquals(function() {
+  DELTA("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DELTA("n", "n");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DELTA();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DELTA(1, 2, 3);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(DEVSQ(1, 2), 0.5);
 

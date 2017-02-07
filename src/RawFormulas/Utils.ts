@@ -24,6 +24,18 @@ function checkArgumentsAtLeastLength(args: any, length: number) {
 }
 
 /**
+ * Checks to see if the arguments are within a max and min, inclusively
+ * @param args to check length of
+ * @param low least number of arguments
+ * @param high max number of arguments
+ */
+function checkArgumentsAtWithin(args: any, low: number, high: number) {
+  if (args.length > high || args.length < low) {
+    throw new CellError(ERRORS.NA_ERROR, "Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
+  }
+}
+
+/**
  * Filter out all strings from an array.
  * @param arr to filter
  * @returns {Array} filtered array
@@ -192,5 +204,6 @@ export {
   firstValueAsString,
   filterOutStringValues,
   checkArgumentsAtLeastLength,
+  checkArgumentsAtWithin,
   checkArgumentsLength
 }

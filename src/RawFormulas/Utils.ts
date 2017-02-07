@@ -8,7 +8,7 @@ import * as ERRORS from "../Errors"
  */
 function checkArgumentsLength(args: any, length: number) {
   if (args.length !== length) {
-    throw new CellError(ERRORS.NA_ERROR, "Wrong number of arguments to ABS. Expected 1 arguments, but got " + args.length + " arguments.");
+    throw new CellError(ERRORS.NA_ERROR, "Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
   }
 }
 
@@ -19,7 +19,7 @@ function checkArgumentsLength(args: any, length: number) {
  */
 function checkArgumentsAtLeastLength(args: any, length: number) {
   if (args.length < length) {
-    throw new CellError(ERRORS.NA_ERROR, "Wrong number of arguments to ABS. Expected 1 arguments, but got " + args.length + " arguments.");
+    throw new CellError(ERRORS.NA_ERROR, "Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
   }
 }
 
@@ -116,6 +116,26 @@ function valueToNumber(value: any) : number {
   return 0;
 }
 
+/**
+ * Returns true if we can coerce it to the number type
+ * @param value to coerce
+ * @returns {boolean} if could be coerced to a number
+ */
+function valueCanCoerceToNumber(value: any) : boolean {
+  if (typeof value === "number" || typeof value === "boolean") {
+    return true;
+  } else if (typeof value === "string") {
+    if (value === "") {
+      return false;
+    }
+    if (value.indexOf(".") > -1) {
+      return !isNaN(parseFloat(value));
+    }
+    return !isNaN(parseInt(value));
+  }
+  return false;
+}
+
 
 /**
  * Converts string values in array to 0
@@ -164,6 +184,7 @@ function flatten(values: Array<any>) : Array<any> {
 export {
   stringValuesToZeros,
   flatten,
+  valueCanCoerceToNumber,
   valueToNumber,
   valueToString,
   valueToBoolean,

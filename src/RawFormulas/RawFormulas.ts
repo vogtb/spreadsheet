@@ -56,6 +56,7 @@ import {
 } from "./Misc";
 import {
   checkArgumentsAtLeastLength,
+  valueCanCoerceToNumber,
   filterOutStringValues,
   valueToNumber,
   checkArgumentsLength,
@@ -93,7 +94,28 @@ var COMPLEX = Formula["COMPLEX"];
 var CONCATENATE = Formula["CONCATENATE"];
 var CONVERT = Formula["CONVERT"];
 var CORREL = Formula["CORREL"];
-var COUNT = Formula["COUNT"];
+
+/**
+ * Returns the a count of the number of numeric values in a dataset.
+ * @param values The values or ranges to consider when counting.
+ * @returns {number} number of numeric values in a dataset.
+ * @constructor
+ */
+var COUNT = function (...values) : number {
+  checkArgumentsAtLeastLength(values, 1);
+  var count = 0;
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length > 0) {
+        count += COUNT.apply(this, values[i]);
+      }
+    } else if (valueCanCoerceToNumber(values[i])) {
+      count++;
+    }
+  }
+  return count;
+};
+
 var COUNTA = Formula["COUNTA"];
 var COUNTIF = Formula["COUNTIF"];
 var COUNTIFS = Formula["COUNTIFS"];

@@ -444,8 +444,19 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test COUNT
+assertEquals(COUNT([1, 5, 10, 0]), 4);
+assertEquals(COUNT(1, 5, 10, 0), 4);
+assertEquals(COUNT(1, 5, 10, "0"), 4);
+assertEquals(COUNT(1, 5, 10, ["0", "str"]), 4);
+assertEquals(COUNT(1, 5, 10, false), 4);
+assertEquals(COUNT(1, 5, 10, true), 4);
+assertEquals(COUNT([]), 0);
+assertEquals(COUNT(["str"]), 0);
+catchAndAssertEquals(function() {
+  COUNT();
+}, ERRORS.NA_ERROR);
 
-assertEquals(COUNT([1, 5, 10]), 3);
 
 assertEquals(COUNTA(10, 10, 22), 3);
 

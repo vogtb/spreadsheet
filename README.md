@@ -14,6 +14,8 @@ Things I should do.
 * SUM_ formulas
 * ACCRINT
 
+### SUM and SUMA should be different, and I'm pretty sure they're currently the same.
+
 ### Date-Time issues
 Here are a couple of the issues with Dates and so on:
 * There seem to be a few issues where someone did something sloppy inside formulaJS, and timezones, daylight-savings,

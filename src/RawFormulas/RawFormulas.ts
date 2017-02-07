@@ -116,7 +116,31 @@ var COUNT = function (...values) : number {
   return count;
 };
 
-var COUNTA = Formula["COUNTA"];
+
+/**
+ * Returns the a count of the number of values in a dataset.
+ * @param values The values or ranges to consider when counting.
+ * @returns {number} number of values in a dataset.
+ * @constructor
+ */
+var COUNTA = function (...values) : number {
+  checkArgumentsAtLeastLength(values, 1);
+  var count = 0;
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length > 0) {
+        count += COUNTA.apply(this, values[i]);
+      } else {
+        count++;
+      }
+    } else {
+      count++;
+    }
+  }
+  return count;
+};
+
+
 var COUNTIF = Formula["COUNTIF"];
 var COUNTIFS = Formula["COUNTIFS"];
 var COUNTIN = Formula["COUNTIN"];

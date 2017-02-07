@@ -458,7 +458,20 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
-assertEquals(COUNTA(10, 10, 22), 3);
+// Test COUNTA
+assertEquals(COUNTA(1, 2, 3), 3);
+assertEquals(COUNTA(0, 1, 2, 3), 4);
+assertEquals(COUNTA(0, 1, 2, 3, [], []), 6);
+assertEquals(COUNTA(0, 1, 2, 3, [], ""), 6);
+assertEquals(COUNTA(1, 2, "3"), 3);
+assertEquals(COUNTA(1, 2, "3", ["str"]), 4);
+assertEquals(COUNTA(1, 2, false), 3);
+assertEquals(COUNTA(1, 2, true), 3);
+assertEquals(COUNTA([]), 1);
+catchAndAssertEquals(function() {
+  COUNTA();
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(COUNTIF([1, 5, 10], ">4"), 2);
 

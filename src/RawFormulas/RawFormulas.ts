@@ -203,7 +203,24 @@ var __COMPLEX = {
 var FISHER = Formula["FISHER"];
 var FISHERINV = Formula["FISHERINV"];
 var IF = Formula["IF"];
-var ROUND = Formula["ROUND"];
+
+/**
+ * Rounds a number to a certain number of decimal places according to standard rules.
+ * @param values[0] The value to round to places number of places.
+ * @param values[1] The number of decimal places to which to round.
+ * @returns {number}
+ * @constructor
+ */
+var ROUND = function (...values) {
+  checkArgumentsAtWithin(values, 1, 2);
+  var n = firstValueAsNumber(values[0]);
+  if (values.length === 1) {
+    return Math.round(n);
+  }
+  var d = firstValueAsNumber(values[1]);
+  return Math.round(n * Math.pow(10, d)) / Math.pow(10, d);
+};
+
 var ROUNDDOWN = Formula["ROUNDDOWN"];
 var ROUNDUP = Formula["ROUNDUP"];
 var SPLIT = Formula["SPLIT"];

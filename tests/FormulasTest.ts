@@ -965,7 +965,20 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test ROUND
 assertEquals(ROUND(99.44, 1), 99.4);
+assertEquals(ROUND(99.44, 0), 99);
+assertEquals(ROUND(99.4444444444444, 9), 99.444444444);
+assertEquals(ROUND(99.44), 99);
+assertEquals(ROUND("99.44"), 99);
+assertEquals(ROUND([99.44, 22.222], [1, 4]), 99.4);
+catchAndAssertEquals(function() {
+  ROUND();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ROUND(99.44, 1, 44);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(ROUNDDOWN(99.46, 1), 99.4);
 

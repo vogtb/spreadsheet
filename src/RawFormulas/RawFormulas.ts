@@ -221,7 +221,22 @@ var ROUND = function (...values) {
   return Math.round(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
-var ROUNDDOWN = Formula["ROUNDDOWN"];
+/**
+ * Rounds a number to a certain number of decimal places, always rounding down to the next valid increment.
+ * @param values[0] The value to round to places number of places, always rounding down.
+ * @param values[1] (optional) The number of decimal places to which to round.
+ * @returns {number}
+ * @constructor
+ */
+var ROUNDDOWN = function (...values) {
+  checkArgumentsAtWithin(values, 1, 2);
+  var n = firstValueAsNumber(values[0]);
+  if (values.length === 1) {
+    return Math.floor(n);
+  }
+  var d = firstValueAsNumber(values[1]);
+  return Math.floor(n * Math.pow(10, d)) / Math.pow(10, d);
+};
 var ROUNDUP = Formula["ROUNDUP"];
 var SPLIT = Formula["SPLIT"];
 var SQRTPI = Formula["SQRTPI"];

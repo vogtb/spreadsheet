@@ -978,9 +978,28 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   ROUND(99.44, 1, 44);
 }, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ROUND(99.999, "str");
+}, ERRORS.VALUE_ERROR);
 
 
+// Test ROUNDDOWN
 assertEquals(ROUNDDOWN(99.46, 1), 99.4);
+assertEquals(ROUNDDOWN(99.99, 1), 99.9);
+assertEquals(ROUNDDOWN(99.5555555555555, 9), 99.555555555);
+assertEquals(ROUNDDOWN(99.99), 99);
+assertEquals(ROUNDDOWN("99.99"), 99);
+assertEquals(ROUNDDOWN([99.46666, 22.222], [1, 4]), 99.4);
+catchAndAssertEquals(function() {
+  ROUNDDOWN();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ROUNDDOWN(99.44, 1, 44);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ROUNDDOWN(99.999, "str");
+}, ERRORS.VALUE_ERROR);
+
 
 assertEquals(ROUNDUP(99.46, 1), 99.5);
 

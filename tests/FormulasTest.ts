@@ -1099,7 +1099,45 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
-assertEquals(SUMIF([1, 5, 10], ">2"), 15);
+// Test SUMIF
+assertEquals(SUMIF([1, 5, 10], 5), 5);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], 5), 20);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], 10), 10);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], ">5"), 10);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], "=5"), 20);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], "=1"), 1);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], "=     1  "), 1);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], ">0"), 31);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], ">=5"), 30);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], "<10"), 21);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5, 44], "<=10"), 31);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], ">4.99"), 30);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], "<4.99"), 1);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], "=     1.0.0  "), 0);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], "=>5"), 0);
+assertEquals(SUMIF([1, 5, 5, 5, 10, 5], "==5"), 0);
+assertEquals(SUMIF(["m", "m", 3, 11, true], "m"), 0);
+assertEquals(SUMIF(["m", "p", "m"], "m", [1, 1, 1]), 2);
+assertEquals(SUMIF(["p", "p", "p"], "m", [1, 1, 1]), 0);
+assertEquals(SUMIF(["p", "p", "p"], "", [1, 1, 1]), 0);
+assertEquals(SUMIF(["p", "p", "p"], "*", [1, 1, 1]), 3);
+assertEquals(SUMIF(["mom", "pop", "pap"], "*o*", [1, 1, 1]), 2);
+assertEquals(SUMIF(["mom", "pop", "pap"], "*a*", [1, 1, 1]), 1);
+assertEquals(SUMIF(["mom", "pop", "pap"], "p*p", [1, 1, 1]), 2);
+assertEquals(SUMIF(["mom", "pop", "pap"], "p*p", [1, 1, 1]), 2);
+assertEquals(SUMIF(["mom", "pop", "pap"], "p*p", [1, 1,]), 1);
+assertEquals(SUMIF(["pop", "pap"], "p*p", [1, 2, 4]), 3);
+assertEquals(SUMIF([0, 1, 0, 1], "=1", [1, 2, 4, 8]), 10);
+catchAndAssertEquals(function() {
+  SUMIF([0, 1, 0, 1]);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  SUMIF();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  SUMIF([], "=1", [], true);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(SUMPRODUCT([1, 5, 10]), 16);
 

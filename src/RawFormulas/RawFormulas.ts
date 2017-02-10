@@ -255,9 +255,88 @@ var ROUNDUP = function (...values) {
   return Math.ceil(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
+/**
+ * Returns a conditional sum across a range.
+ * @param values[0] The range which is tested against criterion.
+ * @param values[1] The pattern or test to apply to range. If the range to check against contains text, this must be a
+ * string. It can be a comparison based string (e.g. "=1", "<1", ">=1") or it can be a wild-card string, in which *
+ * matches any number of characters, and ? matches the next character. Both ? and * can be escaped by placing a ~ in
+ * front of them.
+ * @param values[2] (optional) The range to be summed, if different from range.
+ * @returns {number}
+ * @constructor
+ */
+var SUMIF = function (...values) {
+  checkArgumentsAtWithin(values, 2, 3);
+  var range = values[0];
+  var criteria = values[1];
+  var sumRange = null;
+  if (values.length === 3) {
+    sumRange = values[2];
+  }
+  // Default criteria does nothing
+  var criteriaEvaluation = function (x) : boolean {
+    return false;
+  };
+
+
+  if (typeof criteria === "number") {
+    criteriaEvaluation = function (x) : boolean {
+      return x === criteria;
+    };
+  } else if (typeof criteria === "string") {
+    // https://regex101.com/r/c2hxAZ/6
+    var comparisonMatches = criteria.match(/(^<=|^>=|^=|^>|^<)\s*(-?[0-9]+([,.][0-9]+)?)\s*$/);
+    if (comparisonMatches !== null && comparisonMatches.length >= 4 && comparisonMatches[2] !== undefined) {
+      criteriaEvaluation = function (x) : boolean {
+        return eval(x + criteria);
+      };
+      if (comparisonMatches[1] === "=") {
+        criteriaEvaluation = function (x) : boolean {
+          return eval(x + "===" + comparisonMatches[2]);
+        };
+      }
+    } else if (criteria.match(/\*|\~\*|\?|\~\?/) !== null) {
+      // Regular string
+      var matches = criteria.match(/\*|\~\*|\?|\~\?/);
+      if (matches !== null) {
+        criteriaEvaluation = function (x) : boolean {
+          try {
+            // http://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
+            return new RegExp("^" + criteria.split("*").join(".*") + "$").test(x);
+          } catch (e) {
+            return false;
+          }
+        };
+      } else {
+        criteriaEvaluation = function (x) : boolean {
+          return x === criteria;
+        };
+      }
+    } else {
+      criteriaEvaluation = function (x) : boolean {
+        return x === criteria;
+      };
+    }
+  }
+
+  var sum = 0;
+  for (var i = 0; i < range.length; i++) {
+    var x = range[i];
+    if (sumRange && i > sumRange.length-1) {
+      continue;
+    }
+    if (values.length === 2 && valueCanCoerceToNumber(x) && criteriaEvaluation(x)) {
+      sum = sum + x;
+    } else if (values.length === 3 && valueCanCoerceToNumber(sumRange[i]) && criteriaEvaluation(x)) {
+      sum = sum + sumRange[i];
+    }
+  }
+  return sum;
+};
+
 var SPLIT = Formula["SPLIT"];
 var SQRTPI = Formula["SQRTPI"];
-var SUMIF = Formula["SUMIF"];
 var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMSQ = Formula["SUMSQ"];
 var SUMX2MY2 = Formula["SUMX2MY2"];

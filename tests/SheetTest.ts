@@ -39,7 +39,7 @@ var SUM_FORMULA = "=SUM(A1:D1, H1)";
 var MAX_FORMULA = "=MAX(A2:J2)";
 var MIN_FORMULA = "=MIN(A3:J3)";
 var AVERAGE_FORMULA = "=AVERAGE(A4:J4)";
-var SUM_IF_FORMULA = "=SUMIF(A5:J5,'>5')";
+var SUM_IF_FORMULA = "=SUMIF(A5:J5,5)";
 var SUM_REF_FORMULA = "=SUM(K1, K2, K3, K4)";
 sheet.load([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, SUM_FORMULA],
   [-1, -10, 2, 4, 100, 1, 50, 20, 200, -100, MAX_FORMULA],
@@ -68,7 +68,7 @@ assertEquals(AVERAGE_FORMULA.substr(1), K4.getFormula());
 assertEquals(null, K4.getError());
 assertArrayEquals(['A4', 'B4', 'C4', 'D4', 'E4', 'F4', 'G4', 'H4', 'I4', 'J4'], K4.getDependencies());
 var K5 = sheet.getCell("K5");
-assertEquals("50", K5.getValue());
+assertEquals("0", K5.getValue());
 assertEquals(SUM_IF_FORMULA.substr(1), K5.getFormula());
 assertEquals(null, K5.getError());
 assertArrayEquals(['A5', 'B5', 'C5', 'D5', 'E5', 'F5', 'G5', 'H5', 'I5', 'J5'], K5.getDependencies());

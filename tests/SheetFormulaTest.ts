@@ -441,7 +441,7 @@ testFormula('=SQRTPI(9)', 5.317361552716548);
 testFormula('=SUM(10, 10)', 20);
 
 // Test SUMIF
-testFormula('=SUMIF([1, 5, 10], ">2")', 15);
+testFormula('=SUMIF([1, 5, 10], 5)', 5);
 
 // Test SUMPRODUCT
 testFormula('=SUMPRODUCT([1, 5, 10])', 16);

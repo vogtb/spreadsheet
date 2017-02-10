@@ -1001,7 +1001,22 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
+// Test ROUNDUP
 assertEquals(ROUNDUP(99.46, 1), 99.5);
+assertEquals(ROUNDUP(99.99, 1), 100);
+assertEquals(ROUNDUP(99.5555555555555, 9), 99.555555556);
+assertEquals(ROUNDUP(99.99), 100);
+assertEquals(ROUNDUP("99.99"), 100);
+assertEquals(ROUNDUP([99.46666, 22.222], [1, 4]), 99.5);
+catchAndAssertEquals(function() {
+  ROUNDUP();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ROUNDUP(99.44, 1, 44);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ROUNDUP(99.999, "str");
+}, ERRORS.VALUE_ERROR);
 
 
 // Test SIN

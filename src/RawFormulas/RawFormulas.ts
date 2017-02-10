@@ -237,7 +237,24 @@ var ROUNDDOWN = function (...values) {
   var d = firstValueAsNumber(values[1]);
   return Math.floor(n * Math.pow(10, d)) / Math.pow(10, d);
 };
-var ROUNDUP = Formula["ROUNDUP"];
+
+/**
+ * Rounds a number to a certain number of decimal places, always rounding up to the next valid increment.
+ * @param values[0] The value to round to places number of places, always rounding up.
+ * @param values[1] (optional) The number of decimal places to which to round.
+ * @returns {number}
+ * @constructor
+ */
+var ROUNDUP = function (...values) {
+  checkArgumentsAtWithin(values, 1, 2);
+  var n = firstValueAsNumber(values[0]);
+  if (values.length === 1) {
+    return Math.ceil(n);
+  }
+  var d = firstValueAsNumber(values[1]);
+  return Math.ceil(n * Math.pow(10, d)) / Math.pow(10, d);
+};
+
 var SPLIT = Formula["SPLIT"];
 var SQRTPI = Formula["SQRTPI"];
 var SUMIF = Formula["SUMIF"];

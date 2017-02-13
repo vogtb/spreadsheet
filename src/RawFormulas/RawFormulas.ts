@@ -59,6 +59,7 @@ import {
   checkArgumentsAtWithin,
   valueCanCoerceToNumber,
   filterOutStringValues,
+  CriteriaFunctionFactory,
   valueToNumber,
   checkArgumentsLength,
   firstValueAsNumber,
@@ -95,6 +96,58 @@ var COMPLEX = Formula["COMPLEX"];
 var CONCATENATE = Formula["CONCATENATE"];
 var CONVERT = Formula["CONVERT"];
 var CORREL = Formula["CORREL"];
+var COUNTIFS = Formula["COUNTIFS"];
+var COUNTIN = Formula["COUNTIN"];
+var COUNTUNIQUE = Formula["COUNTUNIQUE"];
+var COVARIANCEP = Formula["COVARIANCEP"];
+var COVARIANCES = Formula["COVARIANCES"];
+var CSC = Formula["CSC"];
+var CSCH = Formula["CSCH"];
+var CUMIPMT = Formula["CUMIPMT"];
+var CUMPRINC = Formula["CUMPRINC"];
+var DATE = Formula["DATE"];
+var DATEVALUE = function (dateString: string) : Date {
+  return new Date(dateString);
+};
+var DAY = Formula["DAY"];
+var DAYS = Formula["DAYS"];
+var DAYS360 = Formula["DAYS360"];
+var DB = Formula["DB"];
+var DDB = Formula["DDB"];
+var DEC2BIN = Formula["DEC2BIN"];
+var DEC2HEX = Formula["DEC2HEX"];
+var DEC2OCT = Formula["DEC2OCT"];
+var DEGREES = Formula["DEGREES"];
+var DEVSQ = Formula["DEVSQ"];
+var DOLLAR = Formula["DOLLAR"];
+var DOLLARDE = Formula["DOLLARDE"];
+var DOLLARFR = Formula["DOLLARFR"];
+var EDATE = function (start_date: Date, months) {
+  return moment(start_date).add(months, 'months').toDate();
+};
+var EFFECT = Formula["EFFECT"];
+var EOMONTH = function (start_date, months) {
+  var edate = moment(start_date).add(months, 'months');
+  return new Date(edate.year(), edate.month(), edate.daysInMonth());
+};
+var ERF = Formula["ERF"];
+var ERFC = Formula["ERFC"];
+var EXPONDIST = Formula["EXPONDIST"];
+var __COMPLEX = {
+  "F.DIST": Formula["FDIST"],
+  "F.INV": Formula["FINV"]
+};
+var FISHER = Formula["FISHER"];
+var FISHERINV = Formula["FISHERINV"];
+var IF = Formula["IF"];
+var SPLIT = Formula["SPLIT"];
+var SQRTPI = Formula["SQRTPI"];
+var SUMPRODUCT = Formula["SUMPRODUCT"];
+var SUMSQ = Formula["SUMSQ"];
+var SUMX2MY2 = Formula["SUMX2MY2"];
+var SUMX2PY2 = Formula["SUMX2PY2"];
+var TRUNC = Formula["TRUNC"];
+var YEARFRAC = Formula["YEARFRAC"];
 
 /**
  * Returns the a count of the number of numeric values in a dataset.
@@ -117,6 +170,32 @@ var COUNT = function (...values) : number {
   return count;
 };
 
+/**
+ * Returns a conditional count across a range.
+ * @param values[0] range - The range that is tested against criterion., value[1];
+ * @param values[1] criterion - The pattern or test to apply to range. If the range to check against contains text, this must be a
+ * string. It can be a comparison based string (e.g. "=1", "<1", ">=1") or it can be a wild-card string, in which *
+ * matches any number of characters, and ? matches the next character. Both ? and * can be escaped by placing a ~ in
+ * front of them. If it is neither, it will compared with values in the range using equality comparison.
+ * @returns {number}
+ * @constructor
+ */
+var COUNTIF = function (...values) {
+  checkArgumentsLength(values, 2);
+  var range = values[0];
+  var criteria = values[1];
+
+  var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criteria);
+
+  var count = 0;
+  for (var i = 0; i < range.length; i++) {
+    var x = range[i];
+    if (criteriaEvaluation(x)) {
+      count++;
+    }
+  }
+  return count;
+};
 
 /**
  * Returns the a count of the number of values in a dataset.
@@ -141,31 +220,6 @@ var COUNTA = function (...values) : number {
   return count;
 };
 
-
-var COUNTIF = Formula["COUNTIF"];
-var COUNTIFS = Formula["COUNTIFS"];
-var COUNTIN = Formula["COUNTIN"];
-var COUNTUNIQUE = Formula["COUNTUNIQUE"];
-var COVARIANCEP = Formula["COVARIANCEP"];
-var COVARIANCES = Formula["COVARIANCES"];
-var CSC = Formula["CSC"];
-var CSCH = Formula["CSCH"];
-var CUMIPMT = Formula["CUMIPMT"];
-var CUMPRINC = Formula["CUMPRINC"];
-var DATE = Formula["DATE"];
-var DATEVALUE = function (dateString: string) : Date {
-  return new Date(dateString);
-};
-var DAY = Formula["DAY"];
-var DAYS = Formula["DAYS"];
-var DAYS360 = Formula["DAYS360"];
-var DB = Formula["DB"];
-var DDB = Formula["DDB"];
-var DEC2BIN = Formula["DEC2BIN"];
-var DEC2HEX = Formula["DEC2HEX"];
-var DEC2OCT = Formula["DEC2OCT"];
-var DEGREES = Formula["DEGREES"];
-
 /**
  * Compare two numeric values, returning 1 if they're equal.
  * @param values[0] The first number to compare.
@@ -180,29 +234,6 @@ var DELTA = function (...values) : number {
   }
   return valueToNumber(values[0]) === valueToNumber(values[1]) ? 1 : 0;
 };
-
-var DEVSQ = Formula["DEVSQ"];
-var DOLLAR = Formula["DOLLAR"];
-var DOLLARDE = Formula["DOLLARDE"];
-var DOLLARFR = Formula["DOLLARFR"];
-var EDATE = function (start_date: Date, months) {
-  return moment(start_date).add(months, 'months').toDate();
-};
-var EFFECT = Formula["EFFECT"];
-var EOMONTH = function (start_date, months) {
-  var edate = moment(start_date).add(months, 'months');
-  return new Date(edate.year(), edate.month(), edate.daysInMonth());
-};
-var ERF = Formula["ERF"];
-var ERFC = Formula["ERFC"];
-var EXPONDIST = Formula["EXPONDIST"];
-var __COMPLEX = {
-  "F.DIST": Formula["FDIST"],
-  "F.INV": Formula["FINV"]
-};
-var FISHER = Formula["FISHER"];
-var FISHERINV = Formula["FISHERINV"];
-var IF = Formula["IF"];
 
 /**
  * Rounds a number to a certain number of decimal places according to standard rules.
@@ -274,51 +305,8 @@ var SUMIF = function (...values) {
   if (values.length === 3) {
     sumRange = values[2];
   }
-  // Default criteria does nothing
-  var criteriaEvaluation = function (x) : boolean {
-    return false;
-  };
 
-
-  if (typeof criteria === "number") {
-    criteriaEvaluation = function (x) : boolean {
-      return x === criteria;
-    };
-  } else if (typeof criteria === "string") {
-    // https://regex101.com/r/c2hxAZ/6
-    var comparisonMatches = criteria.match(/(^<=|^>=|^=|^>|^<)\s*(-?[0-9]+([,.][0-9]+)?)\s*$/);
-    if (comparisonMatches !== null && comparisonMatches.length >= 4 && comparisonMatches[2] !== undefined) {
-      criteriaEvaluation = function (x) : boolean {
-        return eval(x + criteria);
-      };
-      if (comparisonMatches[1] === "=") {
-        criteriaEvaluation = function (x) : boolean {
-          return eval(x + "===" + comparisonMatches[2]);
-        };
-      }
-    } else if (criteria.match(/\*|\~\*|\?|\~\?/) !== null) {
-      // Regular string
-      var matches = criteria.match(/\*|\~\*|\?|\~\?/);
-      if (matches !== null) {
-        criteriaEvaluation = function (x) : boolean {
-          try {
-            // http://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
-            return new RegExp("^" + criteria.split("*").join(".*") + "$").test(x);
-          } catch (e) {
-            return false;
-          }
-        };
-      } else {
-        criteriaEvaluation = function (x) : boolean {
-          return x === criteria;
-        };
-      }
-    } else {
-      criteriaEvaluation = function (x) : boolean {
-        return x === criteria;
-      };
-    }
-  }
+  var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criteria);
 
   var sum = 0;
   for (var i = 0; i < range.length; i++) {
@@ -334,15 +322,6 @@ var SUMIF = function (...values) {
   }
   return sum;
 };
-
-var SPLIT = Formula["SPLIT"];
-var SQRTPI = Formula["SQRTPI"];
-var SUMPRODUCT = Formula["SUMPRODUCT"];
-var SUMSQ = Formula["SUMSQ"];
-var SUMX2MY2 = Formula["SUMX2MY2"];
-var SUMX2PY2 = Formula["SUMX2PY2"];
-var TRUNC = Formula["TRUNC"];
-var YEARFRAC = Formula["YEARFRAC"];
 
 /**
  * Exclusive or or exclusive disjunction is a logical operation that outputs true only when inputs differ.

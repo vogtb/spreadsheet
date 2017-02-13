@@ -473,7 +473,41 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test COUNTIF
 assertEquals(COUNTIF([1, 5, 10], ">4"), 2);
+assertEquals(COUNTIF([1, 2, 2, 2, 2, 2, 2, 2], ">1"), 7);
+assertEquals(COUNTIF([1, 5, 10], 5), 1);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], 5), 4);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], 10), 1);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], ">5"), 1);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "=5"), 4);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "=10"), 1);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "=     10  "), 1);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], ">0"), 6);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], ">=5"), 5);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "<10"), 5);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5, 44], "<=10"), 6);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], ">4.99"), 5);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "<4.99"), 1);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "=     1.0.0  "), 0);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "=>5"), 0);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "==5"), 0);
+assertEquals(COUNTIF(["mom", "pop", "dad", "etc", "boom"], "*o*"), 3);
+assertEquals(COUNTIF(["mom", "pop", "dad", "etc", "mom"], "mom"), 2);
+assertEquals(COUNTIF(["mom", "pop", "dad", "etc", "mom"], "?o?"), 3);
+assertEquals(COUNTIF(["mom", "pop", "dad", "etc", "mom"], "???"), 5);
+assertEquals(COUNTIF(["mom", "pop", "dad", "etc", "mom"], "????"), 0);
+assertEquals(COUNTIF(["mom", "pop", "dad", "etc", "mom"], "?"), 0);
+catchAndAssertEquals(function() {
+  COUNTIF([0, 1, 0, 1]);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  COUNTIF();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  COUNTIF([], "=1", []);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(COUNTIFS([1, 5, 10], ">4", [1, 5, 10], ">4"), 2);
 
@@ -1127,6 +1161,11 @@ assertEquals(SUMIF(["mom", "pop", "pap"], "p*p", [1, 1, 1]), 2);
 assertEquals(SUMIF(["mom", "pop", "pap"], "p*p", [1, 1, 1]), 2);
 assertEquals(SUMIF(["mom", "pop", "pap"], "p*p", [1, 1,]), 1);
 assertEquals(SUMIF(["pop", "pap"], "p*p", [1, 2, 4]), 3);
+assertEquals(SUMIF(["mom", "pop", "dad", "etc", "boom"], "*o*", [1, 1, 1, 1, 1]), 3);
+assertEquals(SUMIF(["mom", "pop", "dad", "etc", "mom"], "mom", [1, 1, 1, 1, 1]), 2);
+assertEquals(SUMIF(["mom", "pop", "dad", "etc", "mom"], "?o?", [1, 1, 1, 1, 1]), 3);
+assertEquals(SUMIF(["mom", "pop", "dad", "etc", "mom"], "???", [1, 1, 1, 1, 1]), 5);
+assertEquals(SUMIF(["mom", "pop", "dad", "etc", "mom"], "????", [1, 1, 1, 1, 1]), 0);
 assertEquals(SUMIF([0, 1, 0, 1], "=1", [1, 2, 4, 8]), 10);
 catchAndAssertEquals(function() {
   SUMIF([0, 1, 0, 1]);

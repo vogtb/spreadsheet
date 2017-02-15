@@ -48,7 +48,8 @@ import {
   TRUE,
   FALSE,
   NOT,
-  OR
+  OR,
+  XOR
 } from "./Logical";
 import {
   CHAR,
@@ -446,36 +447,6 @@ var SUMIF = function (...values) {
     }
   }
   return sum;
-};
-
-/**
- * Exclusive or or exclusive disjunction is a logical operation that outputs true only when inputs differ.
- * @param values to check for exclusivity.
- * @returns {boolean} returns true if only one input is considered logically true.
- * @constructor
- */
-var XOR = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
-  var alreadyTruthy = false;
-  for (var i = 0; i < values.length; i++) {
-    if (values[i] instanceof Array) {
-      if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
-      }
-      if (XOR.apply(this, values[i])) {
-        if (alreadyTruthy) {
-          return false;
-        }
-        alreadyTruthy = true;
-      }
-    } else if (valueToBoolean(values[i])) {
-      if (alreadyTruthy) {
-        return false;
-      }
-      alreadyTruthy = true;
-    }
-  }
-  return alreadyTruthy;
 };
 
 export {

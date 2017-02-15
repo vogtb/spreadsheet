@@ -75,7 +75,6 @@ var BIN2DEC = Formula["BIN2DEC"];
 var BIN2HEX = Formula["BIN2HEX"];
 var BIN2OCT = Formula["BIN2OCT"];
 var DECIMAL = Formula["DECIMAL"];
-var CEILING = Formula["CEILING"];
 var COMBIN = Formula["COMBIN"];
 var CONCATENATE = Formula["CONCATENATE"];
 var CONVERT = Formula["CONVERT"];
@@ -131,6 +130,31 @@ var TRUNC = Formula["TRUNC"];
 var YEARFRAC = Formula["YEARFRAC"];
 
 /**
+ * Rounds a number up to the nearest integer multiple of specified significance.
+ * @param values[0] The value to round up to the nearest integer multiple of factor.
+ * @param values[1] The number to whose multiples value will be rounded.
+ * @returns {number}
+ * @constructor
+ */
+var CEILING = function (...values) : number {
+  checkArgumentsAtWithin(values, 1, 2);
+  var num = firstValueAsNumber(values[0]);
+  if (values.length === 1) {
+    return Math.ceil(num);
+  }
+  var significance = firstValueAsNumber(values[1]);
+  if (significance === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function CEILING parameter 2 cannot be zero.");
+  }
+  var precision = -Math.floor(Math.log(significance) / Math.log(10));
+  if (num >= 0) {
+    return ROUND(Math.ceil(num / significance) * significance, precision);
+  } else {
+    return -ROUND(Math.floor(Math.abs(num) / significance) * significance, precision);
+  }
+};
+
+/**
  * Rounds a number down to the nearest integer multiple of specified significance.
  * @param values[0] The value to round down to the nearest integer multiple of factor.
  * @param values[1] The number to whose multiples value will be rounded.
@@ -141,7 +165,7 @@ var FLOOR = function (...values) : number {
   checkArgumentsAtWithin(values, 1, 2);
   var num = firstValueAsNumber(values[0]);
   if (values.length === 1) {
-    return Math.round(num);
+    return Math.floor(num);
   }
   var significance = firstValueAsNumber(values[1]);
   if (significance === 0) {

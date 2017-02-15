@@ -268,7 +268,26 @@ assertEquals(BIN2OCT(1010101010), "7777777252");
 
 assertEquals(DECIMAL(199.99999), 199);
 
-assertEquals(CEILING(22.22, 0.1), 22.3);
+// Test CEILING
+assertEquals(CEILING(10.1), 11);
+assertEquals(CEILING("10.1"), 11);
+assertEquals(CEILING(10.11111111, 0.1), 10.2);
+assertEquals(CEILING(10.22222222, 0.1), 10.3);
+assertEquals(CEILING(10.33333333, 0.2), 10.4);
+assertEquals(CEILING(10.33333333, 0.1), 10.4);
+assertEquals(CEILING([10.33333333], 0.1), 10.4);
+assertEquals(CEILING(10.22222222, 5), 15);
+assertEquals(CEILING(10.22222222, 8), 16);
+assertEquals(CEILING(10.22222222, true), 11);
+catchAndAssertEquals(function() {
+  CEILING(10, 0);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  CEILING(10, 1, 2);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  CEILING();
+}, ERRORS.NA_ERROR);
 
 // Test CHAR
 assertEquals(CHAR(97), "a");

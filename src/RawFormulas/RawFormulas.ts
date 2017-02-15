@@ -70,7 +70,6 @@ import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
 
 var ACCRINT = Formula["ACCRINT"];
-var AVERAGEIF = Formula["AVERAGEIF"];
 var BIN2DEC = Formula["BIN2DEC"];
 var BIN2HEX = Formula["BIN2HEX"];
 var BIN2OCT = Formula["BIN2OCT"];
@@ -128,6 +127,37 @@ var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var TRUNC = Formula["TRUNC"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+/**
+ * Returns the average of a range depending on criteria.
+ * @param values[0] criteria_range - The range to check against criterion.
+ * @param values[1] criterion - The pattern or test to apply to criteria_range.
+ * @param values[2] average_range - [optional] The range to average. If not included, criteria_range is used for the
+ * average instead.
+ * @returns {number}
+ * @constructor
+ * TODO: This needs to take nested range values.
+ * TODO: This needs to also accept a third parameter "average_range"
+ */
+var AVERAGEIF = function (...values) {
+  checkArgumentsLength(values, 2);
+  var range = values[0];
+  var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(values[1]);
+
+  var result = 0;
+  var count = 0;
+  for (var i = 0; i < range.length; i++) {
+    var val = valueToNumber(range[i]);
+    if (criteriaEvaluation(val)) {
+      result = result + val;
+      count++;
+    }
+  }
+  if (count === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function AVERAGEIF caused a divide by zero error.");
+  }
+  return result / count;
+};
 
 /**
  * Rounds a number up to the nearest integer multiple of specified significance.
@@ -230,6 +260,7 @@ var COUNT = function (...values) : number {
  * front of them. If it is neither, it will compared with values in the range using equality comparison.
  * @returns {number}
  * @constructor
+ * TODO: This needs to take nested range values.
  */
 var COUNTIF = function (...values) {
   checkArgumentsLength(values, 2);
@@ -248,6 +279,15 @@ var COUNTIF = function (...values) {
   return count;
 };
 
+/**
+ * Returns the count of a range depending on multiple criteria.
+ * @param values[0] criteria_range1 - The range to check against criterion1.
+ * @param values[1] criterion1 - The pattern or test to apply to criteria_range1.
+ * @param values[2...N] Repeated sets of ranges and criterion to check.
+ * @returns {number} count
+ * @constructor
+ * TODO: This needs to take nested range values.
+ */
 var COUNTIFS = function (...values) {
   checkArgumentsAtLeastLength(values, 2);
   var criteriaEvaluationFunctions = values.map(function (criteria, index) {
@@ -380,6 +420,7 @@ var ROUNDUP = function (...values) {
  * @param values[2] (optional) The range to be summed, if different from range.
  * @returns {number}
  * @constructor
+ * TODO: This needs to take nested range values.
  */
 var SUMIF = function (...values) {
   checkArgumentsAtWithin(values, 2, 3);

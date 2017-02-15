@@ -27,3 +27,5 @@ How do we protect against users injecting data that looks like `console.log(sens
 inside parser.js? If we ever want to impliment custom formulas, or even accept data in raw format, we need to guard
 against this. Or else someone could load a CSV with javascript and when our spreadsheet opens it, then suddenly
 arbitrary javascript is executed in the client machine.
+
+### Criteria evaluations should accept "<>"

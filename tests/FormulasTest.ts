@@ -258,7 +258,33 @@ catchAndAssertEquals(function() {
 }, ERRORS.REF_ERROR);
 
 
+// Test AVERAGEIF
 assertEquals(AVERAGEIF([1, 5, 10], '>2'), 7.5);
+assertEquals(AVERAGEIF([1, 5, 10], ">4"), 7.5);
+assertEquals(AVERAGEIF([1, 2, 2, 2, 2, 2, 2, 2], ">1"), 2);
+assertEquals(AVERAGEIF([1, 5, 10], 5), 5);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], 5), 5);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], 10), 10);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], ">5"), 10);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], "=5"), 5);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], "=10"), 10);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], "=     10  "), 10);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], ">0"), 5.166666666666667);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], ">=5"), 6);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], "<10"), 4.2);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5, 44], "<=10"), 5.166666666666667);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], ">4.99"), 6);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], "<4.99"), 1);
+catchAndAssertEquals(function() {
+  AVERAGEIF([1, 5, 5, 5, 10, 5], "=     1.0.0  ");
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  AVERAGEIF([1, 5, 5, 5, 10, 5], "=>5");
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  AVERAGEIF([1, 5, 5, 5, 10, 5], "==5");
+}, ERRORS.DIV_ZERO_ERROR);
+
 
 assertEquals(BIN2DEC(1010101010), -342);
 

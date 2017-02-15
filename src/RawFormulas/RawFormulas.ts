@@ -80,7 +80,6 @@ var COMBIN = Formula["COMBIN"];
 var CONCATENATE = Formula["CONCATENATE"];
 var CONVERT = Formula["CONVERT"];
 var CORREL = Formula["CORREL"];
-var COUNTIFS = Formula["COUNTIFS"];
 var COUNTUNIQUE = Formula["COUNTUNIQUE"];
 var COVARIANCEP = Formula["COVARIANCEP"];
 var COVARIANCES = Formula["COVARIANCES"];
@@ -174,6 +173,39 @@ var COUNTIF = function (...values) {
   for (var i = 0; i < range.length; i++) {
     var x = range[i];
     if (criteriaEvaluation(x)) {
+      count++;
+    }
+  }
+  return count;
+};
+
+var COUNTIFS = function (...values) {
+  checkArgumentsAtLeastLength(values, 2);
+  var criteriaEvaluationFunctions = values.map(function (criteria, index) {
+    if (index % 2 === 1) {
+      return CriteriaFunctionFactory.createCriteriaFunction(criteria);
+    } else {
+      return function () {return false;}
+    }
+  });
+
+  var count = 0;
+  // For every value in the range
+  for (var i = 0; i < values[0].length; i++) {
+    // check for criteria eval for other ranges and other criteria pairs
+    var otherCriteriaEvaluationSuccessfulSoFar = true;
+    for (var x = 0; x < values.length; x += 2) {
+      if (values[x].length < values[0].length) {
+        throw new CellError(ERRORS.VALUE_ERROR, "Array arguments to COUNTIFS are of different size.");
+      }
+      var criteriaEvaluation = criteriaEvaluationFunctions[x+1];
+      if (otherCriteriaEvaluationSuccessfulSoFar) {
+        if (!criteriaEvaluation(values[x][i])) { // evaluate THIS value with x+1 index, which is criteria
+          otherCriteriaEvaluationSuccessfulSoFar = false;
+        }
+      }
+    }
+    if (otherCriteriaEvaluationSuccessfulSoFar) {
       count++;
     }
   }

@@ -475,7 +475,41 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
-assertEquals(COUNTIFS([1, 5, 10], ">4", [1, 5, 10], ">4"), 2);
+// Test COUNTIFS
+// All COUNTIF tests should also work on COUNTIFS
+assertEquals(COUNTIFS([1, 5, 10], ">4"), 2);
+assertEquals(COUNTIFS([1, 2, 2, 2, 2, 2, 2, 2], ">1"), 7);
+assertEquals(COUNTIFS([1, 5, 10], 5), 1);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], 5), 4);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], 10), 1);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], ">5"), 1);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], "=5"), 4);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], "=10"), 1);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], "=     10  "), 1);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], ">0"), 6);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], ">=5"), 5);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], "<10"), 5);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5, 44], "<=10"), 6);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], ">4.99"), 5);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], "<4.99"), 1);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], "=     1.0.0  "), 0);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], "=>5"), 0);
+assertEquals(COUNTIFS([1, 5, 5, 5, 10, 5], "==5"), 0);
+assertEquals(COUNTIFS(["mom", "pop", "dad", "etc", "boom"], "*o*"), 3);
+assertEquals(COUNTIFS(["mom", "pop", "dad", "etc", "mom"], "mom"), 2);
+assertEquals(COUNTIFS(["mom", "pop", "dad", "etc", "mom"], "?o?"), 3);
+assertEquals(COUNTIFS(["mom", "pop", "dad", "etc", "mom"], "???"), 5);
+assertEquals(COUNTIFS(["mom", "pop", "dad", "etc", "mom"], "????"), 0);
+assertEquals(COUNTIFS(["mom", "pop", "dad", "etc", "mom"], "?"), 0);
+// Now actually test COUNTIFS
+assertEquals(COUNTIFS([1, 5, 10, 20], ">4", [0, 0, 1, 1], "=1"), 2);
+assertEquals(COUNTIFS([1, 5, 10, 20], ">4", [0, 0, 1, 1], "=1"), 2);
+assertEquals(COUNTIFS([1, 5, 10, 20], ">4", [0, 0, 1, 1], "=1", [0, 0, 1, 1], "=1"), 2);
+assertEquals(COUNTIFS([1, 5, 10, 20, 40], ">4", [0, 0, 1, 1, 1], "=1", [0, 0, 0, 0, 0], "=1"), 0);
+assertEquals(COUNTIFS([1, 2, 3, 4], ">3", [true, true, false, true], true), 1);
+catchAndAssertEquals(function() {
+  COUNTIFS([1, 5, 10, 20], ">4", [0, 0], "=1");
+}, ERRORS.VALUE_ERROR);
 
 assertEquals(COUNTUNIQUE([1, 1, 10]), 2);
 

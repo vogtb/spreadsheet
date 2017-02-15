@@ -231,7 +231,7 @@ class CriteriaFunctionFactory {
       return false;
     };
 
-    if (typeof criteria === "number") {
+    if (typeof criteria === "number" || typeof criteria === "boolean") {
       criteriaEvaluation = function (x) : boolean {
         return x === criteria;
       };

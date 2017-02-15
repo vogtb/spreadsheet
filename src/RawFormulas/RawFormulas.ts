@@ -131,6 +131,31 @@ var TRUNC = Formula["TRUNC"];
 var YEARFRAC = Formula["YEARFRAC"];
 
 /**
+ * Rounds a number down to the nearest integer multiple of specified significance.
+ * @param values[0] The value to round down to the nearest integer multiple of factor.
+ * @param values[1] The number to whose multiples value will be rounded.
+ * @returns {number}
+ * @constructor
+ */
+var FLOOR = function (...values) : number {
+  checkArgumentsAtWithin(values, 1, 2);
+  var num = firstValueAsNumber(values[0]);
+  if (values.length === 1) {
+    return Math.round(num);
+  }
+  var significance = firstValueAsNumber(values[1]);
+  if (significance === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function FLOOR parameter 2 cannot be zero.");
+  }
+  significance = significance ? Math.abs(significance) : 1;
+  var precision = -Math.floor(Math.log(significance) / Math.log(10));
+  if (num >= 0) {
+    return ROUND(Math.floor(num / significance) * significance, precision);
+  }
+  return -ROUND(Math.floor(Math.abs(num) / significance) * significance, precision);
+};
+
+/**
  * Returns one value if a logical expression is TRUE and another if it is FALSE.
  * @param values[0] An expression or reference to a cell containing an expression that represents some logical value, i.e. TRUE or FALSE.
  * @param values[1] The value the function returns if logical_expression is TRUE
@@ -461,6 +486,7 @@ export {
   FALSE,
   FISHER,
   FISHERINV,
+  FLOOR,
   IF,
   INT,
   ISEVEN,

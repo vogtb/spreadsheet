@@ -175,7 +175,7 @@ function valueToBoolean(value: any) : boolean {
   if (typeof value === "number") {
     return value !== 0;
   } else if (typeof value === "string") {
-    throw new CellError(ERRORS.VALUE_ERROR, "AND expects boolean values. But '" + value + "' is a text and cannot be coerced to a boolean.")
+    throw new CellError(ERRORS.VALUE_ERROR, "___ expects boolean values. But '" + value + "' is a text and cannot be coerced to a boolean.")
   } else if (typeof value === "boolean") {
     return value;
   }

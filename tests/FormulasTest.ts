@@ -658,7 +658,22 @@ assertEquals(FISHER(0.962), 1.972066740199461);
 
 assertEquals(FISHERINV(0.962), 0.7451676440945232);
 
-assertEquals(IF("m" == "m", "hit", "miss"), 'hit');
+
+// Test IF
+assertEquals(IF(true, "hit", "miss"), "hit");
+assertEquals(IF(false, "hit", "miss"), "miss");
+assertEquals(IF("", "hit", "miss"), "miss");
+assertEquals(IF("", "hit", "miss"), "miss");
+assertEquals(IF([true], "hit", "miss"), "hit");
+assertEquals(IF([false], "hit", "miss"), "miss");
+assertEquals(IF([""], "hit", "miss"), "miss");
+assertEquals(IF([""], "hit", "miss"), "miss");
+catchAndAssertEquals(function() {
+  IF("str", 1, 2);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  IF([], 1, 2);
+}, ERRORS.REF_ERROR);
 
 
 // Test INT

@@ -121,7 +121,6 @@ var __COMPLEX = {
 };
 var FISHER = Formula["FISHER"];
 var FISHERINV = Formula["FISHERINV"];
-var IF = Formula["IF"];
 var SPLIT = Formula["SPLIT"];
 var SQRTPI = Formula["SQRTPI"];
 var SUMPRODUCT = Formula["SUMPRODUCT"];
@@ -130,6 +129,27 @@ var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var TRUNC = Formula["TRUNC"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+/**
+ * Returns one value if a logical expression is TRUE and another if it is FALSE.
+ * @param values[0] An expression or reference to a cell containing an expression that represents some logical value, i.e. TRUE or FALSE.
+ * @param values[1] The value the function returns if logical_expression is TRUE
+ * @param values[2] The value the function returns if logical_expression is FALSE.
+ * @returns one value if a logical expression is TRUE and another if it is FALSE.
+ * @constructor
+ */
+var IF = function (...values) : any {
+  checkArgumentsLength(values, 3);
+  if (values[0] instanceof Array) {
+    if (values[0].length === 0) {
+      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+    }
+    return IF(values[0][0], values[1], values[2]);
+  } else if (values[0] === "") {
+    return values[2];
+  }
+  return (valueToBoolean(values[0])) ? values[1] : values[2];
+};
 
 /**
  * Returns the a count of the number of numeric values in a dataset.

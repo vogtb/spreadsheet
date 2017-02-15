@@ -80,52 +80,12 @@ testFormula("=AVERAGEA(10, 20, 4.1)", 11.366666666666667);
 // Test AVERAGEIF
 testFormula("=AVERAGEIF([1, 5, 10], '>2')", 7.5);
 
-// Test BASE
-testFormula('=BASE(15, 2, 10)', '0000001111');
-
 // Test BIN2DEC
 testFormula("=BIN2DEC(1010101010)", -342);
-
-// Test BESSELI
-testFormula('=BESSELI(1, 2)', 0.13574766658069928);
-
-// Test BESSELJ
-testFormula('=BESSELJ(1, 2)', 0.11490348499246938);
-
-// Test BESSELK
-testFormula('=BESSELK(1, 2)', 1.6248388844172295);
-
-// Test BESSELY
-testFormula('=BESSELY(1, 2)', -1.6506826133039476);
-
-// Test BETADIST
-testFormula('=BETADIST(2, 8, 10, true, 1, 3)', 0.6854705810117458);
-
-// Test BETAINV
-testFormula('=BETAINV(0.6854705810117458, 8, 10, 1, 3)', 1.9999999999999996);
-
-// Test BINOMDISTRANGE
-// TODO: This should work.
-// testFormula('=BINOMDISTRANGE(60, 0.75, 45, 50)', 0.52363);
 
 // Test BINOMINV
 // TODO: This should work.
 // testFormula('=BINOMINV(6, 0.5, 0.75)', 4);
-
-// Test BITAND
-testFormula('=BITAND(42, 24)', 8);
-
-// Test BITLSHIFT
-testFormula('=BITLSHIFT(42, 24)', 704643072);
-
-// Test BITOR
-testFormula('=BITOR(42, 24)', 58);
-
-// Test BITRSHIFT
-testFormula('=BITRSHIFT(42, 2)', 10);
-
-// Test BITXOR
-testFormula('=BITXOR(42, 24)', 50);
 
 // Test BIN2HEX
 testFormula("=BIN2HEX(1010101010)", "fffffffeaa");
@@ -142,20 +102,6 @@ testFormula('=DECIMAL(199.99999)', 199);
 // Test CEIL
 testFormula("=CEILING(22.22, 0.1)", 22.3);
 
-// Test CEILINGMATH
-testFormula('=CEILINGMATH(1001.112131)', 1002);
-
-// Test CEILINGPRECISE
-testFormula('=CEILINGPRECISE(1001.112131)', 1002);
-
-// Test CHISQDIST
-// TODO: This should work.
-// testFormula('=CHISQDIST(0.5, 1, true)', 55);
-
-// Test CHISQINV
-// TODO: This should work.
-// testFormula('=CHISQINV(0.5, 1, true)', 44);
-
 // Test CHAR
 testFormula("=CHAR(97)", "a");
 
@@ -165,22 +111,12 @@ testFormula("=CODE('a')", 97);
 // Test COMBIN
 testFormula("=COMBIN(4, 2)", 6);
 
-// Test COMBINA
-testFormula('=COMBINA(4, 3)', 20);
-
-// Test COMPLEX
-testFormula('=COMPLEX(3, 4)', '3+4i');
-
 // Test CONCATENATE
 testFormula('=CONCATENATE("hey", " ", "there")', "hey there");
 
-// Test CONFIDENCENORM
+// Test CONFIDENCE
 // TODO: This should work.
 // testFormula('=CONFIDENCE(0.05, 1.6, 250)', 0.1983344105);
-
-// Test CONFIDENCET
-// TODO: This should work.
-// testFormula('=CONFIDENCET(0.05, 1, 50)', 0.2842);
 
 // Test CONVERT
 testFormula('=CONVERT(5.1, "mm", "m")', 0.0050999999999999995);
@@ -214,9 +150,6 @@ testFormula('=COUNTIF([1, 5, 10], ">4")', 2);
 
 // Test COUNTIFS
 testFormula('=COUNTIFS([1, 5, 10], ">4", [1, 5, 10], ">4")', 2);
-
-// Test COUNTIN
-testFormula('=COUNTIN([1,3,1],1)', 2);
 
 // Test COUNTUNIQUE
 testFormula('=COUNTUNIQUE([1, 1, 10])', 2);

@@ -71,33 +71,16 @@ import * as ERRORS from "../Errors"
 
 var ACCRINT = Formula["ACCRINT"];
 var AVERAGEIF = Formula["AVERAGEIF"];
-var BASE = Formula["BASE"];
 var BIN2DEC = Formula["BIN2DEC"];
-var BESSELI = Formula["BESSELI"];
-var BESSELJ = Formula["BESSELJ"];
-var BESSELK = Formula["BESSELK"];
-var BESSELY = Formula["BESSELY"];
-var BETADIST = Formula["BETADIST"];
-var BETAINV = Formula["BETAINV"];
-var BITAND = Formula["BITAND"];
-var BITLSHIFT = Formula["BITLSHIFT"];
-var BITOR = Formula["BITOR"];
-var BITRSHIFT = Formula["BITRSHIFT"];
-var BITXOR = Formula["BITXOR"];
 var BIN2HEX = Formula["BIN2HEX"];
 var BIN2OCT = Formula["BIN2OCT"];
 var DECIMAL = Formula["DECIMAL"];
 var CEILING = Formula["CEILING"];
-var CEILINGMATH = Formula["CEILINGMATH"];
-var CEILINGPRECISE = Formula["CEILINGPRECISE"];
 var COMBIN = Formula["COMBIN"];
-var COMBINA = Formula["COMBINA"];
-var COMPLEX = Formula["COMPLEX"];
 var CONCATENATE = Formula["CONCATENATE"];
 var CONVERT = Formula["CONVERT"];
 var CORREL = Formula["CORREL"];
 var COUNTIFS = Formula["COUNTIFS"];
-var COUNTIN = Formula["COUNTIN"];
 var COUNTUNIQUE = Formula["COUNTUNIQUE"];
 var COVARIANCEP = Formula["COVARIANCEP"];
 var COVARIANCES = Formula["COVARIANCES"];
@@ -372,30 +355,14 @@ export {
   AVERAGE,
   AVERAGEA,
   AVERAGEIF,
-  BASE,
   BIN2DEC,
-  BESSELI,
-  BESSELJ,
-  BESSELK,
-  BESSELY,
-  BETADIST,
-  BETAINV,
-  BITAND,
-  BITLSHIFT,
-  BITOR,
-  BITRSHIFT,
-  BITXOR,
   BIN2HEX,
   BIN2OCT,
   DECIMAL,
   CEILING,
-  CEILINGMATH,
-  CEILINGPRECISE,
   CHAR,
   CODE,
   COMBIN,
-  COMBINA,
-  COMPLEX,
   CONCATENATE,
   CONVERT,
   CORREL,
@@ -408,7 +375,6 @@ export {
   COUNTA,
   COUNTIF,
   COUNTIFS,
-  COUNTIN,
   COUNTUNIQUE,
   COVARIANCEP,
   COVARIANCES,

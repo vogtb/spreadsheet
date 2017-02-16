@@ -76,6 +76,7 @@ import {
   CriteriaFunctionFactory,
   valueToNumber,
   checkArgumentsLength,
+  filterOutNonNumberValues,
   firstValueAsNumber,
   firstValueAsString,
   valueToBoolean,
@@ -136,10 +137,34 @@ var FISHERINV = Formula["FISHERINV"];
 var SPLIT = Formula["SPLIT"];
 var SQRTPI = Formula["SQRTPI"];
 var SUMPRODUCT = Formula["SUMPRODUCT"];
-var SUMSQ = Formula["SUMSQ"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+
+/**
+ * Returns the sum of the squares of a series of numbers and/or cells.
+ * @param values  The values or range(s) whose squares to add together.
+ * @returns {number} the sum of the squares if the input.
+ * @constructor
+ */
+var SUMSQ = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+  var result = 0;
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      result = result + SUMSQ.apply(this, filterOutNonNumberValues(values[i]));
+    } else {
+      var n = valueToNumber(values[i]);
+      result = result + (n * n);
+    }
+  }
+  return result;
+};
+
 
 /**
  * Appends strings to one another.

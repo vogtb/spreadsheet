@@ -50,6 +50,16 @@ function filterOutStringValues(arr: Array<any>) : Array<any> {
   return toReturn;
 }
 
+function filterOutNonNumberValues(arr: Array<any>) : Array<any> {
+  var toReturn = [];
+  for (var i = 0; i < arr.length; i++) {
+    if (typeof arr[i] !== "string" && typeof arr[i] !== "boolean") {
+      toReturn.push(arr[i]);
+    }
+  }
+  return toReturn;
+}
+
 /**
  * Convert a value to string.
  * @param value of any type, including array. array cannot be empty.
@@ -277,6 +287,7 @@ class CriteriaFunctionFactory {
 
 export {
   stringValuesToZeros,
+  filterOutNonNumberValues,
   flatten,
   valueCanCoerceToNumber,
   valueToNumber,

@@ -1276,7 +1276,23 @@ catchAndAssertEquals(function() {
 
 assertEquals(SUMPRODUCT([1, 5, 10]), 16);
 
+// Test SUMSQ
 assertEquals(SUMSQ([1, 5, 10], 10), 226);
+assertEquals(SUMSQ([10, 10, 22, ""]), 684);
+assertEquals(SUMSQ(10, 10, 22), 684);
+assertEquals(SUMSQ(10, 10, "22", true), 685);
+assertEquals(SUMSQ(10, 10, "22", false), 684);
+assertEquals(SUMSQ([10, 10, 22, true]), 684);
+catchAndAssertEquals(function() {
+  SUMSQ([10, 10, 22, "", []]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  SUMSQ([]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  SUMSQ();
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(SUMX2MY2([1,2,3],[4,5,6]), -63);
 

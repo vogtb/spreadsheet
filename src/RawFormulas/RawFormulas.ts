@@ -72,6 +72,7 @@ import {
   checkArgumentsAtLeastLength,
   checkArgumentsAtWithin,
   valueCanCoerceToNumber,
+  firstValueAsBoolean,
   filterOutStringValues,
   CriteriaFunctionFactory,
   valueToNumber,
@@ -134,12 +135,48 @@ var __COMPLEX = {
 };
 var FISHER = Formula["FISHER"];
 var FISHERINV = Formula["FISHERINV"];
-var SPLIT = Formula["SPLIT"];
 var SQRTPI = Formula["SQRTPI"];
 var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+
+/**
+ * Divides text around a specified character or string, and puts each fragment into a separate cell in the row.
+ * @param values[0] text - The text to divide.
+ * @param values[1] delimiter - The character or characters to use to split text.
+ * @param values[2] split_by_each - [optional] Whether or not to divide text around each character contained in
+ * delimiter.
+ * @returns {Array<string>} containing the split
+ * @constructor
+ * TODO: At some point this needs to return a more complex type than Array. Needs to return a type that has a dimension.
+ */
+var SPLIT = function (...values) : Array<string> {
+  checkArgumentsAtWithin(values, 2, 3);
+  var text = firstValueAsString(values[0]);
+  var delimiter = firstValueAsString(values[1]);
+  var splitByEach = false;
+  if (values.length === 3) {
+    splitByEach = firstValueAsBoolean(values[2]);
+  }
+  if (splitByEach) {
+    var result = [text];
+    for (var i = 0; i < delimiter.length; i++) {
+      var char = delimiter[i];
+      var subResult = [];
+      for (var x = 0; x < result.length; x++) {
+        subResult = subResult.concat(result[x].split(char));
+      }
+      result = subResult;
+    }
+    return result.filter(function (val) {
+      return val.trim() !== "";
+    });
+  } else {
+    return text.split(delimiter);
+  }
+};
 
 
 /**

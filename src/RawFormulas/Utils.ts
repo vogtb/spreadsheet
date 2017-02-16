@@ -107,6 +107,20 @@ function firstValueAsString(input: any) : string {
   return valueToString(input);
 }
 
+/**
+ * Takes any input type and will throw a REF_ERROR or coerce it into a string.
+ * @param input to attempt to coerce into a string
+ * @returns {number} number representation of the input
+ */
+function firstValueAsBoolean(input: any) : boolean {
+  if (input instanceof Array) {
+    if (input.length === 0) {
+      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+    }
+    return firstValueAsBoolean(input[0]);
+  }
+  return valueToBoolean(input);
+}
 
 /**
  * Converts any value to a number or throws an error if it cannot coerce it to the number type
@@ -287,6 +301,7 @@ class CriteriaFunctionFactory {
 
 export {
   stringValuesToZeros,
+  firstValueAsBoolean,
   filterOutNonNumberValues,
   flatten,
   valueCanCoerceToNumber,

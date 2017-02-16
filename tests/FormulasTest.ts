@@ -1184,7 +1184,19 @@ catchAndAssertEquals(function() {
 assertEquals(SINH([[10, "str"]]), 11013.232874703393);
 
 
-assertArrayEquals(SPLIT("1,2,3", ",", true), [ '1', '2', '3' ]);
+// Test SPLIT
+assertArrayEquals(SPLIT("1,2,3", ","), ['1', '2', '3']);
+assertArrayEquals(SPLIT("little kitty cat", "i"), ['l', 'ttle k', 'tty cat']);
+assertArrayEquals(SPLIT("father sister berzerker", "er", true), ['fath', ' sist', ' b', 'z', 'k']);
+assertArrayEquals(SPLIT("father sister berzerker", "er", [true]), ['fath', ' sist', ' b', 'z', 'k']);
+assertArrayEquals(SPLIT("father  sister   berzerker", "er", true), ['fath', '  sist', '   b', 'z', 'k']);
+assertArrayEquals(SPLIT(["father sister berzerker"], ["er"], true), ['fath', ' sist', ' b', 'z', 'k']);
+catchAndAssertEquals(function() {
+  SPLIT([], "er");
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  SPLIT("er", "er", true, 10);
+}, ERRORS.NA_ERROR);
 
 
 // Test SQRT

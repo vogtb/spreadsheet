@@ -29,3 +29,7 @@ against this. Or else someone could load a CSV with javascript and when our spre
 arbitrary javascript is executed in the client machine.
 
 ### Criteria evaluations should accept "<>"
+
+### Criteria evaluations should escape reg-ex characters: http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
+
+### Refactor `Util.ts`

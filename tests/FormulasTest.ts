@@ -359,7 +359,24 @@ assertEquals(CODE([['a'], 'p']), 97);
 
 assertEquals(COMBIN(4, 2), 6);
 
+
+// Test CONCATENATE
 assertEquals(CONCATENATE("hey", " ", "there"), "hey there");
+assertEquals(CONCATENATE(["hey", " ", "there"]), "hey there");
+assertEquals(CONCATENATE("hey"), "hey");
+assertEquals(CONCATENATE("hey", 2), "hey2");
+assertEquals(CONCATENATE("hey", false), "heyFALSE");
+assertEquals(CONCATENATE([22, 14, "m", false]), "2214mFALSE");
+assertEquals(CONCATENATE([22, 14, ["m", false]]), "2214mFALSE");
+catchAndAssertEquals(function() {
+  CONCATENATE();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  CONCATENATE("10", 4, false, []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  CONCATENATE([]);
+}, ERRORS.REF_ERROR);
 
 assertEquals(CONVERT(5.1, "mm", "m"), 0.0050999999999999995);
 

@@ -78,7 +78,8 @@ import {
   checkArgumentsLength,
   firstValueAsNumber,
   firstValueAsString,
-  valueToBoolean
+  valueToBoolean,
+  valueToString
 } from "./Utils";
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
@@ -89,7 +90,6 @@ var BIN2HEX = Formula["BIN2HEX"];
 var BIN2OCT = Formula["BIN2OCT"];
 var DECIMAL = Formula["DECIMAL"];
 var COMBIN = Formula["COMBIN"];
-var CONCATENATE = Formula["CONCATENATE"];
 var CONVERT = Formula["CONVERT"];
 var CORREL = Formula["CORREL"];
 var COUNTUNIQUE = Formula["COUNTUNIQUE"];
@@ -141,6 +141,28 @@ var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var TRUNC = Formula["TRUNC"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+/**
+ * Appends strings to one another.
+ * @param values to append to one another. Must contain at least one value
+ * @returns {string} concatenated string
+ * @constructor
+ */
+var CONCATENATE = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+  var string = '';
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      string += CONCATENATE.apply(this, arguments[i]);
+    } else {
+      string += valueToString(values[i]);
+    }
+  }
+  return string;
+};
 
 export {
   __COMPLEX,

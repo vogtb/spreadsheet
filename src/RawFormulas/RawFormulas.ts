@@ -139,7 +139,6 @@ var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMSQ = Formula["SUMSQ"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
-var TRUNC = Formula["TRUNC"];
 var YEARFRAC = Formula["YEARFRAC"];
 
 /**
@@ -148,7 +147,7 @@ var YEARFRAC = Formula["YEARFRAC"];
  * @returns {string} concatenated string
  * @constructor
  */
-var CONCATENATE = function (...values) {
+var CONCATENATE = function (...values) : string {
   checkArgumentsAtLeastLength(values, 1);
   var string = '';
   for (var i = 0; i < values.length; i++) {
@@ -163,6 +162,29 @@ var CONCATENATE = function (...values) {
   }
   return string;
 };
+
+/**
+ * Truncates a number to a certain number of significant digits by omitting less significant digits.
+ * @param values[0] The value to be truncated.
+ * @param values[1]  [ OPTIONAL - 0 by default ] - The number of significant digits to the right of the decimal point to
+ * retain. If places is greater than the number of significant digits in value, value is returned without modification.
+ * places may be negative, in which case the specified number of digits to the left of the decimal place are changed to
+ * zero. All digits to the right of the decimal place are discarded. If all digits of value are changed to zero, TRUNC
+ * simply returns 0.
+ * @returns {number} after truncation
+ * @constructor
+ */
+var TRUNC = function (...values) : number {
+  checkArgumentsAtWithin(values, 1, 2);
+  var n = firstValueAsNumber(values[0]);
+  var digits = 0;
+  if (values.length === 2) {
+    digits = firstValueAsNumber(values[1]);
+  }
+  var sign = (n > 0) ? 1 : -1;
+  return sign * (Math.floor(Math.abs(n) * Math.pow(10, digits))) / Math.pow(10, digits);
+};
+
 
 export {
   __COMPLEX,

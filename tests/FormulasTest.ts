@@ -1329,7 +1329,25 @@ assertEquals(TANH([1, "str"]), 0.7615941559557649);
 // Test TRUE
 assertEquals(TRUE(), true);
 
-assertEquals(TRUNC(3.1415, 2), 3.14);
+
+// Test TRUNC
+assertEquals(TRUNC(PI(), 2), 3.14);
+assertEquals(TRUNC("3.141592653589793", "2"), 3.14);
+assertEquals(TRUNC(PI(), 1), 3.1);
+assertEquals(TRUNC(PI(), 0), 3);
+assertEquals(TRUNC(PI(), false), 3);
+assertEquals(TRUNC(PI(), -1), 0);
+assertEquals(TRUNC(31.41592653589793, -1), 30);
+assertEquals(TRUNC([31.41592653589793], [-1]), 30);
+assertEquals(TRUNC(31111.41592653589793, -4), 30000);
+assertEquals(TRUNC(31111.41592653589793, -2), 31100);
+catchAndAssertEquals(function() {
+  TRUNC();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  TRUNC(3.1, 1, 1);
+}, ERRORS.NA_ERROR);
+
 
 // Test XOR
 assertEquals(XOR(1, 1), false);

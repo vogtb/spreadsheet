@@ -105,7 +105,6 @@ var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
 var DB = Formula["DB"];
 var DDB = Formula["DDB"];
-var DEC2BIN = Formula["DEC2BIN"];
 var DEC2HEX = Formula["DEC2HEX"];
 var DEC2OCT = Formula["DEC2OCT"];
 var DEGREES = Formula["DEGREES"];
@@ -135,6 +134,78 @@ var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+/**
+ * Converts a decimal number to signed binary format.
+ * @param values[0] decimal_number - The decimal value to be converted to signed binary, provided as a string. For this
+ * function, this value has a maximum of 511 if positive, and a minimum of -512 if negative.
+ * @param values[1] significant_digits - [ OPTIONAL ] The number of significant digits to ensure in the result. If this
+ * is greater than the number of significant digits in the result, the result is left-padded with zeros until the total
+ * number of digits reaches significant_digits.
+ * @returns {string} signed binary string representation of the input decimal number.
+ * @constructor
+ */
+var DEC2BIN = function (...values) {
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
+  if (n < 0) {
+    n = Math.ceil(n);
+  }
+  if (n > 0) {
+    n = Math.floor(n);
+  }
+  if (n === 0 || n === 1) {
+    return n.toString();
+  }
+  var p = 10;
+  var placesPresent = false;
+  if (values.length === 2) {
+    p = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+    placesPresent = true;
+  }
+
+  if (n < -512 || n > 511) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2BIN parameter 1 value is " + n + ". Valid values are between -512 and 511 inclusive.");
+  }
+  if (p < 1 || p > 10) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2BIN parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
+  }
+
+  // Ignore places and return a 10-character binary number if number is negative
+  if (n < 0) {
+    var count = (9 - (512 + n).toString(2).length);
+    var st = "";
+    for (var i = 0; i < count; i++) {
+      st += "0";
+    }
+    return "1" + st + (512 + n).toString(2);
+  }
+
+  // Convert decimal number to binary
+  var result = parseInt(n.toString(), 10).toString(2);
+
+  // Pad return value with leading 0s (zeros) if necessary
+  if (p >= result.length) {
+    var str = "";
+    for (var i = 0; i < (p - result.length); i++) {
+      str += "0";
+    }
+    var workingString = str + result;
+    if (!placesPresent) {
+      var returnString = "";
+      for (var i = 0; i < workingString.length; i++) {
+        var char = workingString[i];
+        if (char === "1") {
+          break;
+        }
+        returnString = workingString.slice(i+1);
+      }
+      return returnString;
+    }
+    return workingString;
+  }
+};
+
 
 
 export {

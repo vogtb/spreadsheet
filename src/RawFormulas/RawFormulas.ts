@@ -53,7 +53,9 @@ import {
   COUNTA,
   COUNTIF,
   COUNTIFS,
-  CEILING
+  CEILING,
+  SUMSQ,
+  TRUNC
 } from "./Math";
 import {
   AND,
@@ -66,7 +68,9 @@ import {
 } from "./Logical";
 import {
   CHAR,
-  CODE
+  CODE,
+  SPLIT,
+  CONCATENATE
 } from "./Misc";
 import {
   checkArgumentsAtLeastLength,
@@ -140,112 +144,6 @@ var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
-
-
-/**
- * Divides text around a specified character or string, and puts each fragment into a separate cell in the row.
- * @param values[0] text - The text to divide.
- * @param values[1] delimiter - The character or characters to use to split text.
- * @param values[2] split_by_each - [optional] Whether or not to divide text around each character contained in
- * delimiter.
- * @returns {Array<string>} containing the split
- * @constructor
- * TODO: At some point this needs to return a more complex type than Array. Needs to return a type that has a dimension.
- */
-var SPLIT = function (...values) : Array<string> {
-  checkArgumentsAtWithin(values, 2, 3);
-  var text = firstValueAsString(values[0]);
-  var delimiter = firstValueAsString(values[1]);
-  var splitByEach = false;
-  if (values.length === 3) {
-    splitByEach = firstValueAsBoolean(values[2]);
-  }
-  if (splitByEach) {
-    var result = [text];
-    for (var i = 0; i < delimiter.length; i++) {
-      var char = delimiter[i];
-      var subResult = [];
-      for (var x = 0; x < result.length; x++) {
-        subResult = subResult.concat(result[x].split(char));
-      }
-      result = subResult;
-    }
-    return result.filter(function (val) {
-      return val.trim() !== "";
-    });
-  } else {
-    return text.split(delimiter);
-  }
-};
-
-
-/**
- * Returns the sum of the squares of a series of numbers and/or cells.
- * @param values  The values or range(s) whose squares to add together.
- * @returns {number} the sum of the squares if the input.
- * @constructor
- */
-var SUMSQ = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
-  var result = 0;
-  for (var i = 0; i < values.length; i++) {
-    if (values[i] instanceof Array) {
-      if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
-      }
-      result = result + SUMSQ.apply(this, filterOutNonNumberValues(values[i]));
-    } else {
-      var n = valueToNumber(values[i]);
-      result = result + (n * n);
-    }
-  }
-  return result;
-};
-
-
-/**
- * Appends strings to one another.
- * @param values to append to one another. Must contain at least one value
- * @returns {string} concatenated string
- * @constructor
- */
-var CONCATENATE = function (...values) : string {
-  checkArgumentsAtLeastLength(values, 1);
-  var string = '';
-  for (var i = 0; i < values.length; i++) {
-    if (values[i] instanceof Array) {
-      if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
-      }
-      string += CONCATENATE.apply(this, arguments[i]);
-    } else {
-      string += valueToString(values[i]);
-    }
-  }
-  return string;
-};
-
-/**
- * Truncates a number to a certain number of significant digits by omitting less significant digits.
- * @param values[0] The value to be truncated.
- * @param values[1]  [ OPTIONAL - 0 by default ] - The number of significant digits to the right of the decimal point to
- * retain. If places is greater than the number of significant digits in value, value is returned without modification.
- * places may be negative, in which case the specified number of digits to the left of the decimal place are changed to
- * zero. All digits to the right of the decimal place are discarded. If all digits of value are changed to zero, TRUNC
- * simply returns 0.
- * @returns {number} after truncation
- * @constructor
- */
-var TRUNC = function (...values) : number {
-  checkArgumentsAtWithin(values, 1, 2);
-  var n = firstValueAsNumber(values[0]);
-  var digits = 0;
-  if (values.length === 2) {
-    digits = firstValueAsNumber(values[1]);
-  }
-  var sign = (n > 0) ? 1 : -1;
-  return sign * (Math.floor(Math.abs(n) * Math.pow(10, digits))) / Math.pow(10, digits);
-};
 
 
 export {

@@ -1,4 +1,12 @@
-import { firstValueAsNumber, checkArgumentsLength, firstValueAsString } from "./Utils"
+import {
+  valueToString,
+  firstValueAsNumber,
+  firstValueAsString,
+  firstValueAsBoolean,
+  checkArgumentsLength,
+  checkArgumentsAtWithin,
+  checkArgumentsAtLeastLength
+} from "./Utils";
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
 
@@ -32,7 +40,67 @@ var CODE = function (...values) : number {
   return text.charCodeAt(0);
 };
 
+/**
+ * Divides text around a specified character or string, and puts each fragment into a separate cell in the row.
+ * @param values[0] text - The text to divide.
+ * @param values[1] delimiter - The character or characters to use to split text.
+ * @param values[2] split_by_each - [optional] Whether or not to divide text around each character contained in
+ * delimiter.
+ * @returns {Array<string>} containing the split
+ * @constructor
+ * TODO: At some point this needs to return a more complex type than Array. Needs to return a type that has a dimension.
+ */
+var SPLIT = function (...values) : Array<string> {
+  checkArgumentsAtWithin(values, 2, 3);
+  var text = firstValueAsString(values[0]);
+  var delimiter = firstValueAsString(values[1]);
+  var splitByEach = false;
+  if (values.length === 3) {
+    splitByEach = firstValueAsBoolean(values[2]);
+  }
+  if (splitByEach) {
+    var result = [text];
+    for (var i = 0; i < delimiter.length; i++) {
+      var char = delimiter[i];
+      var subResult = [];
+      for (var x = 0; x < result.length; x++) {
+        subResult = subResult.concat(result[x].split(char));
+      }
+      result = subResult;
+    }
+    return result.filter(function (val) {
+      return val.trim() !== "";
+    });
+  } else {
+    return text.split(delimiter);
+  }
+};
+
+/**
+ * Appends strings to one another.
+ * @param values to append to one another. Must contain at least one value
+ * @returns {string} concatenated string
+ * @constructor
+ */
+var CONCATENATE = function (...values) : string {
+  checkArgumentsAtLeastLength(values, 1);
+  var string = '';
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      string += CONCATENATE.apply(this, arguments[i]);
+    } else {
+      string += valueToString(values[i]);
+    }
+  }
+  return string;
+};
+
 export {
   CHAR,
-  CODE
+  CODE,
+  SPLIT,
+  CONCATENATE
 }

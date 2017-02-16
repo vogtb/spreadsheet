@@ -1,7 +1,19 @@
-import { checkArgumentsLength, checkArgumentsAtLeastLength, valueToNumber, filterOutStringValues, flatten,
-    stringValuesToZeros, firstValueAsNumber, valueToBoolean, checkArgumentsAtWithin, CriteriaFunctionFactory, valueCanCoerceToNumber} from "./Utils"
-import { CellError } from "../Errors"
-import * as ERRORS from "../Errors"
+import {
+  checkArgumentsLength,
+  checkArgumentsAtLeastLength,
+  valueToNumber,
+  filterOutStringValues,
+  flatten,
+  filterOutNonNumberValues,
+  stringValuesToZeros,
+  firstValueAsNumber,
+  valueToBoolean,
+  checkArgumentsAtWithin,
+  CriteriaFunctionFactory,
+  valueCanCoerceToNumber
+} from "./Utils";
+import { CellError } from "../Errors";
+import * as ERRORS from "../Errors";
 
 /**
  * Returns the absolute value of a number.
@@ -1031,6 +1043,54 @@ var SUMIF = function (...values) {
   return sum;
 };
 
+/**
+ * Returns the sum of the squares of a series of numbers and/or cells.
+ * @param values  The values or range(s) whose squares to add together.
+ * @returns {number} the sum of the squares if the input.
+ * @constructor
+ */
+var SUMSQ = function (...values) {
+  checkArgumentsAtLeastLength(values, 1);
+  var result = 0;
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      result = result + SUMSQ.apply(this, filterOutNonNumberValues(values[i]));
+    } else {
+      var n = valueToNumber(values[i]);
+      result = result + (n * n);
+    }
+  }
+  return result;
+};
+
+
+/**
+ * Truncates a number to a certain number of significant digits by omitting less significant digits.
+ * @param values[0] The value to be truncated.
+ * @param values[1]  [ OPTIONAL - 0 by default ] - The number of significant digits to the right of the decimal point to
+ * retain. If places is greater than the number of significant digits in value, value is returned without modification.
+ * places may be negative, in which case the specified number of digits to the left of the decimal place are changed to
+ * zero. All digits to the right of the decimal place are discarded. If all digits of value are changed to zero, TRUNC
+ * simply returns 0.
+ * @returns {number} after truncation
+ * @constructor
+ */
+var TRUNC = function (...values) : number {
+  checkArgumentsAtWithin(values, 1, 2);
+  var n = firstValueAsNumber(values[0]);
+  var digits = 0;
+  if (values.length === 2) {
+    digits = firstValueAsNumber(values[1]);
+  }
+  var sign = (n > 0) ? 1 : -1;
+  return sign * (Math.floor(Math.abs(n) * Math.pow(10, digits))) / Math.pow(10, digits);
+};
+
+
+
 export {
   ABS,
   ACOS,
@@ -1083,5 +1143,7 @@ export {
   COUNTA,
   COUNTIF,
   COUNTIFS,
-  CEILING
+  CEILING,
+  SUMSQ,
+  TRUNC
 }

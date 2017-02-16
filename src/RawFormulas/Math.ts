@@ -1,16 +1,8 @@
 import {
-  checkArgumentsLength,
-  checkArgumentsAtLeastLength,
-  valueToNumber,
-  filterOutStringValues,
-  flatten,
-  filterOutNonNumberValues,
-  stringValuesToZeros,
-  firstValueAsNumber,
-  valueToBoolean,
-  checkArgumentsAtWithin,
+  ArgsChecker,
   CriteriaFunctionFactory,
-  valueCanCoerceToNumber
+  Filter,
+  TypeCaster,
 } from "./Utils";
 import { CellError } from "../Errors";
 import * as ERRORS from "../Errors";
@@ -22,8 +14,8 @@ import * as ERRORS from "../Errors";
  * @constructor
  */
 var ABS = function (...values) {
-  checkArgumentsLength(values, 1);
-  var v = valueToNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var v = TypeCaster.valueToNumber(values[0]);
   return Math.abs(v);
 };
 
@@ -34,8 +26,8 @@ var ABS = function (...values) {
  * @constructor
  */
 var ACOS = function (value?) {
-  checkArgumentsLength(arguments, 1);
-  value = valueToNumber(value);
+  ArgsChecker.checkLength(arguments, 1);
+  value = TypeCaster.valueToNumber(value);
   if (value === -1) {
     return Math.PI;
   } else if (value > 1 || value < -1) {
@@ -51,8 +43,8 @@ var ACOS = function (value?) {
  * @constructor
  */
 var ACOSH = function (value?) {
-  checkArgumentsLength(arguments, 1);
-  value = valueToNumber(value);
+  ArgsChecker.checkLength(arguments, 1);
+  value = TypeCaster.valueToNumber(value);
   if (value < 1) {
     throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". It should be greater than or equal to 1.");
   }
@@ -66,8 +58,8 @@ var ACOSH = function (value?) {
  * @constructor
  */
 var ACOTH = function (value?) {
-  checkArgumentsLength(arguments, 1);
-  value = valueToNumber(value);
+  ArgsChecker.checkLength(arguments, 1);
+  value = TypeCaster.valueToNumber(value);
   if (value <= 1 && value >= -1) {
     throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". Valid values cannot be between -1 and 1 inclusive.")
   }
@@ -81,7 +73,7 @@ var ACOTH = function (value?) {
  * @constructor
  */
 var ARABIC = function (text?) {
-  checkArgumentsLength(arguments, 1);
+  ArgsChecker.checkLength(arguments, 1);
   if (typeof text !== "string") {
     throw new CellError(ERRORS.VALUE_ERROR, 'Invalid roman numeral in ARABIC evaluation.');
   }
@@ -111,8 +103,8 @@ var ARABIC = function (text?) {
  * @constructor
  */
 var ASIN = function (value?) {
-  checkArgumentsLength(arguments, 1);
-  value = valueToNumber(value);
+  ArgsChecker.checkLength(arguments, 1);
+  value = TypeCaster.valueToNumber(value);
   if (value === -1) {
     return Math.PI;
   } else if (value > 1 || value < -1) {
@@ -128,8 +120,8 @@ var ASIN = function (value?) {
  * @constructor
  */
 var ASINH = function (value?) {
-  checkArgumentsLength(arguments, 1);
-  value = valueToNumber(value);
+  ArgsChecker.checkLength(arguments, 1);
+  value = TypeCaster.valueToNumber(value);
   return Math.log(value + Math.sqrt(value * value + 1));
 };
 
@@ -141,8 +133,8 @@ var ASINH = function (value?) {
  * @constructor
  */
 var ATAN = function (value?) {
-  checkArgumentsLength(arguments, 1);
-  value = valueToNumber(value);
+  ArgsChecker.checkLength(arguments, 1);
+  value = TypeCaster.valueToNumber(value);
   if (value === -1) {
     return Math.PI;
   } else if (value > 1 || value < -1) {
@@ -160,9 +152,9 @@ var ATAN = function (value?) {
  * @constructor
  */
 var ATAN2 = function (x, y) {
-  checkArgumentsLength(arguments, 2);
-  x = valueToNumber(x);
-  y = valueToNumber(y);
+  ArgsChecker.checkLength(arguments, 2);
+  x = TypeCaster.valueToNumber(x);
+  y = TypeCaster.valueToNumber(y);
   if (x === 0 && y === 0) {
     throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function ATAN2 caused a divide by zero error.");
   }
@@ -177,8 +169,8 @@ var ATAN2 = function (x, y) {
  * @constructor
  */
 var ATANH = function (value?) : number {
-  checkArgumentsLength(arguments, 1);
-  value = valueToNumber(value);
+  ArgsChecker.checkLength(arguments, 1);
+  value = TypeCaster.valueToNumber(value);
   if (value >= 1 || value <= -1) {
     throw new CellError(ERRORS.NUM_ERROR, "Function ATANH parameter 1 value is " + value + ". Valid values are between -1 and 1 exclusive.");
   }
@@ -196,7 +188,7 @@ var ATANH = function (value?) : number {
  * @constructor
  */
 var AVERAGE = function (...values) : number {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var result = 0;
   var count = 0;
   for (var i = 0; i < values.length; i++) {
@@ -204,11 +196,11 @@ var AVERAGE = function (...values) : number {
       if (values[i].length === 0) {
         throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
       }
-      var filtered = filterOutStringValues(values[i]);
+      var filtered = Filter.filterOutStringValues(values[i]);
       result = result + SUM.apply(this, filtered);
       count += filtered.length;
     } else {
-      result = result + valueToNumber(values[i]);
+      result = result + TypeCaster.valueToNumber(values[i]);
       count++;
     }
   }
@@ -222,7 +214,7 @@ var AVERAGE = function (...values) : number {
  * @constructor
  */
 var AVEDEV = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
 
   // Sort to array-values, and non-array-values
   var arrayValues = [];
@@ -235,26 +227,26 @@ var AVEDEV = function (...values) {
       }
       arrayValues.push(X);
     } else {
-      nonArrayValues.push(valueToNumber(X));
+      nonArrayValues.push(TypeCaster.valueToNumber(X));
     }
   }
 
   // Remove string values from array-values, but not from non-array-values, and concat.
-  var flatValues = filterOutStringValues(flatten(arrayValues)).map(function (value) {
-    return valueToNumber(value);
+  var flatValues = Filter.filterOutStringValues(Filter.flatten(arrayValues)).map(function (value) {
+    return TypeCaster.valueToNumber(value);
   }).concat(nonArrayValues);
 
   // Calculating mean
   var result = 0;
   var count = 0;
   for (var i = 0; i < flatValues.length; i++) {
-    result = result + valueToNumber(flatValues[i]);
+    result = result + TypeCaster.valueToNumber(flatValues[i]);
     count++;
   }
   var mean = result / count;
 
   for (var i = 0; i < flatValues.length; i++) {
-    flatValues[i] = ABS(valueToNumber(flatValues[i]) - mean);
+    flatValues[i] = ABS(TypeCaster.valueToNumber(flatValues[i]) - mean);
   }
   return SUM(flatValues) / flatValues.length;
 };
@@ -266,7 +258,7 @@ var AVEDEV = function (...values) {
  * @constructor
  */
 var AVERAGEA = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var result = 0;
   var count = 0;
   for (var i = 0; i < values.length; i++) {
@@ -274,11 +266,11 @@ var AVERAGEA = function (...values) {
       if (values[i].length === 0) {
         throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
       }
-      var filtered = stringValuesToZeros(values[i]);
+      var filtered = Filter.stringValuesToZeros(values[i]);
       result = result + SUM.apply(this, filtered);
       count += filtered.length;
     } else {
-      result = result + valueToNumber(values[i]);
+      result = result + TypeCaster.valueToNumber(values[i]);
       count++;
     }
   }
@@ -292,14 +284,14 @@ var AVERAGEA = function (...values) {
  * @constructor
  */
 var EVEN = function (...values) : number {
-  checkArgumentsLength(values, 1);
+  ArgsChecker.checkLength(values, 1);
   if (values[0] instanceof Array) {
     if (values[0].length === 0) {
       throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
     }
     return EVEN(values[0][0]);
   }
-  var X = valueToNumber(values[0]);
+  var X = TypeCaster.valueToNumber(values[0]);
   return X % 2 === 1 ? X + 1 : X;
 };
 
@@ -310,19 +302,19 @@ var EVEN = function (...values) : number {
  * @constructor
  */
 var MAX = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var maxSoFar = -Infinity;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
       }
-      var filtered = filterOutStringValues(values[i]);
+      var filtered = Filter.filterOutStringValues(values[i]);
       if (filtered.length !== 0) {
         maxSoFar = Math.max(MAX.apply(this, filtered), maxSoFar);
       }
     } else {
-      maxSoFar = Math.max(valueToNumber(values[i]), maxSoFar);
+      maxSoFar = Math.max(TypeCaster.valueToNumber(values[i]), maxSoFar);
     }
   }
   return maxSoFar;
@@ -346,26 +338,26 @@ var MAXA = function (...values) : number {
  * @constructor
  */
 var MEDIAN = function (...values) : number {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var sortedArray = [];
   values.forEach(function (currentValue) {
     if (currentValue instanceof Array) {
       if (currentValue.length === 0) {
         throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
       }
-      var filtered = filterOutStringValues(currentValue);
+      var filtered = Filter.filterOutStringValues(currentValue);
       sortedArray = sortedArray.concat(filtered);
     } else {
       sortedArray.push(currentValue);
     }
   });
   sortedArray = sortedArray.sort(function (a, b) {
-    var aN = valueToNumber(a);
-    var bN = valueToNumber(b);
+    var aN = TypeCaster.valueToNumber(a);
+    var bN = TypeCaster.valueToNumber(b);
     return aN - bN;
   });
   if (sortedArray.length === 1) {
-    return valueToNumber(sortedArray[0]);
+    return TypeCaster.valueToNumber(sortedArray[0]);
   }
   if (sortedArray.length === 0) {
     throw new CellError(ERRORS.NUM_ERROR, "MEDIAN has no valid input data.");
@@ -391,19 +383,19 @@ var MEDIAN = function (...values) : number {
  * @constructor
  */
 var MIN = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var minSoFar = Infinity;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
       }
-      var filtered = filterOutStringValues(values[i]);
+      var filtered = Filter.filterOutStringValues(values[i]);
       if (filtered.length !== 0) {
         minSoFar = Math.min(MIN.apply(this, filtered), minSoFar);
       }
     } else {
-      minSoFar = Math.min(valueToNumber(values[i]), minSoFar);
+      minSoFar = Math.min(TypeCaster.valueToNumber(values[i]), minSoFar);
     }
   }
   return minSoFar;
@@ -429,9 +421,9 @@ var MINA = function (...values) : number {
  * @constructor
  */
 var MOD = function (...values) : number {
-  checkArgumentsLength(values, 2);
-  var oneN = valueToNumber(values[0]);
-  var twoN =  valueToNumber(values[1]);
+  ArgsChecker.checkLength(values, 2);
+  var oneN = TypeCaster.valueToNumber(values[0]);
+  var twoN =  TypeCaster.valueToNumber(values[1]);
   if (twoN === 0) {
     throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function MOD parameter 2 cannot be zero.");
   }
@@ -446,14 +438,14 @@ var MOD = function (...values) : number {
  * @constructor
  */
 var ODD = function (...values) : number {
-  checkArgumentsLength(values, 1);
+  ArgsChecker.checkLength(values, 1);
   if (values[0] instanceof Array) {
     if (values[0].length === 0) {
       throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
     }
     return ODD(values[0][0]);
   }
-  var X = valueToNumber(values[0]);
+  var X = TypeCaster.valueToNumber(values[0]);
   return X % 2 === 1 ? X : X + 1;
 };
 
@@ -465,9 +457,9 @@ var ODD = function (...values) : number {
  * @constructor
  */
 var POWER = function (...values) : number {
-  checkArgumentsLength(values, 2);
-  var n = firstValueAsNumber(values[0]);
-  var p = firstValueAsNumber(values[1]);
+  ArgsChecker.checkLength(values, 2);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var p = TypeCaster.firstValueAsNumber(values[1]);
   return Math.pow(n, p);
 };
 
@@ -478,7 +470,7 @@ var POWER = function (...values) : number {
  * @constructor
  */
 var SUM = function (...values) : number {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var result = 0;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
@@ -487,7 +479,7 @@ var SUM = function (...values) : number {
       if (values[i] === "") {
         throw new CellError(ERRORS.VALUE_ERROR, "Function SUM parameter "+i+" expects number values. But '"+values[i]+"' is a text and cannot be coerced to a number.");
       }
-      result = result + valueToNumber(values[i]);
+      result = result + TypeCaster.valueToNumber(values[i]);
     }
   }
   return result;
@@ -500,8 +492,8 @@ var SUM = function (...values) : number {
  * @constructor
  */
 var SQRT = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var x = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var x = TypeCaster.firstValueAsNumber(values[0]);
   if (x < 0) {
     throw new CellError(ERRORS.VALUE_ERROR, "Function SQRT parameter 1 expects number values. But '" + values[0] + "' is a text and cannot be coerced to a number.");
   }
@@ -515,8 +507,8 @@ var SQRT = function (...values) : number {
  * @constructor
  */
 var COS = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var r = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var r = TypeCaster.firstValueAsNumber(values[0]);
   return Math.cos(r);
 };
 
@@ -527,8 +519,8 @@ var COS = function (...values) : number {
  * @constructor
  */
 var COSH = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var r = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var r = TypeCaster.firstValueAsNumber(values[0]);
   return Math["cosh"](r);
 };
 
@@ -539,8 +531,8 @@ var COSH = function (...values) : number {
  * @constructor
  */
 var COT = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var x = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var x = TypeCaster.firstValueAsNumber(values[0]);
   if (x === 0) {
     throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function COT caused a divide by zero error.");
   }
@@ -554,8 +546,8 @@ var COT = function (...values) : number {
  * @constructor
  */
 var COTH = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var x = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var x = TypeCaster.firstValueAsNumber(values[0]);
   if (x === 0) {
     throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function COTH caused a divide by zero error.");
   }
@@ -569,8 +561,8 @@ var COTH = function (...values) : number {
  * @constructor
  */
 var INT = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var x = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var x = TypeCaster.firstValueAsNumber(values[0]);
   return Math.floor(x);
 };
 
@@ -582,11 +574,11 @@ var INT = function (...values) : number {
  * @constructor
  */
 var ISEVEN = function (...values) : boolean {
-  checkArgumentsLength(values, 1);
+  ArgsChecker.checkLength(values, 1);
   if (values[0] === "") {
     throw new CellError(ERRORS.VALUE_ERROR, "Function ISEVEN parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
   }
-  var x = firstValueAsNumber(values[0]);
+  var x = TypeCaster.firstValueAsNumber(values[0]);
   return Math.floor(x) % 2 === 0;
 };
 
@@ -598,11 +590,11 @@ var ISEVEN = function (...values) : boolean {
  * @constructor
  */
 var ISODD = function (...values) : boolean {
-  checkArgumentsLength(values, 1);
+  ArgsChecker.checkLength(values, 1);
   if (values[0] === "") {
     throw new CellError(ERRORS.VALUE_ERROR, "Function ISODD parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
   }
-  var x = firstValueAsNumber(values[0]);
+  var x = TypeCaster.firstValueAsNumber(values[0]);
   return Math.floor(x) % 2 === 1;
 };
 
@@ -613,8 +605,8 @@ var ISODD = function (...values) : boolean {
  * @constructor
  */
 var SIN = function (...values) {
-  checkArgumentsLength(values, 1);
-  var rad = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var rad = TypeCaster.firstValueAsNumber(values[0]);
   return rad === Math.PI ? 0 : Math.sin(rad);
 };
 
@@ -625,8 +617,8 @@ var SIN = function (...values) {
  * @constructor
  */
 var SINH = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var rad = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var rad = TypeCaster.firstValueAsNumber(values[0]);
   return Math["sinh"](rad);
 };
 
@@ -646,8 +638,8 @@ var PI = function () {
  * @constructor
  */
 var LOG10 = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var n = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
   if (n < 1) {
     throw new CellError(ERRORS.NUM_ERROR, "Function LOG10 parameter 1 value is " + n + ". It should be greater than 0.");
   }
@@ -664,11 +656,11 @@ var LOG10 = function (...values) : number {
  * @constructor
  */
 var LOG = function (...values) : number {
-  checkArgumentsAtLeastLength(values, 1);
-  var n = firstValueAsNumber(values[0]);
+  ArgsChecker.checkAtLeastLength(values, 1);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
   var b = 10;
   if (values.length > 1) {
-    b = firstValueAsNumber(values[1]);
+    b = TypeCaster.firstValueAsNumber(values[1]);
     if (b < 1) {
       throw new CellError(ERRORS.NUM_ERROR, "Function LOG parameter 2 value is " + b + ". It should be greater than 0.");
     }
@@ -691,8 +683,8 @@ var LOG = function (...values) : number {
  * @constructor
  */
 var LN = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var n = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
   if (n < 1) {
     throw new CellError(ERRORS.NUM_ERROR, "Function LN parameter 1 value is " + n + ". It should be greater than 0.");
   }
@@ -706,8 +698,8 @@ var LN = function (...values) : number {
  * @constructor
  */
 var TAN = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var rad = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var rad = TypeCaster.firstValueAsNumber(values[0]);
   return rad === Math.PI ? 0 : Math.tan(rad);
 };
 
@@ -718,8 +710,8 @@ var TAN = function (...values) : number {
  * @constructor
  */
 var TANH = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var rad = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var rad = TypeCaster.firstValueAsNumber(values[0]);
   return Math["tanh"](rad);
 };
 
@@ -735,14 +727,14 @@ var TANH = function (...values) : number {
  * TODO: This needs to also accept a third parameter "average_range"
  */
 var AVERAGEIF = function (...values) {
-  checkArgumentsLength(values, 2);
+  ArgsChecker.checkLength(values, 2);
   var range = values[0];
   var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(values[1]);
 
   var result = 0;
   var count = 0;
   for (var i = 0; i < range.length; i++) {
-    var val = valueToNumber(range[i]);
+    var val = TypeCaster.valueToNumber(range[i]);
     if (criteriaEvaluation(val)) {
       result = result + val;
       count++;
@@ -762,12 +754,12 @@ var AVERAGEIF = function (...values) {
  * @constructor
  */
 var CEILING = function (...values) : number {
-  checkArgumentsAtWithin(values, 1, 2);
-  var num = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var num = TypeCaster.firstValueAsNumber(values[0]);
   if (values.length === 1) {
     return Math.ceil(num);
   }
-  var significance = firstValueAsNumber(values[1]);
+  var significance = TypeCaster.firstValueAsNumber(values[1]);
   if (significance === 0) {
     throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function CEILING parameter 2 cannot be zero.");
   }
@@ -787,12 +779,12 @@ var CEILING = function (...values) : number {
  * @constructor
  */
 var FLOOR = function (...values) : number {
-  checkArgumentsAtWithin(values, 1, 2);
-  var num = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var num = TypeCaster.firstValueAsNumber(values[0]);
   if (values.length === 1) {
     return Math.floor(num);
   }
-  var significance = firstValueAsNumber(values[1]);
+  var significance = TypeCaster.firstValueAsNumber(values[1]);
   if (significance === 0) {
     throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function FLOOR parameter 2 cannot be zero.");
   }
@@ -813,7 +805,7 @@ var FLOOR = function (...values) : number {
  * @constructor
  */
 var IF = function (...values) : any {
-  checkArgumentsLength(values, 3);
+  ArgsChecker.checkLength(values, 3);
   if (values[0] instanceof Array) {
     if (values[0].length === 0) {
       throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
@@ -822,7 +814,7 @@ var IF = function (...values) : any {
   } else if (values[0] === "") {
     return values[2];
   }
-  return (valueToBoolean(values[0])) ? values[1] : values[2];
+  return (TypeCaster.valueToBoolean(values[0])) ? values[1] : values[2];
 };
 
 /**
@@ -832,14 +824,14 @@ var IF = function (...values) : any {
  * @constructor
  */
 var COUNT = function (...values) : number {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var count = 0;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length > 0) {
         count += COUNT.apply(this, values[i]);
       }
-    } else if (valueCanCoerceToNumber(values[i])) {
+    } else if (TypeCaster.canCoerceToNumber(values[i])) {
       count++;
     }
   }
@@ -858,7 +850,7 @@ var COUNT = function (...values) : number {
  * TODO: This needs to take nested range values.
  */
 var COUNTIF = function (...values) {
-  checkArgumentsLength(values, 2);
+  ArgsChecker.checkLength(values, 2);
   var range = values[0];
   var criteria = values[1];
 
@@ -884,7 +876,7 @@ var COUNTIF = function (...values) {
  * TODO: This needs to take nested range values.
  */
 var COUNTIFS = function (...values) {
-  checkArgumentsAtLeastLength(values, 2);
+  ArgsChecker.checkAtLeastLength(values, 2);
   var criteriaEvaluationFunctions = values.map(function (criteria, index) {
     if (index % 2 === 1) {
       return CriteriaFunctionFactory.createCriteriaFunction(criteria);
@@ -923,7 +915,7 @@ var COUNTIFS = function (...values) {
  * @constructor
  */
 var COUNTA = function (...values) : number {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var count = 0;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
@@ -947,11 +939,11 @@ var COUNTA = function (...values) : number {
  * @constructor
  */
 var DELTA = function (...values) : number {
-  checkArgumentsAtWithin(values, 1, 2);
+  ArgsChecker.checkLengthWithin(values, 1, 2);
   if (values.length === 1) {
-    return valueToNumber(values[0]) === 0 ? 1 : 0;
+    return TypeCaster.valueToNumber(values[0]) === 0 ? 1 : 0;
   }
-  return valueToNumber(values[0]) === valueToNumber(values[1]) ? 1 : 0;
+  return TypeCaster.valueToNumber(values[0]) === TypeCaster.valueToNumber(values[1]) ? 1 : 0;
 };
 
 /**
@@ -962,12 +954,12 @@ var DELTA = function (...values) : number {
  * @constructor
  */
 var ROUND = function (...values) {
-  checkArgumentsAtWithin(values, 1, 2);
-  var n = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
   if (values.length === 1) {
     return Math.round(n);
   }
-  var d = firstValueAsNumber(values[1]);
+  var d = TypeCaster.firstValueAsNumber(values[1]);
   return Math.round(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
@@ -979,12 +971,12 @@ var ROUND = function (...values) {
  * @constructor
  */
 var ROUNDDOWN = function (...values) {
-  checkArgumentsAtWithin(values, 1, 2);
-  var n = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
   if (values.length === 1) {
     return Math.floor(n);
   }
-  var d = firstValueAsNumber(values[1]);
+  var d = TypeCaster.firstValueAsNumber(values[1]);
   return Math.floor(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
@@ -996,12 +988,12 @@ var ROUNDDOWN = function (...values) {
  * @constructor
  */
 var ROUNDUP = function (...values) {
-  checkArgumentsAtWithin(values, 1, 2);
-  var n = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
   if (values.length === 1) {
     return Math.ceil(n);
   }
-  var d = firstValueAsNumber(values[1]);
+  var d = TypeCaster.firstValueAsNumber(values[1]);
   return Math.ceil(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
@@ -1018,7 +1010,7 @@ var ROUNDUP = function (...values) {
  * TODO: This needs to take nested range values.
  */
 var SUMIF = function (...values) {
-  checkArgumentsAtWithin(values, 2, 3);
+  ArgsChecker.checkLengthWithin(values, 2, 3);
   var range = values[0];
   var criteria = values[1];
   var sumRange = null;
@@ -1034,10 +1026,10 @@ var SUMIF = function (...values) {
     if (sumRange && i > sumRange.length-1) {
       continue;
     }
-    if (values.length === 2 && valueCanCoerceToNumber(x) && criteriaEvaluation(x)) {
-      sum = sum + x;
-    } else if (values.length === 3 && valueCanCoerceToNumber(sumRange[i]) && criteriaEvaluation(x)) {
-      sum = sum + sumRange[i];
+    if (values.length === 2 && TypeCaster.canCoerceToNumber(x) && criteriaEvaluation(x)) {
+      sum = sum + TypeCaster.valueToNumber(x);
+    } else if (values.length === 3 && TypeCaster.canCoerceToNumber(sumRange[i]) && criteriaEvaluation(x)) {
+      sum = sum + TypeCaster.valueToNumber(sumRange[i]);
     }
   }
   return sum;
@@ -1050,16 +1042,16 @@ var SUMIF = function (...values) {
  * @constructor
  */
 var SUMSQ = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var result = 0;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
       }
-      result = result + SUMSQ.apply(this, filterOutNonNumberValues(values[i]));
+      result = result + SUMSQ.apply(this, Filter.filterOutNonNumberValues(values[i]));
     } else {
-      var n = valueToNumber(values[i]);
+      var n = TypeCaster.valueToNumber(values[i]);
       result = result + (n * n);
     }
   }
@@ -1079,11 +1071,11 @@ var SUMSQ = function (...values) {
  * @constructor
  */
 var TRUNC = function (...values) : number {
-  checkArgumentsAtWithin(values, 1, 2);
-  var n = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
   var digits = 0;
   if (values.length === 2) {
-    digits = firstValueAsNumber(values[1]);
+    digits = TypeCaster.firstValueAsNumber(values[1]);
   }
   var sign = (n > 0) ? 1 : -1;
   return sign * (Math.floor(Math.abs(n) * Math.pow(10, digits))) / Math.pow(10, digits);

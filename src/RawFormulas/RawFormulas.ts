@@ -73,19 +73,10 @@ import {
   CONCATENATE
 } from "./Misc";
 import {
-  checkArgumentsAtLeastLength,
-  checkArgumentsAtWithin,
-  valueCanCoerceToNumber,
-  firstValueAsBoolean,
-  filterOutStringValues,
   CriteriaFunctionFactory,
-  valueToNumber,
-  checkArgumentsLength,
-  filterOutNonNumberValues,
-  firstValueAsNumber,
-  firstValueAsString,
-  valueToBoolean,
-  valueToString
+  ArgsChecker,
+  Filter,
+  TypeCaster
 } from "./Utils";
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"

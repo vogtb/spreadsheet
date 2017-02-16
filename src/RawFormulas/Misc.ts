@@ -1,11 +1,6 @@
 import {
-  valueToString,
-  firstValueAsNumber,
-  firstValueAsString,
-  firstValueAsBoolean,
-  checkArgumentsLength,
-  checkArgumentsAtWithin,
-  checkArgumentsAtLeastLength
+  ArgsChecker,
+  TypeCaster
 } from "./Utils";
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
@@ -17,8 +12,8 @@ import * as ERRORS from "../Errors"
  * @constructor
  */
 var CHAR = function (...values) : string {
-  checkArgumentsLength(values, 1);
-  var n = firstValueAsNumber(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
   if (n < 1 || n > 1114112) { //limit
     throw new CellError(ERRORS.NUM_ERROR, "Function CHAR parameter 1 value " + n + " is out of range.");
   }
@@ -32,8 +27,8 @@ var CHAR = function (...values) : string {
  * @constructor
  */
 var CODE = function (...values) : number {
-  checkArgumentsLength(values, 1);
-  var text = firstValueAsString(values[0]);
+  ArgsChecker.checkLength(values, 1);
+  var text = TypeCaster.firstValueAsString(values[0]);
   if (text === "") {
     throw new CellError(ERRORS.VALUE_ERROR, "Function CODE parameter 1 value should be non-empty.");
   }
@@ -51,12 +46,12 @@ var CODE = function (...values) : number {
  * TODO: At some point this needs to return a more complex type than Array. Needs to return a type that has a dimension.
  */
 var SPLIT = function (...values) : Array<string> {
-  checkArgumentsAtWithin(values, 2, 3);
-  var text = firstValueAsString(values[0]);
-  var delimiter = firstValueAsString(values[1]);
+  ArgsChecker.checkLengthWithin(values, 2, 3);
+  var text = TypeCaster.firstValueAsString(values[0]);
+  var delimiter = TypeCaster.firstValueAsString(values[1]);
   var splitByEach = false;
   if (values.length === 3) {
-    splitByEach = firstValueAsBoolean(values[2]);
+    splitByEach = TypeCaster.firstValueAsBoolean(values[2]);
   }
   if (splitByEach) {
     var result = [text];
@@ -83,7 +78,7 @@ var SPLIT = function (...values) : Array<string> {
  * @constructor
  */
 var CONCATENATE = function (...values) : string {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var string = '';
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
@@ -92,7 +87,7 @@ var CONCATENATE = function (...values) : string {
       }
       string += CONCATENATE.apply(this, arguments[i]);
     } else {
-      string += valueToString(values[i]);
+      string += TypeCaster.valueToString(values[i]);
     }
   }
   return string;

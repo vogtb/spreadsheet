@@ -1,4 +1,4 @@
-import { checkArgumentsAtLeastLength, checkArgumentsLength, valueToString, valueToBoolean } from "./Utils"
+import { ArgsChecker, Filter, TypeCaster } from "./Utils"
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
 
@@ -9,7 +9,7 @@ import * as ERRORS from "../Errors"
  * @constructor
  */
 var AND = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var result = true;
   for (var i = 0; i < values.length; i++) {
     if (typeof values[i] === "string") {
@@ -35,7 +35,7 @@ var AND = function (...values) {
  * @constructor
  */
 var EXACT = function (...values) {
-  checkArgumentsLength(values, 2);
+  ArgsChecker.checkLength(values, 2);
   var one = values[0];
   var two = values[1];
   if (one instanceof Array) {
@@ -48,8 +48,8 @@ var EXACT = function (...values) {
       throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
     }
   }
-  one = valueToString(one);
-  two = valueToString(two);
+  one = TypeCaster.valueToString(one);
+  two = TypeCaster.valueToString(two);
   return one === two;
 };
 
@@ -78,7 +78,7 @@ var FALSE = function () : boolean {
  * @constructor
  */
 var NOT = function (...values) : boolean {
-  checkArgumentsLength(values, 1);
+  ArgsChecker.checkLength(values, 1);
   var X = values[0];
   if (typeof(X) === "boolean") {
     return !X;
@@ -108,7 +108,7 @@ var NOT = function (...values) : boolean {
  * @constructor
  */
 var OR = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
@@ -117,7 +117,7 @@ var OR = function (...values) {
       if (OR.apply(this, values[i])) {
         return true;
       }
-    } else if (valueToBoolean(values[i])) {
+    } else if (TypeCaster.valueToBoolean(values[i])) {
       return true;
     }
   }
@@ -131,7 +131,7 @@ var OR = function (...values) {
  * @constructor
  */
 var XOR = function (...values) {
-  checkArgumentsAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1);
   var alreadyTruthy = false;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
@@ -144,7 +144,7 @@ var XOR = function (...values) {
         }
         alreadyTruthy = true;
       }
-    } else if (valueToBoolean(values[i])) {
+    } else if (TypeCaster.valueToBoolean(values[i])) {
       if (alreadyTruthy) {
         return false;
       }

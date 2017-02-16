@@ -10,7 +10,6 @@ import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2
     SUMSQ, SUMX2MY2, SUMX2PY2, TAN, TANH, TRUNC, XOR, YEARFRAC } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals, assertEqualsDates, assertArrayEquals} from "./utils/Asserts"
-import {firstValueAsNumber} from "../src/RawFormulas/Utils";
 
 function catchAndAssertEquals(toExecute, expected) {
   var toThrow = null;

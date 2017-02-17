@@ -607,12 +607,14 @@ assertEquals(DB(100, 50, 10, 2, 12), 6.2511);
 assertEquals(DDB(100, 50, 10, 2, 2.25), 17.4375);
 
 // Test DEC2BIN
+assertEquals(DEC2BIN([100]), "1100100");
 assertEquals(DEC2BIN(100), "1100100");
 assertEquals(DEC2BIN(22), "10110");
 assertEquals(DEC2BIN(22.11), "10110");
 assertEquals(DEC2BIN(22.77), "10110");
 assertEquals(DEC2BIN("22.77"), "10110");
 assertEquals(DEC2BIN(100, 8), "01100100");
+assertEquals(DEC2BIN([100], [8]), "01100100");
 assertEquals(DEC2BIN(100, 7), "1100100");
 assertEquals(DEC2BIN(100, 10), "0001100100");
 assertEquals(DEC2BIN(-100), "1110011100");
@@ -637,8 +639,42 @@ catchAndAssertEquals(function() {
   DEC2BIN("str");
 }, ERRORS.VALUE_ERROR);
 
+// Test DEC2HEX
+assertEquals(DEC2HEX([100]), "64");
+assertEquals(DEC2HEX(100), "64");
+assertEquals(DEC2HEX(22), "16");
+assertEquals(DEC2HEX(22.11), "16");
+assertEquals(DEC2HEX(22.77), "16");
+assertEquals(DEC2HEX("22.77"), "16");
+assertEquals(DEC2HEX(100, 8), "00000064");
+assertEquals(DEC2HEX([100], [8]), "00000064");
+assertEquals(DEC2HEX(100, 7), "0000064");
+assertEquals(DEC2HEX(100, 10), "0000000064");
+assertEquals(DEC2HEX(-100), "FFFFFFFF9C");
+assertEquals(DEC2HEX("-22.77"), "FFFFFFFFEA");
+assertEquals(DEC2HEX(-22.11), "FFFFFFFFEA");
+assertEquals(DEC2HEX(-22), "FFFFFFFFEA");
+assertEquals(DEC2HEX(false), "0");
+assertEquals(DEC2HEX(true), "1");
+catchAndAssertEquals(function() {
+  DEC2HEX(100, 0);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DEC2HEX(549755813889, 10);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DEC2HEX(54975581, -10);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DEC2HEX(100, 100, 10);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DEC2HEX();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DEC2HEX("str");
+}, ERRORS.VALUE_ERROR);
 
-assertEquals(DEC2HEX("100"), "64");
 
 assertEquals(DEC2OCT("100"), "144");
 

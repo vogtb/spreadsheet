@@ -105,7 +105,6 @@ var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
 var DB = Formula["DB"];
 var DDB = Formula["DDB"];
-var DEC2HEX = Formula["DEC2HEX"];
 var DEC2OCT = Formula["DEC2OCT"];
 var DEGREES = Formula["DEGREES"];
 var DEVSQ = Formula["DEVSQ"];
@@ -136,6 +135,59 @@ var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
 
 /**
+ * Converts a decimal number to signed hexadecimal format.
+ * @param values[0] decimal_number - The decimal value to be converted to signed hexadecimal, provided as a string. This
+ * value has a maximum of 549755813887 if positive, and a minimum of -549755814888 if negative.
+ * @param values[1] significant_digits - [ OPTIONAL ] - The number of significant digits to ensure in the result. If
+ * this is greater than the number of significant digits in the result, the result is left-padded with zeros until the
+ * total number of digits reaches significant_digits. This value is ignored if decimal_number is negative.
+ * @returns {string} hexadecimal string representation of the decimal number
+ * @constructor
+ */
+var DEC2HEX = function (...values) : string {
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
+  if (n < 0) {
+    n = Math.ceil(n);
+  }
+  if (n > 0) {
+    n = Math.floor(n);
+  }
+  var p = 10;
+  var placesPresent = false;
+  if (values.length === 2) {
+    p = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+    placesPresent = true;
+  }
+  if (n < -549755813888 || n > 549755813887) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2HEX parameter 1 value is " + n + ". Valid values are between -549755813888 and 549755813887 inclusive.");
+  }
+  if (p < 1 || p > 10) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2HEX parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
+  }
+  // Ignore places and return a 10-character hexadecimal number if number is negative
+  if (n < 0) {
+    return (1099511627776 + n).toString(16).toUpperCase();
+  }
+
+  // Convert decimal number to hexadecimal
+  var result = parseInt(n.toString(), 10).toString(16).toUpperCase();
+  if (!placesPresent) {
+    return result;
+  } else {
+    // Pad return value with leading 0s (zeros) if necessary (using Underscore.string)
+    if (p >= result.length) {
+      // Throw NUM error?
+    }
+    var str = "";
+    for (var i = 0; i < p - result.length; i++) {
+      str += "0";
+    }
+    return str + result.toUpperCase();
+  }
+};
+
+/**
  * Converts a decimal number to signed binary format.
  * @param values[0] decimal_number - The decimal value to be converted to signed binary, provided as a string. For this
  * function, this value has a maximum of 511 if positive, and a minimum of -512 if negative.
@@ -145,7 +197,7 @@ var YEARFRAC = Formula["YEARFRAC"];
  * @returns {string} signed binary string representation of the input decimal number.
  * @constructor
  */
-var DEC2BIN = function (...values) {
+var DEC2BIN = function (...values) : string {
   ArgsChecker.checkLengthWithin(values, 1, 2);
   var n = TypeCaster.firstValueAsNumber(values[0]);
   if (n < 0) {

@@ -185,7 +185,7 @@ testFormula('=DAYS(DATEVALUE("1993-6-24"), DATEVALUE("1992-6-24"))', 365);
 testFormula('=DAYS360(DATE(1969, 7, 16), DATE(1970, 7, 24), 1)', 368);
 
 // Test DB
-testFormula("=DB(100, 50, 10, 2, 12)", 6.2511);
+testFormula("=DB(100, 50, 10, 2, 12)", 6.2482428240683285);
 
 // Test DDB
 testFormula("=DDB(100, 50, 10, 2, 2.25)", 17.4375);

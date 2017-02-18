@@ -673,7 +673,20 @@ assertEquals(DAYS(DATEVALUE("1993-6-24"), DATEVALUE("1992-6-24")), 365);
 
 assertEquals(DAYS360(DATE(1969, 7, 16), DATE(1970, 7, 24), 1), 368);
 
-assertEquals(DB(100, 50, 10, 2, 12), 6.2511);
+
+// Test DB
+assertEquals(DB(100, 50, 10, 2, 12), 6.2482428240683285);
+assertEquals(DB("100", "50", "10", "2", "12"), 6.2482428240683285);
+assertEquals(DB(100, 50, 10, 2, 12.9999999), 6.2482428240683285);
+catchAndAssertEquals(function() {
+  DB(100, 50, 10, 2, 13);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DB(100, 50, 10, 12, 13);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DB(100, -50, 10, 2, 12);
+}, ERRORS.NUM_ERROR);
 
 assertEquals(DDB(100, 50, 10, 2, 2.25), 17.4375);
 

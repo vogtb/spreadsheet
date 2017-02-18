@@ -290,6 +290,9 @@ assertEquals(BIN2DEC("1010101010"), -342);
 assertEquals(BIN2DEC("10"), 2);
 assertEquals(BIN2DEC(["10", "str"]), 2);
 catchAndAssertEquals(function() {
+  BIN2DEC(false);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
   BIN2DEC("str");
 }, ERRORS.NUM_ERROR);
 catchAndAssertEquals(function() {
@@ -300,7 +303,31 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
-assertEquals(BIN2HEX(1010101010), "fffffffeaa");
+// Test BIN2HEX
+assertEquals(BIN2HEX("1010101010"), "FFFFFFFEAA");
+assertEquals(BIN2HEX("10"), "2");
+assertEquals(BIN2HEX("10101010"), "AA");
+assertEquals(BIN2HEX("10101010", 4), "00AA");
+assertEquals(BIN2HEX(["10101010"], [4]), "00AA");
+catchAndAssertEquals(function() {
+  BIN2HEX("10101010", 22);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  BIN2HEX(false);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  BIN2HEX("10101010", 0);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  BIN2DEC("str");
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  BIN2DEC();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  BIN2DEC("10", 4, 4);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(BIN2OCT(1010101010), "7777777252");
 

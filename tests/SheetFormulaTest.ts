@@ -88,7 +88,7 @@ testFormula("=BIN2DEC('1010101010')", -342);
 // testFormula('=BINOMINV(6, 0.5, 0.75)', 4);
 
 // Test BIN2HEX
-testFormula("=BIN2HEX(1010101010)", "fffffffeaa");
+testFormula("=BIN2HEX(1010101010)", "FFFFFFFEAA");
 
 // Test BIN2OCT
 testFormula("=BIN2OCT(1010101010)", "7777777252");

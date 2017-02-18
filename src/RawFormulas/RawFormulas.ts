@@ -83,7 +83,6 @@ import * as ERRORS from "../Errors"
 import {Cell} from "../Cell";
 
 var ACCRINT = Formula["ACCRINT"];
-var BIN2HEX = Formula["BIN2HEX"];
 var BIN2OCT = Formula["BIN2OCT"];
 var DECIMAL = Formula["DECIMAL"];
 var COMBIN = Formula["COMBIN"];
@@ -140,8 +139,11 @@ var YEARFRAC = Formula["YEARFRAC"];
  * @returns {number}
  * @constructor
  */
-var BIN2DEC = function (...values) {
+var BIN2DEC = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
+  if (typeof TypeCaster.firstValue(values[0]) === "boolean") {
+    throw new CellError(ERRORS.VALUE_ERROR, "Function BIN2DEC parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
+  }
   var n = TypeCaster.firstValueAsString(values[0]);
   if (!(/^[01]{1,10}$/).test(n)) {
     throw new CellError(ERRORS.NUM_ERROR, "Input for BIN2DEC ('"+n+"') is not a valid binary representation.");
@@ -149,10 +151,54 @@ var BIN2DEC = function (...values) {
 
   if (n.length === 10 && n.substring(0, 1) === '1') {
     return parseInt(n.substring(1), 2) - 512;
-  } else {
-    return parseInt(n, 2);
   }
+  return parseInt(n, 2);
 };
+
+
+/**
+ * Converts a signed binary number to signed hexadecimal format.
+ * @param values[0] signed_binary_number - The signed 10-bit binary value to be converted to signed hexadecimal,
+ * provided as a string. The most significant bit of signed_binary_number is the sign bit; that is, negative numbers are
+ * represented in two's complement format.
+ * @param values[1] significant_digits - [ OPTIONAL ] - The number of significant digits to ensure in the result.
+ * @returns {string} string representation of a signed hexadecimal
+ * @constructor
+ */
+var BIN2HEX = function (...values) : string {
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  if (typeof TypeCaster.firstValue(values[0]) === "boolean") {
+    throw new CellError(ERRORS.VALUE_ERROR, "Function BIN2HEX parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
+  }
+  var n = TypeCaster.firstValueAsString(values[0]);
+  var p = 10;
+  if (values.length === 2) {
+    p = TypeCaster.firstValueAsNumber(values[1]);
+  }
+  if (!(/^[01]{1,10}$/).test(n)) {
+    throw new CellError(ERRORS.NUM_ERROR, "Input for BIN2HEX ('"+n+"') is not a valid binary representation.");
+  }
+
+  if (n.length === 10 && n.substring(0, 1) === '1') {
+    return (1099511627264 + parseInt(n.substring(1), 2)).toString(16).toUpperCase();
+  }
+
+  if (p < 1 || p > 10) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function BIN2HEX parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
+  }
+  p = Math.floor(p);
+  // Convert decimal number to hexadecimal
+  var result = parseInt(n.toString(), 2).toString(16).toUpperCase();
+  if (p === 10) {
+    return result;
+  }
+  var str = "";
+  for (var i = 0; i < p - result.length; i++) {
+    str += "0";
+  }
+  return str + result;
+};
+
 
 
 /**
@@ -219,16 +265,12 @@ var DEC2OCT = function (...values) : string {
   var result = parseInt(n.toString(), 10).toString(8).toUpperCase();
   if (!placesPresent) {
     return result;
-  } else {
-    if (p >= result.length) {
-      // Throw NUM error?
-    }
-    var str = "";
-    for (var i = 0; i < p - result.length; i++) {
-      str += "0";
-    }
-    return str + result.toUpperCase();
   }
+  var str = "";
+  for (var i = 0; i < p - result.length; i++) {
+    str += "0";
+  }
+  return str + result.toUpperCase();
 };
 
 
@@ -272,16 +314,12 @@ var DEC2HEX = function (...values) : string {
   var result = parseInt(n.toString(), 10).toString(16).toUpperCase();
   if (!placesPresent) {
     return result;
-  } else {
-    if (p >= result.length) {
-      // Throw NUM error?
-    }
-    var str = "";
-    for (var i = 0; i < p - result.length; i++) {
-      str += "0";
-    }
-    return str + result.toUpperCase();
   }
+  var str = "";
+  for (var i = 0; i < p - result.length; i++) {
+    str += "0";
+  }
+  return str + result;
 };
 
 /**

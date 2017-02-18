@@ -197,6 +197,16 @@ class TypeCaster {
     return TypeCaster.valueToString(input);
   }
 
+  static firstValue(input: any) : any {
+    if (input instanceof Array) {
+      if (input.length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      return TypeCaster.firstValue(input[0]);
+    }
+    return input;
+  }
+
   /**
    * Takes any input type and will throw a REF_ERROR or coerce it into a string.
    * @param input to attempt to coerce into a string

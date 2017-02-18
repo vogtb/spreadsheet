@@ -83,7 +83,6 @@ import * as ERRORS from "../Errors"
 import {Cell} from "../Cell";
 
 var ACCRINT = Formula["ACCRINT"];
-var BIN2OCT = Formula["BIN2OCT"];
 var DECIMAL = Formula["DECIMAL"];
 var COMBIN = Formula["COMBIN"];
 var CONVERT = Formula["CONVERT"];
@@ -197,6 +196,53 @@ var BIN2HEX = function (...values) : string {
     str += "0";
   }
   return str + result;
+};
+
+
+/**
+ * Converts a signed binary number to signed octal format.
+ * @param values[0] signed_binary_number - The signed 10-bit binary value to be converted to signed octal, provided as a
+ * string. The most significant bit of signed_binary_number is the sign bit; that is, negative numbers are represented
+ * in two's complement format.
+ * @param values[1] significant_digits - [ OPTIONAL ] - The number of significant digits to ensure in the result. If
+ * this is greater than the number of significant digits in the result, the result is left-padded with zeros until the
+ * total number of digits reaches significant_digits.
+ * @returns {string} number in octal format
+ * @constructor
+ */
+var BIN2OCT = function (...values) : string {
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  if (typeof TypeCaster.firstValue(values[0]) === "boolean") {
+    throw new CellError(ERRORS.VALUE_ERROR, "Function BIN2OCT parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
+  }
+  var n = TypeCaster.firstValueAsString(values[0]);
+  var p = 10;
+  if (values.length === 2) {
+    p = TypeCaster.firstValueAsNumber(values[1]);
+  }
+  if (!(/^[01]{1,10}$/).test(n)) {
+    throw new CellError(ERRORS.NUM_ERROR, "Input for BIN2OCT ('"+n+"') is not a valid binary representation.");
+  }
+
+  if (n.length === 10 && n.substring(0, 1) === '1') {
+    return (1073741312 + parseInt(n.substring(1), 2)).toString(8);
+  }
+
+  if (p < 1 || p > 10) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function BIN2OCT parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
+  }
+  p = Math.floor(p);
+  var result = parseInt(n.toString(), 2).toString(8);
+  if (p === 10) {
+    return result;
+  }
+  if (p >= result.length) {
+    var str = "";
+    for (var i = 0; i < p - result.length - 1; i++) {
+      str += "0";
+    }
+    return str + result;
+  }
 };
 
 

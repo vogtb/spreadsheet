@@ -329,7 +329,32 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
-assertEquals(BIN2OCT(1010101010), "7777777252");
+// Test BIN2OCT
+assertEquals(BIN2OCT("1010101010"), "7777777252");
+assertEquals(BIN2OCT("10"), "2");
+assertEquals(BIN2OCT("100"), "4");
+assertEquals(BIN2OCT("10101010"), "252");
+assertEquals(BIN2OCT("10101010", 4), "252");
+assertEquals(BIN2OCT(["10101010"], [4]), "252");
+catchAndAssertEquals(function() {
+  BIN2OCT("10101010", 22);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  BIN2OCT(false);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  BIN2OCT("10101010", 0);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  BIN2OCT("str");
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  BIN2OCT();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  BIN2OCT("10", 4, 4);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(DECIMAL(199.99999), 199);
 

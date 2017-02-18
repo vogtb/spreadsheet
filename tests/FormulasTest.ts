@@ -635,7 +635,19 @@ catchAndAssertEquals(function() {
   COUNTIFS([1, 5, 10, 20], ">4", [0, 0], "=1");
 }, ERRORS.VALUE_ERROR);
 
+// Test COUNTUNIQUE
 assertEquals(COUNTUNIQUE([1, 1, 10]), 2);
+assertEquals(COUNTUNIQUE(["1", 1, 10]), 3);
+assertEquals(COUNTUNIQUE(["1", 1, 10, ""]), 4);
+assertEquals(COUNTUNIQUE(["1", 1, 10, "", ""]), 4);
+assertEquals(COUNTUNIQUE(["1", 1, 10, "", " "]), 5);
+assertEquals(COUNTUNIQUE(["1", 1, 10, []]), 4);
+assertEquals(COUNTUNIQUE(["", " ", [""], []]), 2);
+assertEquals(COUNTUNIQUE([[""], []]), 1);
+catchAndAssertEquals(function() {
+  COUNTUNIQUE();
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(COVARIANCEP([3,2,4,5,6], [9,7,12,15,17]), 5.2);
 

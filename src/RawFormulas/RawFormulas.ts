@@ -85,7 +85,8 @@ import {
   CriteriaFunctionFactory,
   ArgsChecker,
   Filter,
-  TypeCaster
+  TypeCaster,
+  Serializer
 } from "./Utils";
 import {CellError, NUM_ERROR} from "../Errors"
 import * as ERRORS from "../Errors"
@@ -95,7 +96,6 @@ var ACCRINT = Formula["ACCRINT"];
 var COMBIN = Formula["COMBIN"];
 var CONVERT = Formula["CONVERT"];
 var CORREL = Formula["CORREL"];
-var COUNTUNIQUE = Formula["COUNTUNIQUE"];
 var COVARIANCEP = Formula["COVARIANCEP"];
 var COVARIANCES = Formula["COVARIANCES"];
 var CUMIPMT = Formula["CUMIPMT"];
@@ -131,6 +131,42 @@ var __COMPLEX = {
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+
+/**
+ * Counts the number of unique values in a list of specified values and ranges.
+ * @param values The values or ranges to consider for uniqueness. Supports an arbitrary number of arguments for this
+ * function.
+ * @returns {number} of unique values passed in.
+ * @constructor
+ */
+var COUNTUNIQUE = function (...values) : number {
+  ArgsChecker.checkAtLeastLength(values, 1);
+
+  // Private function that will recursively generate an array of the unique primatives
+  var countUniquePrivate = function (values: Array<any>) : Object {
+    var uniques = {};
+    for (var i = 0; i < values.length; i++) {
+      if (Array.isArray(values[i])) {
+        // For some reasons an empty range is converted to a range with a single empty string in it.
+        if (values[i].length === 0) {
+          values[i] = [""];
+        }
+        var uniquesOfArray = countUniquePrivate(values[i]);
+        for (var key in uniquesOfArray) {
+          uniques[key] = true;
+        }
+      } else {
+        uniques[Serializer.serialize(values[i])] = true;
+      }
+    }
+    return uniques;
+  };
+
+  var uniques = countUniquePrivate(values);
+  return Object.keys(uniques).length;
+};
+
 
 /**
  * Calculates the sum of the products of corresponding entries in two equal-sized arrays or ranges.

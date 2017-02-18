@@ -128,7 +128,6 @@ var __COMPLEX = {
   "F.DIST": Formula["FDIST"],
   "F.INV": Formula["FINV"]
 };
-var FISHERINV = Formula["FISHERINV"];
 var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
@@ -149,6 +148,20 @@ var FISHER = function (...values) : number {
   }
   return Math.log((1 + x) / (1 - x)) / 2;
 };
+
+/**
+ * Returns the inverse Fisher transformation of a specified value.
+ * @param values[0] value - The value for which to calculate the inverse Fisher transformation.
+ * @returns {number} inverse Fisher transformation
+ * @constructor
+ */
+var FISHERINV = function (...values) : number {
+  ArgsChecker.checkLength(values, 1);
+  var y = TypeCaster.firstValueAsNumber(values[0]);
+  var e2y = Math.exp(2 * y);
+  return (e2y - 1) / (e2y + 1);
+};
+
 
 
 

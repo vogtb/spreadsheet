@@ -915,7 +915,25 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test FISHERINV
 assertEquals(FISHERINV(0.962), 0.7451676440945232);
+assertEquals(FISHERINV(0.962), 0.7451676440945232);
+assertEquals(FISHERINV([0.962]), 0.7451676440945232);
+assertEquals(FISHERINV("0.962"), 0.7451676440945232);
+assertEquals(FISHERINV(0), 0);
+assertEquals(FISHERINV(false), 0);
+assertEquals(FISHERINV(true), 0.761594155955765);
+assertEquals(FISHERINV(0.92), 0.7258974148490807);
+catchAndAssertEquals(function() {
+  FISHER("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  FISHER();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  FISHER(0.55, 0.1);
+}, ERRORS.NA_ERROR);
+
 
 // Test FLOOR
 assertEquals(FLOOR(10.1), 10);

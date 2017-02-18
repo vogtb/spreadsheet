@@ -116,6 +116,20 @@ class TypeCaster {
     }
     return 0;
   }
+
+  /**
+   * Converts any value to a number, defaulting to 0 value in cases in which it cannot coerce it to a number type
+   * @param value to conver
+   * @returns {number} to return. Will always return a number or 0.
+   */
+  static valueToNumberGracefully(value: any) : number {
+    try {
+      return TypeCaster.valueToNumber(value);
+    } catch (e) {
+      return 0;
+    }
+  }
+
   /**
    * Converts any value to a boolean or throws an error if it cannot coerce it to the boolean type.
    * @param value to convert
@@ -245,12 +259,26 @@ class Filter {
   }
 
   /**
-   * Flatten an array of arrays of ...
+   * Flatten an array of arrays of ...etc.
    * @param values array of values
    * @returns {Array} flattened array
    */
   static flatten(values: Array<any>) : Array<any> {
     return values.reduce(function (flat, toFlatten) {
+      return flat.concat(Array.isArray(toFlatten) ? Filter.flatten(toFlatten) : toFlatten);
+    }, []);
+  }
+
+  /**
+   * Flatten an array of arrays of... etc, but throw an error if any are empty references.
+   * @param values array of values
+   * @returns {Array} flattened array
+   */
+  static flattenAndThrow(values: Array<any>) : Array<any> {
+    return values.reduce(function (flat, toFlatten) {
+      if (Array.isArray(toFlatten) && toFlatten.length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
       return flat.concat(Array.isArray(toFlatten) ? Filter.flatten(toFlatten) : toFlatten);
     }, []);
   }

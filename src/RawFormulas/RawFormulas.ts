@@ -128,10 +128,48 @@ var __COMPLEX = {
   "F.DIST": Formula["FDIST"],
   "F.INV": Formula["FINV"]
 };
-var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+/**
+ * Calculates the sum of the products of corresponding entries in two equal-sized arrays or ranges.
+ * @param values Arrays or ranges whose entries will be multiplied with corresponding entries in the second such array
+ * or range.
+ * @returns {number} sum of the products
+ * @constructor
+ */
+var SUMPRODUCT = function (...values) : number {
+  ArgsChecker.checkAtLeastLength(values, 1);
+  // Ensuring that all values are array values
+  for (var x = 0; x < values.length; x++) {
+    if (!Array.isArray(values[x])) {
+      values[x] = [values[x]];
+    }
+  }
+
+  // Flatten any nested ranges (arrays) and check for mismatched range sizes
+  var flattenedValues = [Filter.flattenAndThrow(values[0])];
+  for (var x = 1; x < values.length; x++) {
+    flattenedValues.push(Filter.flattenAndThrow(values[x]));
+    if (flattenedValues[x].length !== flattenedValues[0].length) {
+      throw new CellError(ERRORS.VALUE_ERROR, "SUMPRODUCT has mismatched range sizes. Expected count: "
+        + flattenedValues[0].length + ". Actual count: " + flattenedValues[0].length + ".");
+    }
+  }
+
+  // Do the actual math
+  var result = 0;
+  for (var i = 0; i < flattenedValues[0].length; i++) {
+    var product = 1;
+    for (var x = 0; x < flattenedValues.length; x++) {
+      product *= TypeCaster.valueToNumberGracefully(flattenedValues[x][i]);
+    }
+    result += product;
+  }
+  return result;
+};
+
 
 
 /**

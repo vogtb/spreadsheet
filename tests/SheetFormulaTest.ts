@@ -368,7 +368,7 @@ testFormula('=SUM(10, 10)', 20);
 testFormula('=SUMIF([1, 5, 10], 5)', 5);
 
 // Test SUMPRODUCT
-testFormula('=SUMPRODUCT([1, 5, 10])', 16);
+testFormula('=SUMPRODUCT([1, 5, 10], [2, 2, 2])', 32);
 
 // Test SUMSQ
 testFormula('=SUMSQ([1, 5, 10], 10)', 226);

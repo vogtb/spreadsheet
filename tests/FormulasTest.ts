@@ -1534,7 +1534,28 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test SUMPRODUCT
+assertEquals(SUMPRODUCT([1, 5, 10], [2, 2, 2]), 32);
+assertEquals(SUMPRODUCT([1, 5, 10], [2, 2, 2], [2, 2, 2]), 64);
+assertEquals(SUMPRODUCT([1, 5, 10], [1, 2, 2], [1, 4, 4]), 121);
 assertEquals(SUMPRODUCT([1, 5, 10]), 16);
+assertEquals(SUMPRODUCT([1, 5, 10, ""]), 16);
+assertEquals(SUMPRODUCT([1, 5, 10, 200], [2, 2, 2, ""]), 32);
+assertEquals(SUMPRODUCT([1, 5, 10, "str"]), 16);
+assertEquals(SUMPRODUCT([10, 10, 22, "str"], [2, 2, [2, 2]]), 84);
+assertEquals(SUMPRODUCT(1, 5, 10), 50);
+assertEquals(SUMPRODUCT([1, 5, 10]), 16);
+catchAndAssertEquals(function() {
+  SUMPRODUCT([1, 5, 10], [2, 2]);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  SUMPRODUCT([1, 5, 10], [2, 2, 2, []]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  SUMPRODUCT();
+}, ERRORS.NA_ERROR);
+
+
 
 // Test SUMSQ
 assertEquals(SUMSQ([1, 5, 10], 10), 226);

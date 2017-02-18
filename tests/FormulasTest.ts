@@ -713,7 +713,22 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
+// Test DEGREES
 assertEquals(DEGREES(PI()), 180);
+assertEquals(DEGREES([PI(), "str"]), 180);
+assertEquals(DEGREES(false), 0);
+assertEquals(DEGREES(true), 57.29577951308232);
+assertEquals(DEGREES(1), 57.29577951308232);
+assertEquals(DEGREES(12), 687.5493541569879);
+catchAndAssertEquals(function() {
+  DEGREES("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DEGREES();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DEGREES(10, 10);
+}, ERRORS.NA_ERROR);
 
 
 // Test DELTA

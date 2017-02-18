@@ -105,7 +105,6 @@ var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
 var DB = Formula["DB"];
 var DDB = Formula["DDB"];
-var DEGREES = Formula["DEGREES"];
 var DEVSQ = Formula["DEVSQ"];
 var DOLLAR = Formula["DOLLAR"];
 var DOLLARDE = Formula["DOLLARDE"];
@@ -132,6 +131,20 @@ var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+
+/**
+ * Converts an angle value in radians to degrees.
+ * @param values[0] angle - The angle to convert from radians to degrees.
+ * @returns {number} degrees
+ * @constructor
+ */
+var DEGREES = function (...values) {
+  ArgsChecker.checkLength(values, 1);
+  var r = TypeCaster.firstValueAsNumber(values[0]);
+  return r * 180 / Math.PI;
+};
+
 
 /**
  * Converts a decimal number to signed octal format.

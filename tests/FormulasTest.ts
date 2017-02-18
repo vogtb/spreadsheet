@@ -1415,7 +1415,25 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test SQRTPI
 assertEquals(SQRTPI(9), 5.317361552716548);
+assertEquals(SQRTPI("9"), 5.317361552716548);
+assertEquals(SQRTPI([9]), 5.317361552716548);
+assertEquals(SQRTPI(0), 0);
+assertEquals(SQRTPI(1), 1.7724538509055159);
+assertEquals(SQRTPI(""), 0);
+catchAndAssertEquals(function() {
+  SQRTPI("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  SQRTPI(-1);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  SQRTPI();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  SQRTPI(4, 4);
+}, ERRORS.NA_ERROR);
 
 
 // Test SUM

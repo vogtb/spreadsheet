@@ -124,11 +124,27 @@ var __COMPLEX = {
 };
 var FISHER = Formula["FISHER"];
 var FISHERINV = Formula["FISHERINV"];
-var SQRTPI = Formula["SQRTPI"];
 var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+
+/**
+ * Returns the positive square root of the product of Pi and the given positive number.
+ * @param values[0] value - The number which will be multiplied by Pi and have the product's square root returned
+ * @returns {number} the positive square root of the product of Pi and the given positive number.
+ * @constructor
+ */
+var SQRTPI = function (...values) : number{
+  ArgsChecker.checkLength(values, 1);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
+  if (n < 0) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function SQRTPI parameter 1 value is " + n + ". It should be greater than or equal to 0.");
+  }
+  return Math.sqrt(n * Math.PI);
+};
+
 
 /**
  * Converts a signed binary number to decimal format.

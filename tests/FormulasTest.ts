@@ -6,7 +6,7 @@ import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2
     DB, DDB, DEC2BIN, DEC2HEX, DEC2OCT, DEGREES, DELTA, DEVSQ, DOLLAR, DOLLARDE, DOLLARFR, EDATE,
     EFFECT, EOMONTH, ERF, ERFC, EVEN, EXACT, EXPONDIST, FALSE, FLOOR, __COMPLEX, FISHER, FISHERINV, IF,
     INT, ISEVEN, ISODD, LN, LOG, LOG10, MAX, MAXA, MEDIAN, MIN, MINA, MOD, NOT, TRUE, ODD, OR,
-    POWER, ROUND, ROUNDDOWN, ROUNDUP, SIN, SINH, SPLIT, SQRT, SQRTPI, SUM, SUMIF, SUMPRODUCT,
+    POWER, ROUND, ROUNDDOWN, ROUNDUP, SIN, SINH, SPLIT, SQRT, SQRTPI, SUM, SUMIF, SUMPRODUCT, RADIANS,
     SUMSQ, SUMX2MY2, SUMX2PY2, TAN, TANH, TRUNC, XOR, YEARFRAC } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals, assertEqualsDates, assertArrayEquals} from "./utils/Asserts"
@@ -1207,6 +1207,21 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 catchAndAssertEquals(function() {
   POWER(4, 10, 22);
+}, ERRORS.NA_ERROR);
+
+
+// Test RADIANS
+assertEquals(RADIANS(180), 3.141592653589793);
+assertEquals(RADIANS(false), 0);
+assertEquals(RADIANS(true), 0.017453292519943295);
+catchAndAssertEquals(function() {
+  RADIANS("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  RADIANS();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  RADIANS(4, 10);
 }, ERRORS.NA_ERROR);
 
 

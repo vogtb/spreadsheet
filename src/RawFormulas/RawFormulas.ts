@@ -132,6 +132,17 @@ var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
 
+/**
+ * Converts an angle value in degrees to radians.
+ * @param values[0] angle - The angle to convert from degrees to radians.
+ * @returns {number} radians
+ * @constructor
+ */
+var RADIANS = function (...values) {
+  ArgsChecker.checkLength(values, 1);
+  var d = TypeCaster.firstValueAsNumber(values[0]);
+  return d * Math.PI / 180;
+};
 
 /**
  * Converts an angle value in radians to degrees.
@@ -433,5 +444,6 @@ export {
   TANH,
   TRUNC,
   XOR,
-  YEARFRAC
+  YEARFRAC,
+  RADIANS
 }

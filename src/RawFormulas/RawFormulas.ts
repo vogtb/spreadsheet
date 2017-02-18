@@ -105,7 +105,6 @@ var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
 var DB = Formula["DB"];
 var DDB = Formula["DDB"];
-var DEC2OCT = Formula["DEC2OCT"];
 var DEGREES = Formula["DEGREES"];
 var DEVSQ = Formula["DEVSQ"];
 var DOLLAR = Formula["DOLLAR"];
@@ -133,6 +132,58 @@ var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+/**
+ * Converts a decimal number to signed octal format.
+ * @param values[0] decimal_number - The decimal value to be converted to signed octal,provided as a string. For this
+ * function, this value has a maximum of 536870911 if positive, and a minimum of -53687092 if negative.
+ * @param values[1] significant_digits - [ OPTIONAL ] The number of significant digits to ensure in the result. If this
+ * is greater than the number of significant digits in the result, the result is left-padded with zeros until the total
+ * number of digits reaches significant_digits.
+ * @returns {string} octal string representation of the decimal number
+ * @constructor
+ */
+var DEC2OCT = function (...values) : string {
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
+  if (n < 0) {
+    n = Math.ceil(n);
+  }
+  if (n > 0) {
+    n = Math.floor(n);
+  }
+  var p = 10;
+  var placesPresent = false;
+  if (values.length === 2) {
+    p = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+    placesPresent = true;
+  }
+  if (n < -53687092 || n > 536870911) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2OCT parameter 1 value is " + n + ". Valid values are between -53687092 and 536870911 inclusive.");
+  }
+  if (p < 1 || p > 10) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2OCT parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
+  }
+  if (n < 0) {
+    return (1073741824 + n).toString(8).toUpperCase();
+  }
+
+  // Convert decimal number to hexadecimal
+  var result = parseInt(n.toString(), 10).toString(8).toUpperCase();
+  if (!placesPresent) {
+    return result;
+  } else {
+    if (p >= result.length) {
+      // Throw NUM error?
+    }
+    var str = "";
+    for (var i = 0; i < p - result.length; i++) {
+      str += "0";
+    }
+    return str + result.toUpperCase();
+  }
+};
+
 
 /**
  * Converts a decimal number to signed hexadecimal format.
@@ -175,7 +226,6 @@ var DEC2HEX = function (...values) : string {
   if (!placesPresent) {
     return result;
   } else {
-    // Pad return value with leading 0s (zeros) if necessary (using Underscore.string)
     if (p >= result.length) {
       // Throw NUM error?
     }

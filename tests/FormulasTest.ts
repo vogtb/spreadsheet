@@ -676,7 +676,42 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
-assertEquals(DEC2OCT("100"), "144");
+// Test DEC2OCT
+assertEquals(DEC2OCT([100]), "144");
+assertEquals(DEC2OCT(100), "144");
+assertEquals(DEC2OCT(22), "26");
+assertEquals(DEC2OCT(22.11), "26");
+assertEquals(DEC2OCT(22.77), "26");
+assertEquals(DEC2OCT("22.77"), "26");
+assertEquals(DEC2OCT(100, 8), "00000144");
+assertEquals(DEC2OCT([100], [8]), "00000144");
+assertEquals(DEC2OCT(100, 7), "0000144");
+assertEquals(DEC2OCT(100, 10), "0000000144");
+assertEquals(DEC2OCT(-100), "7777777634");
+assertEquals(DEC2OCT("-22.77"), "7777777752");
+assertEquals(DEC2OCT(-22.11), "7777777752");
+assertEquals(DEC2OCT(-22), "7777777752");
+assertEquals(DEC2OCT(false), "0");
+assertEquals(DEC2OCT(true), "1");
+catchAndAssertEquals(function() {
+  DEC2OCT(100, 0);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DEC2OCT(536870913, 10);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DEC2OCT(536870910, -10);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DEC2OCT(100, 100, 10);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DEC2OCT();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DEC2OCT("str");
+}, ERRORS.VALUE_ERROR);
+
 
 assertEquals(DEGREES(PI()), 180);
 

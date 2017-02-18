@@ -81,7 +81,7 @@ testFormula("=AVERAGEA(10, 20, 4.1)", 11.366666666666667);
 testFormula("=AVERAGEIF([1, 5, 10], '>2')", 7.5);
 
 // Test BIN2DEC
-testFormula("=BIN2DEC(1010101010)", -342);
+testFormula("=BIN2DEC('1010101010')", -342);
 
 // Test BINOMINV
 // TODO: This should work.

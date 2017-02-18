@@ -80,9 +80,9 @@ import {
 } from "./Utils";
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
+import {Cell} from "../Cell";
 
 var ACCRINT = Formula["ACCRINT"];
-var BIN2DEC = Formula["BIN2DEC"];
 var BIN2HEX = Formula["BIN2HEX"];
 var BIN2OCT = Formula["BIN2OCT"];
 var DECIMAL = Formula["DECIMAL"];
@@ -131,6 +131,29 @@ var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+/**
+ * Converts a signed binary number to decimal format.
+ * @param values[0] signed_binary_number - The signed 10-bit binary value to be converted to decimal, provided as a
+ * string. The most significant bit of signed_binary_number is the sign bit; that is, negative numbers are represented
+ * in two's complement format.
+ * @returns {number}
+ * @constructor
+ */
+var BIN2DEC = function (...values) {
+  ArgsChecker.checkLength(values, 1);
+  var n = TypeCaster.firstValueAsString(values[0]);
+  if (!(/^[01]{1,10}$/).test(n)) {
+    throw new CellError(ERRORS.NUM_ERROR, "Input for BIN2DEC ('"+n+"') is not a valid binary representation.");
+  }
+
+  if (n.length === 10 && n.substring(0, 1) === '1') {
+    return parseInt(n.substring(1), 2) - 512;
+  } else {
+    return parseInt(n, 2);
+  }
+};
+
 
 /**
  * Converts an angle value in degrees to radians.

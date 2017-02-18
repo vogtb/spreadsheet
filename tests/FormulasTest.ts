@@ -285,7 +285,20 @@ catchAndAssertEquals(function() {
 }, ERRORS.DIV_ZERO_ERROR);
 
 
-assertEquals(BIN2DEC(1010101010), -342);
+// Test BIN2DEC
+assertEquals(BIN2DEC("1010101010"), -342);
+assertEquals(BIN2DEC("10"), 2);
+assertEquals(BIN2DEC(["10", "str"]), 2);
+catchAndAssertEquals(function() {
+  BIN2DEC("str");
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  BIN2DEC();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  BIN2DEC("10", "10");
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(BIN2HEX(1010101010), "fffffffeaa");
 

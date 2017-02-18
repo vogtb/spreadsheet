@@ -890,7 +890,30 @@ assertEquals(__COMPLEX["F.DIST"](15.35, 7, 6, true), 0.9980694465675269);
 
 assertEquals(__COMPLEX["F.INV"](0.42, 2, 3), 0.6567804059458624);
 
+
+// Test FISHER
 assertEquals(FISHER(0.962), 1.972066740199461);
+assertEquals(FISHER([0.962]), 1.972066740199461);
+assertEquals(FISHER("0.962"), 1.972066740199461);
+assertEquals(FISHER(0), 0);
+assertEquals(FISHER(false), 0);
+assertEquals(FISHER(0.92), 1.589026915173973);
+catchAndAssertEquals(function() {
+  FISHER("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  FISHER(1);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  FISHER(-1);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  FISHER();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  FISHER(0.55, 0.1);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(FISHERINV(0.962), 0.7451676440945232);
 

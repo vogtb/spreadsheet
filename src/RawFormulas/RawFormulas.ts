@@ -87,7 +87,7 @@ import {
   Filter,
   TypeCaster
 } from "./Utils";
-import { CellError } from "../Errors"
+import {CellError, NUM_ERROR} from "../Errors"
 import * as ERRORS from "../Errors"
 import {Cell} from "../Cell";
 
@@ -128,12 +128,29 @@ var __COMPLEX = {
   "F.DIST": Formula["FDIST"],
   "F.INV": Formula["FINV"]
 };
-var FISHER = Formula["FISHER"];
 var FISHERINV = Formula["FISHERINV"];
 var SUMPRODUCT = Formula["SUMPRODUCT"];
 var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+
+/**
+ * Returns the Fisher transformation of a specified value.
+ * @param values[0] value - The value for which to calculate the Fisher transformation.
+ * @returns {number} Fisher transformation
+ * @constructor
+ */
+var FISHER = function (...values) : number {
+  ArgsChecker.checkLength(values, 1);
+  var x = TypeCaster.firstValueAsNumber(values[0]);
+  if (x <= -1 || x >= 1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function FISHER parameter 1 value is " + x + ". Valid values are between -1 and 1 exclusive.");
+  }
+  return Math.log((1 + x) / (1 - x)) / 2;
+};
+
+
 
 export {
   __COMPLEX,

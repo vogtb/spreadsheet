@@ -128,9 +128,36 @@ var __COMPLEX = {
   "F.DIST": Formula["FDIST"],
   "F.INV": Formula["FINV"]
 };
-var SUMX2MY2 = Formula["SUMX2MY2"];
 var SUMX2PY2 = Formula["SUMX2PY2"];
 var YEARFRAC = Formula["YEARFRAC"];
+
+
+/**
+ * Calculates the sum of the differences of the squares of values in two arrays.
+ * @param values[0] array_x - The array or range of values whose squares will be reduced by the squares of corresponding
+ * entries in array_y and added together.
+ * @param values[1] array_y - The array or range of values whose squares will be subtracted from the squares of
+ * corresponding entries in array_x and added together.
+ * @returns {number} sum of the differences of the squares
+ * @constructor
+ */
+var SUMX2MY2 = function (...values) : number {
+  ArgsChecker.checkLength(values, 2);
+  var arrOne = Filter.flattenAndThrow(values[0]);
+  var arrTwo = Filter.flattenAndThrow(values[1]);
+  if (arrOne.length !== arrTwo.length) {
+    throw new CellError(ERRORS.NA_ERROR, "Array arguments to SUMX2MY2 are of different size.");
+  }
+  var result = 0;
+  for (var i = 0; i < arrOne.length; i++) {
+    // If either values at this index are anything but numbers, skip them. This is the behavior in GS at least.
+    if (typeof arrOne[i] === "number" && typeof arrTwo[i] === "number") {
+      result += TypeCaster.firstValueAsNumber(arrOne[i]) * TypeCaster.firstValueAsNumber(arrOne[i])
+        - TypeCaster.firstValueAsNumber(arrTwo[i]) * TypeCaster.firstValueAsNumber(arrTwo[i]);
+    }
+  }
+  return result;
+};
 
 
 /**

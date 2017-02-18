@@ -1587,7 +1587,23 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test SUMX2MY2
 assertEquals(SUMX2MY2([1,2,3],[4,5,6]), -63);
+assertEquals(SUMX2MY2(["1",2,3],[4,5,6]), -48);
+assertEquals(SUMX2MY2(["",2,3],[4,5,6]), -48);
+assertEquals(SUMX2MY2([false,2,3],[4,5,6]), -48);
+assertEquals(SUMX2MY2([true,2,3],[4,5,6]), -48);
+catchAndAssertEquals(function() {
+  SUMX2MY2([1,2,3],[4,5, []]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  SUMX2MY2([1,2,3],[4,5]);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  SUMX2MY2();
+}, ERRORS.NA_ERROR);
+
+
 
 assertEquals(SUMX2PY2([1, 2, 3], [4, 5, 6]), 91);
 

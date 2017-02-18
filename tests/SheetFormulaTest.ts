@@ -93,9 +93,6 @@ testFormula("=BIN2HEX(1010101010)", "FFFFFFFEAA");
 // Test BIN2OCT
 testFormula("=BIN2OCT(1010101010)", "7777777252");
 
-// Test DECIMAL
-testFormula('=DECIMAL(199.99999)', 199);
-
 // Test BINOMDIST
 // TODO: This. FormulaJS implementation differs from GS.
 
@@ -159,12 +156,6 @@ testFormula('=COVARIANCEP([3,2,4,5,6], [9,7,12,15,17])', 5.2);
 
 // Test COVARIANCES
 testFormula('=COVARIANCES([2,4,8], [5,11,12])', 9.666666666666668);
-
-// Test CSC
-testFormula('=CSC(15)', 1.5377805615408537);
-
-// Test CSCH
-testFormula('=CSCH(1.5)', 0.46964244059522464);
 
 // Test CUMIPMT
 testFormula("=CUMIPMT(0.12, 12, 100, 1, 5, 0)", -54.39423242396348);

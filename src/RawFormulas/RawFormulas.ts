@@ -83,15 +83,12 @@ import * as ERRORS from "../Errors"
 import {Cell} from "../Cell";
 
 var ACCRINT = Formula["ACCRINT"];
-var DECIMAL = Formula["DECIMAL"];
 var COMBIN = Formula["COMBIN"];
 var CONVERT = Formula["CONVERT"];
 var CORREL = Formula["CORREL"];
 var COUNTUNIQUE = Formula["COUNTUNIQUE"];
 var COVARIANCEP = Formula["COVARIANCEP"];
 var COVARIANCES = Formula["COVARIANCES"];
-var CSC = Formula["CSC"];
-var CSCH = Formula["CSCH"];
 var CUMIPMT = Formula["CUMIPMT"];
 var CUMPRINC = Formula["CUMPRINC"];
 var DATE = Formula["DATE"];
@@ -479,7 +476,6 @@ export {
   BIN2DEC,
   BIN2HEX,
   BIN2OCT,
-  DECIMAL,
   CEILING,
   CHAR,
   CODE,
@@ -499,8 +495,6 @@ export {
   COUNTUNIQUE,
   COVARIANCEP,
   COVARIANCES,
-  CSC,
-  CSCH,
   CUMIPMT,
   CUMPRINC,
   DATE,

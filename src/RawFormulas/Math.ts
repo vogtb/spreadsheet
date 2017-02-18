@@ -501,6 +501,21 @@ var SQRT = function (...values) : number {
 };
 
 /**
+ * Returns the positive square root of the product of Pi and the given positive number.
+ * @param values[0] value - The number which will be multiplied by Pi and have the product's square root returned
+ * @returns {number} the positive square root of the product of Pi and the given positive number.
+ * @constructor
+ */
+var SQRTPI = function (...values) : number{
+  ArgsChecker.checkLength(values, 1);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
+  if (n < 0) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function SQRTPI parameter 1 value is " + n + ". It should be greater than or equal to 0.");
+  }
+  return Math.sqrt(n * Math.PI);
+};
+
+/**
  * Returns the cosine of an angle provided in radians.
  * @param values[0] The angle to find the cosine of, in radians.
  * @returns {number} cosine of angle
@@ -1082,6 +1097,31 @@ var TRUNC = function (...values) : number {
 };
 
 
+/**
+ * Converts an angle value in degrees to radians.
+ * @param values[0] angle - The angle to convert from degrees to radians.
+ * @returns {number} radians
+ * @constructor
+ */
+var RADIANS = function (...values) {
+  ArgsChecker.checkLength(values, 1);
+  var d = TypeCaster.firstValueAsNumber(values[0]);
+  return d * Math.PI / 180;
+};
+
+/**
+ * Converts an angle value in radians to degrees.
+ * @param values[0] angle - The angle to convert from radians to degrees.
+ * @returns {number} degrees
+ * @constructor
+ */
+var DEGREES = function (...values) {
+  ArgsChecker.checkLength(values, 1);
+  var r = TypeCaster.firstValueAsNumber(values[0]);
+  return r * 180 / Math.PI;
+};
+
+
 
 export {
   ABS,
@@ -1116,6 +1156,7 @@ export {
   SINH,
   SUM,
   SQRT,
+  SQRTPI,
   PI,
   POWER,
   LOG,
@@ -1137,5 +1178,7 @@ export {
   COUNTIFS,
   CEILING,
   SUMSQ,
-  TRUNC
+  TRUNC,
+  RADIANS,
+  DEGREES
 }

@@ -1589,6 +1589,7 @@ catchAndAssertEquals(function() {
 
 // Test SUMX2MY2
 assertEquals(SUMX2MY2([1,2,3],[4,5,6]), -63);
+assertEquals(SUMX2MY2([1, 2, 3], [[4, 5], [6]]), -63);
 assertEquals(SUMX2MY2(["1",2,3],[4,5,6]), -48);
 assertEquals(SUMX2MY2(["",2,3],[4,5,6]), -48);
 assertEquals(SUMX2MY2([false,2,3],[4,5,6]), -48);
@@ -1604,8 +1605,23 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
-
+// Test SUMX2PY2
 assertEquals(SUMX2PY2([1, 2, 3], [4, 5, 6]), 91);
+assertEquals(SUMX2PY2([1, 2, 3], [[4, 5], [6]]), 91);
+assertEquals(SUMX2PY2(["1",2,3],[4,5,6]), 74);
+assertEquals(SUMX2PY2(["",2,3],[4,5,6]), 74);
+assertEquals(SUMX2PY2([false,2,3],[4,5,6]), 74);
+assertEquals(SUMX2PY2([true,2,3],[4,5,6]), 74);
+catchAndAssertEquals(function() {
+  SUMX2PY2([1,2,3],[4,5, []]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  SUMX2PY2([1,2,3],[4,5]);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  SUMX2PY2();
+}, ERRORS.NA_ERROR);
+
 
 // Test TAN
 assertEquals(TAN(0), 0);

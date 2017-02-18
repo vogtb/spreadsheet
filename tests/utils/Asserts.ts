@@ -1,18 +1,18 @@
-function assertEquals(expected, actual) {
+function assertEquals(actual, expected) {
   if (expected != actual) {
-    console.log(expected, "not equal to", actual);
+    console.log("expected:", expected, " actual:", actual);
     throw Error();
   }
 }
 
-function assertArrayEquals(expected: Array<any>, actual: Array<any>) {
+function assertArrayEquals(actual: Array<any>, expected: Array<any>, ) {
   if (expected.length != actual.length) {
-    console.log(expected, "not equal to", actual);
+    console.log("expected: ", expected, " actual:", actual);
     throw Error();
   }
   for (var index in expected) {
     if (expected[index] != actual[index]) {
-      console.log(expected, "not equal to", actual);
+      console.log("expected: ", expected, " actual:", actual);
       throw Error();
     }
   }

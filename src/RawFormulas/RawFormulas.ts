@@ -23,6 +23,7 @@ import {
   DEVSQ,
   DB,
   DDB,
+  EFFECT,
   EVEN,
   ERF,
   ERFC,
@@ -125,7 +126,6 @@ var DOLLARFR = Formula["DOLLARFR"];
 var EDATE = function (start_date: Date, months) {
   return moment(start_date).add(months, 'months').toDate();
 };
-var EFFECT = Formula["EFFECT"];
 var EOMONTH = function (start_date, months) {
   var edate = moment(start_date).add(months, 'months');
   return new Date(edate.year(), edate.month(), edate.daysInMonth());
@@ -135,8 +135,6 @@ var __COMPLEX = {
   "F.DIST": FDIST$LEFTTAILED
 };
 var YEARFRAC = Formula["YEARFRAC"];
-
-
 
 export {
   __COMPLEX,

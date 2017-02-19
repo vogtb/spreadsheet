@@ -1385,6 +1385,7 @@ function erf(x) {
  * @param values[2] deg_freedom2 - Required. The denominator degrees of freedom.
  * @returns {number} inverse of the (right-tailed) F probability distribution
  * @constructor
+ * TODO: This function needs to be tested more thuroughly.
  */
 var FINV = function (...values) : number {
   function betacf(x, a, b) {
@@ -1796,6 +1797,27 @@ var FISHERINV = function (...values) : number {
   return (e2y - 1) / (e2y + 1);
 };
 
+/**
+ * Calculates the annual effective interest rate given the nominal rate and number of compounding periods per year.
+ * @param values[0] nominal_rate - The nominal interest rate per year.
+ * @param values[1] periods_per_year - The number of compounding periods per year.
+ * @returns {number} annual effective interest rate
+ * @constructor
+ */
+var EFFECT = function (...values) : number {
+  ArgsChecker.checkLength(values, 2);
+  var rate = TypeCaster.firstValueAsNumber(values[0]);
+  var periods = TypeCaster.firstValueAsNumber(values[1]);
+  if (rate <= 0) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function EFFECT parameter 1 value is " + rate + ". It should be greater than to 0");
+  }
+  if (periods < 1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function EFFECT parameter 2 value is " + periods + ". It should be greater than or equal to 1");
+  }
+  periods = Math.floor(periods);
+  return Math.pow(1 + rate / periods, periods) - 1;
+};
+
 
 export {
   ABS,
@@ -1819,6 +1841,7 @@ export {
   DEVSQ,
   DB,
   DDB,
+  EFFECT,
   EVEN,
   ERF,
   ERFC,

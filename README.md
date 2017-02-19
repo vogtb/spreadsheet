@@ -32,4 +32,6 @@ arbitrary javascript is executed in the client machine.
 
 ### Criteria evaluations should escape reg-ex characters: http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 
-### Refactor `Util.ts`
+### License for all code used.
+
+### Document the functions pulled in from jStat.

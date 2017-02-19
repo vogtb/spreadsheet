@@ -880,7 +880,31 @@ assertEquals(AND(10), true);
 
 assertEqualsDates(EDATE(DATE(1992, 6, 24), 1), new Date('7/24/1992'));
 
+
+// Test EFFECT
 assertEquals(EFFECT(0.99, 12), 1.5890167507927795);
+assertEquals(EFFECT(0.99, 12.111), 1.5890167507927795);
+assertEquals(EFFECT(0.99, 12.999), 1.5890167507927795);
+assertEquals(EFFECT("100000", 12.999), 1.123182670038387e+47);
+assertEquals(EFFECT([100000], [12.999]), 1.123182670038387e+47);
+catchAndAssertEquals(function() {
+  EFFECT();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  EFFECT(0.99);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  EFFECT(-0.99, 12);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  EFFECT(0.99, 0);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  EFFECT(0.99, "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  EFFECT(0.99, []);
+}, ERRORS.REF_ERROR);
 
 assertEqualsDates(EOMONTH(DATE(1992, 6, 24), 1), new Date('7/31/1992'));
 

@@ -107,7 +107,6 @@ var DATEVALUE = function (dateString: string) : Date {
 var DAY = Formula["DAY"];
 var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
-var DDB = Formula["DDB"];
 var DEVSQ = Formula["DEVSQ"];
 var DOLLAR = Formula["DOLLAR"];
 var DOLLARDE = Formula["DOLLARDE"];
@@ -129,6 +128,59 @@ var __COMPLEX = {
 };
 var YEARFRAC = Formula["YEARFRAC"];
 
+
+/**
+ * Calculates the depreciation of an asset for a specified period using the double-declining balance method.
+ * @param values[0] cost - The initial cost of the asset.
+ * @param values[1] salvage - The value of the asset at the end of depreciation.
+ * @param values[2] life - The number of periods over which the asset is depreciated.
+ * @param values[3] period - The single period within life for which to calculate depreciation.
+ * @param values[4] factor - [ OPTIONAL - 2 by default ] - The factor by which depreciation decreases.
+ * @returns {number} depreciation of an asset for a specified period
+ * @constructor
+ */
+var DDB = function (...values) : number {
+  ArgsChecker.checkLengthWithin(values, 4, 5);
+  var cost = TypeCaster.firstValueAsNumber(values[0]);
+  var salvage = TypeCaster.firstValueAsNumber(values[1]);
+  var life = TypeCaster.firstValueAsNumber(values[2]);
+  var period = TypeCaster.firstValueAsNumber(values[3]);
+  var factor = values.length === 5 ? TypeCaster.firstValueAsNumber(values[4]) : 2;
+
+  if (cost < 0) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DDB parameter 1 value is "
+      + cost + ". It should be greater than or equal to 0.");
+  }
+  if (salvage < 0) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DDB parameter 2 value is "
+      + salvage + ". It should be greater than or equal to 0.");
+  }
+  if (life < 0) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DDB parameter 3 value is "
+      + life + ". It should be greater than or equal to 0.");
+  }
+  if (period < 0) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DDB parameter 4 value is "
+      + period + ". It should be greater than or equal to 0.");
+  }
+  if (period > life) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function DDB parameter 4 value is "
+      + life + ". It should be less than or equal to value of Function DB parameter 3 with "+ period +".");
+  }
+  if (salvage >= cost) {
+    return 0;
+  }
+
+  var total = 0;
+  var current = 0;
+  for (var i = 1; i <= period; i++) {
+    current = Math.min((cost - total) * (factor / life), (cost - salvage - total));
+    total += current;
+  }
+  return current;
+};
+
+
 /**
  * Calculates the depreciation of an asset for a specified period using the arithmetic declining balance method.
  * @param values[0] cost - The initial cost of the asset.
@@ -145,10 +197,7 @@ var DB = function (...values) : number {
   var salvage = TypeCaster.firstValueAsNumber(values[1]);
   var life = TypeCaster.firstValueAsNumber(values[2]);
   var period = TypeCaster.firstValueAsNumber(values[3]);
-  var month = 12;
-  if (values.length === 5) {
-    month = Math.floor(TypeCaster.firstValueAsNumber(values[4]));
-  }
+  var month = values.length === 5 ? Math.floor(TypeCaster.firstValueAsNumber(values[4])) : 12;
   if (cost < 0) {
     throw new CellError(ERRORS.NUM_ERROR, "Function DB parameter 1 value is "
       + cost + ". It should be greater than or equal to 0.");

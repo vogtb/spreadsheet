@@ -682,13 +682,23 @@ catchAndAssertEquals(function() {
   DB(100, 50, 10, 2, 13);
 }, ERRORS.NUM_ERROR);
 catchAndAssertEquals(function() {
-  DB(100, 50, 10, 12, 13);
+  DB(100, 50, 10, 12, 2);
 }, ERRORS.NUM_ERROR);
 catchAndAssertEquals(function() {
   DB(100, -50, 10, 2, 12);
 }, ERRORS.NUM_ERROR);
 
+
+// Test DDB
 assertEquals(DDB(100, 50, 10, 2, 2.25), 17.4375);
+assertEquals(DDB(100, [50], 10, 2, "2.25"), 17.4375);
+catchAndAssertEquals(function() {
+  DDB(100, 50, 10, 12, 2.25);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DDB(100, -50, 10, 2, 12);
+}, ERRORS.NUM_ERROR);
+
 
 // Test DEC2BIN
 assertEquals(DEC2BIN([100]), "1100100");

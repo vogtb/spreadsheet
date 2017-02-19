@@ -1145,6 +1145,169 @@ var DEVSQ = function (...values) : number {
   return result;
 };
 
+/**
+ * Calculates the left-tailed F probability distribution (degree of diversity) for two data sets with given input x.
+ * Alternately called Fisher-Snedecor distribution or Snecdor's F distribution.
+ * @param values[0] x - The input to the F probability distribution function. The value at which to evaluate the function.
+ * Must be a positive number.
+ * @param values[1] degrees_freedom1 - The numerator degrees of freedom.
+ * @param values[2] degrees_freedom2 - The denominator degrees of freedom.
+ * @param values[3] cumulative - Logical value that determines the form of the function. If true returns the cumulative
+ * distribution function. If false returns the probability density function.
+ * @returns {number|undefined|boolean} left-tailed F probability distribution
+ * @constructor
+ * TODO: This function should be stricter in its return type.
+ */
+var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
+  function gammaln(x) {
+    var j = 0;
+    var cof = [
+      76.18009172947146, -86.50532032941677, 24.01409824083091,
+      -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5
+    ];
+    var ser = 1.000000000190015;
+    var xx, y, tmp;
+    tmp = (y = xx = x) + 5.5;
+    tmp -= (xx + 0.5) * Math.log(tmp);
+    for (; j < 6; j++)
+      ser += cof[j] / ++y;
+    return Math.log(2.5066282746310005 * ser / xx) - tmp;
+  }
+  function gammafn(x) {
+    var p = [-1.716185138865495, 24.76565080557592, -379.80425647094563,
+      629.3311553128184, 866.9662027904133, -31451.272968848367,
+      -36144.413418691176, 66456.14382024054
+    ];
+    var q = [-30.8402300119739, 315.35062697960416, -1015.1563674902192,
+      -3107.771671572311, 22538.118420980151, 4755.8462775278811,
+      -134659.9598649693, -115132.2596755535];
+    var fact;
+    var n = 0;
+    var xden = 0;
+    var xnum = 0;
+    var y = x;
+    var i, z, yi, res;
+    if (y <= 0) {
+      res = y % 1 + 3.6e-16;
+      if (res) {
+        fact = (!(y & 1) ? 1 : -1) * Math.PI / Math.sin(Math.PI * res);
+        y = 1 - y;
+      } else {
+        return Infinity;
+      }
+    }
+    yi = y;
+    if (y < 1) {
+      z = y++;
+    } else {
+      z = (y -= n = (y | 0) - 1) - 1;
+    }
+    for (i = 0; i < 8; ++i) {
+      xnum = (xnum + p[i]) * z;
+      xden = xden * z + q[i];
+    }
+    res = xnum / xden + 1;
+    if (yi < y) {
+      res /= yi;
+    } else if (yi > y) {
+      for (i = 0; i < n; ++i) {
+        res *= y;
+        y++;
+      }
+    }
+    if (fact) {
+      res = fact / res;
+    }
+    return res;
+  }
+  function betacf(x, a, b) {
+    var fpmin = 1e-30;
+    var m = 1;
+    var qab = a + b;
+    var qap = a + 1;
+    var qam = a - 1;
+    var c = 1;
+    var d = 1 - qab * x / qap;
+    var m2, aa, del, h;
+
+    // These q's will be used in factors that occur in the coefficients
+    if (Math.abs(d) < fpmin)
+      d = fpmin;
+    d = 1 / d;
+    h = d;
+
+    for (; m <= 100; m++) {
+      m2 = 2 * m;
+      aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+      // One step (the even one) of the recurrence
+      d = 1 + aa * d;
+      if (Math.abs(d) < fpmin)
+        d = fpmin;
+      c = 1 + aa / c;
+      if (Math.abs(c) < fpmin)
+        c = fpmin;
+      d = 1 / d;
+      h *= d * c;
+      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+      // Next step of the recurrence (the odd one)
+      d = 1 + aa * d;
+      if (Math.abs(d) < fpmin)
+        d = fpmin;
+      c = 1 + aa / c;
+      if (Math.abs(c) < fpmin)
+        c = fpmin;
+      d = 1 / d;
+      del = d * c;
+      h *= del;
+      if (Math.abs(del - 1.0) < 3e-7)
+        break;
+    }
+
+    return h;
+  }
+  function ibeta(x, a, b) {
+    // Factors in front of the continued fraction.
+    var bt = (x === 0 || x === 1) ?  0 :
+      Math.exp(gammaln(a + b) - gammaln(a) -
+        gammaln(b) + a * Math.log(x) + b *
+        Math.log(1 - x));
+    if (x < 0 || x > 1)
+      return false;
+    if (x < (a + 1) / (a + b + 2))
+    // Use continued fraction directly.
+      return bt * betacf(x, a, b) / a;
+    // else use continued fraction after making the symmetry transformation.
+    return 1 - bt * betacf(1 - x, b, a) / b;
+  }
+  function cdf(x, df1, df2) {
+    return ibeta((df1 * x) / (df1 * x + df2), df1 / 2, df2 / 2);
+  }
+  function pdf(x, df1, df2) {
+    if (x < 0) {
+      return undefined;
+    }
+    return Math.sqrt((Math.pow(df1 * x, df1) * Math.pow(df2, df2)) /
+        (Math.pow(df1 * x + df2, df1 + df2))) /
+      (x * betafn(df1/2, df2/2));
+  }
+  function betafn(x, y) {
+    // ensure arguments are positive
+    if (x <= 0 || y <= 0)
+      return undefined;
+    // make sure x + y doesn't exceed the upper limit of usable values
+    return (x + y > 170)  ? Math.exp(x/*TODO: y?*/) : gammafn(x) * gammafn(y) / gammafn(x + y);
+  }
+  ArgsChecker.checkLength(values, 4);
+  var x = TypeCaster.firstValueAsNumber(values[0]);
+  if (x < 0) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function F.DIST parameter 1 value is " + x + ". It should be greater than or equal to 0.");
+  }
+  var d1 = TypeCaster.firstValueAsNumber(values[1]);
+  var d2 = TypeCaster.firstValueAsNumber(values[2]);
+  var cumulative = TypeCaster.firstValueAsBoolean(values[3]);
+  return (cumulative) ? cdf(x, d1, d2) : pdf(x, d1, d2);
+};
+
 
 export {
   ABS,
@@ -1166,6 +1329,7 @@ export {
   COS,
   DEVSQ,
   EVEN,
+  FDIST$LEFTTAILED,
   INT,
   ISEVEN,
   ISODD,

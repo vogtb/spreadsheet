@@ -968,8 +968,25 @@ assertEquals(EXPONDIST(4, 0.5, false), 0.06766764161830635);
 
 assertEquals(FALSE(), false);
 
+// Test F.DIST
 assertEquals(__COMPLEX["F.DIST"](15.35, 7, 6, false), 0.0003451054686025578);
 assertEquals(__COMPLEX["F.DIST"](15.35, 7, 6, true), 0.9980694465675269);
+assertEquals(__COMPLEX["F.DIST"](15.35, 7, 6, 1), 0.9980694465675269);
+assertEquals(__COMPLEX["F.DIST"](15.35, "7", [6], 1), 0.9980694465675269);
+assertEquals(__COMPLEX["F.DIST"](15.35, "7", [6], 10), 0.9980694465675269);
+catchAndAssertEquals(function() {
+  __COMPLEX["F.DIST"](15.35, 7, 6, "10");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  __COMPLEX["F.DIST"](-15.35, 7, 6, 1);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  __COMPLEX["F.DIST"](15.35, 7, 6);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  __COMPLEX["F.DIST"]();
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(__COMPLEX["F.INV"](0.42, 2, 3), 0.6567804059458624);
 

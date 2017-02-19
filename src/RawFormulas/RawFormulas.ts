@@ -21,6 +21,7 @@ import {
   COS,
   DEVSQ,
   EVEN,
+  FDIST$LEFTTAILED,
   INT,
   ISEVEN,
   ISODD,
@@ -121,7 +122,7 @@ var EOMONTH = function (start_date, months) {
 };
 var EXPONDIST = Formula["EXPONDIST"];
 var __COMPLEX = {
-  "F.DIST": Formula["FDIST"],
+  "F.DIST": FDIST$LEFTTAILED,
   "F.INV": Formula["FINV"]
 };
 var YEARFRAC = Formula["YEARFRAC"];

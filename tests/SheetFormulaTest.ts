@@ -261,10 +261,10 @@ testFormula('=F.DIST(15.35, 7, 6, true)', 0.9980694465675269);
  * F.DIST is left-tailed. FDIST is right-tailed.
  */
 
-// Test F.INV
-testFormula('=F.INV(0.42, 2, 3)', 0.6567804059458624);
-
 // Test FINV
+testFormula('=FINV(0.42, 2, 3)', 1.174597274485816);
+
+// Test F.INV
 // TODO: This should work.
 /*
  * FINV Calculates the inverse of the right-tailed F probability distribution. Also called the Fisher-Snedecor distribution or Snedecor’s F distribution.

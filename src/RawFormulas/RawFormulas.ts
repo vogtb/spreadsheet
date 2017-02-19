@@ -27,6 +27,7 @@ import {
   ERF,
   ERFC,
   FDIST$LEFTTAILED,
+  FINV,
   FISHER,
   FISHERINV,
   INT,
@@ -131,8 +132,7 @@ var EOMONTH = function (start_date, months) {
 };
 var EXPONDIST = Formula["EXPONDIST"];
 var __COMPLEX = {
-  "F.DIST": FDIST$LEFTTAILED,
-  "F.INV": Formula["FINV"]
+  "F.DIST": FDIST$LEFTTAILED
 };
 var YEARFRAC = Formula["YEARFRAC"];
 
@@ -206,6 +206,7 @@ export {
   EXACT,
   EXPONDIST,
   FALSE,
+  FINV,
   FISHER,
   FISHERINV,
   FLOOR,

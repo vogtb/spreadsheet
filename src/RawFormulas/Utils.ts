@@ -279,7 +279,7 @@ class Filter {
       if (Array.isArray(toFlatten) && toFlatten.length === 0) {
         throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
       }
-      return flat.concat(Array.isArray(toFlatten) ? Filter.flatten(toFlatten) : toFlatten);
+      return flat.concat(Array.isArray(toFlatten) ? Filter.flattenAndThrow(toFlatten) : toFlatten);
     }, []);
   }
 

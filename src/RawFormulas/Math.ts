@@ -1122,6 +1122,29 @@ var DEGREES = function (...values) {
 };
 
 
+/**
+ * Calculates the sum of squares of deviations based on a sample.
+ * @param values The values or ranges of the sample.
+ * @returns {number} sum of squares of deviations
+ * @constructor
+ */
+var DEVSQ = function (...values) : number {
+  ArgsChecker.checkAtLeastLength(values, 1);
+  var range = Filter.flattenAndThrow(values);
+  var result = 0;
+  var count = 0;
+  for (var i = 0; i < range.length; i++) {
+    result = result + TypeCaster.valueToNumber(range[i]);
+    count++;
+  }
+  var mean = result / count;
+  var result = 0;
+  for (var i = 0; i < range.length; i++) {
+    result += Math.pow((TypeCaster.valueToNumber(range[i]) - mean), 2);
+  }
+  return result;
+};
+
 
 export {
   ABS,
@@ -1141,6 +1164,7 @@ export {
   COTH,
   COSH,
   COS,
+  DEVSQ,
   EVEN,
   INT,
   ISEVEN,

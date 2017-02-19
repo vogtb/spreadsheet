@@ -850,7 +850,25 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test DEVSQ
 assertEquals(DEVSQ(1, 2), 0.5);
+assertEquals(DEVSQ([1, 2]), 0.5);
+assertEquals(DEVSQ([1, [2]]), 0.5);
+assertEquals(DEVSQ(1), 0);
+assertEquals(DEVSQ(false), 0);
+assertEquals(DEVSQ(true), 0);
+assertEquals(DEVSQ(1, 2, 3, 4), 5);
+assertEquals(DEVSQ([1, 2, 3, 4]), 5);
+catchAndAssertEquals(function() {
+  DEVSQ(1, "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DEVSQ();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DEVSQ([1, 2, [], 3]);
+}, ERRORS.REF_ERROR);
+
 
 assertEquals(DOLLAR(1.2351, 4), "$1.2351");
 

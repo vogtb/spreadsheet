@@ -19,6 +19,7 @@ import {
   COTH,
   COSH,
   COS,
+  DEVSQ,
   EVEN,
   INT,
   ISEVEN,
@@ -107,7 +108,6 @@ var DATEVALUE = function (dateString: string) : Date {
 var DAY = Formula["DAY"];
 var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
-var DEVSQ = Formula["DEVSQ"];
 var DOLLAR = Formula["DOLLAR"];
 var DOLLARDE = Formula["DOLLARDE"];
 var DOLLARFR = Formula["DOLLARFR"];

@@ -884,7 +884,25 @@ assertEquals(EFFECT(0.99, 12), 1.5890167507927795);
 
 assertEqualsDates(EOMONTH(DATE(1992, 6, 24), 1), new Date('7/31/1992'));
 
+
+// Test ERF
 assertEquals(ERF(2), 0.9953222650189527);
+assertEquals(ERF("2"), 0.9953222650189527);
+assertEquals(ERF(0), 1.1102230246251565e-16);
+assertEquals(ERF(1), 0.8427007929497149);
+assertEquals(ERF(true), 0.8427007929497149);
+assertEquals(ERF(false), 1.1102230246251565e-16);
+catchAndAssertEquals(function() {
+  ERF();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ERF([]);
+}, ERRORS.REF_ERROR);
+assertEquals(ERF(1, 2), 0.15262147206923782);
+assertEquals(ERF(2, 1), -0.15262147206923782);
+
+
+
 
 assertEquals(ERFC(2), 0.004677734981047288);
 

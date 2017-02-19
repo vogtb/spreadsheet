@@ -902,9 +902,21 @@ assertEquals(ERF(1, 2), 0.15262147206923782);
 assertEquals(ERF(2, 1), -0.15262147206923782);
 
 
-
-
+// Test ERFC
 assertEquals(ERFC(2), 0.004677734981047288);
+assertEquals(ERFC("2"), 0.004677734981047288);
+assertEquals(ERFC(0), 1);
+assertEquals(ERFC(1), 0.1572992070502851);
+assertEquals(ERFC(-1), 1.842700792949715);
+assertEquals(ERFC(-10), 2);
+catchAndAssertEquals(function() {
+  ERFC();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ERFC([]);
+}, ERRORS.REF_ERROR);
+
+
 
 // Test EVEN
 assertEquals(EVEN(3), 4);

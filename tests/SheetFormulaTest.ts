@@ -209,7 +209,7 @@ testFormula('=DELTA(2, 2)', 1);
 testFormula('=DEVSQ(1, 2)', 0.5);
 
 // Test DOLLAR
-testFormula('=DOLLAR(1.2351, 4)', "$1.2351");
+testFormula('=DOLLAR(1.2351, 4)', 1.2351);
 
 // Test DOLLARDE
 testFormula('=DOLLARDE(100.1, 32)', 100.3125);

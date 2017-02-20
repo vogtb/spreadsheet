@@ -103,7 +103,7 @@ import {
   TypeCaster,
   Serializer
 } from "./Utils";
-import {CellError, NUM_ERROR} from "../Errors"
+import {CellError} from "../Errors"
 import * as ERRORS from "../Errors"
 
 var ACCRINT = Formula["ACCRINT"];
@@ -117,7 +117,6 @@ var DATEVALUE = function (dateString: string) : Date {
 var DAY = Formula["DAY"];
 var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
-var DOLLAR = Formula["DOLLAR"];
 var DOLLARDE = Formula["DOLLARDE"];
 var DOLLARFR = Formula["DOLLARFR"];
 var EDATE = function (start_date: Date, months) {
@@ -131,6 +130,30 @@ var __COMPLEX = {
   "F.DIST": FDIST$LEFTTAILED
 };
 var YEARFRAC = Formula["YEARFRAC"];
+
+
+/**
+ * Formats a number into the locale-specific currency format. WARNING: Currently the equivalent of TRUNC, since this
+ * returns numbers
+ * @param values[0] number - The value to be formatted.
+ * @param values[1] places - [ OPTIONAL - 2 by default ] - The number of decimal places to display.
+ * @returns {number} dollars
+ * @constructor
+ * TODO: In GS and Excel, Dollar values are primitive types at a certain level, meaning you can do =DOLLAR(10) + 10
+ * TODO(cont.) and the result will be 20. Right now, JS allows you to inherit from primitives so you can use operators
+ * TODO(cont.) on them (eg: new Number(10) + 10 == 20) but TS does not. So for now, Dollar values will be represented
+ * TODO(cont.) with the primitive number type. At some point TS might allow me to suppress the warnings with
+ * TODO(cont.) https://github.com/Microsoft/TypeScript/issues/9448 or
+ * TODO(cont.) https://github.com/Microsoft/TypeScript/issues/11051
+ */
+var DOLLAR = function (...values) : number {
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var v = TypeCaster.firstValueAsNumber(values[0]);
+  var places = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 2;
+  var sign = (v > 0) ? 1 : -1;
+  return sign * (Math.floor(Math.abs(v) * Math.pow(10, places))) / Math.pow(10, places);
+};
+
 
 
 /**

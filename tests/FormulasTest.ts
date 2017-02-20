@@ -920,7 +920,27 @@ catchAndAssertEquals(function() {
 }, ERRORS.REF_ERROR);
 
 
-assertEquals(DOLLAR(1.2351, 4), "$1.2351");
+// Test DOLLAR
+assertEquals(DOLLAR(1.2351, 4), 1.2351);
+assertEquals(DOLLAR(1.2351, 2), 1.23);
+assertEquals(DOLLAR("$3.141592653589793", "2"), 3.14);
+assertEquals(DOLLAR("-$3.141592653589793", "2"), -3.14);
+assertEquals(DOLLAR("$-3.141592653589793", "2"), -3.14);
+assertEquals(DOLLAR(PI(), 1), 3.1);
+assertEquals(DOLLAR(PI(), 0), 3);
+assertEquals(DOLLAR(PI(), false), 3);
+assertEquals(DOLLAR(PI(), -1), 0);
+assertEquals(DOLLAR(31.41592653589793, -1), 30);
+assertEquals(DOLLAR([31.41592653589793], [-1]), 30);
+assertEquals(DOLLAR(31111.41592653589793, -4), 30000);
+assertEquals(DOLLAR(31111.41592653589793, -2), 31100);
+catchAndAssertEquals(function() {
+  DOLLAR();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DOLLAR(3.1, 1, 1);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(DOLLARDE(100.1, 32), 100.3125);
 

@@ -45,3 +45,8 @@ don't check for this, and they should.
 
 ### jStat functions should know their caller
 Either through `arguments`, or directly passed in like `mean("FORMULA", [10, 20, 30])`
+
+### Dollar functions have special types
+Although dollar functions look like they just format `number`s, it seems like they have a special type under the hood.
+This means that we should do dollar->number casting in all casting functions. For now, just using number primitive.
+See `DOLLAR` function for more info.

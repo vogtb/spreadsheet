@@ -100,13 +100,13 @@ class TypeCaster {
         return 0;
       }
       if (value.indexOf(".") > -1) {
-        var fl = parseFloat(value);
+        var fl = parseFloat(value.replace("$", ""));
         if (isNaN(fl)) {
           throw new CellError(ERRORS.VALUE_ERROR, "Function ____ expects number values, but is text and cannot be coerced to a number.");
         }
         return fl;
       }
-      var fl = parseInt(value);
+      var fl = parseInt(value.replace("$", ""));
       if (isNaN(fl)) {
         throw new CellError(ERRORS.VALUE_ERROR, "Function ____ expects number values, but is text and cannot be coerced to a number.");
       }

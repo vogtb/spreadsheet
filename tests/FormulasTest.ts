@@ -970,7 +970,33 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test DOLLARFR
 assertEquals(DOLLARFR(100.1, 32), 100.032);
+assertEquals(DOLLARFR(100.1, 32), 100.032);
+assertEquals(DOLLARFR(100.1, 32.9999), 100.032);
+assertEquals(DOLLARFR("100.1", [32, "str"]), 100.032);
+catchAndAssertEquals(function() {
+  DOLLARFR(100, []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARFR(100, "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARFR(100, 0);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARFR(100, 0.99);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARFR();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARFR(3.1);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARFR(3.1, 32, 22);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(AND(10), true);
 

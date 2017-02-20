@@ -117,7 +117,6 @@ var DATEVALUE = function (dateString: string) : Date {
 var DAY = Formula["DAY"];
 var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
-var DOLLARFR = Formula["DOLLARFR"];
 var EDATE = function (start_date: Date, months) {
   return moment(start_date).add(months, 'months').toDate();
 };
@@ -144,6 +143,8 @@ var YEARFRAC = Formula["YEARFRAC"];
  * TODO(cont.) with the primitive number type. At some point TS might allow me to suppress the warnings with
  * TODO(cont.) https://github.com/Microsoft/TypeScript/issues/9448 or
  * TODO(cont.) https://github.com/Microsoft/TypeScript/issues/11051
+ *
+ * TODO: Also, this does not do local-specific, as is.
  */
 var DOLLAR = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
@@ -175,6 +176,26 @@ var DOLLARDE = function (...values) : number {
     throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function DOLLARDE caused a divide by zero error.");
   }
   result = Math.round(result * power) / power;
+  return result;
+};
+
+
+/**
+ * Converts a price quotation given as a decimal value into a decimal fraction.
+ * @param values[0] decimal_price - The price quotation given as a decimal value.
+ * @param values[1] unit - The units of the desired fraction, e.g. 8 for 1/8ths or 32 for 1/32nds
+ * @returns {number} price quotation as decimal fraction.
+ * @constructor
+ */
+var DOLLARFR = function (...values) : number {
+  ArgsChecker.checkLength(values, 2);
+  var dollar = TypeCaster.firstValueAsNumber(values[0]);
+  var unit = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+  if (unit === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function DOLLARFR parameter 2 cannot be zero.");
+  }
+  var result = parseInt(dollar.toString(), 10);
+  result += (dollar % 1) * Math.pow(10, -Math.ceil(Math.log(unit) / Math.LN10)) * unit;
   return result;
 };
 

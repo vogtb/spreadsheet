@@ -1038,9 +1038,33 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test EXPONDIST
 assertEquals(EXPONDIST(4, 0.5, false), 0.06766764161830635);
+assertEquals(EXPONDIST(4, 0.5, 0), 0.06766764161830635);
+assertEquals(EXPONDIST(4, 0.5, true), 0.8646647167633873);
+assertEquals(EXPONDIST(4, 0.5, 1), 0.8646647167633873);
+assertEquals(EXPONDIST(4, 0.5, -1), 0.8646647167633873);
+assertEquals(EXPONDIST([4, "str"], ["0.5"], [false]), 0.06766764161830635);
+catchAndAssertEquals(function() {
+  EXPONDIST("str", 0.5, "1");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  EXPONDIST(4, 0.5, "1");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  EXPONDIST();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  EXPONDIST(4, 0.5);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  EXPONDIST(4, 0.5, true, 1);
+}, ERRORS.NA_ERROR);
 
+
+// Test FALSE
 assertEquals(FALSE(), false);
+
 
 // Test F.DIST
 assertEquals(__COMPLEX["F.DIST"](15.35, 7, 6, false), 0.0003451054686025578);

@@ -1819,6 +1819,31 @@ var EFFECT = function (...values) : number {
 };
 
 
+/**
+ * Returns the value of the exponential distribution function with a specified lambda at a specified value.
+ * @param values[0] x - The input to the exponential distribution function. If cumulative is TRUE then EXPONDIST returns
+ * the cumulative probability of all values up to x.
+ * @param values[1] lambda - The lambda to specify the exponential distribution function.
+ * @param values[2] cumulative - Whether to use the exponential cumulative distribution.
+ * @returns {number} value of the exponential distribution function.
+ * @constructor
+ */
+var EXPONDIST = function (...values) : number {
+  function cdf(x, rate) {
+    return x < 0 ? 0 : 1 - Math.exp(-rate * x);
+  }
+  function pdf(x, rate) {
+    return x < 0 ? 0 : rate * Math.exp(-rate * x);
+  }
+  ArgsChecker.checkLength(values, 3);
+  var x = TypeCaster.firstValueAsNumber(values[0]);
+  var lambda = TypeCaster.firstValueAsNumber(values[1]);
+  var cumulative = TypeCaster.firstValueAsBoolean(values[2]);
+  return (cumulative) ? cdf(x, lambda) : pdf(x, lambda);
+};
+
+
+
 export {
   ABS,
   ACOS,
@@ -1845,6 +1870,7 @@ export {
   EVEN,
   ERF,
   ERFC,
+  EXPONDIST,
   FDIST$LEFTTAILED,
   FINV,
   FISHER,

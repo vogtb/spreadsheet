@@ -27,6 +27,7 @@ import {
   EVEN,
   ERF,
   ERFC,
+  EXPONDIST,
   FDIST$LEFTTAILED,
   FINV,
   FISHER,
@@ -126,7 +127,6 @@ var EOMONTH = function (start_date, months) {
   var edate = moment(start_date).add(months, 'months');
   return new Date(edate.year(), edate.month(), edate.daysInMonth());
 };
-var EXPONDIST = Formula["EXPONDIST"];
 var __COMPLEX = {
   "F.DIST": FDIST$LEFTTAILED
 };

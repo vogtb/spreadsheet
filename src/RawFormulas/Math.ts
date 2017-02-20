@@ -1744,7 +1744,7 @@ export {
   ACOS,
   ACOSH,
   ACOTH,
-  ARABIC,
+  ARABIC, // Text
   ASIN,
   ASINH,
   ATAN,
@@ -1755,25 +1755,25 @@ export {
   COSH,
   COS,
   COUNTUNIQUE,
-  DEVSQ,
-  DB,
-  DDB,
-  EFFECT,
+  DEVSQ, // Statistical
+  DB, // Financial
+  DDB, // Financial
+  EFFECT, // Financial
   EVEN,
   ERF,
   ERFC,
-  EXPONDIST,
-  FDIST$LEFTTAILED,
-  FINV,
-  FISHER,
-  FISHERINV,
+  EXPONDIST, // Statistical
+  FDIST$LEFTTAILED, // Statistical
+  FINV, // Statistical
+  FISHER, // Statistical
+  FISHERINV, // Statistical
   INT,
   ISEVEN,
   ISODD,
-  MAX,
-  MAXA,
-  MIN,
-  MINA,
+  MAX,  // Statistical
+  MAXA, // Statistical
+  MIN, // Statistical
+  MINA, // Statistical
   MOD,
   ODD,
   SIN,
@@ -1788,20 +1788,20 @@ export {
   LN,
   TAN,
   TANH,
-  AVERAGEIF,
+  AVERAGEIF, // Statistical
   ROUND,
   ROUNDDOWN,
   ROUNDUP,
-  SUMPRODUCT,
+  SUMPRODUCT, // Array?
   SUMIF,
   SUMSQ,
-  SUMX2MY2,
-  SUMX2PY2,
+  SUMX2MY2, // Array?
+  SUMX2PY2, // Array?
   FLOOR,
   IF,
-  DELTA,
-  COUNT,
-  COUNTA,
+  DELTA, // Engineering
+  COUNT, // Statistical
+  COUNTA, // Statistical
   COUNTIF,
   COUNTIFS,
   CEILING,

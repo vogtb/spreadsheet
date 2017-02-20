@@ -377,14 +377,14 @@ var DEC2BIN = function (...values) : string {
 
 
 export {
-  CHAR,
-  CODE,
-  SPLIT,
-  CONCATENATE,
-  BIN2DEC,
-  BIN2HEX,
-  BIN2OCT,
-  DEC2BIN,
-  DEC2HEX,
-  DEC2OCT
+  CHAR, // Text
+  CODE, // Text
+  SPLIT, // Text
+  CONCATENATE, // Text
+  BIN2DEC, // Engineering
+  BIN2HEX, // Engineering
+  BIN2OCT, // Engineering
+  DEC2BIN, // Engineering
+  DEC2HEX, // Engineering
+  DEC2OCT // Engineering
 }

@@ -1,4 +1,4 @@
-import { ArgsChecker, Filter, TypeCaster } from "./Utils"
+import { ArgsChecker, TypeCaster } from "./Utils"
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
 

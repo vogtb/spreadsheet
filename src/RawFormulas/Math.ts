@@ -778,21 +778,6 @@ var COUNTA = function (...values) : number {
 };
 
 /**
- * Compare two numeric values, returning 1 if they're equal.
- * @param values[0] The first number to compare.
- * @param values[1] The second number to compare.
- * @returns {number} 1 if they're equal, 0 if they're not equal.
- * @constructor
- */
-var DELTA = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 1, 2);
-  if (values.length === 1) {
-    return TypeCaster.valueToNumber(values[0]) === 0 ? 1 : 0;
-  }
-  return TypeCaster.valueToNumber(values[0]) === TypeCaster.valueToNumber(values[1]) ? 1 : 0;
-};
-
-/**
  * Rounds a number to a certain number of decimal places according to standard rules.
  * @param values[0] The value to round to places number of places.
  * @param values[1] The number of decimal places to which to round.
@@ -1768,7 +1753,6 @@ export {
   SUMX2PY2, // Array?
   FLOOR,
   IF,
-  DELTA, // Engineering
   COUNT, // Statistical
   COUNTA, // Statistical
   COUNTIF,

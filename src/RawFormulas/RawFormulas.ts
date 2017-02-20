@@ -60,7 +60,6 @@ import {
   SUMX2PY2,
   FLOOR,
   IF,
-  DELTA,
   COUNT,
   COUNTA,
   COUNTIF,
@@ -86,7 +85,8 @@ import {
   BIN2OCT,
   DEC2BIN,
   DEC2HEX,
-  DEC2OCT
+  DEC2OCT,
+  DELTA
 } from "./Engineering";
 import {
   DOLLAR,

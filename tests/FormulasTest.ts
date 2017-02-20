@@ -1,6 +1,6 @@
 import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2, ATANH, AVEDEV, AVERAGE,
     AVERAGEA, AVERAGEIF, BIN2DEC, BIN2HEX, BIN2OCT, CEILING,
-    CHAR, CODE, COMBIN, CONCATENATE, CONVERT,
+    CHAR, CODE, COMBIN, CONCATENATE, CONVERT, PEARSON,
     CORREL, COS, PI, COSH, COT, COTH, COUNT, COUNTA, COUNTIF, COUNTIFS, COUNTUNIQUE,
     CUMIPMT, CUMPRINC, DATE, DATEVALUE, DAY, DAYS, DAYS360,
     DB, DDB, DEC2BIN, DEC2HEX, DEC2OCT, DEGREES, DELTA, DEVSQ, DOLLAR, DOLLARDE, DOLLARFR, EDATE,
@@ -442,7 +442,35 @@ catchAndAssertEquals(function() {
 
 assertEquals(CONVERT(5.1, "mm", "m"), 0.0050999999999999995);
 
+
+// Test CORREL
 assertEquals(CORREL([9, 5],[10, 4]), 1);
+assertEquals(CORREL([10, 5, 16],[9, 3, 22]), 0.9876779373054069);
+catchAndAssertEquals(function() {
+  CORREL(5, 5);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  CORREL([9, true], [5, true]);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  CORREL([9, "10"], [5, "10"]);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  CORREL([9], [5]);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  CORREL();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  CORREL([9, 5]);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  CORREL([9, 5],[10]);
+}, ERRORS.NA_ERROR);
+
+
+// Test PEARSON (same as CORREL)
+assertEquals(PEARSON([9, 5],[10, 4]), 1);
 
 
 // Test COS

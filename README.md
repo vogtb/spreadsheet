@@ -4,10 +4,6 @@ TypeScript implementation of a spreadsheet.
 ## TODO
 Things I should do.
 
-### Write tests for supported formulas.
-* Write more thorough tests for all formulas
-* Include fail state values for all formulas
-
 ### SUM and SUMA should be different, and I'm pretty sure they're currently the same.
 
 ### Date-Time issues
@@ -34,3 +30,6 @@ arbitrary javascript is executed in the client machine.
 * COVARIANCEP
 * COVARIANCES
 * ...etc.
+
+### Refactor the way we construct and throw errors
+For example, the mis-matched argument length errors are all generated the same way.

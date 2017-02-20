@@ -419,7 +419,33 @@ assertEquals(CODE(['a']), 97);
 assertEquals(CODE([['a'], 'p']), 97);
 
 
+// Test COMBIN
 assertEquals(COMBIN(4, 2), 6);
+assertEquals(COMBIN(4.999, 2.888), 6);
+assertEquals(COMBIN([4, "str"], [2]), 6);
+assertEquals(COMBIN(0, 0), 1);
+catchAndAssertEquals(function() {
+  COMBIN(2, "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  COMBIN(2, []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  COMBIN(2, 4);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  COMBIN(0, 1);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  COMBIN();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  COMBIN(4);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  COMBIN(4, 2, 66);
+}, ERRORS.NA_ERROR);
+
 
 
 // Test CONCATENATE

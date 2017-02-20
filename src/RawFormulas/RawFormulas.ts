@@ -106,7 +106,6 @@ import {CellError, NUM_ERROR} from "../Errors"
 import * as ERRORS from "../Errors"
 
 var ACCRINT = Formula["ACCRINT"];
-var COMBIN = Formula["COMBIN"];
 var CONVERT = Formula["CONVERT"];
 var CUMIPMT = Formula["CUMIPMT"];
 var CUMPRINC = Formula["CUMPRINC"];
@@ -132,6 +131,44 @@ var __COMPLEX = {
   "F.DIST": FDIST$LEFTTAILED
 };
 var YEARFRAC = Formula["YEARFRAC"];
+
+
+/**
+ * Returns the number of ways to choose some number of objects from a pool of a given size of objects.
+ * @param values[0] n - The size of the pool of objects to choose from.
+ * @param values[1] k - The number of objects to choose.
+ * @returns {number} number of ways
+ * @constructor
+ */
+var COMBIN = function (...values) : number {
+  var MEMOIZED_FACT = [];
+  function fact(number) {
+    var n = Math.floor(number);
+    if (n === 0 || n === 1) {
+      return 1;
+    } else if (MEMOIZED_FACT[n] > 0) {
+      return MEMOIZED_FACT[n];
+    } else {
+      MEMOIZED_FACT[n] = fact(n - 1) * n;
+      return MEMOIZED_FACT[n];
+    }
+  }
+  ArgsChecker.checkLength(values, 2);
+  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var c = TypeCaster.firstValueAsNumber(values[1]);
+  if (n < c) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function COMBIN parameter 2 value is "
+        + c + ". It should be less than or equal to value of Function COMBIN parameter 1 with " + n + ".");
+  }
+  n = Math.floor(n);
+  c = Math.floor(c);
+  var div = fact(c) * fact(n - c);
+  if (div === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function COMBIN caused a divide by zero error.");
+  }
+  return fact(n) / div;
+};
+
 
 /**
  * Calculates r, the Pearson product-moment correlation coefficient of a dataset. Any text encountered in the arguments

@@ -942,7 +942,33 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test  DOLLARDE
+assertEquals(DOLLARDE(0, 32), 0);
 assertEquals(DOLLARDE(100.1, 32), 100.3125);
+assertEquals(DOLLARDE(100.1, 32.9999), 100.3125);
+assertEquals(DOLLARDE("100.1", [32, "str"]), 100.3125);
+catchAndAssertEquals(function() {
+  DOLLARDE(100, []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARDE(100, "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARDE(100, 0);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARDE(100, 0.99);
+}, ERRORS.DIV_ZERO_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARDE();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARDE(3.1);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DOLLARDE(3.1, 32, 22);
+}, ERRORS.NA_ERROR);
+
 
 assertEquals(DOLLARFR(100.1, 32), 100.032);
 

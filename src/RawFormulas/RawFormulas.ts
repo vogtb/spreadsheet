@@ -117,7 +117,6 @@ var DATEVALUE = function (dateString: string) : Date {
 var DAY = Formula["DAY"];
 var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
-var DOLLARDE = Formula["DOLLARDE"];
 var DOLLARFR = Formula["DOLLARFR"];
 var EDATE = function (start_date: Date, months) {
   return moment(start_date).add(months, 'months').toDate();
@@ -152,6 +151,31 @@ var DOLLAR = function (...values) : number {
   var places = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 2;
   var sign = (v > 0) ? 1 : -1;
   return sign * (Math.floor(Math.abs(v) * Math.pow(10, places))) / Math.pow(10, places);
+};
+
+
+/**
+ * Converts a price quotation given as a decimal fraction into a decimal value.
+ * @param values[0] fractional_price - The price quotation given using fractional decimal conventions.
+ * @param values[1] unit - The units of the fraction, e.g. 8 for 1/8ths or 32 for 1/32nds.
+ * @returns {number} decimal value.
+ * @constructor
+ */
+var DOLLARDE = function (...values) : number {
+  ArgsChecker.checkLength(values, 2);
+  var dollar = TypeCaster.firstValueAsNumber(values[0]);
+  var fraction = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+  if (fraction === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function DOLLARDE parameter 2 cannot be zero.");
+  }
+  var result = parseInt(dollar.toString(), 10);
+  result += (dollar % 1) * Math.pow(10, Math.ceil(Math.log(fraction) / Math.LN10)) / fraction;
+  var power = Math.pow(10, Math.ceil(Math.log(fraction) / Math.LN2) + 1);
+  if (power === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function DOLLARDE caused a divide by zero error.");
+  }
+  result = Math.round(result * power) / power;
+  return result;
 };
 
 

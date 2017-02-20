@@ -109,8 +109,6 @@ var ACCRINT = Formula["ACCRINT"];
 var COMBIN = Formula["COMBIN"];
 var CONVERT = Formula["CONVERT"];
 var CORREL = Formula["CORREL"];
-var COVARIANCEP = Formula["COVARIANCEP"];
-var COVARIANCES = Formula["COVARIANCES"];
 var CUMIPMT = Formula["CUMIPMT"];
 var CUMPRINC = Formula["CUMPRINC"];
 var DATE = Formula["DATE"];
@@ -175,8 +173,6 @@ export {
   COUNTIF,
   COUNTIFS,
   COUNTUNIQUE,
-  COVARIANCEP,
-  COVARIANCES,
   CUMIPMT,
   CUMPRINC,
   DATE,

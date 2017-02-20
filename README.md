@@ -8,12 +8,6 @@ Things I should do.
 * Write more thorough tests for all formulas
 * Include fail state values for all formulas
 
-### Write formulas for missing ones
-* FDIST
-* FINV
-* SUM_ formulas
-* ACCRINT
-
 ### SUM and SUMA should be different, and I'm pretty sure they're currently the same.
 
 ### Date-Time issues
@@ -35,3 +29,8 @@ arbitrary javascript is executed in the client machine.
 ### License for all code used.
 
 ### Document the functions pulled in from jStat.
+
+### Bring back missing Excel functions
+* COVARIANCEP
+* COVARIANCES
+* ...etc.

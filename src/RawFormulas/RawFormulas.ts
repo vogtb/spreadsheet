@@ -12,9 +12,6 @@ import {
   ATAN,
   ATAN2,
   ATANH,
-  AVERAGE,
-  AVERAGEA,
-  AVEDEV,
   COT,
   COTH,
   COSH,
@@ -37,7 +34,6 @@ import {
   ISODD,
   MAX,
   MAXA,
-  MEDIAN,
   MIN,
   MINA,
   MOD,
@@ -74,8 +70,6 @@ import {
   TRUNC,
   RADIANS,
   DEGREES,
-  PEARSON,
-  CORREL,
   COMBIN
 } from "./Math";
 import {
@@ -104,6 +98,15 @@ import {
   DOLLARDE,
   DOLLARFR
 } from "./Financial";
+import {
+  AVERAGE,
+  AVERAGEA,
+  AVEDEV,
+  CORREL,
+  PEARSON,
+  MEDIAN
+} from "./Statistical";
+
 import {
   CriteriaFunctionFactory,
   ArgsChecker,

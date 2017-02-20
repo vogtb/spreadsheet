@@ -6,7 +6,6 @@ import {
   ACOS,
   ACOSH,
   ACOTH,
-  ARABIC,
   ASIN,
   ASINH,
   ATAN,
@@ -82,17 +81,13 @@ import {
   XOR
 } from "./Logical";
 import {
-  CHAR,
-  CODE,
-  SPLIT,
-  CONCATENATE,
   BIN2DEC,
   BIN2HEX,
   BIN2OCT,
   DEC2BIN,
   DEC2HEX,
   DEC2OCT
-} from "./Misc";
+} from "./Engineering";
 import {
   DOLLAR,
   DOLLARDE,
@@ -106,6 +101,13 @@ import {
   PEARSON,
   MEDIAN
 } from "./Statistical";
+import {
+  ARABIC,
+  CHAR,
+  CODE,
+  SPLIT,
+  CONCATENATE
+} from "./Text"
 
 import {
   CriteriaFunctionFactory,

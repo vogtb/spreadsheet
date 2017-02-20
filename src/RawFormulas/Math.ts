@@ -70,36 +70,6 @@ var ACOTH = function (value?) {
 };
 
 /**
- * Computes the value of a Roman numeral.
- * @param text The Roman numeral to format, whose value must be between 1 and 3999, inclusive.
- * @returns {number} value in integer format
- * @constructor
- */
-var ARABIC = function (text?) {
-  ArgsChecker.checkLength(arguments, 1);
-  if (typeof text !== "string") {
-    throw new CellError(ERRORS.VALUE_ERROR, 'Invalid roman numeral in ARABIC evaluation.');
-  }
-  var negative = false;
-  if (text[0] === "-") {
-    negative = true;
-    text = text.substr(1);
-  }
-  // Credits: Rafa? Kukawski
-  if (!/^M*(?:D?C{0,3}|C[MD])(?:L?X{0,3}|X[CL])(?:V?I{0,3}|I[XV])$/.test(text)) {
-    throw new CellError(ERRORS.VALUE_ERROR, 'Invalid roman numeral in ARABIC evaluation.');
-  }
-  var r = 0;
-  text.replace(/[MDLV]|C[MD]?|X[CL]?|I[XV]?/g, function (i) {
-    r += {M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1}[i];
-  });
-  if (negative) {
-    return r * -1;
-  }
-  return r;
-};
-
-/**
  * Returns the inverse sine of a value, in radians.
  * @param value The value for which to calculate the inverse sine. Must be between -1 and 1, inclusive.
  * @returns {number} inverse sine of input value
@@ -1744,7 +1714,6 @@ export {
   ACOS,
   ACOSH,
   ACOTH,
-  ARABIC, // Text
   ASIN,
   ASINH,
   ATAN,

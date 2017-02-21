@@ -5,6 +5,7 @@ TypeScript implementation of a spreadsheet.
 Things I should do.
 
 ### SUM and SUMA should be different, and I'm pretty sure they're currently the same.
+And the same for MAX, MAXA, COUNT, COUNTA, etc. Look these over.
 
 ### Date-Time issues
 Here are a couple of the issues with Dates and so on:

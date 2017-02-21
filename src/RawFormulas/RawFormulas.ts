@@ -16,25 +16,12 @@ import {
   COSH,
   COS,
   COUNTUNIQUE,
-  DEVSQ,
-  DB,
-  DDB,
-  EFFECT,
   EVEN,
   ERF,
   ERFC,
-  EXPONDIST,
-  FDIST$LEFTTAILED,
-  FINV,
-  FISHER,
-  FISHERINV,
   INT,
   ISEVEN,
   ISODD,
-  MAX,
-  MAXA,
-  MIN,
-  MINA,
   MOD,
   ODD,
   SIN,
@@ -49,7 +36,6 @@ import {
   LN,
   TAN,
   TANH,
-  AVERAGEIF,
   ROUND,
   ROUNDDOWN,
   ROUNDUP,
@@ -60,8 +46,6 @@ import {
   SUMX2PY2,
   FLOOR,
   IF,
-  COUNT,
-  COUNTA,
   COUNTIF,
   COUNTIFS,
   CEILING,
@@ -89,17 +73,33 @@ import {
   DELTA
 } from "./Engineering";
 import {
+  DB,
+  DDB,
   DOLLAR,
   DOLLARDE,
-  DOLLARFR
+  DOLLARFR,
+  EFFECT
 } from "./Financial";
 import {
   AVERAGE,
   AVERAGEA,
+  AVERAGEIF,
   AVEDEV,
   CORREL,
+  COUNT,
+  COUNTA,
   PEARSON,
-  MEDIAN
+  MEDIAN,
+  DEVSQ,
+  EXPONDIST,
+  FDIST$LEFTTAILED,
+  FINV,
+  FISHER,
+  FISHERINV,
+  MAX,
+  MAXA,
+  MIN,
+  MINA
 } from "./Statistical";
 import {
   ARABIC,

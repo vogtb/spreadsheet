@@ -73,6 +73,7 @@ import {
   DELTA
 } from "./Engineering";
 import {
+  CUMPRINC,
   DB,
   DDB,
   DOLLAR,
@@ -124,7 +125,6 @@ import * as ERRORS from "../Errors"
 var ACCRINT = Formula["ACCRINT"];
 var CONVERT = Formula["CONVERT"];
 var CUMIPMT = Formula["CUMIPMT"];
-var CUMPRINC = Formula["CUMPRINC"];
 var DATE = Formula["DATE"];
 var DATEVALUE = function (dateString: string) : Date {
   return new Date(dateString);

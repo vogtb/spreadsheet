@@ -703,9 +703,35 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test CUMIPMT
 assertEquals(CUMIPMT(0.12, 12, 100, 1, 5, 0), -54.39423242396348);
 
+
+// Test CUMPRINC
+assertEquals(CUMPRINC(0.12, 12, 100, 1, 5, false), -26.324171373034403);
 assertEquals(CUMPRINC(0.12, 12, 100, 1, 5, 0), -26.324171373034403);
+assertEquals(CUMPRINC(0.12, 12, 100, 1, 5, true), -34.21801015449499);
+assertEquals(CUMPRINC(0.12, 12, 100, 1, 5, -11), -34.21801015449499);
+catchAndAssertEquals(function() {
+  CUMPRINC(0.12, 12, 100, 1, 5, []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  CUMPRINC(0.12, 12, 100, 0, 5, false);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  CUMPRINC(0.12, 12, 100, 3, 1, false);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  CUMPRINC();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  CUMPRINC(0.12, 12, 100, 1, 5, true, 55);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  CUMPRINC(0.12, 12, 100, 1, 5);
+}, ERRORS.NA_ERROR);
+
+
 
 assertEqualsDates(DATE(1992, 6, 24), new Date("6/24/1992"));
 assertEqualsDates(DATE(1992, 13, 24), new Date("1/24/1993"));

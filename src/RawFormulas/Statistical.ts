@@ -777,7 +777,6 @@ var COUNTA = function (...values) : number {
   return count;
 };
 
-
 export {
   AVERAGE,
   AVERAGEA,

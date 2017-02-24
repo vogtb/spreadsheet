@@ -212,7 +212,90 @@ var EFFECT = function (...values) : number {
   return Math.pow(1 + rate / periods, periods) - 1;
 };
 
+/**
+ * Calculates the cumulative principal paid over a range of payment periods for an investment based on constant-amount
+ * periodic payments and a constant interest rate.
+ * @param values[0] rate - The interest rate.
+ * @param values[1] number_of_periods - The number of payments to be made.
+ * @param values[2] present_value - The current value of the annuity.
+ * @param values[3] first_period - The number of the payment period to begin the cumulative calculation. must be greater
+ * than or equal to 1.
+ * @param values[4] last_period - The number of the payment period to end the cumulative calculation, must be greater
+ * than first_period.
+ * @param values[5] end_or_beginning - Whether payments are due at the end (0) or beginning (1) of each period
+ * @returns {number} cumulative principal
+ * @constructor
+ */
+var CUMPRINC = function (...values) : number {
+  function pmt(rate, periods, present, future, type) {
+    var result;
+    if (rate === 0) {
+      result = (present + future) / periods;
+    } else {
+      var term = Math.pow(1 + rate, periods);
+      if (type) {
+        result = (future * rate / (term - 1) + present * rate / (1 - 1 / term)) / (1 + rate);
+      } else {
+        result = future * rate / (term - 1) + present * rate / (1 - 1 / term);
+      }
+    }
+    return -result;
+  }
+
+  function fv(rate, periods, payment, value, type) {
+    var result;
+    if (rate === 0) {
+      result = value + payment * periods;
+    } else {
+      var term = Math.pow(1 + rate, periods);
+      if (type) {
+        result = value * term + payment * (1 + rate) * (term - 1.0) / rate;
+      } else {
+        result = value * term + payment * (term - 1) / rate;
+      }
+    }
+    return -result;
+  }
+
+  ArgsChecker.checkLength(values, 6);
+  var rate = TypeCaster.firstValueAsNumber(values[0]);
+  var periods = TypeCaster.firstValueAsNumber(values[1]);
+  var value = TypeCaster.firstValueAsNumber(values[2]);
+  var start = TypeCaster.firstValueAsNumber(values[3]);
+  if (start < 1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function CUMPRINC parameter 4 value is " + start + ". It should be greater than or equal to 1.");
+  }
+  var end = TypeCaster.firstValueAsNumber(values[4]);
+  if (end < 1) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to 1.");
+  }
+  if (end < start) {
+    throw new CellError(ERRORS.NUM_ERROR, "Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to " + start + ".");
+  }
+  var type = TypeCaster.firstValueAsBoolean(values[5]);
+
+  var payment = pmt(rate, periods, value, 0, type);
+  var principal = 0;
+  if (start === 1) {
+    if (type) {
+      principal = payment;
+    } else {
+      principal = payment + value * rate;
+    }
+    start++;
+  }
+  for (var i = start; i <= end; i++) {
+    if (type) {
+      principal += payment - (fv(rate, i - 2, payment, value, 1) - payment) * rate;
+    } else {
+      principal += payment - fv(rate, i - 1, payment, value, 0) * rate;
+    }
+  }
+  return principal;
+};
+
 export {
+  CUMPRINC,
   DB,
   DDB,
   DOLLAR,

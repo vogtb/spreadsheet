@@ -689,6 +689,7 @@ catchAndAssertEquals(function() {
   COUNTIFS([1, 5, 10, 20], ">4", [0, 0], "=1");
 }, ERRORS.VALUE_ERROR);
 
+
 // Test COUNTUNIQUE
 assertEquals(COUNTUNIQUE([1, 1, 10]), 2);
 assertEquals(COUNTUNIQUE(["1", 1, 10]), 3);
@@ -705,6 +706,30 @@ catchAndAssertEquals(function() {
 
 // Test CUMIPMT
 assertEquals(CUMIPMT(0.12, 12, 100, 1, 5, 0), -54.39423242396348);
+assertEquals(CUMIPMT(0.12, 12, 100, 1, 5, false), -54.39423242396348);
+assertEquals(CUMIPMT(0.12, 12, 100, 1, 5, true), -37.851993235681675);
+assertEquals(CUMIPMT(0.12, 12, 100, 1, 5, 1), -37.851993235681675);
+assertEquals(CUMIPMT(0.12, 12, 100, 2, 6, 1), -45.74583201714228);
+assertEquals(CUMIPMT(0.12, 12, 100, 2, 6, true), -45.74583201714228);
+assertEquals(CUMIPMT([0.12], ["12"], [100, "str"], "1", 5, 0), -54.39423242396348);
+catchAndAssertEquals(function() {
+  CUMIPMT(0.12, 12, 100, 1, 5, []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  CUMIPMT(0.12, 12, 100, 0, 5, false);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  CUMIPMT(0.12, 12, 100, 3, 1, false);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  CUMIPMT();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  CUMIPMT(0.12, 12, 100, 1, 5, true, 55);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  CUMIPMT(0.12, 12, 100, 1, 5);
+}, ERRORS.NA_ERROR);
 
 
 // Test CUMPRINC
@@ -730,7 +755,6 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   CUMPRINC(0.12, 12, 100, 1, 5);
 }, ERRORS.NA_ERROR);
-
 
 
 assertEqualsDates(DATE(1992, 6, 24), new Date("6/24/1992"));

@@ -1,5 +1,3 @@
-/// <reference path="../../node_modules/moment/moment.d.ts"/>
-import * as moment from "moment";
 import * as Formula from "formulajs"
 import {
   ABS,
@@ -110,6 +108,16 @@ import {
   SPLIT,
   CONCATENATE
 } from "./Text"
+import {
+  DATE,
+  DATEVALUE,
+  DAYS,
+  DAY,
+  DAYS360,
+  EDATE,
+  EOMONTH,
+  YEARFRAC
+} from "./Date"
 
 import {
   CriteriaFunctionFactory,
@@ -125,21 +133,6 @@ import * as ERRORS from "../Errors"
 
 var ACCRINT = Formula["ACCRINT"];
 var CONVERT = Formula["CONVERT"];
-var DATE = Formula["DATE"];
-var DATEVALUE = function (dateString: string) : Date {
-  return new Date(dateString);
-};
-var DAY = Formula["DAY"];
-var DAYS = Formula["DAYS"];
-var DAYS360 = Formula["DAYS360"];
-var EDATE = function (start_date: Date, months) {
-  return moment(start_date).add(months, 'months').toDate();
-};
-var EOMONTH = function (start_date, months) {
-  var edate = moment(start_date).add(months, 'months');
-  return new Date(edate.year(), edate.month(), edate.daysInMonth());
-};
-var YEARFRAC = Formula["YEARFRAC"];
 
 
 // Using alias to bind dot-notation function names.

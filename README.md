@@ -23,6 +23,8 @@ arbitrary javascript is executed in the client machine.
 
 ### Criteria evaluations should escape reg-ex characters: http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 
+### Criteria evaluations should accept dollar-to-number comparisons: `=COUNTIF({10, 20, 40}, ">=$20")`
+
 ### License for all code used.
 
 ### Document the functions pulled in from jStat.

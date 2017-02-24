@@ -757,6 +757,7 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 
 
+// Test DATE
 assertEqualsDates(DATE(1992, 6, 24), new Date("6/24/1992"));
 assertEqualsDates(DATE(1992, 13, 24), new Date("1/24/1993"));
 assertEqualsDates(DATE(1992, 6, 44), new Date("7/14/1992"));
@@ -764,6 +765,16 @@ assertEqualsDates(DATE(2, 6, 44), new Date("7/14/1902"));
 assertEqualsDates(DATE(2, 33, 44), new Date("10/14/1904"));
 assertEqualsDates(DATE(1976, 2, 29), new Date("2/29/1976"));
 assertEqualsDates(DATE(1976, 2, 30), new Date("3/1/1976"));
+catchAndAssertEquals(function() {
+  DATE();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DATE(1976, 2);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DATE(1976, 2, 30, 22);
+}, ERRORS.NA_ERROR);
+
 
 assertEqualsDates(DATEVALUE("1992-6-24"), new Date("6/24/1992"));
 

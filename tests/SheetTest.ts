@@ -7,7 +7,7 @@ var sheet = new Sheet();
 sheet.setCell("A2", "22");
 var cell = sheet.getCell("A2");
 assertEquals(null, cell.getFormula());
-assertEquals(22, cell.getValue());
+assertEquals("22", cell.getValue());
 assertEquals("A2", cell.getId());
 assertEquals(1, cell.getRow());
 assertEquals(0, cell.getColumn());

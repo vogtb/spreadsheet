@@ -51,7 +51,9 @@ var DATEVALUE = function (...values) : number {
   var dateNumber;
   if (RegExUtil.matchDateStringYearMonthDaySlash(dateString)) { // Check "2012/1/23"
     dateNumber = new ExcelDate(moment(dateString, "Y/M/D")).toNumber();
-  } if (RegExUtil.matchDateStringMonthDayYearSlash(dateString)) { // Check "1/23/2012"
+  } else if (RegExUtil.matchDateStringYearMonthDayHyphen(dateString)) { // Check "2012-1-23"
+    dateNumber = new ExcelDate(moment(dateString, "Y-M-D")).toNumber();
+  } else if (RegExUtil.matchDateStringMonthDayYearSlash(dateString)) { // Check "1/23/2012"
     dateNumber = new ExcelDate(moment(dateString, "M/D/Y")).toNumber();
   }
   if (dateNumber === undefined) {

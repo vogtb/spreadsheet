@@ -8,6 +8,7 @@ import {
 } from "./Utils";
 import {
   NUM_ERROR,
+  VALUE_ERROR,
   CellError
 } from "../Errors";
 import {
@@ -40,30 +41,31 @@ var DATE = function (...values) {
 /**
  * Converts a provided date string in a known format to a date value.
  * @param values[0] date_string - The string representing the date. Understood formats include any date format which is
- * normally autoconverted when entered, without quotation marks, directly into a cell. Understood formats may depend on
- * region and language settings. Examples include: "1/23/2012", "1/23/2012 8:10:30", "2012/1/23", "2012-1-23"
- * @returns {number}
+ * normally auto-converted when entered, without quotation marks, directly into a cell. Understood formats may depend on
+ * region and language settings. Examples include: "1/23/2012", "2012/1/23", "2012-1-23", "1-23-2012", "1/23/2012 8PM",
+ * "1/23/2012 8:10:30", "1/23/2012 8:10", "1/23/2012 8:10:300000000"
+ * @returns {number} of days since 1900/1/1
  * @constructor
  */
 var DATEVALUE = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var dateString = TypeCaster.firstValueAsString(values[0]);
-  var dateNumber;
+  var m;
   if (RegExUtil.matchDateStringYearMonthDaySlash(dateString)) { // Check "2012/1/23"
-    dateNumber = new ExcelDate(moment(dateString, "Y/M/D")).toNumber();
+    m = moment(dateString, "Y/M/D");
   } else if (RegExUtil.matchDateStringYearMonthDayHyphen(dateString)) { // Check "2012-1-23"
-    dateNumber = new ExcelDate(moment(dateString, "Y-M-D")).toNumber();
+    m = moment(dateString, "Y-M-D");
   } else if (RegExUtil.matchDateStringMonthDayYearSlash(dateString)) { // Check "1/23/2012"
-    dateNumber = new ExcelDate(moment(dateString, "M/D/Y")).toNumber();
+    m = moment(dateString, "M/D/Y");
+  } else if (RegExUtil.matchDateStringMonthDayYearHyphen(dateString)) { // Check "1-23-2012"
+    m = moment(dateString, "M-D-Y");
+  } else if (RegExUtil.matchDateStringMonthDayYearTimeStampAll(dateString)) { // Check "1/23/2012 8:10", "1-23-2012 8:10", "1/23/2012 8PM", etc.
+
   }
-  if (dateNumber === undefined) {
-    // TODO: Throw error that we couldn't parse the dateString.
+  if (m === undefined || !m.isValid()) {
+    throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
   }
-  if (dateNumber < 0) {
-    throw new CellError(NUM_ERROR, "DATEVALUE evaluates to an out of range value " + dateNumber
-      + ". It should be greater than or equal to 0.");
-  }
-  return dateNumber;
+  return new ExcelDate(m).toNumber();
 };
 
 

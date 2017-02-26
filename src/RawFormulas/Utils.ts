@@ -371,6 +371,8 @@ class RegExUtil {
   private static DAY_MONTH_YEAR_SLASH_REGEX = /^\s*([1-9]|[0-2][0-9]|3[0-1])\/([1-9]|0[1-9]|1[0-2])\/([1-9][0-9][0-9][0-9])\s*$/;
   private static YEAR_MONTH_DAY_SLASH_REGEX = /^\s*([1-9][0-9][0-9][0-9])\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*$/;
   private static YEAR_MONTH_DAY_HYPHEN_REGEX = /^\s*([1-9][0-9][0-9][0-9])-([1-9]|0[1-9]|1[0-2])-([1-9]|[0-2][0-9]|3[0-1])\s*$/;
+  private static MONTH_DAY_YEAR_HYPHEN_REGEX = /^\s*([1-9]|0[1-9]|1[0-2])-([1-9]|[0-2][0-9]|3[0-1])-([1-9][0-9][0-9][0-9])\s*$/;
+  private static MONTH_DAY_YEAR_TIMESTAMP_REGEX = /^.*$/;
 
   /**
    * Match dates in the form "mm/dd/yyyy" or "m/d/yyyy".
@@ -408,6 +410,23 @@ class RegExUtil {
     return dateString.match(this.YEAR_MONTH_DAY_HYPHEN_REGEX);
   }
 
+  /**
+   * Match dates in the form "mm-dd-yyyy" or "m-d-yyyy".
+   * @param dateString to match
+   * @returns {RegExpMatchArray} matches or null
+   */
+  static matchDateStringMonthDayYearHyphen(dateString : string) : RegExpMatchArray | null {
+    return dateString.match(this.MONTH_DAY_YEAR_HYPHEN_REGEX);
+  }
+
+  /**
+   * Matches dates in the form "mm-dd-yyyy XX:XX:XX:XXX"
+   * @param dateString
+   * @returns {RegExpMatchArray}
+   */
+  static matchDateStringMonthDayYearTimeStampAll(dateString: string) : RegExpMatchArray | null {
+    return dateString.match(this.MONTH_DAY_YEAR_TIMESTAMP_REGEX);
+  };
 }
 
 export {

@@ -812,6 +812,22 @@ assertEquals(DATEVALUE("1992-1-24"), 33627);
 assertEquals(DATEVALUE("1992-12-21"), 33959);
 assertEquals(DATEVALUE("1992-01-31"), 33634);
 assertEquals(DATEVALUE("1992-1-13"), 33616);
+// m-d-yyyy
+assertEquals(DATEVALUE("6-24-1992"), 33779);
+assertEquals(DATEVALUE("06-24-1992"), 33779);
+assertEquals(DATEVALUE("1-01-1999"), 36161);
+assertEquals(DATEVALUE("1-01-2222"), 117610);
+assertEquals(DATEVALUE("9-02-1902"), 976);
+assertEquals(DATEVALUE("9-2-1902"), 976);
+assertEquals(DATEVALUE("11-3-4243"), 856071);
+assertEquals(DATEVALUE("  04-19-1992  "), 33713);
+assertEquals(DATEVALUE("5-20-1992"), 33744);
+assertEquals(DATEVALUE("6-21-1992"), 33776);
+assertEquals(DATEVALUE("9-29-1992"), 33876);
+assertEquals(DATEVALUE("1-24-1992"), 33627);
+assertEquals(DATEVALUE("12-21-1992"), 33959);
+assertEquals(DATEVALUE("01-31-1992"), 33634);
+assertEquals(DATEVALUE("1-13-1992"), 33616);
 
 
 

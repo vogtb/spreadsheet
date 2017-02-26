@@ -363,10 +363,48 @@ class Serializer {
   }
 }
 
+/**
+ * Static class to hold methods for parsing date-like strings.
+ */
+class RegExUtil {
+  private static MONTH_DAY_YEAR_SLASH_REGEX = /^\s*([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\/([1-9][0-9][0-9][0-9])\s*$/;
+  private static DAY_MONTH_YEAR_SLASH_REGEX = /^\s*([1-9]|[0-2][0-9]|3[0-1])\/([1-9]|0[1-9]|1[0-2])\/([1-9][0-9][0-9][0-9])\s*$/;
+  private static YEAR_MONTH_DAY_SLASH_REGEX = /^\s*([1-9][0-9][0-9][0-9])\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*$/;
+
+  /**
+   * Match dates in the form "mm/dd/yyyy" or "m/d/yyyy".
+   * @param dateString to match
+   * @returns {RegExpMatchArray} matches or null.
+   */
+  static matchDateStringMonthDayYearSlash(dateString : string) : RegExpMatchArray | null {
+    return dateString.match(this.MONTH_DAY_YEAR_SLASH_REGEX);
+  }
+
+  /**
+   * Match dates in the form "dd/mm/yyyy" or "d/m/yyyy".
+   * @param dateString to match
+   * @returns {RegExpMatchArray} matches or null
+   */
+  static matchDateStringDayMonthYearSlash(dateString : string) : RegExpMatchArray | null {
+    return dateString.match(this.DAY_MONTH_YEAR_SLASH_REGEX);
+  }
+
+  /**
+   * Match dates in the form "yyyy/mm/dd" or "yyyy/mm/dd".
+   * @param dateString to match
+   * @returns {RegExpMatchArray} matches or null
+   */
+  static matchDateStringYearMonthDaySlash(dateString : string) : RegExpMatchArray | null {
+    return dateString.match(this.YEAR_MONTH_DAY_SLASH_REGEX);
+  }
+
+}
+
 export {
   ArgsChecker,
   CriteriaFunctionFactory,
   Filter,
+  RegExUtil,
   Serializer,
   TypeCaster
 }

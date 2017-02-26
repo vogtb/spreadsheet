@@ -2,7 +2,9 @@
 import * as moment from "moment";
 import * as Formula from "formulajs"
 import {
-  ArgsChecker, TypeCaster
+  ArgsChecker,
+  RegExUtil,
+  TypeCaster
 } from "./Utils";
 import {
   NUM_ERROR,
@@ -46,12 +48,11 @@ var DATE = function (...values) {
 var DATEVALUE = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var dateString = TypeCaster.firstValueAsString(values[0]);
-  var format = "M/D/Y";
   var dateNumber;
-  if (false) { // Check "2012/1/23"
-
-  } if (dateString.match(/^\s*([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\/([1-9][0-9][0-9][0-9])\s*$/)) { // Check "1/23/2012"
-    dateNumber = new ExcelDate(moment(dateString, format)).toNumber();
+  if (RegExUtil.matchDateStringYearMonthDaySlash(dateString)) { // Check "2012/1/23"
+    dateNumber = new ExcelDate(moment(dateString, "Y/M/D")).toNumber();
+  } if (RegExUtil.matchDateStringMonthDayYearSlash(dateString)) { // Check "1/23/2012"
+    dateNumber = new ExcelDate(moment(dateString, "M/D/Y")).toNumber();
   }
   if (dateNumber === undefined) {
     // TODO: Throw error that we couldn't parse the dateString.

@@ -778,6 +778,10 @@ assertEquals(DATE(2004, 3, 1).toNumber(), 38047);
 
 // Test DATEVALUE
 assertEquals(DATEVALUE("6/24/1992"), 33779);
+assertEquals(DATEVALUE("06/24/1992"), 33779);
+assertEquals(DATEVALUE("1992/6/24"), 33779);
+assertEquals(DATEVALUE("1992/06/24"), 33779);
+
 
 
 // Test DB

@@ -761,6 +761,12 @@ catchAndAssertEquals(function() {
 assertEquals(DATE(1900, 1, 1).toNumber(), 2);
 assertEquals(DATE(1900, 1, 2).toNumber(), 3);
 assertEquals(DATE(1900, 1, 4).toNumber(), 5);
+catchAndAssertEquals(function() {
+  DATE(1900, 0, 4);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DATE(1900, 0, 5);
+}, ERRORS.NUM_ERROR);
 assertEquals(DATE(1992, 6, 24).toNumber(), 33779);
 assertEquals(DATE(2017, 2, 26).toNumber(), 42792);
 // Leap day stuff

@@ -34,9 +34,24 @@ var DATE = function (...values) {
 };
 
 
-var DATEVALUE = function (dateString: string) : Date {
-  return new Date(dateString);
+/**
+ * Converts a provided date string in a known format to a date value.
+ * @param values[0] date_string - The string representing the date. Understood formats include any date format which is
+ * normally autoconverted when entered, without quotation marks, directly into a cell. Understood formats may depend on
+ * region and language settings. Examples include: "1/23/2012", "1/23/2012 8:10:30", "2012/1/23", "2012-1-23"
+ * @returns {number}
+ * @constructor
+ */
+var DATEVALUE = function (...values) : number {
+  ArgsChecker.checkLength(values, 1);
+  var dateNumber = new ExcelDate(moment()).toNumber();
+  if (dateNumber < 0) {
+    throw new CellError(NUM_ERROR, "DATEVALUE evaluates to an out of range value " + dateNumber
+      + ". It should be greater than or equal to 0.");
+  }
+  return dateNumber;
 };
+
 
 var DAY = Formula["DAY"];
 var DAYS = Formula["DAYS"];

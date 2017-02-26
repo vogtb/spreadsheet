@@ -53,3 +53,8 @@ Either through `arguments`, or directly passed in like `mean("FORMULA", [10, 20,
 Although dollar functions look like they just format `number`s, it seems like they have a special type under the hood.
 This means that we should do dollar->number casting in all casting functions. For now, just using number primitive.
 See `DOLLAR` function for more info.
+
+### Dates have special types
+Like dollars, dates are special types, but can be compared as if they're primatives. For example, this statement is
+valid inside a cell: `=DATE(1992, 6, 6) > =DATE(1992, 6, 10)`. We should check types and and have Date-to-number
+conversion inside parser.js.

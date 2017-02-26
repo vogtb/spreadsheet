@@ -20,7 +20,7 @@ class ExcelDate {
       this.day = dayOrMoment;
     } else {
       var ORIGIN_MOMENT = moment(new Date(1900, 0, 1));
-      this.day = Math.round(dayOrMoment.diff(ORIGIN_MOMENT, "days"));
+      this.day = Math.max(Math.round(dayOrMoment.diff(ORIGIN_MOMENT, "days")) + 2, 2); // Minimum value is 2...
     }
   }
 
@@ -67,7 +67,6 @@ class ExcelDate {
  * @constructor
  */
 var DATE = function (...values) {
-  var ORIGIN_MOMENT = moment(new Date(1900, 0, 0));
   ArgsChecker.checkLength(values, 3);
   var year = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0]))); // No negative values for year
   var month = Math.floor(TypeCaster.firstValueAsNumber(values[1]) - 1); // Months are between 0 and 11.

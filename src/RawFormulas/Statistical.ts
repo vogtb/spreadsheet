@@ -54,7 +54,7 @@ var MEDIAN = function (...values) : number {
       var filtered = Filter.filterOutStringValues(currentValue);
       sortedArray = sortedArray.concat(filtered);
     } else {
-      sortedArray.push(currentValue);
+      sortedArray.push(TypeCaster.valueToNumber(currentValue));
     }
   });
   sortedArray = sortedArray.sort(function (a, b) {

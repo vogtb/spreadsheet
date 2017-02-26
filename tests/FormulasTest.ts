@@ -777,10 +777,26 @@ assertEquals(DATE(2004, 3, 1).toNumber(), 38047);
 
 
 // Test DATEVALUE
+// m/d/yyyy
 assertEquals(DATEVALUE("6/24/1992"), 33779);
 assertEquals(DATEVALUE("06/24/1992"), 33779);
+// yyyy/m/d
 assertEquals(DATEVALUE("1992/6/24"), 33779);
 assertEquals(DATEVALUE("1992/06/24"), 33779);
+assertEquals(DATEVALUE("1999/1/01"), 36161);
+assertEquals(DATEVALUE("2222/1/01"), 117610);
+assertEquals(DATEVALUE("1902/9/02"), 976);
+assertEquals(DATEVALUE("1902/9/2"), 976);
+assertEquals(DATEVALUE("4243/11/3"), 856071);
+assertEquals(DATEVALUE("  1992/04/19  "), 33713);
+assertEquals(DATEVALUE("1992/5/20"), 33744);
+assertEquals(DATEVALUE("1992/6/21"), 33776);
+assertEquals(DATEVALUE("1992/9/29"), 33876);
+assertEquals(DATEVALUE("1992/1/24"), 33627);
+assertEquals(DATEVALUE("1992/12/21"), 33959);
+assertEquals(DATEVALUE("1992/01/31"), 33634);
+assertEquals(DATEVALUE("1992/1/13"), 33616);
+
 
 
 

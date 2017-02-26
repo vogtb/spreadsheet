@@ -776,13 +776,8 @@ assertEquals(DATE(2004, 3, 1).toNumber(), 38047);
 
 
 
-// assertEqualsDates(DATEVALUE("1992-6-24"), new Date("6/24/1992"));
-//
-// assertEquals(DAY(DATEVALUE("1992-6-24")), 24);
-//
-// assertEquals(DAYS(DATEVALUE("1993-6-24"), DATEVALUE("1992-6-24")), 365);
-//
-// assertEquals(DAYS360(DATE(1969, 7, 16), DATE(1970, 7, 24), 1), 368);
+// Test DATEVALUE
+assertEquals(DATEVALUE("6/24/1992"), 33779);
 
 
 // Test DB

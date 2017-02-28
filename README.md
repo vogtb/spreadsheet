@@ -7,12 +7,6 @@ Things I should do.
 ### SUM and SUMA should be different, and I'm pretty sure they're currently the same.
 And the same for MAX, MAXA, COUNT, COUNTA, etc. Look these over.
 
-### Date-Time issues
-Here are a couple of the issues with Dates and so on:
-* There seem to be a few issues where someone did something sloppy inside formulaJS, and timezones, daylight-savings,
-and leap years are being taken into account when they shouldn't be. For now I think I should just let it go.
-The resulting errors from these bugs aren't that bad. I'll mark them down, and investigate them individually.
-
 ### Protect against injection
 How do we protect against users injecting data that looks like `console.log(sensitive_data)` when we evaluate variables
 inside parser.js? If we ever want to impliment custom formulas, or even accept data in raw format, we need to guard
@@ -59,5 +53,8 @@ Like dollars, dates are special types, but can be compared as if they're primati
 valid inside a cell: `=DATE(1992, 6, 6) > =DATE(1992, 6, 10)`. We should check types and and have Date-to-number
 conversion inside parser.js.
 
-### `DATE` should use "roll-over" input handling
-When handling input like DATE(1992, 1, 44), we should use momentjs's `add('days', 44)` to build up to the correct date.
+### Organize tests in a way that makes sense.
+Annotate them, and standardize the error checking for errors like REF, NA, NUM, VALUE, etc.
+
+### Test all ExcelDate functions
+Right now we're just using the number of days since 1900, but we should check the other functions.

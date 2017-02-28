@@ -773,6 +773,12 @@ assertEquals(DATE(2017, 2, 26).toNumber(), 42792);
 assertEquals(DATE(2004, 2, 28).toNumber(), 38045);
 assertEquals(DATE(2004, 2, 29).toNumber(), 38046);
 assertEquals(DATE(2004, 3, 1).toNumber(), 38047);
+// Overflow values
+assertEquals(DATE(1992, 6, 44).toNumber(), 33799);
+assertEquals(DATE(2, 33, 44).toNumber(), 1749);
+assertEquals(DATE(1777, 33, 44).toNumber(), 650055);
+assertEquals(DATE(1976, 2, -10).toNumber(), 27780);
+assertEquals(DATE(-1900, 1, 1).toNumber(), 2);
 
 
 

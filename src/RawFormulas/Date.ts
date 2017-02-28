@@ -43,8 +43,9 @@ var DATE = function (...values) {
  * @param values[0] date_string - The string representing the date. Understood formats include any date format which is
  * normally auto-converted when entered, without quotation marks, directly into a cell. Understood formats may depend on
  * region and language settings. Examples include: "1/23/2012", "2012/1/23", "2012-1-23", "1-23-2012", "1/23/2012 8PM",
- * "1/23/2012 8:10:30", "1/23/2012 8:10", "1/23/2012 8:10:300000000"
- * @returns {number} of days since 1900/1/1
+ * "1/23/2012 8:10:30", "1/23/2012 8:10", "1/23/2012 8:10:300000000", "Sun Feb 26 2017", "Monday Feb 26 2017",
+ * "Mon Feb 26 2017 8PM".
+ * @returns {number} of days since 1900/1/1, inclusively.
  * @constructor
  */
 var DATEVALUE = function (...values) : number {

@@ -58,3 +58,6 @@ See `DOLLAR` function for more info.
 Like dollars, dates are special types, but can be compared as if they're primatives. For example, this statement is
 valid inside a cell: `=DATE(1992, 6, 6) > =DATE(1992, 6, 10)`. We should check types and and have Date-to-number
 conversion inside parser.js.
+
+### `DATE` should use "roll-over" input handling
+When handling input like DATE(1992, 1, 44), we should use momentjs's `add('days', 44)` to build up to the correct date.

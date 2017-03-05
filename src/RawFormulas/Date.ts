@@ -47,27 +47,58 @@ var DATE = function (...values) {
  * Converts a provided date string in a known format to a date value.
  * @param values[0] date_string - The string representing the date. Understood formats include any date format which is
  * normally auto-converted when entered, without quotation marks, directly into a cell. Understood formats may depend on
- * region and language settings. Examples include: "1/23/2012", "2012/1/23", "2012-1-23", "1-23-2012", "1/23/2012 8PM",
- * "1/23/2012 8:10:30", "1/23/2012 8:10", "1/23/2012 8:10:300000000", "Sun Feb 26 2017", "Monday Feb 26 2017",
- * "Mon Feb 26 2017 8PM".
+ * region and language settings. Examples include:
+ * "1999/1/13"
+ * "12/13/1999"
+ * "30/12/1999"
+ * "1999/1/13 10am"
+ * "1999/1/13 10:22"
+ * "1999/1/13 10:10am"
+ * "1999/1/13 10:10:10"
+ * "1999/1/13 10:10:10pm"
+ * "Sun Feb 09 2017"
+ * "09 Feb 2017"
+ * "Feb-2017"
+ * "22-Feb"
+ * "10-22"
+ * "10/2022"
+ * "Sun Mar 05 2017 10:40:26"
  * @returns {number} of days since 1900/1/1, inclusively.
  * @constructor
  */
 var DATEVALUE = function (...values) : number {
+  const FIRST_YEAR = 1900;
+  const Y2K_YEAR = 2000;
   ArgsChecker.checkLength(values, 1);
   var dateString = TypeCaster.firstValueAsString(values[0]);
   var m;
-  if (RegExUtil.matchDateStringYearMonthDaySlash(dateString)) { // Check "2012/1/23"
-    m = moment(dateString, "Y/M/D");
-  } else if (RegExUtil.matchDateStringYearMonthDayHyphen(dateString)) { // Check "2012-1-23"
-    m = moment(dateString, "Y-M-D");
-  } else if (RegExUtil.matchDateStringMonthDayYearSlash(dateString)) { // Check "1/23/2012"
-    m = moment(dateString, "M/D/Y");
-  } else if (RegExUtil.matchDateStringMonthDayYearHyphen(dateString)) { // Check "1-23-2012"
-    m = moment(dateString, "M-D-Y");
-  } else if (RegExUtil.matchDateStringMonthDayYearTimeStampAll(dateString)) { // Check "1/23/2012 8:10", "1-23-2012 8:10", "1/23/2012 8PM", etc.
 
+  // Check YYYY/MM/DD
+  if (m === undefined) {
+    // For reference: https://regex101.com/r/uusfi7/5
+    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*$/);
+    if (matches && matches.length === 6) {
+      var years = parseInt(matches[1]);
+      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
+      var days = parseInt(matches[5]) - 1;// Months are zero indexed.
+      var actualYear = years;
+      if (years >= 0 && years < 30) {
+        actualYear = Y2K_YEAR + years;
+      } else if (years >= 30 && years < 100) {
+        actualYear = FIRST_YEAR + years;
+      }
+      var tmpMoment = moment([actualYear])
+        .add(months, 'months');
+      // If we're specifying more days than there are in this month
+      if (days > tmpMoment.daysInMonth() - 1) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      tmpMoment = tmpMoment.add(days, 'days');
+      m = tmpMoment;
+    }
   }
+
+  // If we've not been able to parse the date by now, then we cannot parse it at all.
   if (m === undefined || !m.isValid()) {
     throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
   }

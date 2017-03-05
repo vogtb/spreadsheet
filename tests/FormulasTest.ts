@@ -783,9 +783,9 @@ assertEquals(DATE(-1900, 1, 1).toNumber(), 2);
 
 
 // Test DATEVALUE
-// m/d/yyyy
-assertEquals(DATEVALUE("6/24/1992"), 33779);
-assertEquals(DATEVALUE("06/24/1992"), 33779);
+// // m/d/yyyy
+// assertEquals(DATEVALUE("6/24/1992"), 33779);
+// assertEquals(DATEVALUE("06/24/1992"), 33779);
 // yyyy/m/d
 assertEquals(DATEVALUE("1992/6/24"), 33779);
 assertEquals(DATEVALUE("1992/06/24"), 33779);
@@ -802,38 +802,63 @@ assertEquals(DATEVALUE("1992/1/24"), 33627);
 assertEquals(DATEVALUE("1992/12/21"), 33959);
 assertEquals(DATEVALUE("1992/01/31"), 33634);
 assertEquals(DATEVALUE("1992/1/13"), 33616);
-// yyyy-m-d
-assertEquals(DATEVALUE("1992-6-24"), 33779);
-assertEquals(DATEVALUE("1992-06-24"), 33779);
-assertEquals(DATEVALUE("1999-1-01"), 36161);
-assertEquals(DATEVALUE("2222-1-01"), 117610);
-assertEquals(DATEVALUE("1902-9-02"), 976);
-assertEquals(DATEVALUE("1902-9-2"), 976);
-assertEquals(DATEVALUE("4243-11-3"), 856071);
-assertEquals(DATEVALUE("  1992-04-19  "), 33713);
-assertEquals(DATEVALUE("1992-5-20"), 33744);
-assertEquals(DATEVALUE("1992-6-21"), 33776);
-assertEquals(DATEVALUE("1992-9-29"), 33876);
-assertEquals(DATEVALUE("1992-1-24"), 33627);
-assertEquals(DATEVALUE("1992-12-21"), 33959);
-assertEquals(DATEVALUE("1992-01-31"), 33634);
-assertEquals(DATEVALUE("1992-1-13"), 33616);
-// m-d-yyyy
-assertEquals(DATEVALUE("6-24-1992"), 33779);
-assertEquals(DATEVALUE("06-24-1992"), 33779);
-assertEquals(DATEVALUE("1-01-1999"), 36161);
-assertEquals(DATEVALUE("1-01-2222"), 117610);
-assertEquals(DATEVALUE("9-02-1902"), 976);
-assertEquals(DATEVALUE("9-2-1902"), 976);
-assertEquals(DATEVALUE("11-3-4243"), 856071);
-assertEquals(DATEVALUE("  04-19-1992  "), 33713);
-assertEquals(DATEVALUE("5-20-1992"), 33744);
-assertEquals(DATEVALUE("6-21-1992"), 33776);
-assertEquals(DATEVALUE("9-29-1992"), 33876);
-assertEquals(DATEVALUE("1-24-1992"), 33627);
-assertEquals(DATEVALUE("12-21-1992"), 33959);
-assertEquals(DATEVALUE("01-31-1992"), 33634);
-assertEquals(DATEVALUE("1-13-1992"), 33616);
+assertEquals(DATEVALUE("2004/2/29"), 38046);
+assertEquals(DATEVALUE("2004/2/28"), 38045);
+assertEquals(DATEVALUE("1999/1/13"), 36173);
+assertEquals(DATEVALUE("1999/01/13"), 36173);
+assertEquals(DATEVALUE("0999/01/13"), -329069);
+assertEquals(DATEVALUE("1200/01/13"), -255656);
+assertEquals(DATEVALUE("0029/01/13"), 47131);
+assertEquals(DATEVALUE("0030/01/13"), 10971);
+assertEquals(DATEVALUE("0044/01/13"), 16084);
+assertEquals(DATEVALUE("0050/01/13"), 18276);
+assertEquals(DATEVALUE("0097/01/13"), 35443);
+assertEquals(DATEVALUE("0099/01/13"), 36173);
+assertEquals(DATEVALUE("0000/01/13"), 36538);
+assertEquals(DATEVALUE("0101/01/13"), -657057);
+assertEquals(DATEVALUE("0100/01/13"), -657422);
+assertEquals(DATEVALUE("100/12/31"), -657070);
+assertEquals(DATEVALUE("122/11/10"), -649086);
+assertEquals(DATEVALUE("2222/1/22"), 117631);
+assertEquals(DATEVALUE("222/1/22"), -612854);
+catchAndAssertEquals(function() {
+  DATEVALUE("2005/2/29");// Leap day on non-leap year.
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("2005/1/44");// Out of range day for any month
+}, ERRORS.VALUE_ERROR);
+// // yyyy-m-d
+// assertEquals(DATEVALUE("1992-6-24"), 33779);
+// assertEquals(DATEVALUE("1992-06-24"), 33779);
+// assertEquals(DATEVALUE("1999-1-01"), 36161);
+// assertEquals(DATEVALUE("2222-1-01"), 117610);
+// assertEquals(DATEVALUE("1902-9-02"), 976);
+// assertEquals(DATEVALUE("1902-9-2"), 976);
+// assertEquals(DATEVALUE("4243-11-3"), 856071);
+// assertEquals(DATEVALUE("  1992-04-19  "), 33713);
+// assertEquals(DATEVALUE("1992-5-20"), 33744);
+// assertEquals(DATEVALUE("1992-6-21"), 33776);
+// assertEquals(DATEVALUE("1992-9-29"), 33876);
+// assertEquals(DATEVALUE("1992-1-24"), 33627);
+// assertEquals(DATEVALUE("1992-12-21"), 33959);
+// assertEquals(DATEVALUE("1992-01-31"), 33634);
+// assertEquals(DATEVALUE("1992-1-13"), 33616);
+// // m-d-yyyy
+// assertEquals(DATEVALUE("6-24-1992"), 33779);
+// assertEquals(DATEVALUE("06-24-1992"), 33779);
+// assertEquals(DATEVALUE("1-01-1999"), 36161);
+// assertEquals(DATEVALUE("1-01-2222"), 117610);
+// assertEquals(DATEVALUE("9-02-1902"), 976);
+// assertEquals(DATEVALUE("9-2-1902"), 976);
+// assertEquals(DATEVALUE("11-3-4243"), 856071);
+// assertEquals(DATEVALUE("  04-19-1992  "), 33713);
+// assertEquals(DATEVALUE("5-20-1992"), 33744);
+// assertEquals(DATEVALUE("6-21-1992"), 33776);
+// assertEquals(DATEVALUE("9-29-1992"), 33876);
+// assertEquals(DATEVALUE("1-24-1992"), 33627);
+// assertEquals(DATEVALUE("12-21-1992"), 33959);
+// assertEquals(DATEVALUE("01-31-1992"), 33634);
+// assertEquals(DATEVALUE("1-13-1992"), 33616);
 
 
 

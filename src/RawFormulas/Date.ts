@@ -48,9 +48,8 @@ var DATE = function (...values) {
  * @param values[0] date_string - The string representing the date. Understood formats include any date format which is
  * normally auto-converted when entered, without quotation marks, directly into a cell. Understood formats may depend on
  * region and language settings. Examples include:
- * "1999/1/13"
- * "12/13/1999"
- * "30/12/1999"
+ * "1999/1/13"              DONE
+ * "1/13/1999"              DONE
  * "1999/1/13 10am"
  * "1999/1/13 10:22"
  * "1999/1/13 10:10am"
@@ -81,6 +80,31 @@ var DATEVALUE = function (...values) : number {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.
       var days = parseInt(matches[5]) - 1;// Months are zero indexed.
+      var actualYear = years;
+      if (years >= 0 && years < 30) {
+        actualYear = Y2K_YEAR + years;
+      } else if (years >= 30 && years < 100) {
+        actualYear = FIRST_YEAR + years;
+      }
+      var tmpMoment = moment([actualYear])
+        .add(months, 'months');
+      // If we're specifying more days than there are in this month
+      if (days > tmpMoment.daysInMonth() - 1) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      tmpMoment = tmpMoment.add(days, 'days');
+      m = tmpMoment;
+    }
+  }
+
+  // Check MM/DD/YYYY
+  if (m === undefined) {
+    // For reference: https://regex101.com/r/yHraci/5
+    var matches = dateString.match(/^\s*([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\/(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9])|[0-9]{0,3})\s*$/);
+    if (matches && matches.length === 6) {
+      var years = parseInt(matches[3]);
+      var months = parseInt(matches[1]) - 1;
+      var days = parseInt(matches[2]) - 1;
       var actualYear = years;
       if (years >= 0 && years < 30) {
         actualYear = Y2K_YEAR + years;

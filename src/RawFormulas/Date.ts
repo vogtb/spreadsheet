@@ -122,6 +122,51 @@ var DATEVALUE = function (...values) : number {
     }
   }
 
+  // Check YYYY/MM/DD HH(am|pm)
+  if (m === undefined) {
+    // For reference: https://regex101.com/r/m8FSCr/6
+    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]|0[0-9]|1[0-2])\s*(am|pm)\s*$/i);
+    if (matches && matches.length === 8) {
+      var years = parseInt(matches[1]);
+      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
+      var days = parseInt(matches[5]) - 1;// Months are zero indexed.
+      var actualYear = years;
+      if (years >= 0 && years < 30) {
+        actualYear = Y2K_YEAR + years;
+      } else if (years >= 30 && years < 100) {
+        actualYear = FIRST_YEAR + years;
+      }
+      var tmpMoment = moment([actualYear])
+        .add(months, 'months');
+      // If we're specifying more days than there are in this month
+      if (days > tmpMoment.daysInMonth() - 1) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      tmpMoment = tmpMoment.add(days, 'days');
+      m = tmpMoment;
+    }
+  }
+
+  // Check YYYY/MM/DD HH:mm
+  if (m === undefined) {
+    // TODO: This.
+  }
+
+  // Check YYYY/MM/DD HH:mm(am|pm)
+  if (m === undefined) {
+    // TODO: This.
+  }
+
+  // Check YYYY/MM/DD HH:mm:ss
+  if (m === undefined) {
+    // TODO: This.
+  }
+
+  // Check YYYY/MM/DD HH:mm:ss(am|pm)
+  if (m === undefined) {
+    // TODO: This.
+  }
+
   // If we've not been able to parse the date by now, then we cannot parse it at all.
   if (m === undefined || !m.isValid()) {
     throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");

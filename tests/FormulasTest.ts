@@ -911,40 +911,18 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("2005/1/44 11am");// Out of range day for any month
 }, ERRORS.VALUE_ERROR);
-
-
-// // yyyy-m-d
-// assertEquals(DATEVALUE("1992-6-24"), 33779);
-// assertEquals(DATEVALUE("1992-06-24"), 33779);
-// assertEquals(DATEVALUE("1999-1-01"), 36161);
-// assertEquals(DATEVALUE("2222-1-01"), 117610);
-// assertEquals(DATEVALUE("1902-9-02"), 976);
-// assertEquals(DATEVALUE("1902-9-2"), 976);
-// assertEquals(DATEVALUE("4243-11-3"), 856071);
-// assertEquals(DATEVALUE("  1992-04-19  "), 33713);
-// assertEquals(DATEVALUE("1992-5-20"), 33744);
-// assertEquals(DATEVALUE("1992-6-21"), 33776);
-// assertEquals(DATEVALUE("1992-9-29"), 33876);
-// assertEquals(DATEVALUE("1992-1-24"), 33627);
-// assertEquals(DATEVALUE("1992-12-21"), 33959);
-// assertEquals(DATEVALUE("1992-01-31"), 33634);
-// assertEquals(DATEVALUE("1992-1-13"), 33616);
-// // m-d-yyyy
-// assertEquals(DATEVALUE("6-24-1992"), 33779);
-// assertEquals(DATEVALUE("06-24-1992"), 33779);
-// assertEquals(DATEVALUE("1-01-1999"), 36161);
-// assertEquals(DATEVALUE("1-01-2222"), 117610);
-// assertEquals(DATEVALUE("9-02-1902"), 976);
-// assertEquals(DATEVALUE("9-2-1902"), 976);
-// assertEquals(DATEVALUE("11-3-4243"), 856071);
-// assertEquals(DATEVALUE("  04-19-1992  "), 33713);
-// assertEquals(DATEVALUE("5-20-1992"), 33744);
-// assertEquals(DATEVALUE("6-21-1992"), 33776);
-// assertEquals(DATEVALUE("9-29-1992"), 33876);
-// assertEquals(DATEVALUE("1-24-1992"), 33627);
-// assertEquals(DATEVALUE("12-21-1992"), 33959);
-// assertEquals(DATEVALUE("01-31-1992"), 33634);
-// assertEquals(DATEVALUE("1-13-1992"), 33616);
+// YYYY/MM/DD HH:mm
+assertEquals(DATEVALUE("1992/6/24 00:00"), 33779);
+assertEquals(DATEVALUE("1992/6/24 0:00"), 33779);
+assertEquals(DATEVALUE("1992/6/24 10:10"), 33779);
+assertEquals(DATEVALUE("1992/6/24 16:22"), 33779);
+assertEquals(DATEVALUE("1992/6/24 25:10"), 33780);
+assertEquals(DATEVALUE("1992/6/24 23:60"), 33780);
+assertEquals(DATEVALUE("1992/6/24 24:00"), 33780);
+assertEquals(DATEVALUE("1992/6/24 23:59"), 33779);
+assertEquals(DATEVALUE("1999/1/13 10:11111111"), 43889);
+assertEquals(DATEVALUE("1999/1/13 25000:22"), 37214);
+assertEquals(DATEVALUE("1999/1/13 25000:    22"), 37214);
 
 
 

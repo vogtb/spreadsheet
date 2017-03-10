@@ -3,7 +3,6 @@ import * as moment from "moment";
 import * as Formula from "formulajs"
 import {
   ArgsChecker,
-  RegExUtil,
   TypeCaster
 } from "./Utils";
 import {
@@ -92,8 +91,7 @@ var DATEVALUE = function (...values) : number {
       if (days > tmpMoment.daysInMonth() - 1) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
       }
-      tmpMoment = tmpMoment.add(days, 'days');
-      m = tmpMoment;
+      m = tmpMoment.add(days, 'days');
     }
   }
 
@@ -117,8 +115,7 @@ var DATEVALUE = function (...values) : number {
       if (days > tmpMoment.daysInMonth() - 1) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
       }
-      tmpMoment = tmpMoment.add(days, 'days');
-      m = tmpMoment;
+      m = tmpMoment.add(days, 'days');
     }
   }
 
@@ -142,14 +139,34 @@ var DATEVALUE = function (...values) : number {
       if (days > tmpMoment.daysInMonth() - 1) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
       }
-      tmpMoment = tmpMoment.add(days, 'days');
-      m = tmpMoment;
+      m = tmpMoment.add(days, 'days');
     }
   }
 
   // Check YYYY/MM/DD HH:mm
   if (m === undefined) {
-    // TODO: This.
+    // For reference: https://regex101.com/r/xsqttP/4
+    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]{1,}):\s*([0-9]{2,})\s*$/);
+    if (matches && matches.length === 8) {
+      var years = parseInt(matches[1]);
+      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
+      var days = parseInt(matches[5]) - 1;// Months are zero indexed.
+      var hours = parseInt(matches[6]);
+      var minutes = parseInt(matches[7]);
+      var actualYear = years;
+      if (years >= 0 && years < 30) {
+        actualYear = Y2K_YEAR + years;
+      } else if (years >= 30 && years < 100) {
+        actualYear = FIRST_YEAR + years;
+      }
+      var tmpMoment = moment([actualYear])
+        .add(months, 'months');
+      // If we're specifying more days than there are in this month
+      if (days > tmpMoment.daysInMonth() - 1) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      m = tmpMoment.add(days, 'days').add(hours, 'hours').add(minutes, 'minutes');
+    }
   }
 
   // Check YYYY/MM/DD HH:mm(am|pm)

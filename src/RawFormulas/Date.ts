@@ -49,9 +49,9 @@ var DATE = function (...values) {
  * region and language settings. Examples include:
  * "1999/1/13"              DONE
  * "1/13/1999"              DONE
- * "1999/1/13 10am"
- * "1999/1/13 10:22"
- * "1999/1/13 10:10am"
+ * "1999/1/13 10am"         DONE
+ * "1999/1/13 10:22"        DONE
+ * "1999/1/13 10:10am"      DONE
  * "1999/1/13 10:10:10"
  * "1999/1/13 10:10:10pm"
  * "Sun Feb 09 2017"
@@ -171,8 +171,8 @@ var DATEVALUE = function (...values) : number {
 
   // Check YYYY/MM/DD HH:mm(am|pm)
   if (m === undefined) {
-    // For reference: https://regex101.com/r/DMA4Fv/2
-    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]|0[0-9]|1[0-2]):([0-9]+)\s*(am|pm)\s*$/i);
+    // For reference: https://regex101.com/r/DMA4Fv/3
+    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]|0[0-9]|1[0-2]):\s*([0-9]+)\s*(am|pm)\s*$/i);
     if (matches && matches.length === 9) {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.

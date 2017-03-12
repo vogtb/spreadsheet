@@ -930,8 +930,8 @@ assertEquals(DATEVALUE("1999/1/01 02:59pm"), 36161);
 assertEquals(DATEVALUE("2222/1/01 03:33pm"), 117610);
 assertEquals(DATEVALUE("1902/9/02 12:33pm"), 976);
 assertEquals(DATEVALUE("1902/9/2 12:33pm"), 976);
-assertEquals(DATEVALUE("4243/11/3 12:33pm   "), 856071);
-assertEquals(DATEVALUE("  1992/04/19   12:33pm   "), 33713);
+assertEquals(DATEVALUE("4243/11/3 12:33pm"), 856071);
+assertEquals(DATEVALUE("  1992/04/19   12:  33pm   "), 33713);
 assertEquals(DATEVALUE("1992/5/20 01:33am"), 33744);
 assertEquals(DATEVALUE("1992/6/21  3:33pm"), 33776);
 assertEquals(DATEVALUE("1992/9/29 3:33pm"), 33876);
@@ -963,14 +963,17 @@ assertEquals(DATEVALUE("1992/1/13 12:720pm"), 33617); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 00:720pm"), 33617); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:719pm"), 33616); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 00:720am"), 33616); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 00:01pm"), 33616); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:66669pm"), 33662); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:66669am"), 33662); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:66249pm"), 33662); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:66249am"), 33662); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:666669am"), 34078); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:666669pm"), 34079); // overload minutes
-
-
+assertEquals(DATEVALUE("1992/1/13 12:100000000am"), 103060); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:0912347287am"), 667190); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:00000912347287am"), 667190); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:1989198298am"), 1415003); // overload minutes
 
 
 

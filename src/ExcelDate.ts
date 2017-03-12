@@ -28,7 +28,7 @@ class ExcelDate {
    * @returns {string} day in the format M/D/YYYY.
    */
   toString() {
-    return ORIGIN_MOMENT.add(this.day, 'days').format("M/D/Y");
+    return moment.utc(ORIGIN_MOMENT).add(this.day, 'days').format("M/D/Y");
   }
 
   /**

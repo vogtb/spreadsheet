@@ -48,13 +48,18 @@ Although dollar functions look like they just format `number`s, it seems like th
 This means that we should do dollar->number casting in all casting functions. For now, just using number primitive.
 See `DOLLAR` function for more info.
 
-### Dates have special types
+### Date TODOS
+#### Dates have special types
 Like dollars, dates are special types, but can be compared as if they're primatives. For example, this statement is
 valid inside a cell: `=DATE(1992, 6, 6) > =DATE(1992, 6, 10)`. We should check types and and have Date-to-number
 conversion inside parser.js.
 
-### Organize tests in a way that makes sense.
+#### Organize tests in a way that makes sense.
 Annotate them, and standardize the error checking for errors like REF, NA, NUM, VALUE, etc.
 
-### Test all ExcelDate functions
+#### Test all ExcelDate functions
 Right now we're just using the number of days since 1900, but we should check the other functions.
+
+#### YYYY/MM/DD HH:mm needs more thurough testing
+
+#### Verify that all white-space wild cards are implemented properly

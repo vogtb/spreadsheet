@@ -78,7 +78,7 @@ var DATEVALUE = function (...values) : number {
     if (matches && matches.length === 6) {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1;// Months are zero indexed.
+      var days = parseInt(matches[5]) - 1;// Days are zero indexed.
       var actualYear = years;
       if (years >= 0 && years < 30) {
         actualYear = Y2K_YEAR + years;
@@ -101,8 +101,8 @@ var DATEVALUE = function (...values) : number {
     var matches = dateString.match(/^\s*([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\/(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9])|[0-9]{0,3})\s*$/);
     if (matches && matches.length === 6) {
       var years = parseInt(matches[3]);
-      var months = parseInt(matches[1]) - 1;
-      var days = parseInt(matches[2]) - 1;
+      var months = parseInt(matches[1]) - 1; // Months are zero indexed.
+      var days = parseInt(matches[2]) - 1; // Days are zero indexed.
       var actualYear = years;
       if (years >= 0 && years < 30) {
         actualYear = Y2K_YEAR + years;
@@ -126,7 +126,7 @@ var DATEVALUE = function (...values) : number {
     if (matches && matches.length === 8) {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1;// Months are zero indexed.
+      var days = parseInt(matches[5]) - 1;// Days are zero indexed.
       var actualYear = years;
       if (years >= 0 && years < 30) {
         actualYear = Y2K_YEAR + years;
@@ -150,7 +150,7 @@ var DATEVALUE = function (...values) : number {
     if (matches && matches.length === 8) {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1;// Months are zero indexed.
+      var days = parseInt(matches[5]) - 1;// Days are zero indexed.
       var hours = parseInt(matches[6]);
       var minutes = parseInt(matches[7]);
       var actualYear = years;
@@ -171,7 +171,53 @@ var DATEVALUE = function (...values) : number {
 
   // Check YYYY/MM/DD HH:mm(am|pm)
   if (m === undefined) {
-    // TODO: This.
+    // For reference: https://regex101.com/r/DMA4Fv/2
+    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]|0[0-9]|1[0-2]):([0-9]+)\s*(am|pm)\s*$/i);
+    if (matches && matches.length === 9) {
+      var years = parseInt(matches[1]);
+      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
+      var days = parseInt(matches[5]) - 1;// Days are zero indexed.
+      var hours = parseInt(matches[6]);
+      var minutes = parseInt(matches[7]);
+      var pm = matches[8].toLowerCase() === "pm";
+      console.log(hours, minutes, pm ? "pm" : "am");
+      var actualYear = years;
+      if (years >= 0 && years < 30) {
+        actualYear = Y2K_YEAR + years;
+      } else if (years >= 30 && years < 100) {
+        actualYear = FIRST_YEAR + years;
+      }
+      var tmpMoment = moment([actualYear])
+        .add(months, 'months');
+      // If we're specifying more days than there are in this month
+      if (days > tmpMoment.daysInMonth() - 1) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      var ORIGIN_MOMENT = moment([FIRST_YEAR]);
+      tmpMoment.add(days, 'days');
+      console.log("added days", days, tmpMoment, tmpMoment.diff(ORIGIN_MOMENT, "days") + 2);
+      if (pm) {
+        if (hours === 12) {
+          tmpMoment.set('hours', hours);
+        } else {
+          tmpMoment.set('hours', 12 + hours);
+        }
+      } else {
+        tmpMoment.set('hours', hours);
+      }
+      console.log("set pm hours", hours, tmpMoment, tmpMoment.diff(ORIGIN_MOMENT, "days") + 2, pm);
+      tmpMoment.add(minutes, 'minutes');
+      console.log("added minutes", minutes, tmpMoment, tmpMoment.diff(ORIGIN_MOMENT, "days") + 2);
+      tmpMoment.set('hours', 0).set('minutes', 0);
+      console.log("cleaned off", tmpMoment, tmpMoment.diff(ORIGIN_MOMENT, "days") + 2);
+      m = tmpMoment;
+
+      // m = tmpMoment.add(days, 'days')
+      //   .add(hours, 'hours')
+      //   .add(minutes, 'minutes')
+      //   .set('hours', 0)
+      //   .set('minutes', 0);
+    }
   }
 
   // Check YYYY/MM/DD HH:mm:ss

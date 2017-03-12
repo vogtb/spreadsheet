@@ -24,12 +24,12 @@ import {
  */
 var DATE = function (...values) {
   const FIRST_YEAR = 1900;
-  const ORIGIN_DATE = moment([FIRST_YEAR]);
+  const ORIGIN_DATE = moment.utc([FIRST_YEAR]);
   ArgsChecker.checkLength(values, 3);
   var year = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0]))); // No negative values for year
   var month = Math.floor(TypeCaster.firstValueAsNumber(values[1])) - 1; // Months are between 0 and 11.
   var day = Math.floor(TypeCaster.firstValueAsNumber(values[2])) - 1; // Days are also zero-indexed.
-  var m = moment(ORIGIN_DATE)
+  var m = moment.utc(ORIGIN_DATE)
       .add(year < FIRST_YEAR ? year : year - FIRST_YEAR, 'years') // If the value is less than 1900, assume 1900 as start index for year
       .add(month, 'months')
       .add(day, 'days');
@@ -85,7 +85,7 @@ var DATEVALUE = function (...values) : number {
       } else if (years >= 30 && years < 100) {
         actualYear = FIRST_YEAR + years;
       }
-      var tmpMoment = moment([actualYear])
+      var tmpMoment = moment.utc([actualYear])
         .add(months, 'months');
       // If we're specifying more days than there are in this month
       if (days > tmpMoment.daysInMonth() - 1) {
@@ -109,7 +109,7 @@ var DATEVALUE = function (...values) : number {
       } else if (years >= 30 && years < 100) {
         actualYear = FIRST_YEAR + years;
       }
-      var tmpMoment = moment([actualYear])
+      var tmpMoment = moment.utc([actualYear])
         .add(months, 'months');
       // If we're specifying more days than there are in this month
       if (days > tmpMoment.daysInMonth() - 1) {
@@ -133,7 +133,7 @@ var DATEVALUE = function (...values) : number {
       } else if (years >= 30 && years < 100) {
         actualYear = FIRST_YEAR + years;
       }
-      var tmpMoment = moment([actualYear])
+      var tmpMoment = moment.utc([actualYear])
         .add(months, 'months');
       // If we're specifying more days than there are in this month
       if (days > tmpMoment.daysInMonth() - 1) {
@@ -159,7 +159,7 @@ var DATEVALUE = function (...values) : number {
       } else if (years >= 30 && years < 100) {
         actualYear = FIRST_YEAR + years;
       }
-      var tmpMoment = moment([actualYear])
+      var tmpMoment = moment.utc([actualYear])
         .add(months, 'months');
       // If we're specifying more days than there are in this month
       if (days > tmpMoment.daysInMonth() - 1) {
@@ -180,22 +180,19 @@ var DATEVALUE = function (...values) : number {
       var hours = parseInt(matches[6]);
       var minutes = parseInt(matches[7]);
       var pm = matches[8].toLowerCase() === "pm";
-      console.log(hours, minutes, pm ? "pm" : "am");
       var actualYear = years;
       if (years >= 0 && years < 30) {
         actualYear = Y2K_YEAR + years;
       } else if (years >= 30 && years < 100) {
         actualYear = FIRST_YEAR + years;
       }
-      var tmpMoment = moment([actualYear])
-        .add(months, 'months');
+      var tmpMoment = moment.utc([actualYear])
+        .add({"months": months});
       // If we're specifying more days than there are in this month
       if (days > tmpMoment.daysInMonth() - 1) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
       }
-      var ORIGIN_MOMENT = moment([FIRST_YEAR]);
-      tmpMoment.add(days, 'days');
-      console.log("added days", days, tmpMoment, tmpMoment.diff(ORIGIN_MOMENT, "days") + 2);
+      tmpMoment.add({"days": days});
       if (pm) {
         if (hours === 12) {
           tmpMoment.set('hours', hours);
@@ -203,20 +200,11 @@ var DATEVALUE = function (...values) : number {
           tmpMoment.set('hours', 12 + hours);
         }
       } else {
-        tmpMoment.set('hours', hours);
+        if (hours !== 12) {
+          tmpMoment.set('hours', hours);
+        }
       }
-      console.log("set pm hours", hours, tmpMoment, tmpMoment.diff(ORIGIN_MOMENT, "days") + 2, pm);
-      tmpMoment.add(minutes, 'minutes');
-      console.log("added minutes", minutes, tmpMoment, tmpMoment.diff(ORIGIN_MOMENT, "days") + 2);
-      tmpMoment.set('hours', 0).set('minutes', 0);
-      console.log("cleaned off", tmpMoment, tmpMoment.diff(ORIGIN_MOMENT, "days") + 2);
-      m = tmpMoment;
-
-      // m = tmpMoment.add(days, 'days')
-      //   .add(hours, 'hours')
-      //   .add(minutes, 'minutes')
-      //   .set('hours', 0)
-      //   .set('minutes', 0);
+      m = tmpMoment.add({"minutes": minutes}).set('hours', 0).set('minutes', 0);
     }
   }
 

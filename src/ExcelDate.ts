@@ -1,7 +1,7 @@
 /// <reference path="../node_modules/moment/moment.d.ts"/>
 import * as moment from "moment";
 
-const ORIGIN_MOMENT = moment([1900]);
+const ORIGIN_MOMENT = moment.utc([1900]);
 
 
 /**
@@ -28,7 +28,7 @@ class ExcelDate {
    * @returns {string} day in the format M/D/YYYY.
    */
   toString() {
-    return ORIGIN_MOMENT.add('days', this.day).format("M/D/Y");
+    return ORIGIN_MOMENT.add(this.day, 'days').format("M/D/Y");
   }
 
   /**

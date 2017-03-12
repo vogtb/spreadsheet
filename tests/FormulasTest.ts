@@ -963,7 +963,10 @@ assertEquals(DATEVALUE("1992/1/13 12:720pm"), 33617); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 00:720pm"), 33617); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:719pm"), 33616); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 00:720am"), 33616); // overload minutes
-
+assertEquals(DATEVALUE("1992/1/13 12:66669pm"), 33662); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:66669am"), 33662); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:66249pm"), 33662); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:66249am"), 33662); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:666669am"), 34078); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:666669pm"), 34079); // overload minutes
 

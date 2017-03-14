@@ -52,8 +52,8 @@ var DATE = function (...values) {
  * "1999/1/13 10am"         DONE
  * "1999/1/13 10:22"        DONE
  * "1999/1/13 10:10am"      DONE
- * "1999/1/13 10:10:10"
- * "1999/1/13 10:10:10pm"
+ * "1999/1/13 10:10:10"     DONE
+ * "1999/1/13 10:10:10pm"   DONE
  * "Sun Feb 09 2017"
  * "09 Feb 2017"
  * "Feb-2017"
@@ -78,7 +78,7 @@ var DATEVALUE = function (...values) : number {
     if (matches && matches.length === 6) {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1;// Days are zero indexed.
+      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
       var actualYear = years;
       if (years >= 0 && years < 30) {
         actualYear = Y2K_YEAR + years;
@@ -126,7 +126,7 @@ var DATEVALUE = function (...values) : number {
     if (matches && matches.length === 8) {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1;// Days are zero indexed.
+      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
       var actualYear = years;
       if (years >= 0 && years < 30) {
         actualYear = Y2K_YEAR + years;
@@ -150,7 +150,7 @@ var DATEVALUE = function (...values) : number {
     if (matches && matches.length === 8) {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1;// Days are zero indexed.
+      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
       var hours = parseInt(matches[6]);
       var minutes = parseInt(matches[7]);
       var actualYear = years;
@@ -176,7 +176,7 @@ var DATEVALUE = function (...values) : number {
     if (matches && matches.length === 9) {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1;// Days are zero indexed.
+      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
       var hours = parseInt(matches[6]);
       var minutes = parseInt(matches[7]);
       var pm = matches[8].toLowerCase() === "pm";
@@ -194,9 +194,9 @@ var DATEVALUE = function (...values) : number {
       }
       tmpMoment.add({"days": days});
       if (pm) {
-        if (hours === 12) {
+        if (hours === 12) { // 12pm is just 0am
           tmpMoment.set('hours', hours);
-        } else {
+        } else { // eg: 4pm is 16
           tmpMoment.set('hours', 12 + hours);
         }
       } else {
@@ -210,12 +210,68 @@ var DATEVALUE = function (...values) : number {
 
   // Check YYYY/MM/DD HH:mm:ss
   if (m === undefined) {
-    // TODO: This.
+    // For reference: https://regex101.com/r/fYZcgP/5
+    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]{1,9}):\s*([0-9]{1,9}):\s*([0-9]{1,9})\s*$/);
+    if (matches && matches.length === 9) {
+      var years = parseInt(matches[1]);
+      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
+      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
+      var hours = parseInt(matches[6]);
+      var minutes = parseInt(matches[7]);
+      var seconds = parseInt(matches[8]);
+      var actualYear = years;
+      if (years >= 0 && years < 30) {
+        actualYear = Y2K_YEAR + years;
+      } else if (years >= 30 && years < 100) {
+        actualYear = FIRST_YEAR + years;
+      }
+      var tmpMoment = moment.utc([actualYear])
+        .add({"months": months});
+      if (days > tmpMoment.daysInMonth() - 1) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      m = tmpMoment.add({"days": days, "hours": hours, "minutes": minutes, "seconds": seconds}).set('hours', 0).set('minutes', 0);
+    }
   }
 
   // Check YYYY/MM/DD HH:mm:ss(am|pm)
   if (m === undefined) {
-    // TODO: This.
+    // For reference: https://regex101.com/r/6zublm/3
+    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]|0[0-9]|1[0-2]):\s*([0-9]{1,9}):\s*([0-9]{1,9})\s*(am|pm)\s*$/i);
+    if (matches && matches.length === 10) {
+      var years = parseInt(matches[1]);
+      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
+      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
+      var hours = parseInt(matches[6]);
+      var minutes = parseInt(matches[7]);
+      var seconds = parseInt(matches[8]);
+      var pm = matches[9].toLowerCase() === "pm";
+      var actualYear = years;
+      if (years >= 0 && years < 30) {
+        actualYear = Y2K_YEAR + years;
+      } else if (years >= 30 && years < 100) {
+        actualYear = FIRST_YEAR + years;
+      }
+      var tmpMoment = moment.utc([actualYear])
+        .add({"months": months});
+      // If we're specifying more days than there are in this month
+      if (days > tmpMoment.daysInMonth() - 1) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      tmpMoment.add({"days": days});
+      if (pm) {
+        if (hours === 12) { // 12pm is just 0am
+          tmpMoment.set('hours', hours);
+        } else { // eg: 4pm is 16
+          tmpMoment.set('hours', 12 + hours);
+        }
+      } else {
+        if (hours !== 12) {
+          tmpMoment.set('hours', hours);
+        }
+      }
+      m = tmpMoment.add({"minutes": minutes, "seconds": seconds}).set('hours', 0).set('minutes', 0).set('seconds', 0);
+    }
   }
 
   // If we've not been able to parse the date by now, then we cannot parse it at all.

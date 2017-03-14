@@ -974,6 +974,78 @@ assertEquals(DATEVALUE("1992/1/13 12:100000000am"), 103060); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:0912347287am"), 667190); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:00000912347287am"), 667190); // overload minutes
 assertEquals(DATEVALUE("1992/1/13 12:1989198298am"), 1415003); // overload minutes
+// YYYY/MM/DD HH:mm:ss
+assertEquals(DATEVALUE("1992/6/24 0:0:0"), 33779);
+assertEquals(DATEVALUE("1992/6/24 0000:0000:0000"), 33779);
+assertEquals(DATEVALUE("0000/01/13 3:33:999999999"), 48112); // overload seconds
+assertEquals(DATEVALUE("1992/1/13 6:22222222:0"), 49048); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:912347287:10"), 667191); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:100000000:10"), 103060); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 23:720:10"), 33617); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 23:719:60"), 33617); // overload minutes, seconds
+assertEquals(DATEVALUE("1992/6/24 24:00:00"), 33780); // overload hours
+assertEquals(DATEVALUE("1999/1/01 200000000:999999999:923231312"), 9074624); // overload hours, minutes, seconds
+assertEquals(DATEVALUE("  1992/04/19   12:  33: 11  "), 33713);
+assertEquals(DATEVALUE("0000/01/13 3:33:33"), 36538);
+assertEquals(DATEVALUE("4243/11/3 200000000:33:444"), 9189404);
+// YYYY/MM/DD HH:mm:ss(am|pm)
+assertEquals(DATEVALUE("1999/1/13 10:10:10pm"), 36173);
+assertEquals(DATEVALUE("1992/6/24 0:0:0pm"), 33779);
+assertEquals(DATEVALUE("1992/6/24 00:0000:0000pm"), 33779);
+assertEquals(DATEVALUE("0000/01/13 3:33:999999999pm"), 48112); // overload seconds
+assertEquals(DATEVALUE("1992/1/13 6:22222222:0pm"), 49048); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:912347287:10pm"), 667191); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:100000000:10pm"), 103060); // overload minutes
+assertEquals(DATEVALUE("1992/6/24 00:00:00am"), 33779);
+assertEquals(DATEVALUE("1992/06/24 01:44:00am "), 33779);
+assertEquals(DATEVALUE("1999/1/01 02:59:00pm"), 36161);
+assertEquals(DATEVALUE("2222/1/01 03:33:00pm"), 117610);
+assertEquals(DATEVALUE("1902/9/02 12:33:00pm"), 976);
+assertEquals(DATEVALUE("1902/9/2 12:33:00pm"), 976);
+assertEquals(DATEVALUE("4243/11/3 12:33:00pm"), 856071);
+assertEquals(DATEVALUE("  1992/04/19   12:  33:  00  pm   "), 33713);
+assertEquals(DATEVALUE("1992/5/20 01:33:44am"), 33744);
+assertEquals(DATEVALUE("1992/6/21  3:33:44pm"), 33776);
+assertEquals(DATEVALUE("1992/9/29 3:33:44pm"), 33876);
+assertEquals(DATEVALUE("1992/1/24 3:33:44pm"), 33627);
+assertEquals(DATEVALUE("1992/12/21 3:33:44pm"), 33959);
+assertEquals(DATEVALUE("1992/01/31 3:33:44pm"), 33634);
+assertEquals(DATEVALUE("1992/1/13 3:33:44pm"), 33616);
+assertEquals(DATEVALUE("2004/2/29 3:33:44pm"), 38046);
+assertEquals(DATEVALUE("2004/2/28  3:33:44pm "), 38045);
+assertEquals(DATEVALUE("1999/1/13 3:33:44pm"), 36173);
+assertEquals(DATEVALUE("1999/01/13 3:33:44pm"), 36173);
+assertEquals(DATEVALUE("0999/01/13 3:33:44pm"), -329069);
+assertEquals(DATEVALUE("1200/01/13 3:33:44pm"), -255656);
+assertEquals(DATEVALUE("0029/01/13 3:33:44pm"), 47131);
+assertEquals(DATEVALUE("0030/01/13 3:33:44pm"), 10971);
+assertEquals(DATEVALUE("0044/01/13 3:33:44pm"), 16084);
+assertEquals(DATEVALUE("0050/01/13 3:33:44pm"), 18276);
+assertEquals(DATEVALUE("0097/01/13 00:33:44pm"), 35443);
+assertEquals(DATEVALUE("0099/01/13 3:33:44pm"), 36173);
+assertEquals(DATEVALUE("0000/01/13 3:33:44pm"), 36538);
+assertEquals(DATEVALUE("0101/01/13 3:33:44pm"), -657057);
+assertEquals(DATEVALUE("0100/01/13 3:33:44pm"), -657422);
+assertEquals(DATEVALUE("100/12/31 3:33:44pm"), -657070);
+assertEquals(DATEVALUE("122/11/10 3:33:44pm"), -649086);
+assertEquals(DATEVALUE("2222/1/22 3:33:44pm"), 117631);
+assertEquals(DATEVALUE("222/1/22 3:33:44pm"), -612854);
+assertEquals(DATEVALUE("1992/1/13 6:22222222:44am"), 49048); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:720:00pm"), 33617); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 00:720:00pm"), 33617); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:719:00pm"), 33616); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 00:720:00am"), 33616); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:719:60pm"), 33617); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 00:720:00am"), 33616); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 00:01:00pm"), 33616); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:66669:00pm"), 33662); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:66669:00am"), 33662); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:66249:00pm"), 33662); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:66249:00am"), 33662); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:666669:00am"), 34078); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:666669:00pm"), 34079); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:100000000:00am"), 103060); // overload minutes
+assertEquals(DATEVALUE("1992/1/13 12:912347287:00am"), 667190); // overload minutes
 
 
 

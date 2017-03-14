@@ -63,3 +63,5 @@ Right now we're just using the number of days since 1900, but we should check th
 #### YYYY/MM/DD HH:mm needs more thurough testing
 
 #### Verify that all white-space wild cards are implemented properly
+
+#### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.

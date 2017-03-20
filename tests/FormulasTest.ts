@@ -1067,6 +1067,27 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("June 32 2001");// overload numbers not ok
 }, ERRORS.VALUE_ERROR);
+// (Dayname) DD Month YYYY
+assertEquals(DATEVALUE("Sun 09 Feb 2017"), 42775);
+assertEquals(DATEVALUE("Sun 9 Feb 2017"), 42775);
+assertEquals(DATEVALUE("Mon 09 Feb 2017"), 42775);
+assertEquals(DATEVALUE("Thursday 09 Feb 2017"), 42775);
+assertEquals(DATEVALUE("Thursday 09 February 2017"), 42775);
+assertEquals(DATEVALUE("Sun 01 September 20"), 44075);
+assertEquals(DATEVALUE("Sun, 09, Feb, 2017"), 42775);
+assertEquals(DATEVALUE("20 May 1992"), 33744);
+assertEquals(DATEVALUE("31 December 100"), -657070);
+assertEquals(DATEVALUE("13 January 0030"), 10971);
+assertEquals(DATEVALUE("13 January 1200"), -255656);
+assertEquals(DATEVALUE("22 January 2222"), 117631);
+assertEquals(DATEVALUE("3 November 4243"), 856071);
+assertEquals(DATEVALUE("29 Feb 2004"), 38046); // leap year, 29th ok
+catchAndAssertEquals(function() {
+  DATEVALUE("29 Feb 2001");// not leap year, 29th not ok
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("32 June 2001");// overload numbers not ok
+}, ERRORS.VALUE_ERROR);
 
 
 // Test DB

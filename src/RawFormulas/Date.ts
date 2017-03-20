@@ -54,8 +54,8 @@ var DATE = function (...values) {
  * "1999/1/13 10:10am"      DONE
  * "1999/1/13 10:10:10"     DONE
  * "1999/1/13 10:10:10pm"   DONE
- * "Sun Feb 09 2017"
- * "09 Feb 2017"
+ * "Sun Feb 09 2017"        DONE
+ * "Sun 09 Feb 2017"        DONE
  * "Feb-2017"
  * "22-Feb"
  * "10-22"
@@ -282,6 +282,29 @@ var DATEVALUE = function (...values) : number {
       var years = parseInt(matches[4]);
       var monthName = matches[2];
       var days = parseInt(matches[3]) - 1; // Days are zero indexed.
+      var actualYear = years;
+      if (years >= 0 && years < 30) {
+        actualYear = Y2K_YEAR + years;
+      } else if (years >= 30 && years < 100) {
+        actualYear = FIRST_YEAR + years;
+      }
+      var tmpMoment = moment.utc([actualYear]).month(monthName);
+      // If we're specifying more days than there are in this month
+      if (days > tmpMoment.daysInMonth() - 1) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      m = tmpMoment.add({"days": days});
+    }
+  }
+
+  // Check (Dayname) DD Month YYYY
+  if (m === undefined) {
+    // For reference: https://regex101.com/r/22TD0r/3
+    var matches = dateString.match(/^\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tues|wed|thur|fri|sat)?,?\s*(0?[0-9]|1[0-9]|2[0-9]|3[0-1]),?\s*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec),?\s*([0-9]{4}|[1-9][0-9]{2}|[0-9]{2})\s*$/i);
+    if (matches && matches.length === 5) {
+      var years = parseInt(matches[4]);
+      var monthName = matches[3];
+      var days = parseInt(matches[2]) - 1; // Days are zero indexed.
       var actualYear = years;
       if (years >= 0 && years < 30) {
         actualYear = Y2K_YEAR + years;

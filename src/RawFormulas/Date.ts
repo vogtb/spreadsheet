@@ -58,6 +58,7 @@ var DATE = function (...values) {
  * "Sun 09 Feb 2017"        DONE
  * "Feb-2017"
  * "22-Feb"
+ * "Feb 22"
  * "10-22"
  * "10/2022"
  * "Sun Mar 05 2017 10:40:26"
@@ -277,7 +278,7 @@ var DATEVALUE = function (...values) : number {
   // Check (Dayname) Month DD YYYY
   if (m === undefined) {
     // For reference: https://regex101.com/r/xPcm7v/11
-    var matches = dateString.match(/^\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tues|wed|thur|fri|sat)?,?\s*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec),?\s*(0?[0-9]|1[0-9]|2[0-9]|3[0-1]),?\s*([0-9]{4}|[1-9][0-9]{2}|[0-9]{2})\s*$/i);
+    var matches = dateString.match(/^\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tues|wed|thur|fri|sat)?,?\s*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec),?\s*(0?[0-9]|1[0-9]|2[0-9]|3[0-1]),?\s+([0-9]{4}|[1-9][0-9]{2}|[0-9]{2})\s*$/i);
     if (matches && matches.length === 5) {
       var years = parseInt(matches[4]);
       var monthName = matches[2];
@@ -318,7 +319,23 @@ var DATEVALUE = function (...values) : number {
       }
       m = tmpMoment.add({"days": days});
     }
+  }
 
+  // Check Month YYYY
+  if (m === undefined) {
+    // For reference: https://regex101.com/r/eNyVAL/3
+    var matches = dateString.match(/^\s*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)(,?\s*|\s*-?\.?-?\/?\s*)([0-9]{4})\s*$/i);
+    if (matches && matches.length === 4) {
+      var years = parseInt(matches[3]);
+      var monthName = matches[1];
+      var actualYear = years;
+      if (years >= 0 && years < 30) {
+        actualYear = Y2K_YEAR + years;
+      } else if (years >= 30 && years < 100) {
+        actualYear = FIRST_YEAR + years;
+      }
+      m = moment.utc([actualYear]).month(monthName);
+    }
   }
 
   // If we've not been able to parse the date by now, then we cannot parse it at all.

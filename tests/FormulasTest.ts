@@ -1088,6 +1088,33 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("32 June 2001");// overload numbers not ok
 }, ERRORS.VALUE_ERROR);
+// Month YYYY
+assertEquals(DATEVALUE("Jan 2017"), 42736);
+assertEquals(DATEVALUE("Feb 2017"), 42767);
+assertEquals(DATEVALUE("Mar 2017"), 42795);
+assertEquals(DATEVALUE("Apr 2017"), 42826);
+assertEquals(DATEVALUE("May 2017"), 42856);
+assertEquals(DATEVALUE("Jun 2017"), 42887);
+assertEquals(DATEVALUE("Jul 2017"), 42917);
+assertEquals(DATEVALUE("Aug 2017"), 42948);
+assertEquals(DATEVALUE("Sep 2017"), 42979);
+assertEquals(DATEVALUE("Oct 2017"), 43009);
+assertEquals(DATEVALUE("Nov 2017"), 43040);
+assertEquals(DATEVALUE("Dec 2017"), 43070);
+assertEquals(DATEVALUE("Feb, 2017"), 42767);
+assertEquals(DATEVALUE("  Feb    2017  "), 42767);
+assertEquals(DATEVALUE("Feb-2017"), 42767);
+assertEquals(DATEVALUE("Feb.2017"), 42767);
+assertEquals(DATEVALUE("Feb/2017"), 42767);
+assertEquals(DATEVALUE("Feb    .    2017"), 42767);
+assertEquals(DATEVALUE("Feb -      2017"), 42767);
+assertEquals(DATEVALUE("January 0030"), 10959);
+assertEquals(DATEVALUE("November 4243"), 856069);
+assertEquals(DATEVALUE("December 0100"), -657100);
+catchAndAssertEquals(function() {
+  DATEVALUE("December 100");// need 4 digits
+}, ERRORS.VALUE_ERROR);
+
 
 
 // Test DB

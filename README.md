@@ -65,3 +65,6 @@ Right now we're just using the number of days since 1900, but we should check th
 #### Verify that all white-space wild cards are implemented properly
 
 #### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
+
+#### Many times I use `\s*` when I actaully mean `\s+`
+Or the are times when I mean "Feb 20 2019" or "Feb 20,2019", and either is correct.

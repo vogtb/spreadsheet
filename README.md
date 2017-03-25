@@ -68,3 +68,6 @@ Right now we're just using the number of days since 1900, but we should check th
 
 #### Many times I use `\s*` when I actaully mean `\s+`
 Or the are times when I mean "Feb 20 2019" or "Feb 20,2019", and either is correct.
+
+#### Use `startOf('year')` to zero out all dates before building them up.
+No current tests should change because of this but it should eliminate some edge cases.

@@ -56,9 +56,9 @@ var DATE = function (...values) {
  * "1999/1/13 10:10:10pm"   DONE
  * "Sun Feb 09 2017"        DONE
  * "Sun 09 Feb 2017"        DONE
- * "Feb-2017"
+ * "Feb-2017"               DONE
+ * "Feb 22"                 DONE
  * "22-Feb"
- * "Feb 22"
  * "10-22"
  * "10/2022"
  * "Sun Mar 05 2017 10:40:26"
@@ -335,6 +335,23 @@ var DATEVALUE = function (...values) : number {
         actualYear = FIRST_YEAR + years;
       }
       m = moment.utc([actualYear]).month(monthName);
+    }
+  }
+
+
+  // Check Month DD
+  if (m === undefined) {
+    // For reference: https://regex101.com/r/hujaIk/7
+    var matches = dateString.match(/^\s*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)(,?\s*|\s*-?\/?\s*|\s*\.?\s+)(0?[1-9]|[1-2][0-9]|3[0-1])\s*$/i);
+    if (matches && matches.length === 4) {
+      var monthName = matches[1];
+      var days = parseInt(matches[3]) - 1; // Days are zero indexed.
+      var tmpMoment = moment.utc([moment.utc().year()]).startOf('year').month(monthName);
+      // If we're specifying more days than there are in this month
+      if (days > tmpMoment.daysInMonth() - 1) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      m = tmpMoment.add({"days": days});
     }
   }
 

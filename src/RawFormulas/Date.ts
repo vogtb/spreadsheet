@@ -47,21 +47,84 @@ var DATE = function (...values) {
  * @param values[0] date_string - The string representing the date. Understood formats include any date format which is
  * normally auto-converted when entered, without quotation marks, directly into a cell. Understood formats may depend on
  * region and language settings. Examples include:
- * "1999/1/13"              DONE
- * "1/13/1999"              DONE
- * "1999/1/13 10am"         DONE
- * "1999/1/13 10:22"        DONE
- * "1999/1/13 10:10am"      DONE
- * "1999/1/13 10:10:10"     DONE
- * "1999/1/13 10:10:10pm"   DONE
- * "Sun Feb 09 2017"        DONE
- * "Sun 09 Feb 2017"        DONE
- * "Feb-2017"               DONE
- * "Feb 22"                 DONE
- * "22-Feb"
+ * "1999/1/13"                    DONE
+ * "1999-1-13"
+ * "1999 1 13"
+ * "1999.1.13"
+ * "1999, 1, 13"
+ * "1/13/1999"                    DONE
+ * "1-13-1999"
+ * "1 13 1999"
+ * "1.13.1999"
+ * "1, 13, 1999"
+ * "1999/1/13 10am"               DONE
+ * "1999-1-13 10am"
+ * "1999 1 13 10am"
+ * "1999.1.13 10am"
+ * "1999/1/13 10:22"              DONE
+ * "1999-1-13 10:22"
+ * "1999 1 13 10:22"
+ * "1999.1.13 10:22"
+ * "1999/1/13 10:10am"            DONE
+ * "1999-1-13 10:10am"
+ * "1999 1 13 10:10am"
+ * "1999.1.13 10:10am"
+ * "1999/1/13 10:10:10"           DONE
+ * "1999-1-13 10:10:10"
+ * "1999 1 13 10:10:10"
+ * "1999.1.13 10:10:10"
+ * "1999/1/13 10:10:10pm"         DONE
+ * "1999-1-13 10:10:10pm"
+ * "1999 1 13 10:10:10pm"
+ * "1999.1.13 10:10:10pm"
+ * "Sun Feb 09 2017"              DONE
+ * "Sun Feb 09 2017 10am"
+ * "Sun Feb 09 2017 10:10"
+ * "Sun Feb 09 2017 10:10am"
+ * "Sun Feb 09 2017 10:10:10"
+ * "Sun Feb 09 2017 10:10:10pm"
+ * "Sun 09 Feb 2017"              DONE
+ * "Sun 09 Feb 2017 10am"
+ * "Sun 09 Feb 2017 10:10"
+ * "Sun 09 Feb 2017 10:10am"
+ * "Sun 09 Feb 2017 10:10:10"
+ * "Sun 09 Feb 2017 10:10:10pm"
+ * "Feb-2017"                     DONE
+ * "Feb-2017 10am"
+ * "Feb-2017 10:10"
+ * "Feb-2017 10:10am"
+ * "Feb-2017 10:10:10"
+ * "Feb-2017 10:10:10pm"
+ * "Feb 22"                       DONE
+ * "Feb 22 10am"
+ * "Feb 22 10:10"
+ * "Feb 22 10:10am"
+ * "Feb 22 10:10:10"
+ * "Feb 22 10:10:10pm"
+ * "22-Feb"                       DONE
+ * "22-Feb 10am"
+ * "22-Feb 10:10"
+ * "22-Feb 10:10am"
+ * "22-Feb 10:10:10"
+ * "22-Feb 10:10:10pm"
+ * "22-Feb-2017"
+ * "22-Feb-2017 10am"
+ * "22-Feb-2017 10:10"
+ * "22-Feb-2017 10:10am"
+ * "22-Feb-2017 10:10:10"
+ * "22-Feb-2017 10:10:10pm"
  * "10-22"
+ * "10-22 10am"
+ * "10-22 10:10"
+ * "10-22 10:10am"
+ * "10-22 10:10:10"
+ * "10-22 10:10:10pm"
  * "10/2022"
- * "Sun Mar 05 2017 10:40:26"
+ * "10-2022 10am"
+ * "10-2022 10:10"
+ * "10-2022 10:10am"
+ * "10-2022 10:10:10"
+ * "10-2022 10:10:10pm"
  * @returns {number} of days since 1900/1/1, inclusively.
  * @constructor
  */
@@ -354,6 +417,28 @@ var DATEVALUE = function (...values) : number {
       m = tmpMoment.add({"days": days});
     }
   }
+
+  // Check Month DD
+  if (m === undefined) {
+    // For reference: https://regex101.com/r/hujaIk/7
+    // Code here.
+  }
+
+  // Check Month DD Year
+  if (m === undefined) {
+    // Code here.
+  }
+
+  // Check MM-DD
+  if (m === undefined) {
+    // Code here.
+  }
+
+  // Check MM-YYYY
+  if (m === undefined) {
+    // Code here.
+  }
+
 
   // If we've not been able to parse the date by now, then we cannot parse it at all.
   if (m === undefined || !m.isValid()) {

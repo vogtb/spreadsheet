@@ -48,26 +48,62 @@ Although dollar functions look like they just format `number`s, it seems like th
 This means that we should do dollar->number casting in all casting functions. For now, just using number primitive.
 See `DOLLAR` function for more info.
 
-### Date TODOS
-#### Dates have special types
+
+
+# The Great Date Refactoring (TM)
+### Different Date Formats
+```
+YYYY/MM/DD       YEAR_MONTHDIG_DAY_SLASH_DELIMIT
+YYYY-MM-DD       YEAR_MONTHDIG_DAY_HYPHEN_DELIMIT
+YYYY.MM.DD       YEAR_MONTHDIG_DAY_DOT_DELIMIT
+YYYY MM DD       YEAR_MONTHDIG_DAY_SPACE_DELIMIT
+YYYY, MM, DD     YEAR_MONTHDIG_DAY_COMMA_DELIMIT
+Month DD YYYY    MONTHNAME_DAY_YEAR_COMMON_DELIMITERS
+DD Month YYYY    DAY_MONTHNAME_YEAR_COMMON_DELIMITERS
+Month DD         MONTHNAME_DAY_COMMON_DELIMITERS
+DD Month         DAY_MONTHNAME_COMMON_DELIMITERS
+Month YYYY       MONTHNAME_YEAR_COMMON_DELIMITERS
+YYYY Month       YEAR_MONTHNAME_COMMON_DELIMITERS
+MM/DD            MONTHDIG_DAY_SLASH_DELIMIT
+MM-DD            MONTHDIG_DAY_HYPHEN_DELIMIT
+MM DD            MONTHDIG_DAY_SPACE_DELIMIT
+MM.DD            MONTHDIG_DAY_DOT_DELIMIT
+MM, DD           MONTHDIG_DAY_COMMA_DELIMIT
+MM/YYYY          MONTHDIG_YEAR_SLASH_DELIMIT
+MM-YYYY          MONTHDIG_YEAR_HYPHEN_DELIMIT
+MM YYYY          MONTHDIG_YEAR_SPACE_DELIMIT
+MM.YYYY          MONTHDIG_YEAR_DOT_DELIMIT
+MM, YYYY         MONTHDIG_YEAR_COMMA_DELIMIT
+```
+
+### Different Time Formats
+HHam             HOUR_MERIDIEM
+HH:MM            HOURS_MINUTES_OVERFLOW
+HH:MMam          HOURS_MINUTES_OVERFLOW_MERIDIEM
+HH:MM:SS         HOURS_MINUTES_SECONDS_OVERFLOW
+HH:MM:SSam       HOURS_MINUTES_SECONDS_OVERFLOW_MERIDIEM
+
+
+* Dates have special types
 Like dollars, dates are special types, but can be compared as if they're primatives. For example, this statement is
 valid inside a cell: `=DATE(1992, 6, 6) > =DATE(1992, 6, 10)`. We should check types and and have Date-to-number
 conversion inside parser.js.
 
-#### Organize tests in a way that makes sense.
+* Organize tests in a way that makes sense.
 Annotate them, and standardize the error checking for errors like REF, NA, NUM, VALUE, etc.
 
-#### Test all ExcelDate functions
+* Test all ExcelDate functions
 Right now we're just using the number of days since 1900, but we should check the other functions.
 
-#### YYYY/MM/DD HH:mm needs more thurough testing
+* YYYY/MM/DD HH:mm needs more thurough testing
 
-#### Verify that all white-space wild cards are implemented properly
+* Verify that all white-space wild cards are implemented properly
 
-#### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
+* Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
 
-#### Many times I use `\s*` when I actaully mean `\s+`
+* Many times I use `\s*` when I actaully mean `\s+`
 Or the are times when I mean "Feb 20 2019" or "Feb 20,2019", and either is correct.
 
-#### Use `startOf('year')` to zero out all dates before building them up.
+* Use `startOf('year')` to zero out all dates before building them up.
 No current tests should change because of this but it should eliminate some edge cases.
+

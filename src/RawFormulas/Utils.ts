@@ -452,11 +452,29 @@ class DateRegExBuilder {
   }
 
   /**
+   *
+   * @returns {DateRegExBuilder}
+   * @constructor
+   */
+  HH(): DateRegExBuilder {
+    this.regexString += "([0-9]|0[0-9]|1[0-2])";
+    return this;
+  }
+
+  MERIDIEM(): DateRegExBuilder {
+    this.regexString += "(am|pm)";
+    return this;
+  }
+
+
+
+  /**
    * Builds the regular expression.
    * @returns {RegExp} Built up string as a regular expression.
    */
   build() : RegExp {
-    return new RegExp(this.regexString);
+    // Always ignore case.
+    return new RegExp(this.regexString, 'i');
   }
 }
 

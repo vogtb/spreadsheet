@@ -375,51 +375,58 @@ assertEquals(DATEVALUE("December 0100"), -657100);
 catchAndAssertEquals(function() {
   DATEVALUE("December 100");// need 4 digits
 }, ERRORS.VALUE_ERROR);
-// Month DD
-// WARNING: Overriding Date prototype to lock in 'now' tests------------------------------------------------------------
-Date.now = function() { return 1430462280860; }; // 2015-05-01T01:38:00.860
-Date.prototype.getTime = Date.now;
-// END WARNING----------------------------------------------------------------------------------------------------------
-assertEquals(DATEVALUE("Jan 20"), 42024);
-assertEquals(DATEVALUE("Feb 20"), 42055);
-assertEquals(DATEVALUE("Mar 20"), 42083);
-assertEquals(DATEVALUE("Apr 20"), 42114);
-assertEquals(DATEVALUE("May 20"), 42144);
-assertEquals(DATEVALUE("Jun 20"), 42175);
-assertEquals(DATEVALUE("Jul 20"), 42205);
-assertEquals(DATEVALUE("Aug 20"), 42236);
-assertEquals(DATEVALUE("Sep 20"), 42267);
-assertEquals(DATEVALUE("Oct 20"), 42297);
-assertEquals(DATEVALUE("Nov 20"), 42328);
-assertEquals(DATEVALUE("Dec 20"), 42358);
-assertEquals(DATEVALUE("Dec. 20"), 42358);
-assertEquals(DATEVALUE("Dec, 20"), 42358);
-assertEquals(DATEVALUE("Dec/ 20"), 42358);
-assertEquals(DATEVALUE("Dec- 20"), 42358);
-assertEquals(DATEVALUE("Dec-20"), 42358);
-assertEquals(DATEVALUE("June 2"), 42157);
 catchAndAssertEquals(function() {
   DATEVALUE("Dec.20");// need space if using period
 }, ERRORS.VALUE_ERROR);
 // DD Month
-assertEquals(DATEVALUE("20 Jan"), 42024);
-assertEquals(DATEVALUE("20 Feb"), 42055);
-assertEquals(DATEVALUE("20 Mar"), 42083);
-assertEquals(DATEVALUE("20 Apr"), 42114);
-assertEquals(DATEVALUE("20 May"), 42144);
-assertEquals(DATEVALUE("20 Jun"), 42175);
-assertEquals(DATEVALUE("20 Jul"), 42205);
-assertEquals(DATEVALUE("20 Aug"), 42236);
-assertEquals(DATEVALUE("20 Sep"), 42267);
-assertEquals(DATEVALUE("20 Oct"), 42297);
-assertEquals(DATEVALUE("20 Nov"), 42328);
-assertEquals(DATEVALUE("20 Dec"), 42358);
-assertEquals(DATEVALUE("20. Dec"), 42358);
-assertEquals(DATEVALUE("20, Dec"), 42358);
-assertEquals(DATEVALUE("20/ Dec"), 42358);
-assertEquals(DATEVALUE("20- Dec"), 42358);
-assertEquals(DATEVALUE("20-Dec"), 42358);
-assertEquals(DATEVALUE("2 June"), 42157);
+assertEquals(DATEVALUE("01 Jan 2017"), 42736);
+assertEquals(DATEVALUE("01 Feb 2017"), 42767);
+assertEquals(DATEVALUE("01 Mar 2017"), 42795);
+assertEquals(DATEVALUE("01 Apr 2017"), 42826);
+assertEquals(DATEVALUE("01 May 2017"), 42856);
+assertEquals(DATEVALUE("01 Jun 2017"), 42887);
+assertEquals(DATEVALUE("01 Jul 2017"), 42917);
+assertEquals(DATEVALUE("01 Aug 2017"), 42948);
+assertEquals(DATEVALUE("01 Sep 2017"), 42979);
+assertEquals(DATEVALUE("01 Oct 2017"), 43009);
+assertEquals(DATEVALUE("01 Nov 2017"), 43040);
+assertEquals(DATEVALUE(" 1 Dec 2017"), 43070);
+assertEquals(DATEVALUE("20 Jan 2015"), 42024);
+assertEquals(DATEVALUE("20 Feb 2015"), 42055);
+assertEquals(DATEVALUE("20 Mar 2015"), 42083);
+assertEquals(DATEVALUE("20 Apr 2015"), 42114);
+assertEquals(DATEVALUE("20 May 2015"), 42144);
+assertEquals(DATEVALUE("20 Jun 2015"), 42175);
+assertEquals(DATEVALUE("20 Jul 2015"), 42205);
+assertEquals(DATEVALUE("20 Aug 2015"), 42236);
+assertEquals(DATEVALUE("20 Sep 2015"), 42267);
+assertEquals(DATEVALUE("20 Oct 2015"), 42297);
+assertEquals(DATEVALUE("20 Nov 2015"), 42328);
+assertEquals(DATEVALUE("20 Dec 2015"), 42358);
+assertEquals(DATEVALUE("20. Dec 2015"), 42358);
+assertEquals(DATEVALUE("20, Dec 2015"), 42358);
+assertEquals(DATEVALUE("20/ Dec 2015"), 42358);
+assertEquals(DATEVALUE("20- Dec 2015"), 42358);
+assertEquals(DATEVALUE("20-Dec 2015"), 42358);
+assertEquals(DATEVALUE("2 June 2015"), 42157);
+assertEquals(DATEVALUE("2 / june 2015"), 42157);
+assertEquals(DATEVALUE("2 . june . 2015"), 42157);
+assertEquals(DATEVALUE("2, june 2015"), 42157);
+assertEquals(DATEVALUE("2, june2015"), 42157);
+assertEquals(DATEVALUE("2,June2015"), 42157);
+assertEquals(DATEVALUE("2June2015"), 42157);
+assertEquals(DATEVALUE("2. June. 2015"), 42157);
+assertEquals(DATEVALUE("2/June/2015"), 42157);
+assertEquals(DATEVALUE("2 /June / 2015"), 42157);
+catchAndAssertEquals(function() {
+  DATEVALUE("20.Dec 2015");// need space if using period
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("20.Dec.2015");// need space if using period
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("20 Dec.2015");// need space if using period
+}, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
   DATEVALUE("20.Dec");// need space if using period
 }, ERRORS.VALUE_ERROR);

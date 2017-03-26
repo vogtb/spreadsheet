@@ -442,6 +442,16 @@ class DateRegExBuilder {
   }
 
   /**
+   *
+   * @returns {DateRegExBuilder}
+   * @constructor
+   */
+  YY_OP_YY() : DateRegExBuilder {
+    this.regexString += "(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9])|[0-9]{0,3})";
+    return this;
+  }
+
+  /**
    * Builds the regular expression.
    * @returns {RegExp} Built up string as a regular expression.
    */

@@ -136,17 +136,12 @@ var DATEVALUE = function (...values) : number {
   var dateString = TypeCaster.firstValueAsString(values[0]);
   var m;
 
-  // Check YYYY/MM/DD
+  // Check YEAR_MONTHDIG_DAY_SLASH_DELIMIT, YYYY/MM/DD, 1992/06/24
   if (m === undefined) {
     // For reference: https://regex101.com/r/uusfi7/5
-    var REG = /^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*$/;
-    REG = DateRegExBuilder.DateRegExBuilder()
+    const REG = DateRegExBuilder.DateRegExBuilder()
       .start()
-      .YYYY()
-      .SLASH_DELIMITOR()
-      .MM()
-      .SLASH_DELIMITOR()
-      .DD()
+      .YYYY().SLASH_DELIMITOR().MM().SLASH_DELIMITOR().DD()
       .end()
       .build();
     var matches = dateString.match(REG);
@@ -170,10 +165,15 @@ var DATEVALUE = function (...values) : number {
     }
   }
 
-  // Check MM/DD/YYYY
+  // Check MONTHDIG_DAY_YEAR_SLASH_DELIMIT, MM/DD/YY(YY), 06/24/1992 or 06/24/92
   if (m === undefined) {
     // For reference: https://regex101.com/r/yHraci/5
-    var matches = dateString.match(/^\s*([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\/(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9])|[0-9]{0,3})\s*$/);
+    const REG = DateRegExBuilder.DateRegExBuilder()
+      .start()
+      .MM().SLASH_DELIMITOR().DD().SLASH_DELIMITOR().YY_OP_YY()
+      .end()
+      .build();
+    var matches = dateString.match(REG);
     if (matches && matches.length === 6) {
       var years = parseInt(matches[3]);
       var months = parseInt(matches[1]) - 1; // Months are zero indexed.

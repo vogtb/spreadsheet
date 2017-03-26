@@ -223,7 +223,7 @@ var DATEVALUE = function (...values) : number {
     }
   }
 
-  // Check YEAR_MONTHDIG_DAY_SLASH_DELIMIT_WITH_HOURS_OVERFLOW_MINUTES_OVERFLOW, YYYY/MM/DD HH:mm, "1992/06/24 29:2922"
+  // Check YEAR_MONTHDIG_DAY_SLASH_DELIMIT_WITH_OVERFLOW_HOURS_OVERFLOW_MINUTES, YYYY/MM/DD HH:mm, "1992/06/24 29:2922"
   if (m === undefined) {
     // For reference: https://regex101.com/r/xsqttP/4
     const REG = DateRegExBuilder.DateRegExBuilder()

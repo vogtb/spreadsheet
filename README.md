@@ -85,11 +85,15 @@ MM, YYYY         MONTHDIG_YEAR_COMMA_DELIMIT             months, years
 ### Different Time Formats
 FORMAT           CONST NAME
 HHam             HOUR_MERIDIEM
-HH:MM            HOURS_OVERFLOW_MINUTES_OVERFLOW
-HH:MMam          HOURS_MINUTES_OVERFLOW_MERIDIEM
-HH:MM:SS         HOURS_MINUTES_SECONDS_OVERFLOW
+HH:MM            OVERFLOW_HOURS_OVERFLOW_MINUTES
+HH:MMam          HOURS_OVERFLOW_MINUTES_MERIDIEM
+HH:MM:SS         OVERFLOW_HOURS_OVERFLOW_MINUTES_SECONDS
 HH:MM:SSam       HOURS_MINUTES_SECONDS_OVERFLOW_MERIDIEM
 
+* Combine the different time formats into a single regular expression.
+Throw errors based on whether some units have overflowed. For example 29:99 is ok, but 29:99pm is not ok. This way
+we're only doubling the number of date-format regular expressions we have to generate. For example, we check
+YEAR_MONTHDIG_DAY_SLASH_DELIMIT once, and then YEAR_MONTHDIG_DAY_SLASH_DELIMIT_WITH_TIME once.
 
 * Dates have special types
 Like dollars, dates are special types, but can be compared as if they're primatives. For example, this statement is

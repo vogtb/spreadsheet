@@ -390,7 +390,7 @@ class DateRegExBuilder {
    * Adds a match group for zero or more whitespace tokens.
    * @returns {DateRegExBuilder}
    */
-  zeroOrMoreSpaces() : DateRegExBuilder {
+  N_SPACES() : DateRegExBuilder {
     this.regexString += DateRegExBuilder.ZERO_OR_MORE_SPACES;
     return this;
   }
@@ -461,12 +461,45 @@ class DateRegExBuilder {
     return this;
   }
 
+  /**
+   *
+   * @returns {DateRegExBuilder}
+   * @constructor
+   */
   MERIDIEM(): DateRegExBuilder {
     this.regexString += "(am|pm)";
     return this;
   }
 
+  /**
+   *
+   * @returns {DateRegExBuilder}
+   * @constructor
+   */
+  OVERLOAD_MINITES() : DateRegExBuilder {
+    this.regexString += "([0-9]{2,})";
+    return this;
+  }
 
+  /**
+   *
+   * @returns {DateRegExBuilder}
+   * @constructor
+   */
+  OVERLOAD_HH() : DateRegExBuilder {
+    this.regexString += "([0-9]{1,})";
+    return this;
+  }
+
+  /**
+   *
+   * @returns {DateRegExBuilder}
+   * @constructor
+   */
+  SEMICOLON(): DateRegExBuilder {
+    this.regexString += ":" + DateRegExBuilder.ZERO_OR_MORE_SPACES;
+    return this;
+  }
 
   /**
    * Builds the regular expression.

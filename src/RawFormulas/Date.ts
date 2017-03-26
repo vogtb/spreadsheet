@@ -199,7 +199,7 @@ var DATEVALUE = function (...values) : number {
     // For reference: https://regex101.com/r/m8FSCr/6
     const REG = DateRegExBuilder.DateRegExBuilder()
       .start()
-      .YYYY().SLASH_DELIMITOR().MM().SLASH_DELIMITOR().DD().zeroOrMoreSpaces().HH().MERIDIEM()
+      .YYYY().SLASH_DELIMITOR().MM().SLASH_DELIMITOR().DD().N_SPACES().HH().MERIDIEM()
       .end()
       .build();
     var matches = dateString.match(REG);
@@ -223,10 +223,15 @@ var DATEVALUE = function (...values) : number {
     }
   }
 
-  // Check YYYY/MM/DD HH:mm
+  // Check YEAR_MONTHDIG_DAY_SLASH_DELIMIT_WITH_HOURS_OVERFLOW_MINUTES_OVERFLOW, YYYY/MM/DD HH:mm, "1992/06/24 29:2922"
   if (m === undefined) {
     // For reference: https://regex101.com/r/xsqttP/4
-    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]{1,}):\s*([0-9]{2,})\s*$/);
+    const REG = DateRegExBuilder.DateRegExBuilder()
+      .start()
+      .YYYY().SLASH_DELIMITOR().MM().SLASH_DELIMITOR().DD().N_SPACES().OVERLOAD_HH().SEMICOLON().OVERLOAD_MINITES()
+      .end()
+      .build();
+    var matches = dateString.match(REG);
     if (matches && matches.length === 8) {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.

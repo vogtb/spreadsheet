@@ -399,5 +399,27 @@ assertEquals(DATEVALUE("Dec- 20"), 42358);
 assertEquals(DATEVALUE("Dec-20"), 42358);
 assertEquals(DATEVALUE("June 2"), 42157);
 catchAndAssertEquals(function() {
-  DATEVALUE("Dec.20");// need space if using command, period
+  DATEVALUE("Dec.20");// need space if using period
+}, ERRORS.VALUE_ERROR);
+// DD Month
+assertEquals(DATEVALUE("20 Jan"), 42024);
+assertEquals(DATEVALUE("20 Feb"), 42055);
+assertEquals(DATEVALUE("20 Mar"), 42083);
+assertEquals(DATEVALUE("20 Apr"), 42114);
+assertEquals(DATEVALUE("20 May"), 42144);
+assertEquals(DATEVALUE("20 Jun"), 42175);
+assertEquals(DATEVALUE("20 Jul"), 42205);
+assertEquals(DATEVALUE("20 Aug"), 42236);
+assertEquals(DATEVALUE("20 Sep"), 42267);
+assertEquals(DATEVALUE("20 Oct"), 42297);
+assertEquals(DATEVALUE("20 Nov"), 42328);
+assertEquals(DATEVALUE("20 Dec"), 42358);
+assertEquals(DATEVALUE("20. Dec"), 42358);
+assertEquals(DATEVALUE("20, Dec"), 42358);
+assertEquals(DATEVALUE("20/ Dec"), 42358);
+assertEquals(DATEVALUE("20- Dec"), 42358);
+assertEquals(DATEVALUE("20-Dec"), 42358);
+assertEquals(DATEVALUE("2 June"), 42157);
+catchAndAssertEquals(function() {
+  DATEVALUE("20.Dec");// need space if using period
 }, ERRORS.VALUE_ERROR);

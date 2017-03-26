@@ -355,6 +355,22 @@ var DATEVALUE = function (...values) : number {
     }
   }
 
+  // Check DD Month
+  if (m === undefined) {
+    // For reference: https://regex101.com/r/GM7KgL/2
+    var matches = dateString.match(/^\s*(0?[1-9]|[1-2][0-9]|3[0-1])(,?\s*|\s*-?\/?\s*|\s*\.?\s+)(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)\s*$/i);
+    if (matches && matches.length === 4) {
+      var monthName = matches[3];
+      var days = parseInt(matches[1]) - 1; // Days are zero indexed.
+      var tmpMoment = moment.utc([moment.utc().year()]).startOf('year').month(monthName);
+      // If we're specifying more days than there are in this month
+      if (days > tmpMoment.daysInMonth() - 1) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      m = tmpMoment.add({"days": days});
+    }
+  }
+
   // If we've not been able to parse the date by now, then we cannot parse it at all.
   if (m === undefined || !m.isValid()) {
     throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");

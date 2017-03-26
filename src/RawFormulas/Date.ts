@@ -3,6 +3,7 @@ import * as moment from "moment";
 import * as Formula from "formulajs"
 import {
   ArgsChecker,
+  DateRegExBuilder,
   TypeCaster
 } from "./Utils";
 import {
@@ -138,7 +139,17 @@ var DATEVALUE = function (...values) : number {
   // Check YYYY/MM/DD
   if (m === undefined) {
     // For reference: https://regex101.com/r/uusfi7/5
-    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*$/);
+    var REG = /^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*$/;
+    REG = DateRegExBuilder.DateRegExBuilder()
+      .start()
+      .YYYY()
+      .SLASH_DELIMITOR()
+      .MM()
+      .SLASH_DELIMITOR()
+      .DD()
+      .end()
+      .build();
+    var matches = dateString.match(REG);
     if (matches && matches.length === 6) {
       var years = parseInt(matches[1]);
       var months = parseInt(matches[4]) - 1; // Months are zero indexed.

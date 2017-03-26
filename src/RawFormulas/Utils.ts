@@ -364,9 +364,97 @@ class Serializer {
 }
 
 
+/**
+ * Build a regular expression step by step, to make it easier to build and read the resulting regular expressions.
+ */
+class DateRegExBuilder {
+  private regexString = "";
+  private static ZERO_OR_MORE_SPACES = "\\s*";
+  private static ONE_OR_MORE_SPACES = "\\s+";
+
+  static DateRegExBuilder() : DateRegExBuilder {
+    return new DateRegExBuilder();
+  }
+
+  start() : DateRegExBuilder {
+    this.regexString += "^" + DateRegExBuilder.ZERO_OR_MORE_SPACES;
+    return this;
+  }
+
+  end() : DateRegExBuilder {
+    this.regexString += DateRegExBuilder.ZERO_OR_MORE_SPACES + "$";
+    return this;
+  }
+
+  /**
+   * Adds a match group for zero or more whitespace tokens.
+   * @returns {DateRegExBuilder}
+   */
+  zeroOrMoreSpaces() : DateRegExBuilder {
+    this.regexString += DateRegExBuilder.ZERO_OR_MORE_SPACES;
+    return this;
+  }
+
+  /**
+   * Adds a match group for zero or more whitespace tokens.
+   * @returns {DateRegExBuilder}
+   */
+  oneOrMoreSpaces() : DateRegExBuilder {
+    this.regexString += DateRegExBuilder.ONE_OR_MORE_SPACES;
+    return this;
+  }
+
+  SLASH_DELIMITOR() : DateRegExBuilder {
+    this.regexString += "\\/";
+    return this;
+  }
+
+  /**
+   * Adds all month full name and short names to the regular expression.
+   * @returns {DateRegExBuilder}
+   */
+  monthNameCaptureGroup() : DateRegExBuilder {
+    this.regexString += "(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)";
+    return this;
+  }
+
+  /**
+   * Adds month digit to the regular expression.
+   * @returns {DateRegExBuilder}
+   */
+  MM() : DateRegExBuilder {
+    this.regexString += "([1-9]|0[1-9]|1[0-2])";
+    return this;
+  }
+
+  /**
+   *
+   * @returns {DateRegExBuilder}
+   */
+  DD() : DateRegExBuilder {
+    this.regexString += "([1-9]|[0-2][0-9]|3[0-1])";
+    return this;
+  }
+
+  YYYY() : DateRegExBuilder {
+    this.regexString += "(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))";
+    return this;
+  }
+
+  /**
+   * Builds the regular expression.
+   * @returns {RegExp} Built up string as a regular expression.
+   */
+  build() : RegExp {
+    return new RegExp(this.regexString);
+  }
+}
+
+
 export {
   ArgsChecker,
   CriteriaFunctionFactory,
+  DateRegExBuilder,
   Filter,
   Serializer,
   TypeCaster

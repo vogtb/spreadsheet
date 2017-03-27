@@ -378,7 +378,7 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("Dec.20");// need space if using period
 }, ERRORS.VALUE_ERROR);
-// DD Month
+// DD Month YYYY
 assertEquals(DATEVALUE("01 Jan 2017"), 42736);
 assertEquals(DATEVALUE("01 Feb 2017"), 42767);
 assertEquals(DATEVALUE("01 Mar 2017"), 42795);
@@ -403,30 +403,3 @@ assertEquals(DATEVALUE("20 Sep 2015"), 42267);
 assertEquals(DATEVALUE("20 Oct 2015"), 42297);
 assertEquals(DATEVALUE("20 Nov 2015"), 42328);
 assertEquals(DATEVALUE("20 Dec 2015"), 42358);
-assertEquals(DATEVALUE("20. Dec 2015"), 42358);
-assertEquals(DATEVALUE("20, Dec 2015"), 42358);
-assertEquals(DATEVALUE("20/ Dec 2015"), 42358);
-assertEquals(DATEVALUE("20- Dec 2015"), 42358);
-assertEquals(DATEVALUE("20-Dec 2015"), 42358);
-assertEquals(DATEVALUE("2 June 2015"), 42157);
-assertEquals(DATEVALUE("2 / june 2015"), 42157);
-assertEquals(DATEVALUE("2 . june . 2015"), 42157);
-assertEquals(DATEVALUE("2, june 2015"), 42157);
-assertEquals(DATEVALUE("2, june2015"), 42157);
-assertEquals(DATEVALUE("2,June2015"), 42157);
-assertEquals(DATEVALUE("2June2015"), 42157);
-assertEquals(DATEVALUE("2. June. 2015"), 42157);
-assertEquals(DATEVALUE("2/June/2015"), 42157);
-assertEquals(DATEVALUE("2 /June / 2015"), 42157);
-catchAndAssertEquals(function() {
-  DATEVALUE("20.Dec 2015");// need space if using period
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  DATEVALUE("20.Dec.2015");// need space if using period
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  DATEVALUE("20 Dec.2015");// need space if using period
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  DATEVALUE("20.Dec");// need space if using period
-}, ERRORS.VALUE_ERROR);

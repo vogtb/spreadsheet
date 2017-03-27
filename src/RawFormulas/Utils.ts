@@ -471,6 +471,11 @@ class DateRegExBuilder {
     return this;
   }
 
+  YYY_OR_YYYY() : DateRegExBuilder {
+    this.regexString += "([0-9]{4}|[1-9][0-9]{2}|[0-9]{2})";
+    return this;
+  }
+
   /**
    *
    * @returns {DateRegExBuilder}

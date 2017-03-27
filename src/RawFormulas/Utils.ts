@@ -399,7 +399,7 @@ class DateRegExBuilder {
    * Adds a match group for zero or more whitespace tokens.
    * @returns {DateRegExBuilder}
    */
-  oneOrMoreSpaces() : DateRegExBuilder {
+  ONE_OR_N_SPACES() : DateRegExBuilder {
     this.regexString += DateRegExBuilder.ONE_OR_MORE_SPACES;
     return this;
   }
@@ -413,8 +413,28 @@ class DateRegExBuilder {
    * Adds all month full name and short names to the regular expression.
    * @returns {DateRegExBuilder}
    */
-  monthNameCaptureGroup() : DateRegExBuilder {
+  MONTHNAME() : DateRegExBuilder {
     this.regexString += "(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)";
+    return this;
+  }
+
+  /**
+   *
+   * @returns {DateRegExBuilder}
+   * @constructor
+   */
+  OPTIONAL_DAYNAME() : DateRegExBuilder {
+    this.regexString += "(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tues|wed|thur|fri|sat)?";
+    return this;
+  }
+
+  /**
+   *
+   * @returns {DateRegExBuilder}
+   * @constructor
+   */
+  OPTIONAL_COMMA() : DateRegExBuilder {
+    this.regexString += ",?";
     return this;
   }
 
@@ -432,7 +452,7 @@ class DateRegExBuilder {
    * @returns {DateRegExBuilder}
    */
   DD() : DateRegExBuilder {
-    this.regexString += "([1-9]|[0-2][0-9]|3[0-1])";
+    this.regexString += "(0?[0-9]|1[0-9]|2[0-9]|3[0-1])";
     return this;
   }
 

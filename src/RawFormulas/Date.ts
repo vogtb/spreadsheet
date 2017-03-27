@@ -359,11 +359,17 @@ var DATEVALUE = function (...values) : number {
     }
   }
 
-  // Check (Dayname) Month DD YYYY
+  // Check MONTHNAME_DAY_YEAR_COMMON_DELIMITERS, Month DD YYYY, September 20 1992
   if (m === undefined) {
     // For reference: https://regex101.com/r/xPcm7v/11
-    var matches = dateString.match(/^\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tues|wed|thur|fri|sat)?,?\s*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec),?\s*(0?[0-9]|1[0-9]|2[0-9]|3[0-1]),?\s+([0-9]{4}|[1-9][0-9]{2}|[0-9]{2})\s*$/i);
-    if (matches && matches.length === 5) {
+    const REG = DateRegExBuilder.DateRegExBuilder()
+      .start()
+      .OPTIONAL_DAYNAME().OPTIONAL_COMMA().N_SPACES().MONTHNAME().OPTIONAL_COMMA().N_SPACES().DD().OPTIONAL_COMMA()
+      .ONE_OR_N_SPACES().YY_OP_YY()
+      .end()
+      .build();
+    var matches = dateString.match(REG);
+    if (matches && matches.length === 7) {
       var years = parseInt(matches[4]);
       var monthName = matches[2];
       var days = parseInt(matches[3]) - 1; // Days are zero indexed.

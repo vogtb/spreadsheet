@@ -83,17 +83,120 @@ MM, YYYY         MONTHDIG_YEAR_COMMA_DELIMIT             months, years
 ```
 
 ### Different Time Formats
+```
 FORMAT           CONST NAME
 HHam             HOUR_MERIDIEM
 HH:MM            OVERFLOW_HOURS_OVERFLOW_MINUTES
 HH:MMam          HOURS_OVERFLOW_MINUTES_MERIDIEM
 HH:MM:SS         OVERFLOW_HOURS_OVERFLOW_MINUTES_SECONDS
 HH:MM:SSam       HOURS_MINUTES_SECONDS_OVERFLOW_MERIDIEM
+```
+
+### Condensed Date Formats
+```
+NOTES
+fd = flex_delimitor
+all can be prefixed with day name (no op)
+all can be suffixed with time (yes op)
+
+YYYY(fd)MM(fd)DD        YEAR_MONTHDIG_DAY
+MM(fd)DD(fd)YYYY        MONTHDIG_DAY_YEAR
+Month(fd)DD(fd)YYYY     MONTHNAME_DAY_YEAR
+DD(fd)Month(fd)YYYY     DAY_MONTHNAME_YEAR
+YYYY(fd)MM              YEAR_MONTHDIG
+MM(fd)YYYY              MONTHDIG_YEAR
+YYYY(fd)Month           YEAR_MONTHNAME
+Month(fd)YYYY           MONTHNAME_YEAR
+```
+Capture the flex delimiter and invalidate if the three don't match.
+
+
+### List of possible dates that we should be able to parse
+* "1999/1/13"                    DONE
+ * "1999-1-13"
+ * "1999 1 13"
+ * "1999.1.13"
+ * "1999, 1, 13"
+ * "1/13/1999"                    DONE
+ * "1-13-1999"
+ * "1 13 1999"
+ * "1.13.1999"
+ * "1, 13, 1999"
+ * "1999/1/13 10am"               DONE
+ * "1999-1-13 10am"
+ * "1999 1 13 10am"
+ * "1999.1.13 10am"
+ * "1999/1/13 10:22"              DONE
+ * "1999-1-13 10:22"
+ * "1999 1 13 10:22"
+ * "1999.1.13 10:22"
+ * "1999/1/13 10:10am"            DONE
+ * "1999-1-13 10:10am"
+ * "1999 1 13 10:10am"
+ * "1999.1.13 10:10am"
+ * "1999/1/13 10:10:10"           DONE
+ * "1999-1-13 10:10:10"
+ * "1999 1 13 10:10:10"
+ * "1999.1.13 10:10:10"
+ * "1999/1/13 10:10:10pm"         DONE
+ * "1999-1-13 10:10:10pm"
+ * "1999 1 13 10:10:10pm"
+ * "1999.1.13 10:10:10pm"
+ * "Sun Feb 09 2017"              DONE
+ * "Sun Feb 09 2017 10am"
+ * "Sun Feb 09 2017 10:10"
+ * "Sun Feb 09 2017 10:10am"
+ * "Sun Feb 09 2017 10:10:10"
+ * "Sun Feb 09 2017 10:10:10pm"
+ * "Sun 09 Feb 2017"              DONE
+ * "Sun 09 Feb 2017 10am"
+ * "Sun 09 Feb 2017 10:10"
+ * "Sun 09 Feb 2017 10:10am"
+ * "Sun 09 Feb 2017 10:10:10"
+ * "Sun 09 Feb 2017 10:10:10pm"
+ * "Feb-2017"                     DONE
+ * "Feb-2017 10am"
+ * "Feb-2017 10:10"
+ * "Feb-2017 10:10am"
+ * "Feb-2017 10:10:10"
+ * "Feb-2017 10:10:10pm"
+ * "Feb 22"                       DONE
+ * "Feb 22 10am"
+ * "Feb 22 10:10"
+ * "Feb 22 10:10am"
+ * "Feb 22 10:10:10"
+ * "Feb 22 10:10:10pm"
+ * "22-Feb"                       DONE
+ * "22-Feb 10am"
+ * "22-Feb 10:10"
+ * "22-Feb 10:10am"
+ * "22-Feb 10:10:10"
+ * "22-Feb 10:10:10pm"
+ * "22-Feb-2017"
+ * "22-Feb-2017 10am"
+ * "22-Feb-2017 10:10"
+ * "22-Feb-2017 10:10am"
+ * "22-Feb-2017 10:10:10"
+ * "22-Feb-2017 10:10:10pm"
+ * "10-22"
+ * "10-22 10am"
+ * "10-22 10:10"
+ * "10-22 10:10am"
+ * "10-22 10:10:10"
+ * "10-22 10:10:10pm"
+ * "10/2022"
+ * "10-2022 10am"
+ * "10-2022 10:10"
+ * "10-2022 10:10am"
+ * "10-2022 10:10:10"
+ * "10-2022 10:10:10pm"
+
 
 * Combine the different time formats into a single regular expression.
 Throw errors based on whether some units have overflowed. For example 29:99 is ok, but 29:99pm is not ok. This way
 we're only doubling the number of date-format regular expressions we have to generate. For example, we check
 YEAR_MONTHDIG_DAY_SLASH_DELIMIT once, and then YEAR_MONTHDIG_DAY_SLASH_DELIMIT_WITH_TIME once.
+Use something like this: https://regex101.com/r/ZMu74e/2
 
 * Dates have special types
 Like dollars, dates are special types, but can be compared as if they're primatives. For example, this statement is

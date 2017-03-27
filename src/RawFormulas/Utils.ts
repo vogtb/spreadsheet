@@ -424,7 +424,7 @@ class DateRegExBuilder {
    * @constructor
    */
   OPTIONAL_DAYNAME() : DateRegExBuilder {
-    this.regexString += "(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tues|wed|thur|fri|sat)?";
+    this.regexString += "(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tue|wed|thu|fri|sat)?";
     return this;
   }
 
@@ -434,7 +434,7 @@ class DateRegExBuilder {
    * @constructor
    */
   OPTIONAL_COMMA() : DateRegExBuilder {
-    this.regexString += ",?";
+    this.regexString += "(,?\\s+)?";
     return this;
   }
 
@@ -457,7 +457,7 @@ class DateRegExBuilder {
   }
 
   YYYY() : DateRegExBuilder {
-    this.regexString += "(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))";
+    this.regexString += "([0-9][0-9][0-9][0-9]|[1-9][0-9][0-9])";
     return this;
   }
 
@@ -468,6 +468,12 @@ class DateRegExBuilder {
 
   COMMON_DELIMITERS() : DateRegExBuilder {
     this.regexString += "(,?\\s*|\\s*-?\\.?-?\\/?\\s*)";
+    return this;
+  }
+
+
+  FLEX_DELIMITER() : DateRegExBuilder {
+    this.regexString += "(,?\\s+|\\s*-?\\.?-?\\/?\\s*)";
     return this;
   }
 

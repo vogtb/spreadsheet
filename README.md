@@ -99,14 +99,14 @@ fd = flex_delimitor
 all can be prefixed with day name (no op)
 all can be suffixed with time (yes op)
 
-YYYY(fd)MM(fd)DD        YEAR_MONTHDIG_DAY
-MM(fd)DD(fd)YYYY        MONTHDIG_DAY_YEAR
-Month(fd)DD(fd)YYYY     MONTHNAME_DAY_YEAR
-DD(fd)Month(fd)YYYY     DAY_MONTHNAME_YEAR
-YYYY(fd)MM              YEAR_MONTHDIG
-MM(fd)YYYY              MONTHDIG_YEAR
-YYYY(fd)Month           YEAR_MONTHNAME
-Month(fd)YYYY           MONTHNAME_YEAR
+YYYY(fd)MM(fd)DD          YEAR_MONTHDIG_DAY
+MM(fd)DD(fd)YYYY          MONTHDIG_DAY_YEAR
+Month(fd)DD(fd)YYYY       MONTHNAME_DAY_YEAR
+DD(fd)Month(fd)YYYY       DAY_MONTHNAME_YEAR
+YYYY(fd)MM                YEAR_MONTHDIG
+MM(fd)YYYY                MONTHDIG_YEAR
+YYYY(fd)Month             YEAR_MONTHNAME
+Month(fd)YYYY             MONTHNAME_YEAR
 ```
 Capture the flex delimiter and invalidate if the three don't match.
 

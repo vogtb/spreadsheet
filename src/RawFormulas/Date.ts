@@ -43,33 +43,18 @@ var DATE = function (...values) {
 };
 
 
-// const YEAR_MONTHDIG_DAY_SLASH_DELIMIT;
-// const YEAR_MONTHDIG_DAY_HYPHEN_DELIMIT;
-// const YEAR_MONTHDIG_DAY_DOT_DELIMIT;
-// const YEAR_MONTHDIG_DAY_SPACE_DELIMIT;
-// const YEAR_MONTHDIG_DAY_COMMA_DELIMIT;
-// const MONTHDIG_DAY_YEAR_SLASH_DELIMIT;
-// const MONTHDIG_DAY_YEAR_HYPHEN_DELIMIT;
-// const MONTHDIG_DAY_YEAR_DOT_DELIMIT;
-// const MONTHDIG_DAY_YEAR_SPACE_DELIMIT;
-// const MONTHDIG_DAY_YEAR_COMMA_DELIMIT;
-// const MONTHNAME_DAY_YEAR_COMMON_DELIMITERS;
-// const DAY_MONTHNAME_YEAR_COMMON_DELIMITERS;
-// const MONTHNAME_DAY_COMMON_DELIMITERS;
-// const DAY_MONTHNAME_COMMON_DELIMITERS;
-// const MONTHNAME_YEAR_COMMON_DELIMITERS;
-// const YEAR_MONTHNAME_COMMON_DELIMITERS;
-// const MONTHDIG_DAY_SLASH_DELIMIT;
-// const MONTHDIG_DAY_HYPHEN_DELIMIT;
-// const MONTHDIG_DAY_SPACE_DELIMIT;
-// const MONTHDIG_DAY_DOT_DELIMIT;
-// const MONTHDIG_DAY_COMMA_DELIMIT;
-// const MONTHDIG_YEAR_SLASH_DELIMIT;
-// const MONTHDIG_YEAR_HYPHEN_DELIMIT;
-// const MONTHDIG_YEAR_SPACE_DELIMIT;
-// const MONTHDIG_YEAR_DOT_DELIMIT;
-// const MONTHDIG_YEAR_COMMA_DELIMIT;
-
+const YEAR_MONTHDIG_DAY = DateRegExBuilder.DateRegExBuilder()
+  .start()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY().FLEX_DELIMITER().MM().FLEX_DELIMITER().DD()
+  .end()
+  .build();
+// const MONTHDIG_DAY_YEAR
+// const MONTHNAME_DAY_YEAR;
+// const DAY_MONTHNAME_YEAR;
+// const YEAR_MONTHDIG;
+// const MONTHDIG_YEAR;
+// const YEAR_MONTHNAME;
+// const MONTHNAME_YEAR;
 
 /**
  * Converts a provided date string in a known format to a date value.
@@ -89,74 +74,15 @@ var DATEVALUE = function (...values) : number {
   // Check YEAR_MONTHDIG_DAY_SLASH_DELIMIT, YYYY/MM/DD, "1992/06/24"
   if (m === undefined) {
     // For reference: https://regex101.com/r/uusfi7/5
-    const REG = DateRegExBuilder.DateRegExBuilder()
-      .start()
-      .YYYY().SLASH_DELIMITOR().MM().SLASH_DELIMITOR().DD()
-      .end()
-      .build();
-    var matches = dateString.match(REG);
-    if (matches && matches.length === 6) {
-      var years = parseInt(matches[1]);
-      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
-      var actualYear = years;
-      if (years >= 0 && years < 30) {
-        actualYear = Y2K_YEAR + years;
-      } else if (years >= 30 && years < 100) {
-        actualYear = FIRST_YEAR + years;
-      }
-      var tmpMoment = moment.utc([actualYear])
-        .add(months, 'months');
-      // If we're specifying more days than there are in this month
-      if (days > tmpMoment.daysInMonth() - 1) {
-        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
-      }
-      m = tmpMoment.add(days, 'days');
-    }
-  }
-
-  // Check MONTHDIG_DAY_YEAR_SLASH_DELIMIT, MM/DD/YY(YY), "06/24/1992" or "06/24/92"
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/yHraci/5
-    const REG = DateRegExBuilder.DateRegExBuilder()
-      .start()
-      .MM().SLASH_DELIMITOR().DD().SLASH_DELIMITOR().YY_OP_YY()
-      .end()
-      .build();
-    var matches = dateString.match(REG);
-    if (matches && matches.length === 6) {
-      var years = parseInt(matches[3]);
-      var months = parseInt(matches[1]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[2]) - 1; // Days are zero indexed.
-      var actualYear = years;
-      if (years >= 0 && years < 30) {
-        actualYear = Y2K_YEAR + years;
-      } else if (years >= 30 && years < 100) {
-        actualYear = FIRST_YEAR + years;
-      }
-      var tmpMoment = moment.utc([actualYear])
-        .add(months, 'months');
-      // If we're specifying more days than there are in this month
-      if (days > tmpMoment.daysInMonth() - 1) {
-        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
-      }
-      m = tmpMoment.add(days, 'days');
-    }
-  }
-
-  // Check YEAR_MONTHDIG_DAY_SLASH_DELIMIT_WITH_HOUR_MERIDIEM, YYYY/MM/DD HH(am|pm), "1992/06/24 12pm"
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/m8FSCr/6
-    const REG = DateRegExBuilder.DateRegExBuilder()
-      .start()
-      .YYYY().SLASH_DELIMITOR().MM().SLASH_DELIMITOR().DD().N_SPACES().HH().MERIDIEM()
-      .end()
-      .build();
-    var matches = dateString.match(REG);
+    var matches = dateString.match(YEAR_MONTHDIG_DAY);
     if (matches && matches.length === 8) {
-      var years = parseInt(matches[1]);
-      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
+      // Check delimiters. If they're not the same, throw error.
+      if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      var years = parseInt(matches[3]);
+      var months = parseInt(matches[5]) - 1; // Months are zero indexed.
+      var days = parseInt(matches[7]) - 1; // Days are zero indexed.
       var actualYear = years;
       if (years >= 0 && years < 30) {
         actualYear = Y2K_YEAR + years;
@@ -172,250 +98,6 @@ var DATEVALUE = function (...values) : number {
       m = tmpMoment.add(days, 'days');
     }
   }
-
-  // Check YEAR_MONTHDIG_DAY_SLASH_DELIMIT_WITH_OVERFLOW_HOURS_OVERFLOW_MINUTES, YYYY/MM/DD HH:mm, "1992/06/24 29:2922"
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/xsqttP/4
-    const REG = DateRegExBuilder.DateRegExBuilder()
-      .start()
-      .YYYY().SLASH_DELIMITOR().MM().SLASH_DELIMITOR().DD().N_SPACES().OVERLOAD_HH().SEMICOLON().OVERLOAD_MINITES()
-      .end()
-      .build();
-    var matches = dateString.match(REG);
-    if (matches && matches.length === 8) {
-      var years = parseInt(matches[1]);
-      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
-      var hours = parseInt(matches[6]);
-      var minutes = parseInt(matches[7]);
-      var actualYear = years;
-      if (years >= 0 && years < 30) {
-        actualYear = Y2K_YEAR + years;
-      } else if (years >= 30 && years < 100) {
-        actualYear = FIRST_YEAR + years;
-      }
-      var tmpMoment = moment.utc([actualYear])
-        .add(months, 'months');
-      // If we're specifying more days than there are in this month
-      if (days > tmpMoment.daysInMonth() - 1) {
-        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
-      }
-      m = tmpMoment.add(days, 'days').add(hours, 'hours').add(minutes, 'minutes');
-    }
-  }
-
-  // Check YYYY/MM/DD HH:mm(am|pm)
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/DMA4Fv/3
-    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]|0[0-9]|1[0-2]):\s*([0-9]+)\s*(am|pm)\s*$/i);
-    if (matches && matches.length === 9) {
-      var years = parseInt(matches[1]);
-      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
-      var hours = parseInt(matches[6]);
-      var minutes = parseInt(matches[7]);
-      var pm = matches[8].toLowerCase() === "pm";
-      var actualYear = years;
-      if (years >= 0 && years < 30) {
-        actualYear = Y2K_YEAR + years;
-      } else if (years >= 30 && years < 100) {
-        actualYear = FIRST_YEAR + years;
-      }
-      var tmpMoment = moment.utc([actualYear])
-        .add({"months": months});
-      // If we're specifying more days than there are in this month
-      if (days > tmpMoment.daysInMonth() - 1) {
-        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
-      }
-      tmpMoment.add({"days": days});
-      if (pm) {
-        if (hours === 12) { // 12pm is just 0am
-          tmpMoment.set('hours', hours);
-        } else { // eg: 4pm is 16
-          tmpMoment.set('hours', 12 + hours);
-        }
-      } else {
-        if (hours !== 12) {
-          tmpMoment.set('hours', hours);
-        }
-      }
-      m = tmpMoment.add({"minutes": minutes}).set('hours', 0).set('minutes', 0);
-    }
-  }
-
-  // Check YYYY/MM/DD HH:mm:ss
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/fYZcgP/5
-    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]{1,9}):\s*([0-9]{1,9}):\s*([0-9]{1,9})\s*$/);
-    if (matches && matches.length === 9) {
-      var years = parseInt(matches[1]);
-      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
-      var hours = parseInt(matches[6]);
-      var minutes = parseInt(matches[7]);
-      var seconds = parseInt(matches[8]);
-      var actualYear = years;
-      if (years >= 0 && years < 30) {
-        actualYear = Y2K_YEAR + years;
-      } else if (years >= 30 && years < 100) {
-        actualYear = FIRST_YEAR + years;
-      }
-      var tmpMoment = moment.utc([actualYear])
-        .add({"months": months});
-      if (days > tmpMoment.daysInMonth() - 1) {
-        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
-      }
-      m = tmpMoment.add({"days": days, "hours": hours, "minutes": minutes, "seconds": seconds}).set('hours', 0).set('minutes', 0);
-    }
-  }
-
-  // Check YYYY/MM/DD HH:mm:ss(am|pm)
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/6zublm/3
-    var matches = dateString.match(/^\s*(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9]))\/([1-9]|0[1-9]|1[0-2])\/([1-9]|[0-2][0-9]|3[0-1])\s*([0-9]|0[0-9]|1[0-2]):\s*([0-9]{1,9}):\s*([0-9]{1,9})\s*(am|pm)\s*$/i);
-    if (matches && matches.length === 10) {
-      var years = parseInt(matches[1]);
-      var months = parseInt(matches[4]) - 1; // Months are zero indexed.
-      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
-      var hours = parseInt(matches[6]);
-      var minutes = parseInt(matches[7]);
-      var seconds = parseInt(matches[8]);
-      var pm = matches[9].toLowerCase() === "pm";
-      var actualYear = years;
-      if (years >= 0 && years < 30) {
-        actualYear = Y2K_YEAR + years;
-      } else if (years >= 30 && years < 100) {
-        actualYear = FIRST_YEAR + years;
-      }
-      var tmpMoment = moment.utc([actualYear])
-        .add({"months": months});
-      // If we're specifying more days than there are in this month
-      if (days > tmpMoment.daysInMonth() - 1) {
-        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
-      }
-      tmpMoment.add({"days": days});
-      if (pm) {
-        if (hours === 12) { // 12pm is just 0am
-          tmpMoment.set('hours', hours);
-        } else { // eg: 4pm is 16
-          tmpMoment.set('hours', 12 + hours);
-        }
-      } else {
-        if (hours !== 12) {
-          tmpMoment.set('hours', hours);
-        }
-      }
-      m = tmpMoment.add({"minutes": minutes, "seconds": seconds}).set('hours', 0).set('minutes', 0).set('seconds', 0);
-    }
-  }
-
-  // Check MONTHNAME_DAY_YEAR_COMMON_DELIMITERS, Month DD YYYY, September 20 1992
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/xPcm7v/11
-    const REG = DateRegExBuilder.DateRegExBuilder()
-      .start()
-      .OPTIONAL_DAYNAME().OPTIONAL_COMMA().N_SPACES().MONTHNAME().OPTIONAL_COMMA().N_SPACES().DD().OPTIONAL_COMMA()
-      .ONE_OR_N_SPACES().YY_OP_YY()
-      .end()
-      .build();
-    var matches = dateString.match(REG);
-    if (matches && matches.length === 7) {
-      var years = parseInt(matches[4]);
-      var monthName = matches[2];
-      var days = parseInt(matches[3]) - 1; // Days are zero indexed.
-      var actualYear = years;
-      if (years >= 0 && years < 30) {
-        actualYear = Y2K_YEAR + years;
-      } else if (years >= 30 && years < 100) {
-        actualYear = FIRST_YEAR + years;
-      }
-      var tmpMoment = moment.utc([actualYear]).month(monthName);
-      // If we're specifying more days than there are in this month
-      if (days > tmpMoment.daysInMonth() - 1) {
-        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
-      }
-      m = tmpMoment.add({"days": days});
-    }
-  }
-
-  // Check DAY_MONTHNAME_YEAR_COMMON_DELIMITERS, DD Month YYYY, 20 September 1992
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/22TD0r/3
-    const REG = DateRegExBuilder.DateRegExBuilder()
-      .start()
-      .OPTIONAL_DAYNAME().OPTIONAL_COMMA().N_SPACES().DD().OPTIONAL_COMMA().N_SPACES().MONTHNAME().OPTIONAL_COMMA()
-      .N_SPACES().YYY_OR_YYYY() // TODO: YYY_OR_YYYY possibly unnecessary. Rolling past to get these converted.
-      .end()
-      .build();
-    var matches = dateString.match(REG);
-    if (matches && matches.length === 5) {
-      var years = parseInt(matches[4]);
-      var monthName = matches[3];
-      var days = parseInt(matches[2]) - 1; // Days are zero indexed.
-      var actualYear = years;
-      if (years >= 0 && years < 30) {
-        actualYear = Y2K_YEAR + years;
-      } else if (years >= 30 && years < 100) {
-        actualYear = FIRST_YEAR + years;
-      }
-      var tmpMoment = moment.utc([actualYear]).month(monthName);
-      // If we're specifying more days than there are in this month
-      if (days > tmpMoment.daysInMonth() - 1) {
-        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
-      }
-      m = tmpMoment.add({"days": days});
-    }
-  }
-
-  // Check MONTHNAME_YEAR_COMMON_DELIMITERS, Month YYYY, June 2012
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/eNyVAL/3
-    const REG = DateRegExBuilder.DateRegExBuilder()
-      .start()
-      .MONTHNAME().COMMON_DELIMITERS().YYYY_SIMPLE() // YYYY_SIMPLE necessary because we don't want collisions with DD.
-      .end()
-      .build();
-    var matches = dateString.match(REG);
-    if (matches && matches.length === 4) {
-      var years = parseInt(matches[3]);
-      var monthName = matches[1];
-      var actualYear = years;
-      if (years >= 0 && years < 30) {
-        actualYear = Y2K_YEAR + years;
-      } else if (years >= 30 && years < 100) {
-        actualYear = FIRST_YEAR + years;
-      }
-      m = moment.utc([actualYear]).month(monthName);
-    }
-  }
-
-  // Check DD Month
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/mOnd0i/4
-    // Code here.
-  }
-
-  // Check Month DD
-  if (m === undefined) {
-    // For reference: https://regex101.com/r/hujaIk/7
-    // Code here.
-  }
-
-  // Check Month DD Year
-  if (m === undefined) {
-    // Code here.
-  }
-
-  // Check MM-DD
-  if (m === undefined) {
-    // Code here.
-  }
-
-  // Check MM-YYYY
-  if (m === undefined) {
-    // Code here.
-  }
-
 
   // If we've not been able to parse the date by now, then we cannot parse it at all.
   if (m === undefined || !m.isValid()) {

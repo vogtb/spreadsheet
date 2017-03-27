@@ -417,10 +417,15 @@ var DATEVALUE = function (...values) : number {
     }
   }
 
-  // Check Month YYYY
+  // Check MONTHNAME_YEAR_COMMON_DELIMITERS, Month YYYY, June 2012
   if (m === undefined) {
     // For reference: https://regex101.com/r/eNyVAL/3
-    var matches = dateString.match(/^\s*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)(,?\s*|\s*-?\.?-?\/?\s*)([0-9]{4})\s*$/i);
+    const REG = DateRegExBuilder.DateRegExBuilder()
+      .start()
+      .MONTHNAME().COMMON_DELIMITERS().YYYY_SIMPLE() // YYYY_SIMPLE necessary because we don't want collisions with DD.
+      .end()
+      .build();
+    var matches = dateString.match(REG);
     if (matches && matches.length === 4) {
       var years = parseInt(matches[3]);
       var monthName = matches[1];

@@ -461,6 +461,16 @@ class DateRegExBuilder {
     return this;
   }
 
+  YYYY_SIMPLE() : DateRegExBuilder {
+    this.regexString += "([0-9]{4})";
+    return this;
+  }
+
+  COMMON_DELIMITERS() : DateRegExBuilder {
+    this.regexString += "(,?\\s*|\\s*-?\\.?-?\\/?\\s*)";
+    return this;
+  }
+
   /**
    *
    * @returns {DateRegExBuilder}

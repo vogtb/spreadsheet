@@ -68,7 +68,7 @@ Month DD YYYY    MONTHNAME_DAY_YEAR_COMMON_DELIMITERS    monthName, days, years 
 DD Month YYYY    DAY_MONTHNAME_YEAR_COMMON_DELIMITERS    days, monthName, years        // TODO: right now only comma...
 Month DD         MONTHNAME_DAY_COMMON_DELIMITERS         monthName, days
 DD Month         DAY_MONTHNAME_COMMON_DELIMITERS         days, monthName
-Month YYYY       MONTHNAME_YEAR_COMMON_DELIMITERS        monthName, years
+Month YYYY       MONTHNAME_YEAR_COMMON_DELIMITERS        monthName, years              // TODO: only some delimiters now
 YYYY Month       YEAR_MONTHNAME_COMMON_DELIMITERS        years, monthName
 MM/DD            MONTHDIG_DAY_SLASH_DELIMIT              months, days
 MM-DD            MONTHDIG_DAY_HYPHEN_DELIMIT             months, days

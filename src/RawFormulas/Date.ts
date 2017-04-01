@@ -53,8 +53,11 @@ const MONTHDIG_DAY_YEAR = DateRegExBuilder.DateRegExBuilder()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().DD().FLEX_DELIMITER().YYYY14()
   .end()
   .build();
-// const MONTHNAME_DAY_YEAR;
-// const DAY_MONTHNAME_YEAR;
+const DAY_MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
+  .start()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().DD().FLEX_DELIMITER().MONTHNAME().FLEX_DELIMITER().YYYY14()
+  .end()
+  .build();
 // const YEAR_MONTHDIG;
 // const MONTHDIG_YEAR;
 // const YEAR_MONTHNAME;
@@ -82,8 +85,12 @@ var DATEVALUE = function (...values) : number {
     } else if (years >= 30 && years < 100) {
       actualYear = FIRST_YEAR + years;
     }
-    var tmpMoment = moment.utc([actualYear])
-      .add(months, 'months');
+    var tmpMoment = moment.utc([actualYear]).startOf("year");
+    if (typeof months === "string") {
+      tmpMoment.month(months);
+    } else {
+      tmpMoment.set("months", months);
+    }
     // If we're specifying more days than there are in this month
     if (days > tmpMoment.daysInMonth() - 1) {
       throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
@@ -118,6 +125,23 @@ var DATEVALUE = function (...values) : number {
       var months = parseInt(matches[3]) - 1; // Months are zero indexed.
       var days = parseInt(matches[5]) - 1; // Days are zero indexed.
       m = createMoment(years, months, days);
+    }
+  }
+
+  // Check DAY_MONTHNAME_YEAR, DD(fd)Month(fd)YYYY, '24/July/1992'
+  if (m === undefined) {
+    var matches = dateString.match(DAY_MONTHNAME_YEAR);
+    if (matches && matches.length === 8) {
+      var years = parseInt(matches[7]);
+      var monthName = matches[5];
+      var days = parseInt(matches[3]) - 1; // Days are zero indexed.
+      var firstDelimiter = matches[4].replace(/\s*/g, '');
+      var secondDelimiter = matches[6].replace(/\s*/g, '');
+      // Check delimiters. If they're not the same, and the first one isn't a space, throw error.
+      if (firstDelimiter !== secondDelimiter && firstDelimiter !== "") {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      m = createMoment(years, monthName, days);
     }
   }
 

@@ -154,14 +154,54 @@ assertEquals(DATEVALUE("1992, 6, 24"), 33779);
 catchAndAssertEquals(function() {
   DATEVALUE("Sunday,1992/6/24");// flex delimiter should not allow a comma without a space after it.
 }, ERRORS.VALUE_ERROR);
-
-
 catchAndAssertEquals(function() {
   DATEVALUE("2005/2/29");// Leap day on non-leap year.
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
   DATEVALUE("2005/1/44");// Out of range day for any month
 }, ERRORS.VALUE_ERROR);
+// DD/Month/YYYY
+assertEquals(DATEVALUE("Sun 09 Feb 2017"), 42775);
+assertEquals(DATEVALUE("Sun 9 Feb 2017"), 42775);
+assertEquals(DATEVALUE("Mon 09 Feb 2017"), 42775);
+assertEquals(DATEVALUE("Thursday 09 Feb 2017"), 42775);
+assertEquals(DATEVALUE("Thursday 09 February 2017"), 42775);
+assertEquals(DATEVALUE("Sun 01 September 20"), 44075);
+assertEquals(DATEVALUE("Sun, 09, Feb, 2017"), 42775);
+assertEquals(DATEVALUE("20 May 1992"), 33744);
+assertEquals(DATEVALUE("31 December 100"), -657070);
+assertEquals(DATEVALUE("13 January 0030"), 10971);
+assertEquals(DATEVALUE("13 January 1200"), -255656);
+assertEquals(DATEVALUE("22 January 2222"), 117631);
+assertEquals(DATEVALUE("3 November 4243"), 856071);
+assertEquals(DATEVALUE("13 November 0999"), -328765);
+assertEquals(DATEVALUE("13 November 1200"), -255351);
+assertEquals(DATEVALUE("13 January 0029"), 47131);
+assertEquals(DATEVALUE("13 January 0030"), 10971);
+assertEquals(DATEVALUE("13 January 0044"), 16084);
+assertEquals(DATEVALUE("13 January 0050"), 18276);
+assertEquals(DATEVALUE("13 January 0097"), 35443);
+assertEquals(DATEVALUE("13 January 0099"), 36173);
+assertEquals(DATEVALUE("13 January 0000"), 36538);
+assertEquals(DATEVALUE("13 January 0101"), -657057);
+assertEquals(DATEVALUE("13 January 0100"), -657422);
+assertEquals(DATEVALUE("Sun, 09, Feb, 2017"), 42775);
+assertEquals(DATEVALUE("Sun, 09/Feb/2017"), 42775);
+assertEquals(DATEVALUE("09/Feb/2017"), 42775);
+assertEquals(DATEVALUE("09-Feb-2017"), 42775);
+assertEquals(DATEVALUE("09.Feb.2017"), 42775);
+assertEquals(DATEVALUE("09 Feb/2017"), 42775);
+assertEquals(DATEVALUE("09 . Feb . 2017"), 42775);
+catchAndAssertEquals(function() {
+  DATEVALUE("09.Feb/2017"); // If the delimiters don't match the first one should be a space.
+}, ERRORS.VALUE_ERROR);
+
+
+
+
+
+
+
 // // YYYY/MM/DD HH(am|pm)
 // assertEquals(DATEVALUE("1992/6/24 00am"), 33779);
 // assertEquals(DATEVALUE("1992/06/24 01am "), 33779);
@@ -366,19 +406,6 @@ catchAndAssertEquals(function() {
 //   DATEVALUE("June 32 2001");// overload numbers not ok
 // }, ERRORS.VALUE_ERROR);
 // // (Dayname) DD Month YYYY
-// assertEquals(DATEVALUE("Sun 09 Feb 2017"), 42775);
-// assertEquals(DATEVALUE("Sun 9 Feb 2017"), 42775);
-// assertEquals(DATEVALUE("Mon 09 Feb 2017"), 42775);
-// assertEquals(DATEVALUE("Thursday 09 Feb 2017"), 42775);
-// assertEquals(DATEVALUE("Thursday 09 February 2017"), 42775);
-// assertEquals(DATEVALUE("Sun 01 September 20"), 44075);
-// assertEquals(DATEVALUE("Sun, 09, Feb, 2017"), 42775);
-// assertEquals(DATEVALUE("20 May 1992"), 33744);
-// assertEquals(DATEVALUE("31 December 100"), -657070);
-// assertEquals(DATEVALUE("13 January 0030"), 10971);
-// assertEquals(DATEVALUE("13 January 1200"), -255656);
-// assertEquals(DATEVALUE("22 January 2222"), 117631);
-// assertEquals(DATEVALUE("3 November 4243"), 856071);
 // assertEquals(DATEVALUE("29 Feb 2004"), 38046); // leap year, 29th ok
 // catchAndAssertEquals(function() {
 //   DATEVALUE("29 Feb 2001");// not leap year, 29th not ok

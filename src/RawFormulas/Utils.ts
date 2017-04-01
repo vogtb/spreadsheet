@@ -526,6 +526,11 @@ class DateRegExBuilder {
     return this;
   }
 
+  TIMESTAMP_UNITS_CAPTURE_GROUP() : DateRegExBuilder {
+    this.regexString += "(\\s+([0-9]+)()()\\s*(am|pm)\\s*$)|(\\s+([0-9]+):\\s*([0-9]+)()()\\s*$)|(\\s+(([0-9]+):\\s*([0-9]+)()\\s*(am|pm))\\s*$)|(\\s+(([0-9]+):\\s*([0-9]+):\\s*([0-9]+)())\\s*$)|(\\s+(([0-9]+):\\s*([0-9]+):\\s*([0-9]+)\\s*(am|pm))\\s*$)";
+    return this;
+  }
+
   /**
    * Build the regular expression and ignore case.
    * @returns {RegExp}

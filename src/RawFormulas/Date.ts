@@ -78,6 +78,12 @@ const MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MONTHNAME().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
   .end()
   .build();
+// For reference: https://regex101.com/r/47GARA/1/
+const TIMESTAMP = DateRegExBuilder.DateRegExBuilder()
+  .start()
+  .TIMESTAMP_UNITS_CAPTURE_GROUP()
+  .end()
+  .build();
 
 
 /**
@@ -95,7 +101,14 @@ var DATEVALUE = function (...values) : number {
   var dateString = TypeCaster.firstValueAsString(values[0]);
   var m;
 
-  function createMoment(years, months, days) {
+  /**
+   * Creates moment object from years, months and days.
+   * @param years of moment
+   * @param months of moment in number or string format (eg: January)
+   * @param days of moment
+   * @returns {Moment} created moment
+   */
+  function createMoment(years, months, days) : moment.Moment {
     var actualYear = years;
     if (years >= 0 && years < 30) {
       actualYear = Y2K_YEAR + years;
@@ -115,17 +128,66 @@ var DATEVALUE = function (...values) : number {
     return tmpMoment.add(days, 'days');
   }
 
+  /**
+   *
+   * @param timestampString
+   * @param momentToMutate
+   * @returns {moment.Moment}
+   */
+  function matchTimestampAndMutateMoment(timestampString : string, momentToMutate: moment.Moment) : moment.Moment {
+    var matches = timestampString.match(TIMESTAMP);
+    if (matches && matches[1] !== undefined) { // 10am
+      var hours = parseInt(matches[2]);
+      var amTrue = (matches[5].toLowerCase() === "am");
+      if (hours > 12) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      // No op on momentToMutate because you can't overload hours with am/pm.
+    } if (matches && matches[6] !== undefined) { // 10:10
+      var hours = parseInt(matches[7]);
+      var minutes = parseInt(matches[8]);
+      momentToMutate.add(hours, 'hours').add(minutes, 'minutes');
+    } if (matches && matches[11] !== undefined) { // 10:10am
+      var hours = parseInt(matches[13]);
+      var minutes = parseInt(matches[14]);
+      var amTrue = (matches[16].toLowerCase() === "am");
+      if (hours > 12) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      momentToMutate.add(hours, 'hours').add(minutes, 'minutes'); // TODO: don't I add or remove 12 hours?
+    } if (matches && matches[17] !== undefined) { // 10:10:10
+      var hours = parseInt(matches[19]);
+      var minutes = parseInt(matches[20]);
+      var seconds = parseInt(matches[21]);
+      momentToMutate.add(hours, 'hours').add(minutes, 'minutes').add(seconds, 'seconds');
+    } if (matches && matches[23] !== undefined) { // // 10:10:10am
+      var hours = parseInt(matches[25]);
+      var minutes = parseInt(matches[26]);
+      var seconds = parseInt(matches[27]);
+      var amTrue = (matches[28].toLowerCase() === "am");
+      if (hours > 12) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      momentToMutate.add(hours, 'hours').add(minutes, 'minutes').add(seconds, 'seconds');
+    } else {
+      // TODO: Throw error if no match found by now.
+    }
+    return momentToMutate;
+  }
+
   // Check YEAR_MONTHDIG, YYYY(fd)MM, '1992/06'
   // NOTE: Must come before YEAR_MONTHDIG_DAY matching.
   if (m === undefined) {
     var matches = dateString.match(YEAR_MONTHDIG);
     if (matches && matches.length >= 6) {
-      if (matches[6] !== undefined) {
-        console.log("YEAR_MONTHDIG matched timestamp", matches[6]);
-      }
       var years = parseInt(matches[3]);
       var months = parseInt(matches[5]) - 1; // Months are zero indexed.
-      m = createMoment(years, months, 0);
+      var tmpMoment = createMoment(years, months, 0);
+      if (matches[6] !== undefined) {
+        console.log("YEAR_MONTHDIG matched timestamp", matches[6]);
+        tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
+      }
+      m = tmpMoment;
     }
   }
 

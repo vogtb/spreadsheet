@@ -117,7 +117,7 @@ assertEquals(DATEVALUE("6-24-92  10  am"), 33779);
 assertEquals(DATEVALUE("6-24-92 10: 10 "), 33779);
 assertEquals(DATEVALUE("6-24-92 10: 10 pm"), 33779);
 assertEquals(DATEVALUE("6-24-92 10: 10: 10"), 33779);
-assertEquals(DATEVALUE("6-24-92  101120: 10: 10    am  "), 33779);
+assertEquals(DATEVALUE("6-24-92  10: 1000: 1000    am  "), 33779);
 // YEAR_MONTHDIG_DAY, YYYY(fd)MM(fd)DD =================================================================================
 assertEquals(DATEVALUE("1992/6/24"), 33779);
 assertEquals(DATEVALUE("1992/06/24"), 33779);
@@ -202,7 +202,7 @@ assertEquals(DATEVALUE("1992-6-24  10  am"), 33779);
 assertEquals(DATEVALUE("1992-6-24 10: 10 "), 33779);
 assertEquals(DATEVALUE("1992-6-24 10: 10 pm"), 33779);
 assertEquals(DATEVALUE("1992-6-24 10: 10: 10"), 33779);
-assertEquals(DATEVALUE("1992-6-24  101120: 10: 10    am  "), 33779);
+assertEquals(DATEVALUE("1992-6-24  10: 1000: 1000    am   "), 33779);
 // DAY_MONTHNAME_YEAR, DD(fd)Month(fd)YYYY =============================================================================
 assertEquals(DATEVALUE("Sun 09 Feb 2017"), 42775);
 assertEquals(DATEVALUE("Sun 9 Feb 2017"), 42775);
@@ -254,7 +254,7 @@ assertEquals(DATEVALUE("24/June/1992  10  am"), 33779);
 assertEquals(DATEVALUE("24/June/1992 10: 10 "), 33779);
 assertEquals(DATEVALUE("24/June/1992 10: 10 pm"), 33779);
 assertEquals(DATEVALUE("24/June/1992 10: 10: 10"), 33779);
-assertEquals(DATEVALUE("24/June/1992  101120: 10: 10    am  "), 33779);
+assertEquals(DATEVALUE("24/June/1992  10: 1000: 1000    am   "), 33779);
 // YEAR_MONTHDIG, YYYY(fd)MM, '1992/06' ================================================================================
 assertEquals(DATEVALUE("2017/01"), 42736);
 assertEquals(DATEVALUE("2017/02"), 42767);
@@ -290,7 +290,7 @@ assertEquals(DATEVALUE("2017-01  10  am"), 42736);
 assertEquals(DATEVALUE("2017-01 10: 10 "), 42736);
 assertEquals(DATEVALUE("2017-01 10: 10 pm"), 42736);
 assertEquals(DATEVALUE("2017-01 10: 10: 10"), 42736);
-assertEquals(DATEVALUE("2017-01  101120: 10: 10    am  "), 42736);
+assertEquals(DATEVALUE("2017-01  10: 1000: 1000    am   "), 42736);
 // MONTHDIG_YEAR, MM(fd)YYYY, '06/1992' ================================================================================
 assertEquals(DATEVALUE("01/2017"), 42736);
 assertEquals(DATEVALUE("02/2017"), 42767);
@@ -329,7 +329,7 @@ assertEquals(DATEVALUE("01-2017  10  am"), 42736);
 assertEquals(DATEVALUE("01-2017 10: 10 "), 42736);
 assertEquals(DATEVALUE("01-2017 10: 10 pm"), 42736);
 assertEquals(DATEVALUE("01-2017 10: 10: 10"), 42736);
-assertEquals(DATEVALUE("01-2017  101120: 10: 10    am  "), 42736);
+assertEquals(DATEVALUE("01-2017  10: 1000: 1000    am   "), 42736);
 // YEAR_MONTHNAME, YYYY(fd)Month, '1992/Aug' ===========================================================================
 assertEquals(DATEVALUE("2017 January"), 42736);
 assertEquals(DATEVALUE("2017 February"), 42767);
@@ -364,7 +364,7 @@ assertEquals(DATEVALUE("2017-January  10  am"), 42736);
 assertEquals(DATEVALUE("2017-January 10: 10 "), 42736);
 assertEquals(DATEVALUE("2017-January 10: 10 pm"), 42736);
 assertEquals(DATEVALUE("2017-January 10: 10: 10"), 42736);
-assertEquals(DATEVALUE("2017-January  101120: 10: 10    am  "), 42736);
+assertEquals(DATEVALUE("2017-January  10: 1000: 1000    am   "), 42736);
 // MONTHNAME_YEAR, Month(fd)YYYY, 'Aug 1992' ===========================================================================
 assertEquals(DATEVALUE("January 2017"), 42736);
 assertEquals(DATEVALUE("February 2017"), 42767);
@@ -399,7 +399,7 @@ assertEquals(DATEVALUE("January-2017  10  am"), 42736);
 assertEquals(DATEVALUE("January-2017 10: 10 "), 42736);
 assertEquals(DATEVALUE("January-2017 10: 10 pm"), 42736);
 assertEquals(DATEVALUE("January-2017 10: 10: 10"), 42736);
-assertEquals(DATEVALUE("January-2017  101120: 10: 10    am  "), 42736);
+assertEquals(DATEVALUE("January-2017  10: 1000: 1000    am  "), 42736);
 
 
 

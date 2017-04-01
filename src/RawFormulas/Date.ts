@@ -68,7 +68,11 @@ const MONTHDIG_YEAR = DateRegExBuilder.DateRegExBuilder()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().YYYY14()
   .end()
   .build();
-// const YEAR_MONTHNAME;
+const YEAR_MONTHNAME = DateRegExBuilder.DateRegExBuilder()
+  .start()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY14().FLEX_DELIMITER().MONTHNAME()
+  .end()
+  .build();
 // const MONTHNAME_YEAR;
 
 /**
@@ -172,6 +176,16 @@ var DATEVALUE = function (...values) : number {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
       }
       m = createMoment(years, monthName, days);
+    }
+  }
+
+  // Check YEAR_MONTHNAME, YYYY(fd)Month, '1992/Aug'
+  if (m === undefined) {
+    var matches = dateString.match(YEAR_MONTHNAME);
+    if (matches && matches.length === 6) {
+      var years = parseInt(matches[3]);
+      var monthName = matches[5];
+      m = createMoment(years, monthName, 0);
     }
   }
 

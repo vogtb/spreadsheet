@@ -270,6 +270,7 @@ assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], "=10"), 10);
 assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], "=     10  "), 10);
 assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], ">0"), 5.166666666666667);
 assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], ">=5"), 6);
+assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], "<>1"), 6);
 assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], "<10"), 4.2);
 assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5, 44], "<=10"), 5.166666666666667);
 assertEquals(AVERAGEIF([1, 5, 5, 5, 10, 5], ">4.99"), 6);

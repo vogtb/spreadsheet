@@ -13,8 +13,6 @@ inside parser.js? If we ever want to impliment custom formulas, or even accept d
 against this. Or else someone could load a CSV with javascript and when our spreadsheet opens it, then suddenly
 arbitrary javascript is executed in the client machine.
 
-### Criteria evaluations should accept "<>"
-
 ### Criteria evaluations should escape reg-ex characters: http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 
 ### Criteria evaluations should accept dollar-to-number comparisons: `=COUNTIF({10, 20, 40}, ">=$20")`

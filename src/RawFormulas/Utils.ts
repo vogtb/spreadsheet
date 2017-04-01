@@ -46,7 +46,7 @@ class CriteriaFunctionFactory {
       };
     } else if (typeof criteria === "string") {
       // https://regex101.com/r/c2hxAZ/6
-      var comparisonMatches = criteria.match(/(^<=|^>=|^=|^>|^<)\s*(-?[0-9]+([,.][0-9]+)?)\s*$/);
+      var comparisonMatches = criteria.match(/(^<=|^>=|^=|^<>|^>|^<)\s*(-?[0-9]+([,.][0-9]+)?)\s*$/);
       if (comparisonMatches !== null && comparisonMatches.length >= 4 && comparisonMatches[2] !== undefined) {
         criteriaEvaluation = function (x) : boolean {
           return eval(x + criteria);
@@ -54,6 +54,11 @@ class CriteriaFunctionFactory {
         if (comparisonMatches[1] === "=") {
           criteriaEvaluation = function (x) : boolean {
             return eval(x + "===" + comparisonMatches[2]);
+          };
+        }
+        if (comparisonMatches[1] === "<>") {
+          criteriaEvaluation = function (x) : boolean {
+            return eval(x + "!==" + comparisonMatches[2]);
           };
         }
       } else if (criteria.match(/\*|\~\*|\?|\~\?/) !== null) {

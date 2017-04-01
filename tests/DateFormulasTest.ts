@@ -299,6 +299,32 @@ assertEquals(DATEVALUE("2017, January"), 42736);
 catchAndAssertEquals(function() {
   DATEVALUE("2017,January");
 }, ERRORS.VALUE_ERROR);
+// MONTHNAME_YEAR, Month(fd)YYYY, 'Aug 1992' ===========================================================================
+assertEquals(DATEVALUE("January 2017"), 42736);
+assertEquals(DATEVALUE("February 2017"), 42767);
+assertEquals(DATEVALUE("March 2017"), 42795);
+assertEquals(DATEVALUE("April 2017"), 42826);
+assertEquals(DATEVALUE("May 2017"), 42856);
+assertEquals(DATEVALUE("June 2017"), 42887);
+assertEquals(DATEVALUE("July 2017"), 42917);
+assertEquals(DATEVALUE("August 2017"), 42948);
+assertEquals(DATEVALUE("September 2017"), 42979);
+assertEquals(DATEVALUE("October 2017"), 43009);
+assertEquals(DATEVALUE("November 2017"), 43040);
+assertEquals(DATEVALUE("December 2017"), 43070);
+// delimiter tests
+assertEquals(DATEVALUE("Thursday January 2017"), 42736);
+assertEquals(DATEVALUE("Thursday, January 2017"), 42736);
+assertEquals(DATEVALUE("January/2017"), 42736);
+assertEquals(DATEVALUE("January-2017"), 42736);
+assertEquals(DATEVALUE("January.2017"), 42736);
+assertEquals(DATEVALUE("January, 2017"), 42736);
+// Comma delimiters should be followed by spaces.
+catchAndAssertEquals(function() {
+  DATEVALUE("January,2017");
+}, ERRORS.VALUE_ERROR);
+
+
 
 
 

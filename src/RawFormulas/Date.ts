@@ -73,7 +73,11 @@ const YEAR_MONTHNAME = DateRegExBuilder.DateRegExBuilder()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY14().FLEX_DELIMITER().MONTHNAME()
   .end()
   .build();
-// const MONTHNAME_YEAR;
+const MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
+  .start()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MONTHNAME().FLEX_DELIMITER().YYYY14()
+  .end()
+  .build();
 
 /**
  * Converts a provided date string in a known format to a date value.
@@ -159,6 +163,17 @@ var DATEVALUE = function (...values) : number {
       var months = parseInt(matches[3]) - 1; // Months are zero indexed.
       var days = parseInt(matches[5]) - 1; // Days are zero indexed.
       m = createMoment(years, months, days);
+    }
+  }
+
+  // Check MONTHNAME_YEAR, Month(fd)YYYY, 'Aug 1992'
+  // NOTE: Needs to come before DAY_MONTHNAME_YEAR matching.
+  if (m === undefined) {
+    var matches = dateString.match(MONTHNAME_YEAR);
+    if (matches && matches.length === 6) {
+      var years = parseInt(matches[5]);
+      var monthName = matches[3];
+      m = createMoment(years, monthName, 0);
     }
   }
 

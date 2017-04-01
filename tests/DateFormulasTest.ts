@@ -389,7 +389,17 @@ assertEquals(DATEVALUE("January, 2017"), 42736);
 catchAndAssertEquals(function() {
   DATEVALUE("January,2017");
 }, ERRORS.VALUE_ERROR);
-
+// timestamp test
+assertEquals(DATEVALUE("January-2017 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("January-2017 10:10"), 42736);
+assertEquals(DATEVALUE("January-2017 10:10am"), 42736);
+assertEquals(DATEVALUE("January-2017 10:10:10"), 42736);
+assertEquals(DATEVALUE("January-2017 10:10:10am"), 42736);
+assertEquals(DATEVALUE("January-2017  10  am"), 42736);
+assertEquals(DATEVALUE("January-2017 10: 10 "), 42736);
+assertEquals(DATEVALUE("January-2017 10: 10 pm"), 42736);
+assertEquals(DATEVALUE("January-2017 10: 10: 10"), 42736);
+assertEquals(DATEVALUE("January-2017  101120: 10: 10    am  "), 42736);
 
 
 

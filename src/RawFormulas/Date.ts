@@ -46,36 +46,36 @@ var DATE = function (...values) {
 const YEAR_MONTHDIG_DAY = DateRegExBuilder.DateRegExBuilder()
   .start()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY().FLEX_DELIMITER().MM().FLEX_DELIMITER().DD_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
-  .simpleEnd()
+  .end()
   .build();
 const MONTHDIG_DAY_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().DD().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
-  .simpleEnd()
+  .end()
   .build();
 const DAY_MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().DD().FLEX_DELIMITER().MONTHNAME().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
-  .simpleEnd()
+  .end()
   .build();
 const YEAR_MONTHDIG = DateRegExBuilder.DateRegExBuilder()
   .start()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY14().FLEX_DELIMITER().MM_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
-  .simpleEnd()
+  .end()
   .build();
 const MONTHDIG_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
-  .simpleEnd()
+  .end()
   .build();
 const YEAR_MONTHNAME = DateRegExBuilder.DateRegExBuilder()
   .start()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY14().FLEX_DELIMITER().MONTHNAME_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
-  .simpleEnd()
+  .end()
   .build();
 const MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MONTHNAME().FLEX_DELIMITER().YYYY14()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MONTHNAME().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
   .end()
   .build();
 
@@ -184,6 +184,9 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(MONTHNAME_YEAR);
     if (matches && matches.length >= 6) {
+      if (matches[6] !== undefined) {
+        console.log("MONTHNAME_YEAR matched timestamp", matches[6]);
+      }
       var years = parseInt(matches[5]);
       var monthName = matches[3];
       m = createMoment(years, monthName, 0);

@@ -45,8 +45,8 @@ var DATE = function (...values) {
 
 const YEAR_MONTHDIG_DAY = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY().FLEX_DELIMITER().MM().FLEX_DELIMITER().DD()
-  .end()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY().FLEX_DELIMITER().MM().FLEX_DELIMITER().DD_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .simpleEnd()
   .build();
 const MONTHDIG_DAY_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
@@ -55,8 +55,8 @@ const MONTHDIG_DAY_YEAR = DateRegExBuilder.DateRegExBuilder()
   .build();
 const DAY_MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().DD().FLEX_DELIMITER().MONTHNAME().FLEX_DELIMITER().YYYY14()
-  .end()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().DD().FLEX_DELIMITER().MONTHNAME().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .simpleEnd()
   .build();
 const YEAR_MONTHDIG = DateRegExBuilder.DateRegExBuilder()
   .start()
@@ -78,6 +78,7 @@ const MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MONTHNAME().FLEX_DELIMITER().YYYY14()
   .end()
   .build();
+
 
 /**
  * Converts a provided date string in a known format to a date value.
@@ -129,6 +130,9 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(YEAR_MONTHDIG_DAY);
     if (matches && matches.length >= 8) {
+      if (matches.length >= 9 && matches[8] !== undefined) {
+        console.log("YEAR_MONTHDIG_DAY matched timestamp", matches[8]);
+      }
       // Check delimiters. If they're not the same, throw error.
       if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
@@ -181,6 +185,9 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(DAY_MONTHNAME_YEAR);
     if (matches && matches.length >= 8) {
+      if (matches.length >= 9 && matches[8] !== undefined) {
+        console.log("DAY_MONTHNAME_YEAR matched timestamp", matches[8]);
+      }
       var years = parseInt(matches[7]);
       var monthName = matches[5];
       var days = parseInt(matches[3]) - 1; // Days are zero indexed.

@@ -181,6 +181,16 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("2005/1/44");
 }, ERRORS.VALUE_ERROR);
+assertEquals(DATEVALUE("1992-6-24 10am"), 33779); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("1992-6-24 10:10"), 33779);
+assertEquals(DATEVALUE("1992-6-24 10:10am"), 33779);
+assertEquals(DATEVALUE("1992-6-24 10:10:10"), 33779);
+assertEquals(DATEVALUE("1992-6-24 10:10:10am"), 33779);
+assertEquals(DATEVALUE("1992-6-24  10  am"), 33779);
+assertEquals(DATEVALUE("1992-6-24 10: 10 "), 33779);
+assertEquals(DATEVALUE("1992-6-24 10: 10 pm"), 33779);
+assertEquals(DATEVALUE("1992-6-24 10: 10: 10"), 33779);
+assertEquals(DATEVALUE("1992-6-24  101120: 10: 10    am  "), 33779);
 // DAY_MONTHNAME_YEAR, DD(fd)Month(fd)YYYY =============================================================================
 assertEquals(DATEVALUE("Sun 09 Feb 2017"), 42775);
 assertEquals(DATEVALUE("Sun 9 Feb 2017"), 42775);
@@ -222,6 +232,17 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("09,Feb,2017");
 }, ERRORS.VALUE_ERROR);
+// timestamp tests
+assertEquals(DATEVALUE("24/June/1992 10am"), 33779); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("24/June/1992 10:10"), 33779);
+assertEquals(DATEVALUE("24/June/1992 10:10am"), 33779);
+assertEquals(DATEVALUE("24/June/1992 10:10:10"), 33779);
+assertEquals(DATEVALUE("24/June/1992 10:10:10am"), 33779);
+assertEquals(DATEVALUE("24/June/1992  10  am"), 33779);
+assertEquals(DATEVALUE("24/June/1992 10: 10 "), 33779);
+assertEquals(DATEVALUE("24/June/1992 10: 10 pm"), 33779);
+assertEquals(DATEVALUE("24/June/1992 10: 10: 10"), 33779);
+assertEquals(DATEVALUE("24/June/1992  101120: 10: 10    am  "), 33779);
 // YEAR_MONTHDIG, YYYY(fd)MM, '1992/06' ================================================================================
 assertEquals(DATEVALUE("2017/01"), 42736);
 assertEquals(DATEVALUE("2017/02"), 42767);

@@ -385,6 +385,11 @@ class DateRegExBuilder {
     return this;
   }
 
+  simpleEnd(): DateRegExBuilder {
+    this.regexString += "$";
+    return this;
+  }
+
   /**
    * Adds all month full name and short names to the regular expression.
    * @returns {DateRegExBuilder}
@@ -414,6 +419,11 @@ class DateRegExBuilder {
     return this;
   }
 
+  DD_W_SPACE() : DateRegExBuilder {
+    this.regexString += "(0?[0-9]|1[0-9]|2[0-9]|3[0-1]|0?[0-9]\\s+|1[0-9]\\s+|2[0-9]\\s+|3[0-1]\\s+)";
+    return this;
+  }
+
   YYYY() : DateRegExBuilder {
     this.regexString += "([0-9]{4}|[1-9][0-9][0-9])";
     return this;
@@ -424,18 +434,18 @@ class DateRegExBuilder {
     return this;
   }
 
+  YYYY14_W_SPACE() : DateRegExBuilder {
+    this.regexString += "([0-9]{1,4}|[0-9]{1,4}\\s+)";
+    return this;
+  }
+
   FLEX_DELIMITER() : DateRegExBuilder {
     this.regexString += "(,?\\s+|\\s*-?\\.?-?\\/?\\s*)";
     return this;
   }
 
-  HH(): DateRegExBuilder {
-    this.regexString += "([0-9]|0[0-9]|1[0-2])";
-    return this;
-  }
-
   OPTIONAL_TIMESTAMP_CAPTURE_GROUP() : DateRegExBuilder {
-    this.regexString += "((\\s+[0-9]+\\s*am|[0-9]+\\s*pm$)|(\\s+[0-9]+:\\s*[0-9]+$)|(\\s+[0-9]+:\\s*[0-9]+\\s*am|\\s+[0-9]+:\\s*[0-9]+\\s*pm$)|(\\s+[0-9]+:\\s*[0-9]+:\\s*[0-9]+$)|(\\s+[0-9]+:\\s*[0-9]+:\\s*[0-9]+\\s*am|[0-9]+:\\s*[0-9]+:\\s*[0-9]+\\s*pm$))?";
+    this.regexString += "((\\s+[0-9]+\\s*am\\s*$|[0-9]+\\s*pm\\s*$)|(\\s+[0-9]+:\\s*[0-9]+\\s*$)|(\\s+[0-9]+:\\s*[0-9]+\\s*am\\s*$|\\s+[0-9]+:\\s*[0-9]+\\s*pm\\s*$)|(\\s+[0-9]+:\\s*[0-9]+:\\s*[0-9]+\\s*$)|(\\s+[0-9]+:\\s*[0-9]+:\\s*[0-9]+\\s*am\\s*$|[0-9]+:\\s*[0-9]+:\\s*[0-9]+\\s*pm\\s*$))?";
     return this;
   }
 

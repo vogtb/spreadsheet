@@ -48,7 +48,11 @@ const YEAR_MONTHDIG_DAY = DateRegExBuilder.DateRegExBuilder()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY().FLEX_DELIMITER().MM().FLEX_DELIMITER().DD()
   .end()
   .build();
-// const MONTHDIG_DAY_YEAR
+const MONTHDIG_DAY_YEAR = DateRegExBuilder.DateRegExBuilder()
+  .start()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().DD().FLEX_DELIMITER().YYYY14()
+  .end()
+  .build();
 // const MONTHNAME_DAY_YEAR;
 // const DAY_MONTHNAME_YEAR;
 // const YEAR_MONTHDIG;
@@ -71,9 +75,24 @@ var DATEVALUE = function (...values) : number {
   var dateString = TypeCaster.firstValueAsString(values[0]);
   var m;
 
-  // Check YEAR_MONTHDIG_DAY_SLASH_DELIMIT, YYYY/MM/DD, "1992/06/24"
+  function createMoment(years, months, days) {
+    var actualYear = years;
+    if (years >= 0 && years < 30) {
+      actualYear = Y2K_YEAR + years;
+    } else if (years >= 30 && years < 100) {
+      actualYear = FIRST_YEAR + years;
+    }
+    var tmpMoment = moment.utc([actualYear])
+      .add(months, 'months');
+    // If we're specifying more days than there are in this month
+    if (days > tmpMoment.daysInMonth() - 1) {
+      throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+    }
+    return tmpMoment.add(days, 'days');
+  }
+
+  // Check YEAR_MONTHDIG_DAY, YYYY(fd)MM(fd)DD, "1992/06/24"
   if (m === undefined) {
-    // For reference: https://regex101.com/r/uusfi7/5
     var matches = dateString.match(YEAR_MONTHDIG_DAY);
     if (matches && matches.length === 8) {
       // Check delimiters. If they're not the same, throw error.
@@ -83,19 +102,22 @@ var DATEVALUE = function (...values) : number {
       var years = parseInt(matches[3]);
       var months = parseInt(matches[5]) - 1; // Months are zero indexed.
       var days = parseInt(matches[7]) - 1; // Days are zero indexed.
-      var actualYear = years;
-      if (years >= 0 && years < 30) {
-        actualYear = Y2K_YEAR + years;
-      } else if (years >= 30 && years < 100) {
-        actualYear = FIRST_YEAR + years;
-      }
-      var tmpMoment = moment.utc([actualYear])
-        .add(months, 'months');
-      // If we're specifying more days than there are in this month
-      if (days > tmpMoment.daysInMonth() - 1) {
+      m = createMoment(years, months, days);
+    }
+  }
+
+  // Check MONTHDIG_DAY_YEAR, MM(fd)DD(fd)YYYY, "06/24/1992"
+  if (m === undefined) {
+    var matches = dateString.match(MONTHDIG_DAY_YEAR);
+    if (matches && matches.length === 8) {
+      // Check delimiters. If they're not the same, throw error.
+      if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
       }
-      m = tmpMoment.add(days, 'days');
+      var years = parseInt(matches[7]);
+      var months = parseInt(matches[3]) - 1; // Months are zero indexed.
+      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
+      m = createMoment(years, months, days);
     }
   }
 

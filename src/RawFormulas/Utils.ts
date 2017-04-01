@@ -418,134 +418,66 @@ class DateRegExBuilder {
     return this;
   }
 
-  /**
-   *
-   * @returns {DateRegExBuilder}
-   * @constructor
-   */
   OPTIONAL_DAYNAME() : DateRegExBuilder {
     this.regexString += "(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tue|wed|thu|fri|sat)?";
     return this;
   }
 
-  /**
-   *
-   * @returns {DateRegExBuilder}
-   * @constructor
-   */
   OPTIONAL_COMMA() : DateRegExBuilder {
     this.regexString += "(,?\\s+)?";
     return this;
   }
 
-  /**
-   * Adds month digit to the regular expression.
-   * @returns {DateRegExBuilder}
-   */
   MM() : DateRegExBuilder {
     this.regexString += "([1-9]|0[1-9]|1[0-2])";
     return this;
   }
 
-  /**
-   *
-   * @returns {DateRegExBuilder}
-   */
   DD() : DateRegExBuilder {
     this.regexString += "(0?[0-9]|1[0-9]|2[0-9]|3[0-1])";
     return this;
   }
 
   YYYY() : DateRegExBuilder {
-    this.regexString += "([0-9][0-9][0-9][0-9]|[1-9][0-9][0-9])";
+    this.regexString += "([0-9]{4}|[1-9][0-9][0-9])";
     return this;
   }
 
-  YYYY_SIMPLE() : DateRegExBuilder {
-    this.regexString += "([0-9]{4})";
+  YYYY14() : DateRegExBuilder {
+    this.regexString += "([0-9]{1,4})";
     return this;
   }
-
-  COMMON_DELIMITERS() : DateRegExBuilder {
-    this.regexString += "(,?\\s*|\\s*-?\\.?-?\\/?\\s*)";
-    return this;
-  }
-
 
   FLEX_DELIMITER() : DateRegExBuilder {
     this.regexString += "(,?\\s+|\\s*-?\\.?-?\\/?\\s*)";
     return this;
   }
 
-  /**
-   *
-   * @returns {DateRegExBuilder}
-   * @constructor
-   */
-  YY_OP_YY() : DateRegExBuilder {
-    this.regexString += "(([0-9][0-9][0-9][0-9])|([1-9][0-9][0-9])|[0-9]{0,3})";
-    return this;
-  }
-
-  YYY_OR_YYYY() : DateRegExBuilder {
-    this.regexString += "([0-9]{4}|[1-9][0-9]{2}|[0-9]{2})";
-    return this;
-  }
-
-  /**
-   *
-   * @returns {DateRegExBuilder}
-   * @constructor
-   */
   HH(): DateRegExBuilder {
     this.regexString += "([0-9]|0[0-9]|1[0-2])";
     return this;
   }
 
-  /**
-   *
-   * @returns {DateRegExBuilder}
-   * @constructor
-   */
   MERIDIEM(): DateRegExBuilder {
     this.regexString += "(am|pm)";
     return this;
   }
 
-  /**
-   *
-   * @returns {DateRegExBuilder}
-   * @constructor
-   */
   OVERLOAD_MINITES() : DateRegExBuilder {
     this.regexString += "([0-9]{2,})";
     return this;
   }
 
-  /**
-   *
-   * @returns {DateRegExBuilder}
-   * @constructor
-   */
   OVERLOAD_HH() : DateRegExBuilder {
     this.regexString += "([0-9]{1,})";
     return this;
   }
 
-  /**
-   *
-   * @returns {DateRegExBuilder}
-   * @constructor
-   */
   SEMICOLON(): DateRegExBuilder {
     this.regexString += ":" + DateRegExBuilder.ZERO_OR_MORE_SPACES;
     return this;
   }
 
-  /**
-   * Builds the regular expression.
-   * @returns {RegExp} Built up string as a regular expression.
-   */
   build() : RegExp {
     // Always ignore case.
     return new RegExp(this.regexString, 'i');

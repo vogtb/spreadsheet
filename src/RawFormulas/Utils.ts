@@ -399,6 +399,11 @@ class DateRegExBuilder {
     return this;
   }
 
+  MONTHNAME_W_SPACE() : DateRegExBuilder {
+    this.regexString += "(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec|january\\s+|february\\s+|march\\s+|april\\s+|may\\s+|june\\s+|july\\s+|august\\s+|september\\s+|october\\s+|november\\s+|december\\s+|jan\\s+|feb\\s+|mar\\s+|apr\\s+|jun\\s+|jul\\s+|aug\\s+|sep\\s+|oct\\s+|nov\\s+|dec\\s+)";
+    return this;
+  }
+
   OPTIONAL_DAYNAME() : DateRegExBuilder {
     this.regexString += "(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tue|wed|thu|fri|sat)?";
     return this;
@@ -411,6 +416,11 @@ class DateRegExBuilder {
 
   MM() : DateRegExBuilder {
     this.regexString += "([1-9]|0[1-9]|1[0-2])";
+    return this;
+  }
+
+  MM_W_SPACE() : DateRegExBuilder {
+    this.regexString += "([1-9]|0[1-9]|1[0-2]|[1-9]\\s+|0[1-9]\\s+|1[0-2]\\s+)";
     return this;
   }
 

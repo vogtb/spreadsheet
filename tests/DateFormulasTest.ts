@@ -107,6 +107,17 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("1/44/2005");
 }, ERRORS.VALUE_ERROR);
+// timestamp test
+assertEquals(DATEVALUE("6-24-92 10am"), 33779); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("6-24-92 10:10"), 33779);
+assertEquals(DATEVALUE("6-24-92 10:10am"), 33779);
+assertEquals(DATEVALUE("6-24-92 10:10:10"), 33779);
+assertEquals(DATEVALUE("6-24-92 10:10:10am"), 33779);
+assertEquals(DATEVALUE("6-24-92  10  am"), 33779);
+assertEquals(DATEVALUE("6-24-92 10: 10 "), 33779);
+assertEquals(DATEVALUE("6-24-92 10: 10 pm"), 33779);
+assertEquals(DATEVALUE("6-24-92 10: 10: 10"), 33779);
+assertEquals(DATEVALUE("6-24-92  101120: 10: 10    am  "), 33779);
 // YEAR_MONTHDIG_DAY, YYYY(fd)MM(fd)DD =================================================================================
 assertEquals(DATEVALUE("1992/6/24"), 33779);
 assertEquals(DATEVALUE("1992/06/24"), 33779);
@@ -181,6 +192,7 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("2005/1/44");
 }, ERRORS.VALUE_ERROR);
+// timestamp test
 assertEquals(DATEVALUE("1992-6-24 10am"), 33779); // TODO: come back to these. right now just testing to make sure they don't break anything.
 assertEquals(DATEVALUE("1992-6-24 10:10"), 33779);
 assertEquals(DATEVALUE("1992-6-24 10:10am"), 33779);
@@ -268,6 +280,17 @@ assertEquals(DATEVALUE("2017, 01"), 42736);
 catchAndAssertEquals(function() {
   DATEVALUE("2017,01");
 }, ERRORS.VALUE_ERROR);
+// timestamp test
+assertEquals(DATEVALUE("2017-01 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("2017-01 10:10"), 42736);
+assertEquals(DATEVALUE("2017-01 10:10am"), 42736);
+assertEquals(DATEVALUE("2017-01 10:10:10"), 42736);
+assertEquals(DATEVALUE("2017-01 10:10:10am"), 42736);
+assertEquals(DATEVALUE("2017-01  10  am"), 42736);
+assertEquals(DATEVALUE("2017-01 10: 10 "), 42736);
+assertEquals(DATEVALUE("2017-01 10: 10 pm"), 42736);
+assertEquals(DATEVALUE("2017-01 10: 10: 10"), 42736);
+assertEquals(DATEVALUE("2017-01  101120: 10: 10    am  "), 42736);
 // MONTHDIG_YEAR, MM(fd)YYYY, '06/1992' ================================================================================
 assertEquals(DATEVALUE("01/2017"), 42736);
 assertEquals(DATEVALUE("02/2017"), 42767);
@@ -296,6 +319,17 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("0/2017");
 }, ERRORS.VALUE_ERROR);
+// timestamp test
+assertEquals(DATEVALUE("01-2017 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("01-2017 10:10"), 42736);
+assertEquals(DATEVALUE("01-2017 10:10am"), 42736);
+assertEquals(DATEVALUE("01-2017 10:10:10"), 42736);
+assertEquals(DATEVALUE("01-2017 10:10:10am"), 42736);
+assertEquals(DATEVALUE("01-2017  10  am"), 42736);
+assertEquals(DATEVALUE("01-2017 10: 10 "), 42736);
+assertEquals(DATEVALUE("01-2017 10: 10 pm"), 42736);
+assertEquals(DATEVALUE("01-2017 10: 10: 10"), 42736);
+assertEquals(DATEVALUE("01-2017  101120: 10: 10    am  "), 42736);
 // YEAR_MONTHNAME, YYYY(fd)Month, '1992/Aug' ===========================================================================
 assertEquals(DATEVALUE("2017 January"), 42736);
 assertEquals(DATEVALUE("2017 February"), 42767);
@@ -320,6 +354,17 @@ assertEquals(DATEVALUE("2017, January"), 42736);
 catchAndAssertEquals(function() {
   DATEVALUE("2017,January");
 }, ERRORS.VALUE_ERROR);
+// timestamp test
+assertEquals(DATEVALUE("2017-January 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("2017-January 10:10"), 42736);
+assertEquals(DATEVALUE("2017-January 10:10am"), 42736);
+assertEquals(DATEVALUE("2017-January 10:10:10"), 42736);
+assertEquals(DATEVALUE("2017-January 10:10:10am"), 42736);
+assertEquals(DATEVALUE("2017-January  10  am"), 42736);
+assertEquals(DATEVALUE("2017-January 10: 10 "), 42736);
+assertEquals(DATEVALUE("2017-January 10: 10 pm"), 42736);
+assertEquals(DATEVALUE("2017-January 10: 10: 10"), 42736);
+assertEquals(DATEVALUE("2017-January  101120: 10: 10    am  "), 42736);
 // MONTHNAME_YEAR, Month(fd)YYYY, 'Aug 1992' ===========================================================================
 assertEquals(DATEVALUE("January 2017"), 42736);
 assertEquals(DATEVALUE("February 2017"), 42767);

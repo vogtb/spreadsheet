@@ -50,8 +50,8 @@ const YEAR_MONTHDIG_DAY = DateRegExBuilder.DateRegExBuilder()
   .build();
 const MONTHDIG_DAY_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().DD().FLEX_DELIMITER().YYYY14()
-  .end()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().DD().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .simpleEnd()
   .build();
 const DAY_MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
@@ -60,18 +60,18 @@ const DAY_MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
   .build();
 const YEAR_MONTHDIG = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY14().FLEX_DELIMITER().MM()
-  .end()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY14().FLEX_DELIMITER().MM_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .simpleEnd()
   .build();
 const MONTHDIG_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().YYYY14()
-  .end()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .simpleEnd()
   .build();
 const YEAR_MONTHNAME = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY14().FLEX_DELIMITER().MONTHNAME()
-  .end()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY14().FLEX_DELIMITER().MONTHNAME_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .simpleEnd()
   .build();
 const MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
@@ -120,6 +120,9 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(YEAR_MONTHDIG);
     if (matches && matches.length >= 6) {
+      if (matches[6] !== undefined) {
+        console.log("YEAR_MONTHDIG matched timestamp", matches[6]);
+      }
       var years = parseInt(matches[3]);
       var months = parseInt(matches[5]) - 1; // Months are zero indexed.
       m = createMoment(years, months, 0);
@@ -149,6 +152,9 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(MONTHDIG_YEAR);
     if (matches && matches.length >= 6) {
+      if (matches[6] !== undefined) {
+        console.log("MONTHDIG_YEAR matched timestamp", matches[6]);
+      }
       var years = parseInt(matches[5]);
       var months = parseInt(matches[3]) - 1; // Months are zero indexed.
       m = createMoment(years, months, 0);
@@ -159,6 +165,9 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(MONTHDIG_DAY_YEAR);
     if (matches && matches.length >= 8) {
+      if (matches.length >= 9 && matches[8] !== undefined) {
+        console.log("MONTHDIG_DAY_YEAR matched timestamp", matches[8]);
+      }
       // Check delimiters. If they're not the same, throw error.
       if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
@@ -205,6 +214,9 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(YEAR_MONTHNAME);
     if (matches && matches.length >= 6) {
+      if (matches[6] !== undefined) {
+        console.log("YEAR_MONTHNAME matched timestamp", matches[6]);
+      }
       var years = parseInt(matches[3]);
       var monthName = matches[5];
       m = createMoment(years, monthName, 0);

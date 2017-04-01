@@ -63,7 +63,11 @@ const YEAR_MONTHDIG = DateRegExBuilder.DateRegExBuilder()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY14().FLEX_DELIMITER().MM()
   .end()
   .build();
-// const MONTHDIG_YEAR;
+const MONTHDIG_YEAR = DateRegExBuilder.DateRegExBuilder()
+  .start()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().YYYY14()
+  .end()
+  .build();
 // const YEAR_MONTHNAME;
 // const MONTHNAME_YEAR;
 
@@ -125,6 +129,17 @@ var DATEVALUE = function (...values) : number {
       var months = parseInt(matches[5]) - 1; // Months are zero indexed.
       var days = parseInt(matches[7]) - 1; // Days are zero indexed.
       m = createMoment(years, months, days);
+    }
+  }
+
+  // Check MONTHDIG_YEAR, MM(fd)YYYY, '06/1992'
+  // NOTE: Must come before MONTHDIG_DAY_YEAR matching.
+  if (m === undefined) {
+    var matches = dateString.match(MONTHDIG_YEAR);
+    if (matches && matches.length === 6) {
+      var years = parseInt(matches[5]);
+      var months = parseInt(matches[3]) - 1; // Months are zero indexed.
+      m = createMoment(years, months, 0);
     }
   }
 

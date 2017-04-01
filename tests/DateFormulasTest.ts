@@ -243,7 +243,38 @@ assertEquals(DATEVALUE("2017/01"), 42736);
 assertEquals(DATEVALUE("2017-01"), 42736);
 assertEquals(DATEVALUE("2017.01"), 42736);
 assertEquals(DATEVALUE("2017, 01"), 42736);
-
+// Comma delimiters should be followed by spaces.
+catchAndAssertEquals(function() {
+  DATEVALUE("2017,01");
+}, ERRORS.VALUE_ERROR);
+// MONTHDIG_YEAR, MM(fd)YYYY, '06/1992' ================================================================================
+assertEquals(DATEVALUE("01/2017"), 42736);
+assertEquals(DATEVALUE("02/2017"), 42767);
+assertEquals(DATEVALUE("03/2017"), 42795);
+assertEquals(DATEVALUE("04/2017"), 42826);
+assertEquals(DATEVALUE("05/2017"), 42856);
+assertEquals(DATEVALUE("06/2017"), 42887);
+assertEquals(DATEVALUE("07/2017"), 42917);
+assertEquals(DATEVALUE("08/2017"), 42948);
+assertEquals(DATEVALUE("09/2017"), 42979);
+assertEquals(DATEVALUE("10/2017"), 43009);
+assertEquals(DATEVALUE("11/2017"), 43040);
+assertEquals(DATEVALUE("12/2017"), 43070);
+// delimiter tests
+assertEquals(DATEVALUE("Thursday 01/2017"), 42736);
+assertEquals(DATEVALUE("Thursday, 01/2017"), 42736);
+assertEquals(DATEVALUE("1/2017"), 42736);
+assertEquals(DATEVALUE("01-2017"), 42736);
+assertEquals(DATEVALUE("01.2017"), 42736);
+assertEquals(DATEVALUE("01, 2017"), 42736);
+// Comma delimiters should be followed by spaces.
+catchAndAssertEquals(function() {
+  DATEVALUE("01,2017");
+}, ERRORS.VALUE_ERROR);
+// 0 is not a month
+catchAndAssertEquals(function() {
+  DATEVALUE("0/2017");
+}, ERRORS.VALUE_ERROR);
 
 
 

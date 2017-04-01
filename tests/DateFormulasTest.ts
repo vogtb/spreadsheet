@@ -44,7 +44,7 @@ assertEquals(DATE(-1900, 1, 1).toNumber(), 2);
 
 
 // Test DATEVALUE
-// YEAR_MONTHDIG_DAY, YYYY(fd)MM(fd)DD =================================================================================
+// MONTHDIG_DAY_YEAR, MM(fd)DD(fd)YYYY =================================================================================
 assertEquals(DATEVALUE("6/24/92"), 33779);
 assertEquals(DATEVALUE("6/24/1992"), 33779);
 assertEquals(DATEVALUE("06/24/1992"), 33779);
@@ -107,7 +107,7 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("1/44/2005");
 }, ERRORS.VALUE_ERROR);
-// MONTHDIG_DAY_YEAR, MM(fd)DD(fd)YYYY =================================================================================
+// YEAR_MONTHDIG_DAY, YYYY(fd)MM(fd)DD =================================================================================
 assertEquals(DATEVALUE("1992/6/24"), 33779);
 assertEquals(DATEVALUE("1992/06/24"), 33779);
 assertEquals(DATEVALUE("1999/1/01"), 36161);

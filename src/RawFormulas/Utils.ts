@@ -370,7 +370,6 @@ class Serializer {
 class DateRegExBuilder {
   private regexString = "";
   private static ZERO_OR_MORE_SPACES = "\\s*";
-  private static ONE_OR_MORE_SPACES = "\\s+";
 
   static DateRegExBuilder() : DateRegExBuilder {
     return new DateRegExBuilder();
@@ -382,30 +381,7 @@ class DateRegExBuilder {
   }
 
   end() : DateRegExBuilder {
-    this.regexString += DateRegExBuilder.ZERO_OR_MORE_SPACES + "$";
-    return this;
-  }
-
-  /**
-   * Adds a match group for zero or more whitespace tokens.
-   * @returns {DateRegExBuilder}
-   */
-  N_SPACES() : DateRegExBuilder {
-    this.regexString += DateRegExBuilder.ZERO_OR_MORE_SPACES;
-    return this;
-  }
-
-  /**
-   * Adds a match group for zero or more whitespace tokens.
-   * @returns {DateRegExBuilder}
-   */
-  ONE_OR_N_SPACES() : DateRegExBuilder {
-    this.regexString += DateRegExBuilder.ONE_OR_MORE_SPACES;
-    return this;
-  }
-
-  SLASH_DELIMITOR() : DateRegExBuilder {
-    this.regexString += "\\/";
+    this.regexString += "\\s*$";
     return this;
   }
 
@@ -458,23 +434,8 @@ class DateRegExBuilder {
     return this;
   }
 
-  MERIDIEM(): DateRegExBuilder {
-    this.regexString += "(am|pm)";
-    return this;
-  }
-
-  OVERLOAD_MINITES() : DateRegExBuilder {
-    this.regexString += "([0-9]{2,})";
-    return this;
-  }
-
-  OVERLOAD_HH() : DateRegExBuilder {
-    this.regexString += "([0-9]{1,})";
-    return this;
-  }
-
-  SEMICOLON(): DateRegExBuilder {
-    this.regexString += ":" + DateRegExBuilder.ZERO_OR_MORE_SPACES;
+  OPTIONAL_TIMESTAMP_CAPTURE_GROUP() : DateRegExBuilder {
+    this.regexString += "((\\s+[0-9]+\\s*am|[0-9]+\\s*pm$)|(\\s+[0-9]+:\\s*[0-9]+$)|(\\s+[0-9]+:\\s*[0-9]+\\s*am|\\s+[0-9]+:\\s*[0-9]+\\s*pm$)|(\\s+[0-9]+:\\s*[0-9]+:\\s*[0-9]+$)|(\\s+[0-9]+:\\s*[0-9]+:\\s*[0-9]+\\s*am|[0-9]+:\\s*[0-9]+:\\s*[0-9]+\\s*pm$))?";
     return this;
   }
 

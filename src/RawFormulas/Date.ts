@@ -118,7 +118,7 @@ var DATEVALUE = function (...values) : number {
   // NOTE: Must come before YEAR_MONTHDIG_DAY matching.
   if (m === undefined) {
     var matches = dateString.match(YEAR_MONTHDIG);
-    if (matches && matches.length === 6) {
+    if (matches && matches.length >= 6) {
       var years = parseInt(matches[3]);
       var months = parseInt(matches[5]) - 1; // Months are zero indexed.
       m = createMoment(years, months, 0);
@@ -128,7 +128,7 @@ var DATEVALUE = function (...values) : number {
   // Check YEAR_MONTHDIG_DAY, YYYY(fd)MM(fd)DD, "1992/06/24"
   if (m === undefined) {
     var matches = dateString.match(YEAR_MONTHDIG_DAY);
-    if (matches && matches.length === 8) {
+    if (matches && matches.length >= 8) {
       // Check delimiters. If they're not the same, throw error.
       if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
@@ -144,7 +144,7 @@ var DATEVALUE = function (...values) : number {
   // NOTE: Must come before MONTHDIG_DAY_YEAR matching.
   if (m === undefined) {
     var matches = dateString.match(MONTHDIG_YEAR);
-    if (matches && matches.length === 6) {
+    if (matches && matches.length >= 6) {
       var years = parseInt(matches[5]);
       var months = parseInt(matches[3]) - 1; // Months are zero indexed.
       m = createMoment(years, months, 0);
@@ -154,7 +154,7 @@ var DATEVALUE = function (...values) : number {
   // Check MONTHDIG_DAY_YEAR, MM(fd)DD(fd)YYYY, "06/24/1992"
   if (m === undefined) {
     var matches = dateString.match(MONTHDIG_DAY_YEAR);
-    if (matches && matches.length === 8) {
+    if (matches && matches.length >= 8) {
       // Check delimiters. If they're not the same, throw error.
       if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
@@ -170,7 +170,7 @@ var DATEVALUE = function (...values) : number {
   // NOTE: Needs to come before DAY_MONTHNAME_YEAR matching.
   if (m === undefined) {
     var matches = dateString.match(MONTHNAME_YEAR);
-    if (matches && matches.length === 6) {
+    if (matches && matches.length >= 6) {
       var years = parseInt(matches[5]);
       var monthName = matches[3];
       m = createMoment(years, monthName, 0);
@@ -180,7 +180,7 @@ var DATEVALUE = function (...values) : number {
   // Check DAY_MONTHNAME_YEAR, DD(fd)Month(fd)YYYY, '24/July/1992'
   if (m === undefined) {
     var matches = dateString.match(DAY_MONTHNAME_YEAR);
-    if (matches && matches.length === 8) {
+    if (matches && matches.length >= 8) {
       var years = parseInt(matches[7]);
       var monthName = matches[5];
       var days = parseInt(matches[3]) - 1; // Days are zero indexed.
@@ -197,7 +197,7 @@ var DATEVALUE = function (...values) : number {
   // Check YEAR_MONTHNAME, YYYY(fd)Month, '1992/Aug'
   if (m === undefined) {
     var matches = dateString.match(YEAR_MONTHNAME);
-    if (matches && matches.length === 6) {
+    if (matches && matches.length >= 6) {
       var years = parseInt(matches[3]);
       var monthName = matches[5];
       m = createMoment(years, monthName, 0);

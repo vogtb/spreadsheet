@@ -423,6 +423,13 @@ assertEquals(DATEVALUE("20 Sep 2015"), 42267);
 assertEquals(DATEVALUE("20 Oct 2015"), 42297);
 assertEquals(DATEVALUE("20 Nov 2015"), 42328);
 assertEquals(DATEVALUE("20 Dec 2015"), 42358);
+assertEquals(DATEVALUE("29 Feb 2004"), 38046); // leap year, 29th ok
+catchAndAssertEquals(function() {
+  DATEVALUE("29 Feb 2001");// not leap year, 29th not ok
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("32 June 2001");// overload numbers not ok
+}, ERRORS.VALUE_ERROR);
 // delimiter tests
 assertEquals(DATEVALUE("Sun, 09, Feb, 2017"), 42775);
 assertEquals(DATEVALUE("Sun, 09/Feb/2017"), 42775);
@@ -440,7 +447,7 @@ catchAndAssertEquals(function() {
   DATEVALUE("09,Feb,2017");
 }, ERRORS.VALUE_ERROR);
 // timestamp tests
-assertEquals(DATEVALUE("24/June/1992 10am"), 33779); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("24/June/1992 10am"), 33779);
 assertEquals(DATEVALUE("24/June/1992 10:10"), 33779);
 assertEquals(DATEVALUE("24/June/1992 10:10am"), 33779);
 assertEquals(DATEVALUE("24/June/1992 10:10:10"), 33779);
@@ -450,6 +457,27 @@ assertEquals(DATEVALUE("24/June/1992 10: 10 "), 33779);
 assertEquals(DATEVALUE("24/June/1992 10: 10 pm"), 33779);
 assertEquals(DATEVALUE("24/June/1992 10: 10: 10"), 33779);
 assertEquals(DATEVALUE("24/June/1992  10: 10: 10    am   "), 33779);
+// MONTHNAME_DAY_YEAR, Month(fd)DD(fd)YYYY, 'Aug 19 2020' =============================================================================
+assertEquals(DATEVALUE("Sun Feb 09 2017"), 42775);
+assertEquals(DATEVALUE("Sun Feb 9 2017"), 42775);
+assertEquals(DATEVALUE("Mon Feb 09 2017"), 42775);
+assertEquals(DATEVALUE("Thursday Feb 09 2017"), 42775);
+assertEquals(DATEVALUE("Thursday February 09 2017"), 42775);
+assertEquals(DATEVALUE("Sun September 01 20"), 44075);
+assertEquals(DATEVALUE("Sun, Feb, 09, 2017"), 42775);
+assertEquals(DATEVALUE("May 20 1992"), 33744);
+assertEquals(DATEVALUE("December 31 100"), -657070);
+assertEquals(DATEVALUE("January 13 0030"), 10971);
+assertEquals(DATEVALUE("January 13 1200"), -255656);
+assertEquals(DATEVALUE("January 22 2222"), 117631);
+assertEquals(DATEVALUE("November 3 4243"), 856071);
+assertEquals(DATEVALUE("Feb 29 2004"), 38046); // leap year, 29th ok
+catchAndAssertEquals(function() {
+  DATEVALUE("Feb 29 2001");// not leap year, 29th not ok
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("June 32 2001");// overload numbers not ok
+}, ERRORS.VALUE_ERROR);
 // YEAR_MONTHDIG, YYYY(fd)MM, '1992/06' ================================================================================
 assertEquals(DATEVALUE("2017/01"), 42736);
 assertEquals(DATEVALUE("2017/02"), 42767);
@@ -469,11 +497,15 @@ assertEquals(DATEVALUE("Thursday 2017/01"), 42736);
 assertEquals(DATEVALUE("Thursday, 2017/01"), 42736);
 assertEquals(DATEVALUE("2017/01"), 42736);
 assertEquals(DATEVALUE("2017-01"), 42736);
-assertEquals(DATEVALUE("2017.01"), 42736);
+assertEquals(DATEVALUE("2017. 01"), 42736);
+assertEquals(DATEVALUE("2017 01"), 42736);
 assertEquals(DATEVALUE("2017, 01"), 42736);
-// Comma delimiters should be followed by spaces.
+// Comma and period delimiters should be followed by spaces.
 catchAndAssertEquals(function() {
   DATEVALUE("2017,01");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("2017.01");
 }, ERRORS.VALUE_ERROR);
 // timestamp test
 assertEquals(DATEVALUE("2017-01 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
@@ -504,11 +536,14 @@ assertEquals(DATEVALUE("Thursday 01/2017"), 42736);
 assertEquals(DATEVALUE("Thursday, 01/2017"), 42736);
 assertEquals(DATEVALUE("1/2017"), 42736);
 assertEquals(DATEVALUE("01-2017"), 42736);
-assertEquals(DATEVALUE("01.2017"), 42736);
+assertEquals(DATEVALUE("01. 2017"), 42736);
 assertEquals(DATEVALUE("01, 2017"), 42736);
-// Comma delimiters should be followed by spaces.
+// Comma, period delimiters should be followed by spaces.
 catchAndAssertEquals(function() {
   DATEVALUE("01,2017");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("01.2017");
 }, ERRORS.VALUE_ERROR);
 // 0 is not a month
 catchAndAssertEquals(function() {
@@ -543,11 +578,14 @@ assertEquals(DATEVALUE("Thursday 2017 January"), 42736);
 assertEquals(DATEVALUE("Thursday, 2017 January"), 42736);
 assertEquals(DATEVALUE("2017/January"), 42736);
 assertEquals(DATEVALUE("2017-January"), 42736);
-assertEquals(DATEVALUE("2017.January"), 42736);
+assertEquals(DATEVALUE("2017. January"), 42736);
 assertEquals(DATEVALUE("2017, January"), 42736);
 // Comma delimiters should be followed by spaces.
 catchAndAssertEquals(function() {
   DATEVALUE("2017,January");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("2017.January");
 }, ERRORS.VALUE_ERROR);
 // timestamp test
 assertEquals(DATEVALUE("2017-January 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
@@ -575,23 +613,45 @@ assertEquals(DATEVALUE("November 2017"), 43040);
 assertEquals(DATEVALUE("December 2017"), 43070);
 assertEquals(DATEVALUE("  Feb    2017  "), 42767);
 assertEquals(DATEVALUE("Feb-2017"), 42767);
-assertEquals(DATEVALUE("Feb.2017"), 42767);
+assertEquals(DATEVALUE("Feb. 2017"), 42767);
 assertEquals(DATEVALUE("Feb/2017"), 42767);
 assertEquals(DATEVALUE("Feb    .    2017"), 42767);
 assertEquals(DATEVALUE("Feb -      2017"), 42767);
 assertEquals(DATEVALUE("January 0030"), 10959);
 assertEquals(DATEVALUE("November 4243"), 856069);
 assertEquals(DATEVALUE("December 0100"), -657100);
+assertEquals(DATEVALUE("Jan 2017"), 42736);
+assertEquals(DATEVALUE("Feb 2017"), 42767);
+assertEquals(DATEVALUE("Mar 2017"), 42795);
+assertEquals(DATEVALUE("Apr 2017"), 42826);
+assertEquals(DATEVALUE("May 2017"), 42856);
+assertEquals(DATEVALUE("Jun 2017"), 42887);
+assertEquals(DATEVALUE("Jul 2017"), 42917);
+assertEquals(DATEVALUE("Aug 2017"), 42948);
+assertEquals(DATEVALUE("Sep 2017"), 42979);
+assertEquals(DATEVALUE("Oct 2017"), 43009);
+assertEquals(DATEVALUE("Nov 2017"), 43040);
+assertEquals(DATEVALUE("Dec 2017"), 43070);
+assertEquals(DATEVALUE("Feb, 2017"), 42767);
+catchAndAssertEquals(function() {
+  DATEVALUE("December 100");// need 4 digits
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("Dec.20");// need space after if using period
+}, ERRORS.VALUE_ERROR);
 // delimiter tests
 assertEquals(DATEVALUE("Thursday January 2017"), 42736);
 assertEquals(DATEVALUE("Thursday, January 2017"), 42736);
 assertEquals(DATEVALUE("January/2017"), 42736);
 assertEquals(DATEVALUE("January-2017"), 42736);
-assertEquals(DATEVALUE("January.2017"), 42736);
+assertEquals(DATEVALUE("January. 2017"), 42736);
 assertEquals(DATEVALUE("January, 2017"), 42736);
-// Comma delimiters should be followed by spaces.
+// Comma, period delimiters should be followed by spaces.
 catchAndAssertEquals(function() {
   DATEVALUE("January,2017");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("January.2017");
 }, ERRORS.VALUE_ERROR);
 // timestamp test
 assertEquals(DATEVALUE("January-2017 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
@@ -604,67 +664,3 @@ assertEquals(DATEVALUE("January-2017 10: 10 "), 42736);
 assertEquals(DATEVALUE("January-2017 10: 10 pm"), 42736);
 assertEquals(DATEVALUE("January-2017 10: 10: 10"), 42736);
 assertEquals(DATEVALUE("January-2017  10: 10: 10    am  "), 42736);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// assertEquals(DATEVALUE("Sun Feb 09 2017"), 42775);
-// assertEquals(DATEVALUE("Sun Feb 9 2017"), 42775);
-// assertEquals(DATEVALUE("Mon Feb 09 2017"), 42775);
-// assertEquals(DATEVALUE("Thursday Feb 09 2017"), 42775);
-// assertEquals(DATEVALUE("Thursday February 09 2017"), 42775);
-// assertEquals(DATEVALUE("Sun September 01 20"), 44075);
-// assertEquals(DATEVALUE("Sun, Feb, 09, 2017"), 42775);
-// assertEquals(DATEVALUE("May 20 1992"), 33744);
-// assertEquals(DATEVALUE("December 31 100"), -657070);
-// assertEquals(DATEVALUE("January 13 0030"), 10971);
-// assertEquals(DATEVALUE("January 13 1200"), -255656);
-// assertEquals(DATEVALUE("January 22 2222"), 117631);
-// assertEquals(DATEVALUE("November 3 4243"), 856071);
-// assertEquals(DATEVALUE("Feb 29 2004"), 38046); // leap year, 29th ok
-// catchAndAssertEquals(function() {
-//   DATEVALUE("Feb 29 2001");// not leap year, 29th not ok
-// }, ERRORS.VALUE_ERROR);
-// catchAndAssertEquals(function() {
-//   DATEVALUE("June 32 2001");// overload numbers not ok
-// }, ERRORS.VALUE_ERROR);
-// // (Dayname) DD Month YYYY
-// assertEquals(DATEVALUE("29 Feb 2004"), 38046); // leap year, 29th ok
-// catchAndAssertEquals(function() {
-//   DATEVALUE("29 Feb 2001");// not leap year, 29th not ok
-// }, ERRORS.VALUE_ERROR);
-// catchAndAssertEquals(function() {
-//   DATEVALUE("32 June 2001");// overload numbers not ok
-// }, ERRORS.VALUE_ERROR);
-
-
-// assertEquals(DATEVALUE("Jan 2017"), 42736);
-// assertEquals(DATEVALUE("Feb 2017"), 42767);
-// assertEquals(DATEVALUE("Mar 2017"), 42795);
-// assertEquals(DATEVALUE("Apr 2017"), 42826);
-// assertEquals(DATEVALUE("May 2017"), 42856);
-// assertEquals(DATEVALUE("Jun 2017"), 42887);
-// assertEquals(DATEVALUE("Jul 2017"), 42917);
-// assertEquals(DATEVALUE("Aug 2017"), 42948);
-// assertEquals(DATEVALUE("Sep 2017"), 42979);
-// assertEquals(DATEVALUE("Oct 2017"), 43009);
-// assertEquals(DATEVALUE("Nov 2017"), 43040);
-// assertEquals(DATEVALUE("Dec 2017"), 43070);
-// assertEquals(DATEVALUE("Feb, 2017"), 42767);
-// catchAndAssertEquals(function() {
-//   DATEVALUE("December 100");// need 4 digits
-// }, ERRORS.VALUE_ERROR);
-// catchAndAssertEquals(function() {
-//   DATEVALUE("Dec.20");// need space if using period
-// }, ERRORS.VALUE_ERROR);
-//

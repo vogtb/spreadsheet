@@ -505,13 +505,31 @@ class DateRegExBuilder {
     return this;
   }
 
+  YYYY2_OR_4_W_SPACE() : DateRegExBuilder {
+    this.regexString += "([0-9]{2}|[0-9]{4}|[0-9]{2}\\s+|[0-9]{4}\\s+)";
+    return this;
+  }
+
   /**
-   * Add capture group for a flexible delimiter, including ", ", " ", ".", "\", "-".
+   * Add capture group for a flexible delimiter, including ", ", " ", ". ", "\", "-".
    * @returns {DateRegExBuilder} builder
    * @constructor
    */
   FLEX_DELIMITER() : DateRegExBuilder {
-    this.regexString += "(,?\\s+|\\s*-?\\.?-?\\/?\\s*)";
+    // this.regexString += "(,?\\s+|\\s*-?\\.?-?\\/?\\s+)";// close to being right
+    this.regexString += "(,?\\s+|\\s*\\.\\s+|\\s*-\\s*|\\s*\\/\\s*)";
+    return this;
+  }
+
+  /**
+   * Add capture group for a flexible delimiter, including ", ", " ", ".", "\", "-". Different from FLEX_DELIMITER
+   * in that it will match periods with zero or more spaces on either side.
+   * @returns {DateRegExBuilder} builder
+   * @constructor
+   */
+  FLEX_DELIMITER_LOOSEDOT() : DateRegExBuilder {
+    // this.regexString += "(,?\\s+|\\s*-?\\.?-?\\/?\\s+)";// close to being right
+    this.regexString += "(,?\\s+|\\s*\\.\\s*|\\s*-\\s*|\\s*\\/\\s*)";
     return this;
   }
 

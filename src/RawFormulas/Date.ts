@@ -45,17 +45,22 @@ var DATE = function (...values) {
 
 const YEAR_MONTHDIG_DAY = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY().FLEX_DELIMITER().MM().FLEX_DELIMITER().DD_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY().FLEX_DELIMITER_LOOSEDOT().MM().FLEX_DELIMITER_LOOSEDOT().DD_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
   .end()
   .build();
 const MONTHDIG_DAY_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER().DD().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MM().FLEX_DELIMITER_LOOSEDOT().DD().FLEX_DELIMITER_LOOSEDOT().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
   .end()
   .build();
 const DAY_MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().DD().FLEX_DELIMITER().MONTHNAME().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().DD().FLEX_DELIMITER_LOOSEDOT().MONTHNAME().FLEX_DELIMITER_LOOSEDOT().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .end()
+  .build();
+const MONTHNAME_DAY_YEAR = DateRegExBuilder.DateRegExBuilder()
+  .start()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MONTHNAME().FLEX_DELIMITER_LOOSEDOT().DD().FLEX_DELIMITER_LOOSEDOT().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
   .end()
   .build();
 const YEAR_MONTHDIG = DateRegExBuilder.DateRegExBuilder()
@@ -75,7 +80,7 @@ const YEAR_MONTHNAME = DateRegExBuilder.DateRegExBuilder()
   .build();
 const MONTHNAME_YEAR = DateRegExBuilder.DateRegExBuilder()
   .start()
-  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MONTHNAME().FLEX_DELIMITER().YYYY14_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .OPTIONAL_DAYNAME().OPTIONAL_COMMA().MONTHNAME().FLEX_DELIMITER().YYYY2_OR_4_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
   .end()
   .build();
 // For reference: https://regex101.com/r/47GARA/1/
@@ -84,7 +89,6 @@ const TIMESTAMP = DateRegExBuilder.DateRegExBuilder()
   .TIMESTAMP_UNITS_CAPTURE_GROUP()
   .end()
   .build();
-
 
 /**
  * Converts a provided date string in a known format to a date value.
@@ -129,14 +133,13 @@ var DATEVALUE = function (...values) : number {
   }
 
   /**
-   *
-   * @param timestampString
-   * @param momentToMutate
-   * @returns {moment.Moment}
+   * Matches a timestamp string, adding the units to the moment passed in.
+   * @param timestampString to parse. ok formats: "10am", "10:10", "10:10am", "10:10:10", "10:10:10am", etc.
+   * @param momentToMutate to mutate
+   * @returns {Moment} mutated and altered.
    */
   function matchTimestampAndMutateMoment(timestampString : string, momentToMutate: moment.Moment) : moment.Moment {
     var matches = timestampString.match(TIMESTAMP);
-    // console.log("match and mutating:", timestampString, "from", dateString, matches);
     if (matches && matches[1] !== undefined) { // 10am
       var hours = parseInt(matches[2]);
       if (hours > 12) {
@@ -269,6 +272,25 @@ var DATEVALUE = function (...values) : number {
       var tmpMoment = createMoment(years, monthName, 0);
       if (matches[6] !== undefined) {
         tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
+      }
+      m = tmpMoment;
+    }
+  }
+
+  // Check MONTHNAME_DAY_YEAR, Month(fd)DD(fd)YYYY, 'Aug 19 2020'
+  if (m === undefined) {
+    var matches = dateString.match(MONTHNAME_DAY_YEAR);
+    if (matches && matches.length >= 8) {
+      // Check delimiters. If they're not the same, throw error.
+      if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
+        throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      }
+      var years = parseInt(matches[7]);
+      var monthName = matches[3];
+      var days = parseInt(matches[5]) - 1; // Days are zero indexed.
+      var tmpMoment = createMoment(years, monthName, days);
+      if (matches.length >= 9 && matches[8] !== undefined) {
+        tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
       }
       m = tmpMoment;
     }

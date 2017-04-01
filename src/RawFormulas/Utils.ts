@@ -524,6 +524,7 @@ class DateRegExBuilder {
   /**
    * Add capture group for a flexible delimiter, including ", ", " ", ".", "\", "-". Different from FLEX_DELIMITER
    * in that it will match periods with zero or more spaces on either side.
+   * For reference: https://regex101.com/r/q1fp1z/1/
    * @returns {DateRegExBuilder} builder
    * @constructor
    */

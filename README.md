@@ -51,68 +51,9 @@ See `DOLLAR` function for more info.
 
 
 # The Great Date Refactoring (TM)
-### Different Date Formats
-```
-FORMAT           CONST NAME                              ACCESS ORDER
-YYYY/MM/DD       YEAR_MONTHDIG_DAY_SLASH_DELIMIT         years, months, days
-YYYY-MM-DD       YEAR_MONTHDIG_DAY_HYPHEN_DELIMIT        years, months, days
-YYYY.MM.DD       YEAR_MONTHDIG_DAY_DOT_DELIMIT           years, months, days
-YYYY MM DD       YEAR_MONTHDIG_DAY_SPACE_DELIMIT         years, months, days
-YYYY, MM, DD     YEAR_MONTHDIG_DAY_COMMA_DELIMIT         years, months, days
-MM/DD/YYYY       MONTHDIG_DAY_YEAR_SLASH_DELIMIT         months, days, years
-MM-DD-YYYY       MONTHDIG_DAY_YEAR_HYPHEN_DELIMIT        months, days, years
-MM.DD.YYYY       MONTHDIG_DAY_YEAR_DOT_DELIMIT           months, days, years
-MM DD YYYY       MONTHDIG_DAY_YEAR_SPACE_DELIMIT         months, days, years
-MM, DD, YYYY     MONTHDIG_DAY_YEAR_COMMA_DELIMIT         months, days, years
-Month DD YYYY    MONTHNAME_DAY_YEAR_COMMON_DELIMITERS    monthName, days, years        // TODO: right now only comma...
-DD Month YYYY    DAY_MONTHNAME_YEAR_COMMON_DELIMITERS    days, monthName, years        // TODO: right now only comma...
-Month DD         MONTHNAME_DAY_COMMON_DELIMITERS         monthName, days
-DD Month         DAY_MONTHNAME_COMMON_DELIMITERS         days, monthName
-Month YYYY       MONTHNAME_YEAR_COMMON_DELIMITERS        monthName, years              // TODO: only some delimiters now
-YYYY Month       YEAR_MONTHNAME_COMMON_DELIMITERS        years, monthName
-MM/DD            MONTHDIG_DAY_SLASH_DELIMIT              months, days
-MM-DD            MONTHDIG_DAY_HYPHEN_DELIMIT             months, days
-MM DD            MONTHDIG_DAY_SPACE_DELIMIT              months, days
-MM.DD            MONTHDIG_DAY_DOT_DELIMIT                months, days
-MM, DD           MONTHDIG_DAY_COMMA_DELIMIT              months, days
-MM/YYYY          MONTHDIG_YEAR_SLASH_DELIMIT             months, years
-MM-YYYY          MONTHDIG_YEAR_HYPHEN_DELIMIT            months, years
-MM YYYY          MONTHDIG_YEAR_SPACE_DELIMIT             months, years
-MM.YYYY          MONTHDIG_YEAR_DOT_DELIMIT               months, years
-MM, YYYY         MONTHDIG_YEAR_COMMA_DELIMIT             months, years
-```
-
-### Different Time Formats
-```
-FORMAT           CONST NAME
-HHam             HOUR_MERIDIEM
-HH:MM            OVERFLOW_HOURS_OVERFLOW_MINUTES
-HH:MMam          HOURS_OVERFLOW_MINUTES_MERIDIEM
-HH:MM:SS         OVERFLOW_HOURS_OVERFLOW_MINUTES_SECONDS
-HH:MM:SSam       HOURS_MINUTES_SECONDS_OVERFLOW_MERIDIEM
-```
-
-### Condensed Date Formats
-```
-NOTES
-fd = flex_delimitor
-all can be prefixed with day name (no op)
-all can be suffixed with time (yes op)
-
-YYYY(fd)MM(fd)DD          YEAR_MONTHDIG_DAY
-MM(fd)DD(fd)YYYY          MONTHDIG_DAY_YEAR
-Month(fd)DD(fd)YYYY       MONTHNAME_DAY_YEAR
-DD(fd)Month(fd)YYYY       DAY_MONTHNAME_YEAR
-YYYY(fd)MM                YEAR_MONTHDIG
-MM(fd)YYYY                MONTHDIG_YEAR
-YYYY(fd)Month             YEAR_MONTHNAME
-Month(fd)YYYY             MONTHNAME_YEAR
-```
-Capture the flex delimiter and invalidate if the three don't match.
-
 
 ### List of possible dates that we should be able to parse
-* "1999/1/13"                    DONE
+ * "1999/1/13"                    DONE
  * "1999-1-13"
  * "1999 1 13"
  * "1999.1.13"
@@ -191,13 +132,6 @@ Capture the flex delimiter and invalidate if the three don't match.
  * "10-2022 10:10:10"
  * "10-2022 10:10:10pm"
 
-
-* Combine the different time formats into a single regular expression.
-Throw errors based on whether some units have overflowed. For example 29:99 is ok, but 29:99pm is not ok. This way
-we're only doubling the number of date-format regular expressions we have to generate. For example, we check
-YEAR_MONTHDIG_DAY_SLASH_DELIMIT once, and then YEAR_MONTHDIG_DAY_SLASH_DELIMIT_WITH_TIME once.
-Use something like this: https://regex101.com/r/ZMu74e/2
-
 * Dates have special types
 Like dollars, dates are special types, but can be compared as if they're primatives. For example, this statement is
 valid inside a cell: `=DATE(1992, 6, 6) > =DATE(1992, 6, 10)`. We should check types and and have Date-to-number
@@ -209,15 +143,6 @@ Annotate them, and standardize the error checking for errors like REF, NA, NUM, 
 * Test all ExcelDate functions
 Right now we're just using the number of days since 1900, but we should check the other functions.
 
-* YYYY/MM/DD HH:mm needs more thurough testing
-
 * Verify that all white-space wild cards are implemented properly
 
 * Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
-
-* Many times I use `\s*` when I actaully mean `\s+`
-Or the are times when I mean "Feb 20 2019" or "Feb 20,2019", and either is correct.
-
-* Use `startOf('year')` to zero out all dates before building them up.
-No current tests should change because of this but it should eliminate some edge cases.
-

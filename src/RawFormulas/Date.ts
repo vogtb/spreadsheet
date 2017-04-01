@@ -25,12 +25,12 @@ import {
  */
 var DATE = function (...values) {
   const FIRST_YEAR = 1900;
-  const ORIGIN_DATE = moment.utc([FIRST_YEAR]);
+  const ORIGIN_DATE = moment.utc([FIRST_YEAR]).startOf("year");
   ArgsChecker.checkLength(values, 3);
   var year = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0]))); // No negative values for year
   var month = Math.floor(TypeCaster.firstValueAsNumber(values[1])) - 1; // Months are between 0 and 11.
   var day = Math.floor(TypeCaster.firstValueAsNumber(values[2])) - 1; // Days are also zero-indexed.
-  var m = moment.utc(ORIGIN_DATE)
+  var m = moment.utc(ORIGIN_DATE).startOf("year")
       .add(year < FIRST_YEAR ? year : year - FIRST_YEAR, 'years') // If the value is less than 1900, assume 1900 as start index for year
       .add(month, 'months')
       .add(day, 'days');

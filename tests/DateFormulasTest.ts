@@ -44,7 +44,7 @@ assertEquals(DATE(-1900, 1, 1).toNumber(), 2);
 
 
 // Test DATEVALUE
-// MM/DD/YYYY
+// YEAR_MONTHDIG_DAY, YYYY(fd)MM(fd)DD =================================================================================
 assertEquals(DATEVALUE("6/24/92"), 33779);
 assertEquals(DATEVALUE("6/24/1992"), 33779);
 assertEquals(DATEVALUE("06/24/1992"), 33779);
@@ -84,7 +84,7 @@ assertEquals(DATEVALUE("12/31/100"), -657070);
 assertEquals(DATEVALUE("11/10/122"), -649086);
 assertEquals(DATEVALUE("1/22/2222"), 117631);
 assertEquals(DATEVALUE("1/22/222"), -612854);
-// MM/DD/YYYY delimiter tests
+// delimiter tests
 assertEquals(DATEVALUE("6-24-92"), 33779);
 assertEquals(DATEVALUE("6/24/92"), 33779);
 assertEquals(DATEVALUE("6 24 92"), 33779);
@@ -92,7 +92,22 @@ assertEquals(DATEVALUE("6.24.92"), 33779);
 assertEquals(DATEVALUE("6 . 24 . 92"), 33779);
 assertEquals(DATEVALUE("6 / 24 / 92"), 33779);
 assertEquals(DATEVALUE("6, 24, 92"), 33779);
-// YYYY/MM/DD
+// flex delimiter should not allow a comma without a space after it.
+catchAndAssertEquals(function() {
+  DATEVALUE("Sunday,6/24/92");
+}, ERRORS.VALUE_ERROR);
+// Leap day on non-leap years
+catchAndAssertEquals(function() {
+  DATEVALUE("2/29/2005");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("2/29/2001");
+}, ERRORS.VALUE_ERROR);
+// Out of range day for any month
+catchAndAssertEquals(function() {
+  DATEVALUE("1/44/2005");
+}, ERRORS.VALUE_ERROR);
+// MONTHDIG_DAY_YEAR, MM(fd)DD(fd)YYYY =================================================================================
 assertEquals(DATEVALUE("1992/6/24"), 33779);
 assertEquals(DATEVALUE("1992/06/24"), 33779);
 assertEquals(DATEVALUE("1999/1/01"), 36161);
@@ -143,7 +158,7 @@ assertEquals(DATEVALUE("Thu 1992/6/24"), 33779);
 assertEquals(DATEVALUE("Fri 1992/6/24"), 33779);
 assertEquals(DATEVALUE("Sat 1992/6/24"), 33779);
 assertEquals(DATEVALUE("Sunday, 1992/6/24"), 33779);
-// YYYY/MM/DD delimiter tests
+// delimiter tests
 assertEquals(DATEVALUE("1992-6-24"), 33779);
 assertEquals(DATEVALUE("1992/6/24"), 33779);
 assertEquals(DATEVALUE("1992 6 24"), 33779);
@@ -151,16 +166,22 @@ assertEquals(DATEVALUE("1992 6 24"), 33779);
 assertEquals(DATEVALUE("1992 . 6 . 24"), 33779);
 assertEquals(DATEVALUE("1992 / 6 / 24"), 33779);
 assertEquals(DATEVALUE("1992, 6, 24"), 33779);
+// flex delimiter should not allow a comma without a space after it.
 catchAndAssertEquals(function() {
-  DATEVALUE("Sunday,1992/6/24");// flex delimiter should not allow a comma without a space after it.
+  DATEVALUE("Sunday,1992/6/24");
+}, ERRORS.VALUE_ERROR);
+// Leap day on non-leap years
+catchAndAssertEquals(function() {
+  DATEVALUE("2005/2/29");
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  DATEVALUE("2005/2/29");// Leap day on non-leap year.
+  DATEVALUE("2001/2/29");
 }, ERRORS.VALUE_ERROR);
+// Out of range day for any month
 catchAndAssertEquals(function() {
-  DATEVALUE("2005/1/44");// Out of range day for any month
+  DATEVALUE("2005/1/44");
 }, ERRORS.VALUE_ERROR);
-// DD/Month/YYYY
+// DAY_MONTHNAME_YEAR, DD(fd)Month(fd)YYYY =============================================================================
 assertEquals(DATEVALUE("Sun 09 Feb 2017"), 42775);
 assertEquals(DATEVALUE("Sun 9 Feb 2017"), 42775);
 assertEquals(DATEVALUE("Mon 09 Feb 2017"), 42775);
@@ -185,6 +206,7 @@ assertEquals(DATEVALUE("13 January 0099"), 36173);
 assertEquals(DATEVALUE("13 January 0000"), 36538);
 assertEquals(DATEVALUE("13 January 0101"), -657057);
 assertEquals(DATEVALUE("13 January 0100"), -657422);
+// delimiter tests
 assertEquals(DATEVALUE("Sun, 09, Feb, 2017"), 42775);
 assertEquals(DATEVALUE("Sun, 09/Feb/2017"), 42775);
 assertEquals(DATEVALUE("09/Feb/2017"), 42775);
@@ -192,8 +214,13 @@ assertEquals(DATEVALUE("09-Feb-2017"), 42775);
 assertEquals(DATEVALUE("09.Feb.2017"), 42775);
 assertEquals(DATEVALUE("09 Feb/2017"), 42775);
 assertEquals(DATEVALUE("09 . Feb . 2017"), 42775);
+// If the delimiters don't match the first one should be a space.
 catchAndAssertEquals(function() {
-  DATEVALUE("09.Feb/2017"); // If the delimiters don't match the first one should be a space.
+  DATEVALUE("09.Feb/2017");
+}, ERRORS.VALUE_ERROR);
+// Comma delimiters should be followed by spaces.
+catchAndAssertEquals(function() {
+  DATEVALUE("09,Feb,2017");
 }, ERRORS.VALUE_ERROR);
 
 

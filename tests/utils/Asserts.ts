@@ -1,3 +1,8 @@
+/**
+ * Assert two params are equal using strict equality testing.
+ * @param actual value
+ * @param expected value
+ */
 function assertEquals(actual, expected) {
   if (expected !== actual) {
     console.log("expected:", expected, " actual:", actual);
@@ -5,6 +10,11 @@ function assertEquals(actual, expected) {
   }
 }
 
+/**
+ * Assert two arrays are equal using strict equality testing on individual items.
+ * @param actual value
+ * @param expected value
+ */
 function assertArrayEquals(actual: Array<any>, expected: Array<any>, ) {
   if (expected.length != actual.length) {
     console.log("expected: ", expected, " actual:", actual);
@@ -18,12 +28,7 @@ function assertArrayEquals(actual: Array<any>, expected: Array<any>, ) {
   }
 }
 
-function assertEqualsDates(one: Date, expectation: Date) {
-  assertEquals(one.getTime(), expectation.getTime());
-}
-
 export {
   assertEquals,
-  assertArrayEquals,
-  assertEqualsDates
+  assertArrayEquals
 }

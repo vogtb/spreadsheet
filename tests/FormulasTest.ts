@@ -1,5 +1,3 @@
-/// <reference path="../node_modules/moment/moment.d.ts"/>
-import * as moment from "moment";
 import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2, ATANH, AVEDEV, AVERAGE,
     AVERAGEA, AVERAGEIF, BIN2DEC, BIN2HEX, BIN2OCT, CEILING,
     CHAR, CODE, COMBIN, CONCATENATE, CONVERT, PEARSON,
@@ -11,7 +9,7 @@ import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2
     POWER, ROUND, ROUNDDOWN, ROUNDUP, SIN, SINH, SPLIT, SQRT, SQRTPI, SUM, SUMIF, SUMPRODUCT, RADIANS,
     SUMSQ, SUMX2MY2, SUMX2PY2, TAN, TANH, TRUNC, XOR, YEARFRAC } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
-import {assertEquals, assertEqualsDates, assertArrayEquals} from "./utils/Asserts"
+import {assertEquals, assertArrayEquals} from "./utils/Asserts"
 
 function catchAndAssertEquals(toExecute, expected) {
   var toThrow = null;

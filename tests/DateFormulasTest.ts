@@ -222,7 +222,27 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE("09,Feb,2017");
 }, ERRORS.VALUE_ERROR);
-
+// YEAR_MONTHDIG, YYYY(fd)MM, '1992/06' ================================================================================
+assertEquals(DATEVALUE("2017/01"), 42736);
+assertEquals(DATEVALUE("2017/02"), 42767);
+assertEquals(DATEVALUE("2017/03"), 42795);
+assertEquals(DATEVALUE("2017/04"), 42826);
+assertEquals(DATEVALUE("2017/05"), 42856);
+assertEquals(DATEVALUE("2017/06"), 42887);
+assertEquals(DATEVALUE("2017/07"), 42917);
+assertEquals(DATEVALUE("2017/08"), 42948);
+assertEquals(DATEVALUE("2017/09"), 42979);
+assertEquals(DATEVALUE("2017/10"), 43009);
+assertEquals(DATEVALUE("2017/11"), 43040);
+assertEquals(DATEVALUE("2017/12"), 43070);
+assertEquals(DATEVALUE("2017/01"), 42736);
+// delimiter tests
+assertEquals(DATEVALUE("Thursday 2017/01"), 42736);
+assertEquals(DATEVALUE("Thursday, 2017/01"), 42736);
+assertEquals(DATEVALUE("2017/01"), 42736);
+assertEquals(DATEVALUE("2017-01"), 42736);
+assertEquals(DATEVALUE("2017.01"), 42736);
+assertEquals(DATEVALUE("2017, 01"), 42736);
 
 
 

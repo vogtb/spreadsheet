@@ -188,7 +188,7 @@ var DATEVALUE = function (...values) : number {
     } else {
       throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
     }
-    return momentToMutate.set('hours', 0).set('minutes', 0);
+    return momentToMutate.set('hours', 0).set('minutes', 0).set('seconds', 0);
   }
 
   // Check YEAR_MONTHDIG, YYYY(fd)MM, '1992/06'

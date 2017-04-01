@@ -108,7 +108,7 @@ catchAndAssertEquals(function() {
   DATEVALUE("1/44/2005");
 }, ERRORS.VALUE_ERROR);
 // timestamp test
-assertEquals(DATEVALUE("6-24-92 10am"), 33779); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("6-24-92 10am"), 33779);
 assertEquals(DATEVALUE("6-24-92 10:10"), 33779);
 assertEquals(DATEVALUE("6-24-92 10:10am"), 33779);
 assertEquals(DATEVALUE("6-24-92 10:10:10"), 33779);
@@ -117,7 +117,52 @@ assertEquals(DATEVALUE("6-24-92  10  am"), 33779);
 assertEquals(DATEVALUE("6-24-92 10: 10 "), 33779);
 assertEquals(DATEVALUE("6-24-92 10: 10 pm"), 33779);
 assertEquals(DATEVALUE("6-24-92 10: 10: 10"), 33779);
-assertEquals(DATEVALUE("6-24-92  10: 1000: 1000    am  "), 33779);
+assertEquals(DATEVALUE("6-24-92  10: 10: 10    am  "), 33779);
+assertEquals(DATEVALUE("1992/6/24 00:00"), 33779);
+assertEquals(DATEVALUE("1992/6/24 0:00"), 33779);
+assertEquals(DATEVALUE("1992/6/24 10:10"), 33779);
+assertEquals(DATEVALUE("1992/6/24 16:22"), 33779);
+assertEquals(DATEVALUE("1992/6/24 25:10"), 33780);
+assertEquals(DATEVALUE("1992/6/24 23:60"), 33780);
+assertEquals(DATEVALUE("1992/6/24 24:00"), 33780);
+assertEquals(DATEVALUE("1992/6/24 23:59"), 33779);
+assertEquals(DATEVALUE("1999/1/13 10:11111111"), 43889);
+assertEquals(DATEVALUE("1999/1/13 25000:22"), 37214);
+assertEquals(DATEVALUE("1999/1/13 25000:    22"), 37214);
+assertEquals(DATEVALUE("1992/6/24 00:00am"), 33779);
+assertEquals(DATEVALUE("1992/06/24 01:44am "), 33779);
+assertEquals(DATEVALUE("1999/1/01 02:59pm"), 36161);
+assertEquals(DATEVALUE("2222/1/01 03:33pm"), 117610);
+assertEquals(DATEVALUE("1902/9/02 12:33pm"), 976);
+assertEquals(DATEVALUE("1902/9/2 12:33pm"), 976);
+assertEquals(DATEVALUE("4243/11/3 12:33pm"), 856071);
+assertEquals(DATEVALUE("  1992/04/19   12:  33pm   "), 33713);
+assertEquals(DATEVALUE("1992/5/20 01:33am"), 33744);
+assertEquals(DATEVALUE("1992/6/21  3:33pm"), 33776);
+assertEquals(DATEVALUE("1992/9/29 3:33pm"), 33876);
+assertEquals(DATEVALUE("1992/1/24 3:33pm"), 33627);
+assertEquals(DATEVALUE("1992/12/21 3:33pm"), 33959);
+assertEquals(DATEVALUE("1992/01/31 3:33pm"), 33634);
+assertEquals(DATEVALUE("1992/1/13 3:33pm"), 33616);
+assertEquals(DATEVALUE("2004/2/29 3:33pm"), 38046);
+assertEquals(DATEVALUE("2004/2/28  3:33pm "), 38045);
+assertEquals(DATEVALUE("1999/1/13 3:33pm"), 36173);
+assertEquals(DATEVALUE("1999/01/13 3:33pm"), 36173);
+assertEquals(DATEVALUE("0999/01/13 3:33pm"), -329069);
+assertEquals(DATEVALUE("1200/01/13 3:33pm"), -255656);
+assertEquals(DATEVALUE("0029/01/13 3:33pm"), 47131);
+assertEquals(DATEVALUE("0030/01/13 3:33pm"), 10971);
+assertEquals(DATEVALUE("0044/01/13 3:33pm"), 16084);
+assertEquals(DATEVALUE("0050/01/13 3:33pm"), 18276);
+assertEquals(DATEVALUE("0097/01/13 00:33pm"), 35443);
+assertEquals(DATEVALUE("0099/01/13 3:33pm"), 36173);
+assertEquals(DATEVALUE("0000/01/13 3:33pm"), 36538);
+assertEquals(DATEVALUE("0101/01/13 3:33pm"), -657057);
+assertEquals(DATEVALUE("0100/01/13 3:33pm"), -657422);
+assertEquals(DATEVALUE("100/12/31 3:33pm"), -657070);
+assertEquals(DATEVALUE("122/11/10 3:33pm"), -649086);
+assertEquals(DATEVALUE("2222/1/22 3:33pm"), 117631);
+assertEquals(DATEVALUE("222/1/22 3:33pm"), -612854);
 // YEAR_MONTHDIG_DAY, YYYY(fd)MM(fd)DD =================================================================================
 assertEquals(DATEVALUE("1992/6/24"), 33779);
 assertEquals(DATEVALUE("1992/06/24"), 33779);
@@ -193,7 +238,7 @@ catchAndAssertEquals(function() {
   DATEVALUE("2005/1/44");
 }, ERRORS.VALUE_ERROR);
 // timestamp test
-assertEquals(DATEVALUE("1992-6-24 10am"), 33779); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("1992-6-24 10am"), 33779);
 assertEquals(DATEVALUE("1992-6-24 10:10"), 33779);
 assertEquals(DATEVALUE("1992-6-24 10:10am"), 33779);
 assertEquals(DATEVALUE("1992-6-24 10:10:10"), 33779);
@@ -202,7 +247,47 @@ assertEquals(DATEVALUE("1992-6-24  10  am"), 33779);
 assertEquals(DATEVALUE("1992-6-24 10: 10 "), 33779);
 assertEquals(DATEVALUE("1992-6-24 10: 10 pm"), 33779);
 assertEquals(DATEVALUE("1992-6-24 10: 10: 10"), 33779);
-assertEquals(DATEVALUE("1992-6-24  10: 1000: 1000    am   "), 33779);
+assertEquals(DATEVALUE("1992-6-24  10: 10: 10    am   "), 33779);
+assertEquals(DATEVALUE("1992/6/24 00am"), 33779);
+assertEquals(DATEVALUE("1992/06/24 01am "), 33779);
+assertEquals(DATEVALUE("1999/1/01 02pm"), 36161);
+assertEquals(DATEVALUE("2222/1/01 03pm"), 117610);
+assertEquals(DATEVALUE("1902/9/02 12pm"), 976);
+assertEquals(DATEVALUE("1902/9/2 12pm"), 976);
+assertEquals(DATEVALUE("4243/11/3 12pm   "), 856071);
+assertEquals(DATEVALUE("  1992/04/19   12pm   "), 33713);
+assertEquals(DATEVALUE("1992/5/20 01am"), 33744);
+assertEquals(DATEVALUE("1992/6/21  3pm"), 33776);
+assertEquals(DATEVALUE("1992/9/29 3pm"), 33876);
+assertEquals(DATEVALUE("1992/1/24 3pm"), 33627);
+assertEquals(DATEVALUE("1992/12/21 3pm"), 33959);
+assertEquals(DATEVALUE("1992/01/31 3pm"), 33634);
+assertEquals(DATEVALUE("1992/1/13 3pm"), 33616);
+assertEquals(DATEVALUE("2004/2/29 3pm"), 38046);
+assertEquals(DATEVALUE("2004/2/28  3pm "), 38045);
+assertEquals(DATEVALUE("1999/1/13 3pm"), 36173);
+assertEquals(DATEVALUE("1999/01/13 3pm"), 36173);
+assertEquals(DATEVALUE("0999/01/13 3pm"), -329069);
+assertEquals(DATEVALUE("1200/01/13 3pm"), -255656);
+assertEquals(DATEVALUE("0029/01/13 3pm"), 47131);
+assertEquals(DATEVALUE("0030/01/13 3pm"), 10971);
+assertEquals(DATEVALUE("0044/01/13 3pm"), 16084);
+assertEquals(DATEVALUE("0050/01/13 3pm"), 18276);
+assertEquals(DATEVALUE("0097/01/13 00pm"), 35443);
+assertEquals(DATEVALUE("0099/01/13 3pm"), 36173);
+assertEquals(DATEVALUE("0000/01/13 3pm"), 36538);
+assertEquals(DATEVALUE("0101/01/13 3pm"), -657057);
+assertEquals(DATEVALUE("0100/01/13 3pm"), -657422);
+assertEquals(DATEVALUE("100/12/31 3pm"), -657070);
+assertEquals(DATEVALUE("122/11/10 3pm"), -649086);
+assertEquals(DATEVALUE("2222/1/22 3pm"), 117631);
+assertEquals(DATEVALUE("222/1/22 3pm"), -612854);
+catchAndAssertEquals(function() {
+  DATEVALUE("2005/2/29 000pm");// Too many digits
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE("2001/2/2 13pm");// Hour out of range
+}, ERRORS.VALUE_ERROR);
 // DAY_MONTHNAME_YEAR, DD(fd)Month(fd)YYYY =============================================================================
 assertEquals(DATEVALUE("Sun 09 Feb 2017"), 42775);
 assertEquals(DATEVALUE("Sun 9 Feb 2017"), 42775);
@@ -228,6 +313,30 @@ assertEquals(DATEVALUE("13 January 0099"), 36173);
 assertEquals(DATEVALUE("13 January 0000"), 36538);
 assertEquals(DATEVALUE("13 January 0101"), -657057);
 assertEquals(DATEVALUE("13 January 0100"), -657422);
+assertEquals(DATEVALUE("01 Jan 2017"), 42736);
+assertEquals(DATEVALUE("01 Feb 2017"), 42767);
+assertEquals(DATEVALUE("01 Mar 2017"), 42795);
+assertEquals(DATEVALUE("01 Apr 2017"), 42826);
+assertEquals(DATEVALUE("01 May 2017"), 42856);
+assertEquals(DATEVALUE("01 Jun 2017"), 42887);
+assertEquals(DATEVALUE("01 Jul 2017"), 42917);
+assertEquals(DATEVALUE("01 Aug 2017"), 42948);
+assertEquals(DATEVALUE("01 Sep 2017"), 42979);
+assertEquals(DATEVALUE("01 Oct 2017"), 43009);
+assertEquals(DATEVALUE("01 Nov 2017"), 43040);
+assertEquals(DATEVALUE(" 1 Dec 2017"), 43070);
+assertEquals(DATEVALUE("20 Jan 2015"), 42024);
+assertEquals(DATEVALUE("20 Feb 2015"), 42055);
+assertEquals(DATEVALUE("20 Mar 2015"), 42083);
+assertEquals(DATEVALUE("20 Apr 2015"), 42114);
+assertEquals(DATEVALUE("20 May 2015"), 42144);
+assertEquals(DATEVALUE("20 Jun 2015"), 42175);
+assertEquals(DATEVALUE("20 Jul 2015"), 42205);
+assertEquals(DATEVALUE("20 Aug 2015"), 42236);
+assertEquals(DATEVALUE("20 Sep 2015"), 42267);
+assertEquals(DATEVALUE("20 Oct 2015"), 42297);
+assertEquals(DATEVALUE("20 Nov 2015"), 42328);
+assertEquals(DATEVALUE("20 Dec 2015"), 42358);
 // delimiter tests
 assertEquals(DATEVALUE("Sun, 09, Feb, 2017"), 42775);
 assertEquals(DATEVALUE("Sun, 09/Feb/2017"), 42775);
@@ -254,7 +363,7 @@ assertEquals(DATEVALUE("24/June/1992  10  am"), 33779);
 assertEquals(DATEVALUE("24/June/1992 10: 10 "), 33779);
 assertEquals(DATEVALUE("24/June/1992 10: 10 pm"), 33779);
 assertEquals(DATEVALUE("24/June/1992 10: 10: 10"), 33779);
-assertEquals(DATEVALUE("24/June/1992  10: 1000: 1000    am   "), 33779);
+assertEquals(DATEVALUE("24/June/1992  10: 10: 10    am   "), 33779);
 // YEAR_MONTHDIG, YYYY(fd)MM, '1992/06' ================================================================================
 assertEquals(DATEVALUE("2017/01"), 42736);
 assertEquals(DATEVALUE("2017/02"), 42767);
@@ -290,7 +399,7 @@ assertEquals(DATEVALUE("2017-01  10  am"), 42736);
 assertEquals(DATEVALUE("2017-01 10: 10 "), 42736);
 assertEquals(DATEVALUE("2017-01 10: 10 pm"), 42736);
 assertEquals(DATEVALUE("2017-01 10: 10: 10"), 42736);
-assertEquals(DATEVALUE("2017-01  10: 1000: 1000    am   "), 42736);
+assertEquals(DATEVALUE("2017-01  10: 10: 10    am   "), 42736);
 // MONTHDIG_YEAR, MM(fd)YYYY, '06/1992' ================================================================================
 assertEquals(DATEVALUE("01/2017"), 42736);
 assertEquals(DATEVALUE("02/2017"), 42767);
@@ -329,7 +438,7 @@ assertEquals(DATEVALUE("01-2017  10  am"), 42736);
 assertEquals(DATEVALUE("01-2017 10: 10 "), 42736);
 assertEquals(DATEVALUE("01-2017 10: 10 pm"), 42736);
 assertEquals(DATEVALUE("01-2017 10: 10: 10"), 42736);
-assertEquals(DATEVALUE("01-2017  10: 1000: 1000    am   "), 42736);
+assertEquals(DATEVALUE("01-2017  10: 10: 10    am   "), 42736);
 // YEAR_MONTHNAME, YYYY(fd)Month, '1992/Aug' ===========================================================================
 assertEquals(DATEVALUE("2017 January"), 42736);
 assertEquals(DATEVALUE("2017 February"), 42767);
@@ -364,7 +473,7 @@ assertEquals(DATEVALUE("2017-January  10  am"), 42736);
 assertEquals(DATEVALUE("2017-January 10: 10 "), 42736);
 assertEquals(DATEVALUE("2017-January 10: 10 pm"), 42736);
 assertEquals(DATEVALUE("2017-January 10: 10: 10"), 42736);
-assertEquals(DATEVALUE("2017-January  10: 1000: 1000    am   "), 42736);
+assertEquals(DATEVALUE("2017-January  10: 10: 10    am   "), 42736);
 // MONTHNAME_YEAR, Month(fd)YYYY, 'Aug 1992' ===========================================================================
 assertEquals(DATEVALUE("January 2017"), 42736);
 assertEquals(DATEVALUE("February 2017"), 42767);
@@ -378,6 +487,15 @@ assertEquals(DATEVALUE("September 2017"), 42979);
 assertEquals(DATEVALUE("October 2017"), 43009);
 assertEquals(DATEVALUE("November 2017"), 43040);
 assertEquals(DATEVALUE("December 2017"), 43070);
+assertEquals(DATEVALUE("  Feb    2017  "), 42767);
+assertEquals(DATEVALUE("Feb-2017"), 42767);
+assertEquals(DATEVALUE("Feb.2017"), 42767);
+assertEquals(DATEVALUE("Feb/2017"), 42767);
+assertEquals(DATEVALUE("Feb    .    2017"), 42767);
+assertEquals(DATEVALUE("Feb -      2017"), 42767);
+assertEquals(DATEVALUE("January 0030"), 10959);
+assertEquals(DATEVALUE("November 4243"), 856069);
+assertEquals(DATEVALUE("December 0100"), -657100);
 // delimiter tests
 assertEquals(DATEVALUE("Thursday January 2017"), 42736);
 assertEquals(DATEVALUE("Thursday, January 2017"), 42736);
@@ -399,105 +517,18 @@ assertEquals(DATEVALUE("January-2017  10  am"), 42736);
 assertEquals(DATEVALUE("January-2017 10: 10 "), 42736);
 assertEquals(DATEVALUE("January-2017 10: 10 pm"), 42736);
 assertEquals(DATEVALUE("January-2017 10: 10: 10"), 42736);
-assertEquals(DATEVALUE("January-2017  10: 1000: 1000    am  "), 42736);
+assertEquals(DATEVALUE("January-2017  10: 10: 10    am  "), 42736);
 
 
 
 
-// // YYYY/MM/DD HH(am|pm)
-// assertEquals(DATEVALUE("1992/6/24 00am"), 33779);
-// assertEquals(DATEVALUE("1992/06/24 01am "), 33779);
-// assertEquals(DATEVALUE("1999/1/01 02pm"), 36161);
-// assertEquals(DATEVALUE("2222/1/01 03pm"), 117610);
-// assertEquals(DATEVALUE("1902/9/02 12pm"), 976);
-// assertEquals(DATEVALUE("1902/9/2 12pm"), 976);
-// assertEquals(DATEVALUE("4243/11/3 12pm   "), 856071);
-// assertEquals(DATEVALUE("  1992/04/19   12pm   "), 33713);
-// assertEquals(DATEVALUE("1992/5/20 01am"), 33744);
-// assertEquals(DATEVALUE("1992/6/21  3pm"), 33776);
-// assertEquals(DATEVALUE("1992/9/29 3pm"), 33876);
-// assertEquals(DATEVALUE("1992/1/24 3pm"), 33627);
-// assertEquals(DATEVALUE("1992/12/21 3pm"), 33959);
-// assertEquals(DATEVALUE("1992/01/31 3pm"), 33634);
-// assertEquals(DATEVALUE("1992/1/13 3pm"), 33616);
-// assertEquals(DATEVALUE("2004/2/29 3pm"), 38046);
-// assertEquals(DATEVALUE("2004/2/28  3pm "), 38045);
-// assertEquals(DATEVALUE("1999/1/13 3pm"), 36173);
-// assertEquals(DATEVALUE("1999/01/13 3pm"), 36173);
-// assertEquals(DATEVALUE("0999/01/13 3pm"), -329069);
-// assertEquals(DATEVALUE("1200/01/13 3pm"), -255656);
-// assertEquals(DATEVALUE("0029/01/13 3pm"), 47131);
-// assertEquals(DATEVALUE("0030/01/13 3pm"), 10971);
-// assertEquals(DATEVALUE("0044/01/13 3pm"), 16084);
-// assertEquals(DATEVALUE("0050/01/13 3pm"), 18276);
-// assertEquals(DATEVALUE("0097/01/13 00pm"), 35443);
-// assertEquals(DATEVALUE("0099/01/13 3pm"), 36173);
-// assertEquals(DATEVALUE("0000/01/13 3pm"), 36538);
-// assertEquals(DATEVALUE("0101/01/13 3pm"), -657057);
-// assertEquals(DATEVALUE("0100/01/13 3pm"), -657422);
-// assertEquals(DATEVALUE("100/12/31 3pm"), -657070);
-// assertEquals(DATEVALUE("122/11/10 3pm"), -649086);
-// assertEquals(DATEVALUE("2222/1/22 3pm"), 117631);
-// assertEquals(DATEVALUE("222/1/22 3pm"), -612854);
-// catchAndAssertEquals(function() {
-//   DATEVALUE("2005/2/29 000pm");// Too many digits
-// }, ERRORS.VALUE_ERROR);
-// catchAndAssertEquals(function() {
-//   DATEVALUE("2001/2/2 13pm");// Hour out of range
-// }, ERRORS.VALUE_ERROR);
-// catchAndAssertEquals(function() {
-//   DATEVALUE("2005/2/29 11am");// Leap day on non-leap year.
-// }, ERRORS.VALUE_ERROR);
-// catchAndAssertEquals(function() {
-//   DATEVALUE("2005/1/44 11am");// Out of range day for any month
-// }, ERRORS.VALUE_ERROR);
-// // YYYY/MM/DD HH:mm
-// assertEquals(DATEVALUE("1992/6/24 00:00"), 33779);
-// assertEquals(DATEVALUE("1992/6/24 0:00"), 33779);
-// assertEquals(DATEVALUE("1992/6/24 10:10"), 33779);
-// assertEquals(DATEVALUE("1992/6/24 16:22"), 33779);
-// assertEquals(DATEVALUE("1992/6/24 25:10"), 33780);
-// assertEquals(DATEVALUE("1992/6/24 23:60"), 33780);
-// assertEquals(DATEVALUE("1992/6/24 24:00"), 33780);
-// assertEquals(DATEVALUE("1992/6/24 23:59"), 33779);
-// assertEquals(DATEVALUE("1999/1/13 10:11111111"), 43889);
-// assertEquals(DATEVALUE("1999/1/13 25000:22"), 37214);
-// assertEquals(DATEVALUE("1999/1/13 25000:    22"), 37214);
-// // YYYY/MM/DD HH:mm(am|pm)
-// assertEquals(DATEVALUE("1992/6/24 00:00am"), 33779);
-// assertEquals(DATEVALUE("1992/06/24 01:44am "), 33779);
-// assertEquals(DATEVALUE("1999/1/01 02:59pm"), 36161);
-// assertEquals(DATEVALUE("2222/1/01 03:33pm"), 117610);
-// assertEquals(DATEVALUE("1902/9/02 12:33pm"), 976);
-// assertEquals(DATEVALUE("1902/9/2 12:33pm"), 976);
-// assertEquals(DATEVALUE("4243/11/3 12:33pm"), 856071);
-// assertEquals(DATEVALUE("  1992/04/19   12:  33pm   "), 33713);
-// assertEquals(DATEVALUE("1992/5/20 01:33am"), 33744);
-// assertEquals(DATEVALUE("1992/6/21  3:33pm"), 33776);
-// assertEquals(DATEVALUE("1992/9/29 3:33pm"), 33876);
-// assertEquals(DATEVALUE("1992/1/24 3:33pm"), 33627);
-// assertEquals(DATEVALUE("1992/12/21 3:33pm"), 33959);
-// assertEquals(DATEVALUE("1992/01/31 3:33pm"), 33634);
-// assertEquals(DATEVALUE("1992/1/13 3:33pm"), 33616);
-// assertEquals(DATEVALUE("2004/2/29 3:33pm"), 38046);
-// assertEquals(DATEVALUE("2004/2/28  3:33pm "), 38045);
-// assertEquals(DATEVALUE("1999/1/13 3:33pm"), 36173);
-// assertEquals(DATEVALUE("1999/01/13 3:33pm"), 36173);
-// assertEquals(DATEVALUE("0999/01/13 3:33pm"), -329069);
-// assertEquals(DATEVALUE("1200/01/13 3:33pm"), -255656);
-// assertEquals(DATEVALUE("0029/01/13 3:33pm"), 47131);
-// assertEquals(DATEVALUE("0030/01/13 3:33pm"), 10971);
-// assertEquals(DATEVALUE("0044/01/13 3:33pm"), 16084);
-// assertEquals(DATEVALUE("0050/01/13 3:33pm"), 18276);
-// assertEquals(DATEVALUE("0097/01/13 00:33pm"), 35443);
-// assertEquals(DATEVALUE("0099/01/13 3:33pm"), 36173);
-// assertEquals(DATEVALUE("0000/01/13 3:33pm"), 36538);
-// assertEquals(DATEVALUE("0101/01/13 3:33pm"), -657057);
-// assertEquals(DATEVALUE("0100/01/13 3:33pm"), -657422);
-// assertEquals(DATEVALUE("100/12/31 3:33pm"), -657070);
-// assertEquals(DATEVALUE("122/11/10 3:33pm"), -649086);
-// assertEquals(DATEVALUE("2222/1/22 3:33pm"), 117631);
-// assertEquals(DATEVALUE("222/1/22 3:33pm"), -612854);
+
+
+
+
+
+
+
 // assertEquals(DATEVALUE("1992/1/13 6:22222222am"), 49048); // overload minutes
 // assertEquals(DATEVALUE("1992/1/13 12:720pm"), 33617); // overload minutes
 // assertEquals(DATEVALUE("1992/1/13 00:720pm"), 33617); // overload minutes
@@ -629,43 +660,10 @@ assertEquals(DATEVALUE("January-2017  10: 1000: 1000    am  "), 42736);
 // assertEquals(DATEVALUE("Nov 2017"), 43040);
 // assertEquals(DATEVALUE("Dec 2017"), 43070);
 // assertEquals(DATEVALUE("Feb, 2017"), 42767);
-// assertEquals(DATEVALUE("  Feb    2017  "), 42767);
-// assertEquals(DATEVALUE("Feb-2017"), 42767);
-// assertEquals(DATEVALUE("Feb.2017"), 42767);
-// assertEquals(DATEVALUE("Feb/2017"), 42767);
-// assertEquals(DATEVALUE("Feb    .    2017"), 42767);
-// assertEquals(DATEVALUE("Feb -      2017"), 42767);
-// assertEquals(DATEVALUE("January 0030"), 10959);
-// assertEquals(DATEVALUE("November 4243"), 856069);
-// assertEquals(DATEVALUE("December 0100"), -657100);
 // catchAndAssertEquals(function() {
 //   DATEVALUE("December 100");// need 4 digits
 // }, ERRORS.VALUE_ERROR);
 // catchAndAssertEquals(function() {
 //   DATEVALUE("Dec.20");// need space if using period
 // }, ERRORS.VALUE_ERROR);
-// // DD Month YYYY
-// assertEquals(DATEVALUE("01 Jan 2017"), 42736);
-// assertEquals(DATEVALUE("01 Feb 2017"), 42767);
-// assertEquals(DATEVALUE("01 Mar 2017"), 42795);
-// assertEquals(DATEVALUE("01 Apr 2017"), 42826);
-// assertEquals(DATEVALUE("01 May 2017"), 42856);
-// assertEquals(DATEVALUE("01 Jun 2017"), 42887);
-// assertEquals(DATEVALUE("01 Jul 2017"), 42917);
-// assertEquals(DATEVALUE("01 Aug 2017"), 42948);
-// assertEquals(DATEVALUE("01 Sep 2017"), 42979);
-// assertEquals(DATEVALUE("01 Oct 2017"), 43009);
-// assertEquals(DATEVALUE("01 Nov 2017"), 43040);
-// assertEquals(DATEVALUE(" 1 Dec 2017"), 43070);
-// assertEquals(DATEVALUE("20 Jan 2015"), 42024);
-// assertEquals(DATEVALUE("20 Feb 2015"), 42055);
-// assertEquals(DATEVALUE("20 Mar 2015"), 42083);
-// assertEquals(DATEVALUE("20 Apr 2015"), 42114);
-// assertEquals(DATEVALUE("20 May 2015"), 42144);
-// assertEquals(DATEVALUE("20 Jun 2015"), 42175);
-// assertEquals(DATEVALUE("20 Jul 2015"), 42205);
-// assertEquals(DATEVALUE("20 Aug 2015"), 42236);
-// assertEquals(DATEVALUE("20 Sep 2015"), 42267);
-// assertEquals(DATEVALUE("20 Oct 2015"), 42297);
-// assertEquals(DATEVALUE("20 Nov 2015"), 42328);
-// assertEquals(DATEVALUE("20 Dec 2015"), 42358);
+//

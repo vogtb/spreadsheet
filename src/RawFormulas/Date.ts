@@ -136,43 +136,59 @@ var DATEVALUE = function (...values) : number {
    */
   function matchTimestampAndMutateMoment(timestampString : string, momentToMutate: moment.Moment) : moment.Moment {
     var matches = timestampString.match(TIMESTAMP);
+    // console.log("match and mutating:", timestampString, "from", dateString, matches);
     if (matches && matches[1] !== undefined) { // 10am
       var hours = parseInt(matches[2]);
-      var amTrue = (matches[5].toLowerCase() === "am");
       if (hours > 12) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
       }
       // No op on momentToMutate because you can't overload hours with am/pm.
-    } if (matches && matches[6] !== undefined) { // 10:10
+    } else if (matches && matches[6] !== undefined) { // 10:10
       var hours = parseInt(matches[7]);
       var minutes = parseInt(matches[8]);
       momentToMutate.add(hours, 'hours').add(minutes, 'minutes');
-    } if (matches && matches[11] !== undefined) { // 10:10am
+    } else if (matches && matches[11] !== undefined) { // 10:10am
       var hours = parseInt(matches[13]);
       var minutes = parseInt(matches[14]);
-      var amTrue = (matches[16].toLowerCase() === "am");
+      var pmTrue = (matches[16].toLowerCase() === "pm");
       if (hours > 12) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
       }
-      momentToMutate.add(hours, 'hours').add(minutes, 'minutes'); // TODO: don't I add or remove 12 hours?
-    } if (matches && matches[17] !== undefined) { // 10:10:10
+      if (pmTrue) {
+        // 12pm is just 0am, 4pm is 16, etc.
+        momentToMutate.set('hours', hours === 12 ? hours : 12 + hours);
+      } else {
+        if (hours !== 12) {
+          momentToMutate.set('hours', hours);
+        }
+      }
+      momentToMutate.add(minutes, 'minutes');
+    } else if (matches && matches[17] !== undefined) { // 10:10:10
       var hours = parseInt(matches[19]);
       var minutes = parseInt(matches[20]);
       var seconds = parseInt(matches[21]);
       momentToMutate.add(hours, 'hours').add(minutes, 'minutes').add(seconds, 'seconds');
-    } if (matches && matches[23] !== undefined) { // // 10:10:10am
+    } else if (matches && matches[23] !== undefined) { // // 10:10:10am
       var hours = parseInt(matches[25]);
       var minutes = parseInt(matches[26]);
       var seconds = parseInt(matches[27]);
-      var amTrue = (matches[28].toLowerCase() === "am");
+      var pmTrue = (matches[28].toLowerCase() === "pm");
       if (hours > 12) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
       }
-      momentToMutate.add(hours, 'hours').add(minutes, 'minutes').add(seconds, 'seconds');
+      if (pmTrue) {
+        // 12pm is just 0am, 4pm is 16, etc.
+        momentToMutate.set('hours', hours === 12 ? hours : 12 + hours);
+      } else {
+        if (hours !== 12) {
+          momentToMutate.set('hours', hours);
+        }
+      }
+      momentToMutate.add(minutes, 'minutes').add(seconds, 'seconds');
     } else {
-      // TODO: Throw error if no match found by now.
+      throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
     }
-    return momentToMutate;
+    return momentToMutate.set('hours', 0).set('minutes', 0);
   }
 
   // Check YEAR_MONTHDIG, YYYY(fd)MM, '1992/06'
@@ -184,7 +200,6 @@ var DATEVALUE = function (...values) : number {
       var months = parseInt(matches[5]) - 1; // Months are zero indexed.
       var tmpMoment = createMoment(years, months, 0);
       if (matches[6] !== undefined) {
-        console.log("YEAR_MONTHDIG matched timestamp", matches[6]);
         tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
       }
       m = tmpMoment;
@@ -195,9 +210,6 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(YEAR_MONTHDIG_DAY);
     if (matches && matches.length >= 8) {
-      if (matches.length >= 9 && matches[8] !== undefined) {
-        console.log("YEAR_MONTHDIG_DAY matched timestamp", matches[8]);
-      }
       // Check delimiters. If they're not the same, throw error.
       if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
@@ -205,7 +217,11 @@ var DATEVALUE = function (...values) : number {
       var years = parseInt(matches[3]);
       var months = parseInt(matches[5]) - 1; // Months are zero indexed.
       var days = parseInt(matches[7]) - 1; // Days are zero indexed.
-      m = createMoment(years, months, days);
+      var tmpMoment = createMoment(years, months, days);
+      if (matches.length >= 9 && matches[8] !== undefined) {
+        tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
+      }
+      m = tmpMoment;
     }
   }
 
@@ -214,12 +230,13 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(MONTHDIG_YEAR);
     if (matches && matches.length >= 6) {
-      if (matches[6] !== undefined) {
-        console.log("MONTHDIG_YEAR matched timestamp", matches[6]);
-      }
       var years = parseInt(matches[5]);
       var months = parseInt(matches[3]) - 1; // Months are zero indexed.
-      m = createMoment(years, months, 0);
+      var tmpMoment = createMoment(years, months, 0);
+      if (matches[6] !== undefined) {
+        tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
+      }
+      m = tmpMoment;
     }
   }
 
@@ -227,9 +244,6 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(MONTHDIG_DAY_YEAR);
     if (matches && matches.length >= 8) {
-      if (matches.length >= 9 && matches[8] !== undefined) {
-        console.log("MONTHDIG_DAY_YEAR matched timestamp", matches[8]);
-      }
       // Check delimiters. If they're not the same, throw error.
       if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
@@ -237,7 +251,11 @@ var DATEVALUE = function (...values) : number {
       var years = parseInt(matches[7]);
       var months = parseInt(matches[3]) - 1; // Months are zero indexed.
       var days = parseInt(matches[5]) - 1; // Days are zero indexed.
-      m = createMoment(years, months, days);
+      var tmpMoment = createMoment(years, months, days);
+      if (matches.length >= 9 && matches[8] !== undefined) {
+        tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
+      }
+      m = tmpMoment;
     }
   }
 
@@ -246,12 +264,13 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(MONTHNAME_YEAR);
     if (matches && matches.length >= 6) {
-      if (matches[6] !== undefined) {
-        console.log("MONTHNAME_YEAR matched timestamp", matches[6]);
-      }
       var years = parseInt(matches[5]);
       var monthName = matches[3];
-      m = createMoment(years, monthName, 0);
+      var tmpMoment = createMoment(years, monthName, 0);
+      if (matches[6] !== undefined) {
+        tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
+      }
+      m = tmpMoment;
     }
   }
 
@@ -259,9 +278,6 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(DAY_MONTHNAME_YEAR);
     if (matches && matches.length >= 8) {
-      if (matches.length >= 9 && matches[8] !== undefined) {
-        console.log("DAY_MONTHNAME_YEAR matched timestamp", matches[8]);
-      }
       var years = parseInt(matches[7]);
       var monthName = matches[5];
       var days = parseInt(matches[3]) - 1; // Days are zero indexed.
@@ -271,7 +287,11 @@ var DATEVALUE = function (...values) : number {
       if (firstDelimiter !== secondDelimiter && firstDelimiter !== "") {
         throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
       }
-      m = createMoment(years, monthName, days);
+      var tmpMoment = createMoment(years, monthName, days);
+      if (matches.length >= 9 && matches[8] !== undefined) {
+        tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
+      }
+      m = tmpMoment;
     }
   }
 
@@ -279,12 +299,13 @@ var DATEVALUE = function (...values) : number {
   if (m === undefined) {
     var matches = dateString.match(YEAR_MONTHNAME);
     if (matches && matches.length >= 6) {
-      if (matches[6] !== undefined) {
-        console.log("YEAR_MONTHNAME matched timestamp", matches[6]);
-      }
       var years = parseInt(matches[3]);
       var monthName = matches[5];
-      m = createMoment(years, monthName, 0);
+      var tmpMoment = createMoment(years, monthName, 0);
+      if (matches[6] !== undefined) {
+        tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
+      }
+      m = tmpMoment;
     }
   }
 

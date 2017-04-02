@@ -1,8 +1,7 @@
 /// <reference path="../../node_modules/moment/moment.d.ts"/>
 import * as moment from "moment";
-import {CellError, VALUE_ERROR} from "../Errors"
-import * as ERRORS from "../Errors"
-import {ExcelDate} from "../ExcelDate";
+import { ValueError, RefError, NAError, DivZeroError } from "../Errors"
+import { ExcelDate } from "../ExcelDate";
 
 /**
  * Converts wild-card style expressions (in which * matches zero or more characters, and ? matches exactly one character)
@@ -576,7 +575,7 @@ class TypeCaster {
       }
     }
     if (m === undefined || !m.isValid()) {
-      throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+      throw new ValueError("DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
     }
     return new ExcelDate(m);
   }
@@ -596,13 +595,13 @@ class TypeCaster {
       if (value.indexOf(".") > -1) {
         var fl = parseFloat(value.replace("$", ""));
         if (isNaN(fl)) {
-          throw new CellError(ERRORS.VALUE_ERROR, "Function ____ expects number values, but is text and cannot be coerced to a number.");
+          throw new ValueError("Function ____ expects number values, but is text and cannot be coerced to a number.");
         }
         return fl;
       }
       var fl = parseInt(value.replace("$", ""));
       if (isNaN(fl)) {
-        throw new CellError(ERRORS.VALUE_ERROR, "Function ____ expects number values, but is text and cannot be coerced to a number.");
+        throw new ValueError("Function ____ expects number values, but is text and cannot be coerced to a number.");
       }
       return fl;
     } else if (typeof value === "boolean") {
@@ -633,7 +632,7 @@ class TypeCaster {
     if (typeof value === "number") {
       return value !== 0;
     } else if (typeof value === "string") {
-      throw new CellError(ERRORS.VALUE_ERROR, "___ expects boolean values. But '" + value + "' is a text and cannot be coerced to a boolean.")
+      throw new ValueError("___ expects boolean values. But '" + value + "' is a text and cannot be coerced to a boolean.")
     } else if (typeof value === "boolean") {
       return value;
     }
@@ -683,7 +682,7 @@ class TypeCaster {
   static firstValueAsNumber(input: any) : number {
     if (input instanceof Array) {
       if (input.length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       return TypeCaster.firstValueAsNumber(input[0]);
     }
@@ -698,7 +697,7 @@ class TypeCaster {
   static firstValueAsString(input: any) : string {
     if (input instanceof Array) {
       if (input.length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       return TypeCaster.firstValueAsString(input[0]);
     }
@@ -708,7 +707,7 @@ class TypeCaster {
   static firstValue(input: any) : any {
     if (input instanceof Array) {
       if (input.length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       return TypeCaster.firstValue(input[0]);
     }
@@ -723,7 +722,7 @@ class TypeCaster {
   static firstValueAsBoolean(input: any): boolean {
     if (input instanceof Array) {
       if (input.length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       return TypeCaster.firstValueAsBoolean(input[0]);
     }
@@ -738,7 +737,7 @@ class TypeCaster {
   static firstValueAsExcelDate(input: any) : ExcelDate {
     if (input instanceof Array) {
       if (input.length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       return TypeCaster.firstValueAsExcelDate(input[0]);
     }
@@ -762,10 +761,10 @@ class TypeCaster {
         if (TypeCaster.canCoerceToNumber(value)) {
           return new ExcelDate(TypeCaster.valueToNumber(value));
         }
-        throw new CellError(ERRORS.VALUE_ERROR, "___ expects date values. But '" + value + "' is a text and cannot be coerced to a date.")
+        throw new ValueError("___ expects date values. But '" + value + "' is a text and cannot be coerced to a date.")
       }
     } else if (typeof value === "boolean") {
-      throw new CellError(ERRORS.VALUE_ERROR, "___ expects date values. But '" + value + "' is a text and cannot be coerced to a date.")
+      throw new ValueError("___ expects date values. But '" + value + "' is a text and cannot be coerced to a date.")
     }
   }
 }
@@ -810,7 +809,7 @@ class Filter {
   static flattenAndThrow(values: Array<any>) : Array<any> {
     return values.reduce(function (flat, toFlatten) {
       if (Array.isArray(toFlatten) && toFlatten.length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       return flat.concat(Array.isArray(toFlatten) ? Filter.flattenAndThrow(toFlatten) : toFlatten);
     }, []);
@@ -858,7 +857,7 @@ class ArgsChecker {
    */
   static checkLength(args: any, length: number) {
     if (args.length !== length) {
-      throw new CellError(ERRORS.NA_ERROR, "Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
+      throw new NAError("Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
     }
   }
 
@@ -869,7 +868,7 @@ class ArgsChecker {
    */
   static checkAtLeastLength(args: any, length: number) {
     if (args.length < length) {
-      throw new CellError(ERRORS.NA_ERROR, "Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
+      throw new NAError("Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
     }
   }
 
@@ -881,7 +880,7 @@ class ArgsChecker {
    */
   static checkLengthWithin(args: any, low: number, high: number) {
     if (args.length > high || args.length < low) {
-      throw new CellError(ERRORS.NA_ERROR, "Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
+      throw new NAError("Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
     }
   }
 }
@@ -904,7 +903,7 @@ class Serializer {
 var checkForDevideByZero = function(n : number) : number {
   n = +n;  // Coerce to number.
   if (!n) {  // Matches +0, -0, NaN
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function caused a divide by zero error.");
   }
   return n;
 };

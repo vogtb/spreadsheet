@@ -5,13 +5,12 @@ import {
   TypeCaster
 } from "./Utils";
 import {
-  CellError
+  RefError, NumError, DivZeroError, NAError
 } from "../Errors";
 import {
   SUM,
   ABS
 } from "./Math"
-import * as ERRORS from "../Errors";
 
 
 /**
@@ -49,7 +48,7 @@ var MEDIAN = function (...values) : number {
   values.forEach(function (currentValue) {
     if (currentValue instanceof Array) {
       if (currentValue.length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       var filtered = Filter.filterOutStringValues(currentValue);
       sortedArray = sortedArray.concat(filtered);
@@ -66,7 +65,7 @@ var MEDIAN = function (...values) : number {
     return TypeCaster.valueToNumber(sortedArray[0]);
   }
   if (sortedArray.length === 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "MEDIAN has no valid input data.");
+    throw new NumError("MEDIAN has no valid input data.");
   }
   // even number of values
   if (sortedArray.length % 2 === 0) {
@@ -95,7 +94,7 @@ var AVERAGE = function (...values) : number {
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       var filtered = Filter.filterOutStringValues(values[i]);
       result = result + SUM.apply(this, filtered);
@@ -124,7 +123,7 @@ var AVEDEV = function (...values) {
     var X = values[i];
     if (X instanceof Array) {
       if (X.length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       arrayValues.push(X);
     } else {
@@ -145,7 +144,7 @@ var AVEDEV = function (...values) {
     count++;
   }
   if (count === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function AVEDEV caused a devide by zero error.");
+    throw new DivZeroError("Evaluation of function AVEDEV caused a devide by zero error.");
   }
   var mean = result / count;
 
@@ -168,7 +167,7 @@ var AVERAGEA = function (...values) {
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       var filtered = Filter.stringValuesToZeros(values[i]);
       result = result + SUM.apply(this, filtered);
@@ -179,7 +178,7 @@ var AVERAGEA = function (...values) {
     }
   }
   if (count === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function AVEDEV caused a devide by zero error.");
+    throw new DivZeroError("Evaluation of function AVEDEV caused a devide by zero error.");
   }
   return result / count;
 };
@@ -198,7 +197,7 @@ var CORREL = function (...values) : number {
   }
   function variance(arr, flag) {
     if ((arr.length - (flag ? 1 : 0)) === 0) {
-      throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function CORREL caused a divide by zero error.");
+      throw new DivZeroError("Evaluation of function CORREL caused a divide by zero error.");
     }
     return sumsqerr(arr) / (arr.length - (flag ? 1 : 0));
   }
@@ -212,7 +211,7 @@ var CORREL = function (...values) : number {
   }
   function mean(arr) {
     if (arr.length === 0) {
-      throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function CORREL caused a divide by zero error.");
+      throw new DivZeroError("Evaluation of function CORREL caused a divide by zero error.");
     }
     return sum(arr) / arr.length;
   }
@@ -236,7 +235,7 @@ var CORREL = function (...values) : number {
       sq_dev[i] = (arr1[i] - u) * (arr2[i] - v);
     }
     if ((arr1Len - 1) === 0) {
-      throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function CORREL caused a divide by zero error.");
+      throw new DivZeroError("Evaluation of function CORREL caused a divide by zero error.");
     }
     return sum(sq_dev) / (arr1Len - 1);
   }
@@ -248,14 +247,14 @@ var CORREL = function (...values) : number {
     values[1] = [values[1]];
   }
   if (values[0].length !== values[1].length) {
-    throw new CellError(ERRORS.NA_ERROR, "CORREL has mismatched argument count " + values[0] + " vs " + values[1] + ".");
+    throw new NAError("CORREL has mismatched argument count " + values[0] + " vs " + values[1] + ".");
   }
   var arr1 = Filter.filterOutNonNumberValues(Filter.flattenAndThrow(values[0]));
   var arr2 = Filter.filterOutNonNumberValues(Filter.flattenAndThrow(values[1]));
   var stdevArr1 = stdev(arr1, 1);
   var stdevArr2 = stdev(arr2, 1);
   if (stdevArr1 === 0 || stdevArr2 === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function CORREL caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function CORREL caused a divide by zero error.");
   }
   return covariance(arr1, arr2) / stdevArr1 / stdevArr2;
 };
@@ -453,7 +452,7 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
   ArgsChecker.checkLength(values, 4);
   var x = TypeCaster.firstValueAsNumber(values[0]);
   if (x < 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function F.DIST parameter 1 value is " + x + ". It should be greater than or equal to 0.");
+    throw new NumError("Function F.DIST parameter 1 value is " + x + ". It should be greater than or equal to 0.");
   }
   var d1 = TypeCaster.firstValueAsNumber(values[1]);
   var d2 = TypeCaster.firstValueAsNumber(values[2]);
@@ -619,7 +618,7 @@ var FISHER = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var x = TypeCaster.firstValueAsNumber(values[0]);
   if (x <= -1 || x >= 1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function FISHER parameter 1 value is " + x + ". Valid values are between -1 and 1 exclusive.");
+    throw new NumError("Function FISHER parameter 1 value is " + x + ". Valid values are between -1 and 1 exclusive.");
   }
   return Math.log((1 + x) / (1 - x)) / 2;
 };
@@ -649,7 +648,7 @@ var MAX = function (...values) {
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       var filtered = Filter.filterOutStringValues(values[i]);
       if (filtered.length !== 0) {
@@ -685,7 +684,7 @@ var MIN = function (...values) {
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       var filtered = Filter.filterOutStringValues(values[i]);
       if (filtered.length !== 0) {
@@ -736,7 +735,7 @@ var AVERAGEIF = function (...values) {
     }
   }
   if (count === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function AVERAGEIF caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function AVERAGEIF caused a divide by zero error.");
   }
   return result / count;
 };

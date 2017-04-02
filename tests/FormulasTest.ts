@@ -17,8 +17,8 @@ function catchAndAssertEquals(toExecute, expected) {
     toExecute();
     toThrow = true;
   } catch (actualError) {
-    if (actualError.message != expected) {
-      console.log(expected, "not equal to", actualError.message);
+    if (actualError.name != expected) {
+      console.log(expected, "not equal to", actualError.name);
     }
   }
   if (toThrow) {

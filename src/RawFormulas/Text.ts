@@ -3,9 +3,8 @@ import {
   TypeCaster
 } from "./Utils";
 import {
-  CellError
+  ValueError, NumError, RefError
 } from "../Errors";
-import * as ERRORS from "../Errors";
 
 /**
  * Computes the value of a Roman numeral.
@@ -16,7 +15,7 @@ import * as ERRORS from "../Errors";
 var ARABIC = function (text?) {
   ArgsChecker.checkLength(arguments, 1);
   if (typeof text !== "string") {
-    throw new CellError(ERRORS.VALUE_ERROR, 'Invalid roman numeral in ARABIC evaluation.');
+    throw new ValueError('Invalid roman numeral in ARABIC evaluation.');
   }
   var negative = false;
   if (text[0] === "-") {
@@ -25,7 +24,7 @@ var ARABIC = function (text?) {
   }
   // Credits: Rafa? Kukawski
   if (!/^M*(?:D?C{0,3}|C[MD])(?:L?X{0,3}|X[CL])(?:V?I{0,3}|I[XV])$/.test(text)) {
-    throw new CellError(ERRORS.VALUE_ERROR, 'Invalid roman numeral in ARABIC evaluation.');
+    throw new ValueError('Invalid roman numeral in ARABIC evaluation.');
   }
   var r = 0;
   text.replace(/[MDLV]|C[MD]?|X[CL]?|I[XV]?/g, function (i) {
@@ -47,7 +46,7 @@ var CHAR = function (...values) : string {
   ArgsChecker.checkLength(values, 1);
   var n = TypeCaster.firstValueAsNumber(values[0]);
   if (n < 1 || n > 1114112) { //limit
-    throw new CellError(ERRORS.NUM_ERROR, "Function CHAR parameter 1 value " + n + " is out of range.");
+    throw new NumError("Function CHAR parameter 1 value " + n + " is out of range.");
   }
   return String.fromCharCode(n);
 };
@@ -62,7 +61,7 @@ var CODE = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var text = TypeCaster.firstValueAsString(values[0]);
   if (text === "") {
-    throw new CellError(ERRORS.VALUE_ERROR, "Function CODE parameter 1 value should be non-empty.");
+    throw new ValueError("Function CODE parameter 1 value should be non-empty.");
   }
   return text.charCodeAt(0);
 };
@@ -115,7 +114,7 @@ var CONCATENATE = function (...values) : string {
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       string += CONCATENATE.apply(this, arguments[i]);
     } else {

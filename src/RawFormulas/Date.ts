@@ -3,13 +3,10 @@ import * as moment from "moment";
 import * as Formula from "formulajs"
 import {
   ArgsChecker,
-  DateRegExBuilder,
   TypeCaster
 } from "./Utils";
 import {
-  NUM_ERROR,
-  VALUE_ERROR,
-  CellError
+  NumError, ValueError
 } from "../Errors";
 import {
   ExcelDate,
@@ -37,7 +34,7 @@ var DATE = function (...values) : ExcelDate {
       .add(day, 'days');
   var excelDate = new ExcelDate(m);
   if (excelDate.toNumber() < 0) {
-    throw new CellError(NUM_ERROR, "DATE evaluates to an out of range value " + excelDate.toNumber()
+    throw new NumError("DATE evaluates to an out of range value " + excelDate.toNumber()
         + ". It should be greater than or equal to 0.");
   }
   return excelDate;
@@ -58,7 +55,7 @@ var DATEVALUE = function (...values) : number {
   try {
     date = TypeCaster.stringToExcelDate(dateString);
   } catch (e) {
-    throw new CellError(VALUE_ERROR, "DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+    throw new ValueError("DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
   }
 
   // If we've not been able to parse the date by now, then we cannot parse it at all.

@@ -6,9 +6,8 @@ import {
   TypeCaster
 } from "./Utils";
 import {
-  CellError
+  NumError, DivZeroError, RefError, ValueError, NAError
 } from "../Errors";
-import * as ERRORS from "../Errors";
 
 /**
  * Returns the absolute value of a number.
@@ -34,7 +33,7 @@ var ACOS = function (value?) {
   if (value === -1) {
     return Math.PI;
   } else if (value > 1 || value < -1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". Valid values are between -1 and 1 inclusive.");
+    throw new NumError("Function ACOS parameter 1 value is " + value + ". Valid values are between -1 and 1 inclusive.");
   }
   return Math.acos(value);
 };
@@ -49,7 +48,7 @@ var ACOSH = function (value?) {
   ArgsChecker.checkLength(arguments, 1);
   value = TypeCaster.valueToNumber(value);
   if (value < 1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". It should be greater than or equal to 1.");
+    throw new NumError("Function ACOSH parameter 1 value is " + value + ". It should be greater than or equal to 1.");
   }
   return Math.log(value + Math.sqrt(value * value - 1));
 };
@@ -64,7 +63,7 @@ var ACOTH = function (value?) {
   ArgsChecker.checkLength(arguments, 1);
   value = TypeCaster.valueToNumber(value);
   if (value <= 1 && value >= -1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". Valid values cannot be between -1 and 1 inclusive.")
+    throw new NumError("Function ACOTH parameter 1 value is " + value + ". Valid values cannot be between -1 and 1 inclusive.")
   }
   return 0.5 * Math.log((value + 1) / (value - 1));
 };
@@ -81,7 +80,7 @@ var ASIN = function (value?) {
   if (value === -1) {
     return Math.PI;
   } else if (value > 1 || value < -1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". Valid values are between -1 and 1 inclusive.");
+    throw new NumError("Function ASIN parameter 1 value is " + value + ". Valid values are between -1 and 1 inclusive.");
   }
   return Math.asin(value);
 };
@@ -111,7 +110,7 @@ var ATAN = function (value?) {
   if (value === -1) {
     return Math.PI;
   } else if (value > 1 || value < -1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function ____ parameter 1 value is " + value + ". Valid values are between -1 and 1 inclusive.");
+    throw new NumError("Function ATAN parameter 1 value is " + value + ". Valid values are between -1 and 1 inclusive.");
   }
   return Math.atan(value);
 };
@@ -129,7 +128,7 @@ var ATAN2 = function (x, y) {
   x = TypeCaster.valueToNumber(x);
   y = TypeCaster.valueToNumber(y);
   if (x === 0 && y === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function ATAN2 caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function ATAN2 caused a divide by zero error.");
   }
   return Math.atan2(y, x);
 };
@@ -145,7 +144,7 @@ var ATANH = function (value?) : number {
   ArgsChecker.checkLength(arguments, 1);
   value = TypeCaster.valueToNumber(value);
   if (value >= 1 || value <= -1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function ATANH parameter 1 value is " + value + ". Valid values are between -1 and 1 exclusive.");
+    throw new NumError("Function ATANH parameter 1 value is " + value + ". Valid values are between -1 and 1 exclusive.");
   }
   if (Math.abs(value) < 1) {
 
@@ -163,7 +162,7 @@ var EVEN = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   if (values[0] instanceof Array) {
     if (values[0].length === 0) {
-      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      throw new RefError("Reference does not exist.");
     }
     return EVEN(values[0][0]);
   }
@@ -183,7 +182,7 @@ var MOD = function (...values) : number {
   var oneN = TypeCaster.valueToNumber(values[0]);
   var twoN =  TypeCaster.valueToNumber(values[1]);
   if (twoN === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function MOD parameter 2 cannot be zero.");
+    throw new DivZeroError("Function MOD parameter 2 cannot be zero.");
   }
   return oneN % twoN;
 };
@@ -199,7 +198,7 @@ var ODD = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   if (values[0] instanceof Array) {
     if (values[0].length === 0) {
-      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      throw new RefError("Reference does not exist.");
     }
     return ODD(values[0][0]);
   }
@@ -235,7 +234,7 @@ var SUM = function (...values) : number {
       result = result + SUM.apply(this, values[i]);
     } else {
       if (values[i] === "") {
-        throw new CellError(ERRORS.VALUE_ERROR, "Function SUM parameter "+i+" expects number values. But '"+values[i]+"' is a text and cannot be coerced to a number.");
+        throw new ValueError("Function SUM parameter "+i+" expects number values. But '"+values[i]+"' is a text and cannot be coerced to a number.");
       }
       result = result + TypeCaster.valueToNumber(values[i]);
     }
@@ -253,7 +252,7 @@ var SQRT = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var x = TypeCaster.firstValueAsNumber(values[0]);
   if (x < 0) {
-    throw new CellError(ERRORS.VALUE_ERROR, "Function SQRT parameter 1 expects number values. But '" + values[0] + "' is a text and cannot be coerced to a number.");
+    throw new ValueError("Function SQRT parameter 1 expects number values. But '" + values[0] + "' is a text and cannot be coerced to a number.");
   }
   return Math.sqrt(x);
 };
@@ -268,7 +267,7 @@ var SQRTPI = function (...values) : number{
   ArgsChecker.checkLength(values, 1);
   var n = TypeCaster.firstValueAsNumber(values[0]);
   if (n < 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function SQRTPI parameter 1 value is " + n + ". It should be greater than or equal to 0.");
+    throw new NumError("Function SQRTPI parameter 1 value is " + n + ". It should be greater than or equal to 0.");
   }
   return Math.sqrt(n * Math.PI);
 };
@@ -307,7 +306,7 @@ var COT = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var x = TypeCaster.firstValueAsNumber(values[0]);
   if (x === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function COT caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function COT caused a divide by zero error.");
   }
   return 1 / Math.tan(x);
 };
@@ -322,7 +321,7 @@ var COTH = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var x = TypeCaster.firstValueAsNumber(values[0]);
   if (x === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function COTH caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function COTH caused a divide by zero error.");
   }
   return 1 / Math["tanh"](x);
 };
@@ -349,7 +348,7 @@ var INT = function (...values) : number {
 var ISEVEN = function (...values) : boolean {
   ArgsChecker.checkLength(values, 1);
   if (values[0] === "") {
-    throw new CellError(ERRORS.VALUE_ERROR, "Function ISEVEN parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
+    throw new ValueError("Function ISEVEN parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
   }
   var x = TypeCaster.firstValueAsNumber(values[0]);
   return Math.floor(x) % 2 === 0;
@@ -365,7 +364,7 @@ var ISEVEN = function (...values) : boolean {
 var ISODD = function (...values) : boolean {
   ArgsChecker.checkLength(values, 1);
   if (values[0] === "") {
-    throw new CellError(ERRORS.VALUE_ERROR, "Function ISODD parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
+    throw new ValueError("Function ISODD parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
   }
   var x = TypeCaster.firstValueAsNumber(values[0]);
   return Math.floor(x) % 2 === 1;
@@ -414,7 +413,7 @@ var LOG10 = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var n = TypeCaster.firstValueAsNumber(values[0]);
   if (n < 1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function LOG10 parameter 1 value is " + n + ". It should be greater than 0.");
+    throw new NumError("Function LOG10 parameter 1 value is " + n + ". It should be greater than 0.");
   }
   var ln = Math.log(n);
   var lb = Math.log(10);
@@ -435,16 +434,16 @@ var LOG = function (...values) : number {
   if (values.length > 1) {
     b = TypeCaster.firstValueAsNumber(values[1]);
     if (b < 1) {
-      throw new CellError(ERRORS.NUM_ERROR, "Function LOG parameter 2 value is " + b + ". It should be greater than 0.");
+      throw new NumError("Function LOG parameter 2 value is " + b + ". It should be greater than 0.");
     }
   }
   if (b < 2) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function LOG caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function LOG caused a divide by zero error.");
   }
   var ln = Math.log(n);
   var lb = Math.log(b);
   if (lb === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function LOG caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function LOG caused a divide by zero error.");
   }
   return ln / lb;
 };
@@ -459,7 +458,7 @@ var LN = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var n = TypeCaster.firstValueAsNumber(values[0]);
   if (n < 1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function LN parameter 1 value is " + n + ". It should be greater than 0.");
+    throw new NumError("Function LN parameter 1 value is " + n + ". It should be greater than 0.");
   }
   return Math.log(n);
 };
@@ -503,7 +502,7 @@ var CEILING = function (...values) : number {
   }
   var significance = TypeCaster.firstValueAsNumber(values[1]);
   if (significance === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function CEILING parameter 2 cannot be zero.");
+    throw new DivZeroError("Function CEILING parameter 2 cannot be zero.");
   }
   var precision = -Math.floor(Math.log(significance) / Math.log(10));
   if (num >= 0) {
@@ -528,7 +527,7 @@ var FLOOR = function (...values) : number {
   }
   var significance = TypeCaster.firstValueAsNumber(values[1]);
   if (significance === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function FLOOR parameter 2 cannot be zero.");
+    throw new DivZeroError("Function FLOOR parameter 2 cannot be zero.");
   }
   significance = significance ? Math.abs(significance) : 1;
   var precision = -Math.floor(Math.log(significance) / Math.log(10));
@@ -550,7 +549,7 @@ var IF = function (...values) : any {
   ArgsChecker.checkLength(values, 3);
   if (values[0] instanceof Array) {
     if (values[0].length === 0) {
-      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      throw new RefError("Reference does not exist.");
     }
     return IF(values[0][0], values[1], values[2]);
   } else if (values[0] === "") {
@@ -614,7 +613,7 @@ var COUNTIFS = function (...values) {
     var otherCriteriaEvaluationSuccessfulSoFar = true;
     for (var x = 0; x < values.length; x += 2) {
       if (values[x].length < values[0].length) {
-        throw new CellError(ERRORS.VALUE_ERROR, "Array arguments to COUNTIFS are of different size.");
+        throw new ValueError("Array arguments to COUNTIFS are of different size.");
       }
       var criteriaEvaluation = criteriaEvaluationFunctions[x+1];
       if (otherCriteriaEvaluationSuccessfulSoFar) {
@@ -732,7 +731,7 @@ var SUMSQ = function (...values) {
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       result = result + SUMSQ.apply(this, Filter.filterOutNonNumberValues(values[i]));
     } else {
@@ -871,7 +870,7 @@ var SUMX2PY2 = function (...values) : number {
   var arrOne = Filter.flattenAndThrow(values[0]);
   var arrTwo = Filter.flattenAndThrow(values[1]);
   if (arrOne.length !== arrTwo.length) {
-    throw new CellError(ERRORS.NA_ERROR, "Array arguments to SUMX2PY2 are of different size.");
+    throw new NAError("Array arguments to SUMX2PY2 are of different size.");
   }
   var result = 0;
   for (var i = 0; i < arrOne.length; i++) {
@@ -897,7 +896,7 @@ var SUMX2MY2 = function (...values) : number {
   var arrOne = Filter.flattenAndThrow(values[0]);
   var arrTwo = Filter.flattenAndThrow(values[1]);
   if (arrOne.length !== arrTwo.length) {
-    throw new CellError(ERRORS.NA_ERROR, "Array arguments to SUMX2MY2 are of different size.");
+    throw new NAError("Array arguments to SUMX2MY2 are of different size.");
   }
   var result = 0;
   for (var i = 0; i < arrOne.length; i++) {
@@ -966,7 +965,7 @@ var SUMPRODUCT = function (...values) : number {
   for (var x = 1; x < values.length; x++) {
     flattenedValues.push(Filter.flattenAndThrow(values[x]));
     if (flattenedValues[x].length !== flattenedValues[0].length) {
-      throw new CellError(ERRORS.VALUE_ERROR, "SUMPRODUCT has mismatched range sizes. Expected count: "
+      throw new ValueError("SUMPRODUCT has mismatched range sizes. Expected count: "
         + flattenedValues[0].length + ". Actual count: " + flattenedValues[0].length + ".");
     }
   }
@@ -1008,14 +1007,14 @@ var COMBIN = function (...values) : number {
   var n = TypeCaster.firstValueAsNumber(values[0]);
   var c = TypeCaster.firstValueAsNumber(values[1]);
   if (n < c) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function COMBIN parameter 2 value is "
+    throw new NumError("Function COMBIN parameter 2 value is "
       + c + ". It should be less than or equal to value of Function COMBIN parameter 1 with " + n + ".");
   }
   n = Math.floor(n);
   c = Math.floor(c);
   var div = fact(c) * fact(n - c);
   if (div === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function COMBIN caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function COMBIN caused a divide by zero error.");
   }
   return fact(n) / div;
 };

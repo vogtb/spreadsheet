@@ -16,9 +16,6 @@ And the same for MAX, MAXA, COUNT, COUNTA, etc. Look these over.
 * COVARIANCES
 * ...etc.
 
-### Refactor the way we construct and throw errors
-For example, the mis-matched argument length errors are all generated the same way.
-
 ### Refactor the way tests are organized.
 Group by error type and have some useful functions that will call with 0, N, N+1 args to test the args
 checker. Also, test for *all possible* errors that could be thrown, and *all possible types* that could be passed in.
@@ -40,9 +37,6 @@ See `DOLLAR` function for more info.
 Like dollars, dates are special types, but can be compared as if they're primatives. For example, this statement is
 valid inside a cell: `=DATE(1992, 6, 6) > =DATE(1992, 6, 10)`. We should check types and and have Date-to-number
 conversion inside parser.js.
-
-* Organize tests in a way that makes sense.
-Annotate them, and standardize the error checking for errors like REF, NA, NUM, VALUE, etc.
 
 * Test all ExcelDate functions
 Right now we're just using the number of days since 1900, but we should check the other functions.

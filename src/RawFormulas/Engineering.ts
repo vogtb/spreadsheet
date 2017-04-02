@@ -2,8 +2,10 @@ import {
   ArgsChecker,
   TypeCaster
 } from "./Utils";
-import { CellError } from "../Errors"
-import * as ERRORS from "../Errors"
+import {
+  ValueError,
+  NumError
+} from "../Errors"
 
 /**
  * Converts a signed binary number to decimal format.
@@ -16,11 +18,11 @@ import * as ERRORS from "../Errors"
 var BIN2DEC = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   if (typeof TypeCaster.firstValue(values[0]) === "boolean") {
-    throw new CellError(ERRORS.VALUE_ERROR, "Function BIN2DEC parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
+    throw new ValueError("Function BIN2DEC parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
   }
   var n = TypeCaster.firstValueAsString(values[0]);
   if (!(/^[01]{1,10}$/).test(n)) {
-    throw new CellError(ERRORS.NUM_ERROR, "Input for BIN2DEC ('"+n+"') is not a valid binary representation.");
+    throw new NumError("Input for BIN2DEC ('" + n + "') is not a valid binary representation.");
   }
 
   if (n.length === 10 && n.substring(0, 1) === '1') {
@@ -42,7 +44,7 @@ var BIN2DEC = function (...values) : number {
 var BIN2HEX = function (...values) : string {
   ArgsChecker.checkLengthWithin(values, 1, 2);
   if (typeof TypeCaster.firstValue(values[0]) === "boolean") {
-    throw new CellError(ERRORS.VALUE_ERROR, "Function BIN2HEX parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
+    throw new ValueError("Function BIN2HEX parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
   }
   var n = TypeCaster.firstValueAsString(values[0]);
   var p = 10;
@@ -50,7 +52,7 @@ var BIN2HEX = function (...values) : string {
     p = TypeCaster.firstValueAsNumber(values[1]);
   }
   if (!(/^[01]{1,10}$/).test(n)) {
-    throw new CellError(ERRORS.NUM_ERROR, "Input for BIN2HEX ('"+n+"') is not a valid binary representation.");
+    throw new NumError("Input for BIN2HEX ('"+n+"') is not a valid binary representation.");
   }
 
   if (n.length === 10 && n.substring(0, 1) === '1') {
@@ -58,7 +60,7 @@ var BIN2HEX = function (...values) : string {
   }
 
   if (p < 1 || p > 10) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function BIN2HEX parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
+    throw new NumError("Function BIN2HEX parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
   }
   p = Math.floor(p);
   // Convert decimal number to hexadecimal
@@ -88,7 +90,7 @@ var BIN2HEX = function (...values) : string {
 var BIN2OCT = function (...values) : string {
   ArgsChecker.checkLengthWithin(values, 1, 2);
   if (typeof TypeCaster.firstValue(values[0]) === "boolean") {
-    throw new CellError(ERRORS.VALUE_ERROR, "Function BIN2OCT parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
+    throw new ValueError("Function BIN2OCT parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
   }
   var n = TypeCaster.firstValueAsString(values[0]);
   var p = 10;
@@ -96,7 +98,7 @@ var BIN2OCT = function (...values) : string {
     p = TypeCaster.firstValueAsNumber(values[1]);
   }
   if (!(/^[01]{1,10}$/).test(n)) {
-    throw new CellError(ERRORS.NUM_ERROR, "Input for BIN2OCT ('"+n+"') is not a valid binary representation.");
+    throw new NumError("Input for BIN2OCT ('"+n+"') is not a valid binary representation.");
   }
 
   if (n.length === 10 && n.substring(0, 1) === '1') {
@@ -104,7 +106,7 @@ var BIN2OCT = function (...values) : string {
   }
 
   if (p < 1 || p > 10) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function BIN2OCT parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
+    throw new NumError("Function BIN2OCT parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
   }
   p = Math.floor(p);
   var result = parseInt(n.toString(), 2).toString(8);
@@ -146,10 +148,10 @@ var DEC2OCT = function (...values) : string {
     placesPresent = true;
   }
   if (n < -53687092 || n > 536870911) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2OCT parameter 1 value is " + n + ". Valid values are between -53687092 and 536870911 inclusive.");
+    throw new NumError("Function DEC2OCT parameter 1 value is " + n + ". Valid values are between -53687092 and 536870911 inclusive.");
   }
   if (p < 1 || p > 10) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2OCT parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
+    throw new NumError("Function DEC2OCT parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
   }
   if (n < 0) {
     return (1073741824 + n).toString(8).toUpperCase();
@@ -194,10 +196,10 @@ var DEC2HEX = function (...values) : string {
     placesPresent = true;
   }
   if (n < -549755813888 || n > 549755813887) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2HEX parameter 1 value is " + n + ". Valid values are between -549755813888 and 549755813887 inclusive.");
+    throw new NumError("Function DEC2HEX parameter 1 value is " + n + ". Valid values are between -549755813888 and 549755813887 inclusive.");
   }
   if (p < 1 || p > 10) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2HEX parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
+    throw new NumError("Function DEC2HEX parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
   }
   // Ignore places and return a 10-character hexadecimal number if number is negative
   if (n < 0) {
@@ -246,10 +248,10 @@ var DEC2BIN = function (...values) : string {
   }
 
   if (n < -512 || n > 511) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2BIN parameter 1 value is " + n + ". Valid values are between -512 and 511 inclusive.");
+    throw new NumError("Function DEC2BIN parameter 1 value is " + n + ". Valid values are between -512 and 511 inclusive.");
   }
   if (p < 1 || p > 10) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DEC2BIN parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
+    throw new NumError("Function DEC2BIN parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
   }
 
   // Ignore places and return a 10-character binary number if number is negative

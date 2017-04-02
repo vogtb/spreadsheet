@@ -10,15 +10,14 @@ function catchAndAssertEquals(toExecute, expected) {
     toExecute();
     toThrow = true;
   } catch (actualError) {
-    if (actualError.message != expected) {
-      console.log(expected, "not equal to", actualError.message);
+    if (actualError.name != expected) {
+      console.log(expected, "not equal to", actualError.name);
     }
   }
   if (toThrow) {
     throw new Error("expected error: " + expected);
   }
 }
-
 // Test EDATE
 assertEquals(EDATE(DATE(1992, 6, 24), 1), DATE(1992, 7, 24));
 assertEquals(EDATE(DATE(1992, 5, 24), 2), DATE(1992, 7, 24));

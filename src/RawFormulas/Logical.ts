@@ -1,6 +1,5 @@
 import { ArgsChecker, TypeCaster } from "./Utils"
-import { CellError } from "../Errors"
-import * as ERRORS from "../Errors"
+import { ValueError, RefError } from "../Errors"
 
 /**
  * Returns true if all of the provided arguments are logically true, and false if any of the provided arguments are logically false.
@@ -13,7 +12,7 @@ var AND = function (...values) {
   var result = true;
   for (var i = 0; i < values.length; i++) {
     if (typeof values[i] === "string") {
-      throw new CellError(ERRORS.VALUE_ERROR, "AND expects boolean values. But '" + values[i] + "' is a text and cannot be coerced to a boolean.")
+      throw new ValueError("AND expects boolean values. But '" + values[i] + "' is a text and cannot be coerced to a boolean.")
     } else if (values[i] instanceof Array) {
       if (!AND.apply(this, values[i])) {
         result = false;
@@ -40,12 +39,12 @@ var EXACT = function (...values) {
   var two = values[1];
   if (one instanceof Array) {
     if (one.length === 0) {
-      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      throw new RefError("Reference does not exist.");
     }
   }
   if (two instanceof Array) {
     if (two.length === 0) {
-      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      throw new RefError("Reference does not exist.");
     }
   }
   one = TypeCaster.valueToString(one);
@@ -87,14 +86,14 @@ var NOT = function (...values) : boolean {
     if (X === "") {
       return true;
     }
-    throw new CellError(ERRORS.VALUE_ERROR, "Function NOT parameter 1 expects boolean values. But '" + X + "' is a text and cannot be coerced to a boolean.")
+    throw new ValueError("Function NOT parameter 1 expects boolean values. But '" + X + "' is a text and cannot be coerced to a boolean.")
   }
   if (typeof(X) === "number") {
     return X === 0;
   }
   if (X instanceof Array) {
     if (X.length === 0) {
-      throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      throw new RefError("Reference does not exist.");
     }
     return NOT(X[0]);
   }
@@ -112,7 +111,7 @@ var OR = function (...values) {
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       if (OR.apply(this, values[i])) {
         return true;
@@ -136,7 +135,7 @@ var XOR = function (...values) {
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
-        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+        throw new RefError("Reference does not exist.");
       }
       if (XOR.apply(this, values[i])) {
         if (alreadyTruthy) {

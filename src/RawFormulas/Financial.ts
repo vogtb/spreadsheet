@@ -4,9 +4,9 @@ import {
   checkForDevideByZero
 } from "./Utils";
 import {
-  CellError
+  NumError,
+  DivZeroError
 } from "../Errors"
-import * as ERRORS from "../Errors"
 
 /**
  * Calculates the depreciation of an asset for a specified period using the double-declining balance method.
@@ -27,23 +27,23 @@ var DDB = function (...values) : number {
   var factor = values.length === 5 ? TypeCaster.firstValueAsNumber(values[4]) : 2;
 
   if (cost < 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DDB parameter 1 value is "
+    throw new NumError("Function DDB parameter 1 value is "
       + cost + ". It should be greater than or equal to 0.");
   }
   if (salvage < 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DDB parameter 2 value is "
+    throw new NumError("Function DDB parameter 2 value is "
       + salvage + ". It should be greater than or equal to 0.");
   }
   if (life < 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DDB parameter 3 value is "
+    throw new NumError("Function DDB parameter 3 value is "
       + life + ". It should be greater than or equal to 0.");
   }
   if (period < 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DDB parameter 4 value is "
+    throw new NumError("Function DDB parameter 4 value is "
       + period + ". It should be greater than or equal to 0.");
   }
   if (period > life) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DDB parameter 4 value is "
+    throw new NumError("Function DDB parameter 4 value is "
       + life + ". It should be less than or equal to value of Function DB parameter 3 with "+ period +".");
   }
   if (salvage >= cost) {
@@ -78,34 +78,34 @@ var DB = function (...values) : number {
   var period = TypeCaster.firstValueAsNumber(values[3]);
   var month = values.length === 5 ? Math.floor(TypeCaster.firstValueAsNumber(values[4])) : 12;
   if (cost < 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DB parameter 1 value is "
+    throw new NumError("Function DB parameter 1 value is "
       + cost + ". It should be greater than or equal to 0.");
   }
   if (salvage < 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DB parameter 2 value is "
+    throw new NumError("Function DB parameter 2 value is "
       + salvage + ". It should be greater than or equal to 0.");
   }
   if (life < 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DB parameter 3 value is "
+    throw new NumError("Function DB parameter 3 value is "
       + life + ". It should be greater than or equal to 0.");
   }
   if (period < 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DB parameter 4 value is "
+    throw new NumError("Function DB parameter 4 value is "
       + period + ". It should be greater than or equal to 0.");
   }
   if (month > 12 || month < 1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DB parameter 5 value is "
+    throw new NumError("Function DB parameter 5 value is "
       + month + ". Valid values are between 1 and 12 inclusive.");
   }
   if (period > life) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function DB parameter 4 value is "
+    throw new NumError("Function DB parameter 4 value is "
       + life + ". It should be less than or equal to value of Function DB parameter 3 with "+ period +".");
   }
   if (salvage >= cost) {
     return 0;
   }
   if (cost === 0 && salvage !== 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function DB cause a divide by zero error.")
+    throw new DivZeroError("Evaluation of function DB cause a divide by zero error.")
   }
   var rate = (1 - Math.pow(salvage / cost, 1 / life));
   var initial = cost * rate * month / 12;
@@ -149,7 +149,7 @@ var DOLLAR = function (...values) : number {
   var divisor = sign * (Math.floor(Math.abs(v) * Math.pow(10, places)));
   var pow = Math.pow(10, places);
   if (pow === 0 && divisor !== 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function DOLLAR cause a divide by zero error.")
+    throw new DivZeroError("Evaluation of function DOLLAR cause a divide by zero error.")
   }
   return divisor / pow;
 };
@@ -167,13 +167,13 @@ var DOLLARDE = function (...values) : number {
   var dollar = TypeCaster.firstValueAsNumber(values[0]);
   var fraction = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   if (fraction === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function DOLLARDE parameter 2 cannot be zero.");
+    throw new DivZeroError("Function DOLLARDE parameter 2 cannot be zero.");
   }
   var result = parseInt(dollar.toString(), 10);
   result += (dollar % 1) * Math.pow(10, Math.ceil(Math.log(fraction) / Math.LN10)) / fraction;
   var power = Math.pow(10, Math.ceil(Math.log(fraction) / Math.LN2) + 1);
   if (power === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function DOLLARDE caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function DOLLARDE cause a divide by zero error.")
   }
   result = Math.round(result * power) / power;
   return result;
@@ -192,7 +192,7 @@ var DOLLARFR = function (...values) : number {
   var dollar = TypeCaster.firstValueAsNumber(values[0]);
   var unit = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   if (unit === 0) {
-    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Function DOLLARFR parameter 2 cannot be zero.");
+    throw new DivZeroError("Function DOLLARFR parameter 2 cannot be zero.");
   }
   var result = parseInt(dollar.toString(), 10);
   result += (dollar % 1) * Math.pow(10, -Math.ceil(Math.log(unit) / Math.LN10)) * unit;
@@ -212,10 +212,10 @@ var EFFECT = function (...values) : number {
   var rate = TypeCaster.firstValueAsNumber(values[0]);
   var periods = TypeCaster.firstValueAsNumber(values[1]);
   if (rate <= 0) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function EFFECT parameter 1 value is " + rate + ". It should be greater than to 0");
+    throw new NumError("Function EFFECT parameter 1 value is " + rate + ". It should be greater than to 0");
   }
   if (periods < 1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function EFFECT parameter 2 value is " + periods + ". It should be greater than or equal to 1");
+    throw new NumError("Function EFFECT parameter 2 value is " + periods + ". It should be greater than or equal to 1");
   }
   periods = Math.floor(periods);
   return Math.pow(1 + rate / periods, periods) - 1;
@@ -274,14 +274,14 @@ var CUMPRINC = function (...values) : number {
   var value = TypeCaster.firstValueAsNumber(values[2]);
   var start = TypeCaster.firstValueAsNumber(values[3]);
   if (start < 1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function CUMPRINC parameter 4 value is " + start + ". It should be greater than or equal to 1.");
+    throw new NumError("Function CUMPRINC parameter 4 value is " + start + ". It should be greater than or equal to 1.");
   }
   var end = TypeCaster.firstValueAsNumber(values[4]);
   if (end < 1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to 1.");
+    throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to 1.");
   }
   if (end < start) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to " + start + ".");
+    throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to " + start + ".");
   }
   var type = TypeCaster.firstValueAsBoolean(values[5]);
 
@@ -326,14 +326,14 @@ var CUMIPMT = function (...values) : number {
   var value = TypeCaster.firstValueAsNumber(values[2]);
   var start = TypeCaster.firstValueAsNumber(values[3]);
   if (start < 1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function CUMPRINC parameter 4 value is " + start + ". It should be greater than or equal to 1.");
+    throw new NumError("Function CUMPRINC parameter 4 value is " + start + ". It should be greater than or equal to 1.");
   }
   var end = TypeCaster.firstValueAsNumber(values[4]);
   if (end < 1) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to 1.");
+    throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to 1.");
   }
   if (end < start) {
-    throw new CellError(ERRORS.NUM_ERROR, "Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to " + start + ".");
+    throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to " + start + ".");
   }
   var type = TypeCaster.firstValueAsBoolean(values[5]);
 

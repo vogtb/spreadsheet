@@ -64,3 +64,13 @@ Right now we're just using the number of days since 1900, but we should check th
 * Verify that all white-space wild cards are implemented properly
 
 * Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
+
+
+# Testing Guidelines
+
+All formulas should test for:
+1) One *less* argument than the formula expects, and one *more* argument than the formula expects.
+2) If it accepts a number, test with false as 0, and true as 1.
+3) If it accepts a number, test with string parsing to number.
+4) If it accepts a date, test with number, number as string, date as string.
+5) Individual arguments as ranges with single values (eg: `[1]`), and ranges as multiple values (eg: `[1, "str"]`).

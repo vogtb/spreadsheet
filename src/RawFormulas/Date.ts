@@ -83,13 +83,29 @@ var EDATE = function (...values) : ExcelDate {
 };
 
 
+/**
+ * Returns a date representing the last day of a month which falls a specified number of months before or after another
+ * date.
+ * @param values[0] start_date - The date from which to calculate the the result.
+ * @param values[1] months - The number of months before (negative) or after (positive) start_date to consider. The last
+ * calendar day of the calculated month is returned.
+ * @returns {ExcelDate} the last day of a month
+ * @constructor
+ */
+var EOMONTH = function (...values) : ExcelDate {
+  ArgsChecker.checkLength(values, 2);
+  var startDate = TypeCaster.firstValueAsExcelDate(values[0]);
+  var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+  // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
+  // exclusive count of days.
+  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber() - 2, "days").add(months, "months").endOf("month"));
+};
+
+
 var DAY = Formula["DAY"];
 var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
-var EOMONTH = function (start_date, months) {
-  var edate = moment(start_date).add(months, 'months');
-  return new Date(edate.year(), edate.month(), edate.daysInMonth());
-};
+
 var YEARFRAC = Formula["YEARFRAC"];
 
 // Functions unimplemented.

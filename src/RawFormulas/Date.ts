@@ -72,7 +72,10 @@ var DATEVALUE = function (...values) : number {
  */
 var EDATE = function (...values) : ExcelDate {
   ArgsChecker.checkLength(values, 2);
-  var startDate = TypeCaster.firstValueAsExcelDate(values[0]);
+  var startDate = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  if (startDate.toNumber() < 0) {
+    throw new NumError("Function EDATE parameter 1 value is " + startDate.toNumber() + ". It should be greater than or equal to 0.");
+  }
   var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
   // exclusive count of days.
@@ -91,7 +94,10 @@ var EDATE = function (...values) : ExcelDate {
  */
 var EOMONTH = function (...values) : ExcelDate {
   ArgsChecker.checkLength(values, 2);
-  var startDate = TypeCaster.firstValueAsExcelDate(values[0]);
+  var startDate = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  if (startDate.toNumber() < 0) {
+    throw new NumError("Function EOMONTH parameter 1 value is " + startDate.toNumber() + ". It should be greater than or equal to 0.");
+  }
   var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
   // exclusive count of days.
@@ -99,7 +105,24 @@ var EOMONTH = function (...values) : ExcelDate {
 };
 
 
-var DAY = Formula["DAY"];
+/**
+ * Returns the day of the month that a specific date falls on, in numeric format.
+ * @param values[0] date - The date from which to extract the day. Must be a reference to a cell containing a date, a
+ * function returning a date type, or a number.
+ * @returns {number} day of the month
+ * @constructor
+ */
+var DAY = function (...values) : number {
+  ArgsChecker.checkLength(values, 1);
+  var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  if (date.toNumber() < 0) {
+    throw new NumError("Function DAY parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+  }
+  return date.toMoment().date();
+};
+
+
+
 var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
 

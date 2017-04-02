@@ -732,24 +732,26 @@ class TypeCaster {
   /**
    * Takes the input type and will throw a REF_ERROR or coerce it into a ExcelDate
    * @param input input to attempt to coerce to a ExcelDate
+   * @param coerceBoolean should a boolean be converted
    * @returns {ExcelDate} representing a date
    */
-  static firstValueAsExcelDate(input: any) : ExcelDate {
+  static firstValueAsExcelDate(input: any, coerceBoolean?: boolean) : ExcelDate {
     if (input instanceof Array) {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      return TypeCaster.firstValueAsExcelDate(input[0]);
+      return TypeCaster.firstValueAsExcelDate(input[0], coerceBoolean);
     }
-    return TypeCaster.valueToExcelDate(input);
+    return TypeCaster.valueToExcelDate(input, coerceBoolean);
   }
 
   /**
    * Convert a value to ExcelDate if possible.
-   * @param value of any type, including array. array cannot be empty.
+   * @param value to convert
+   * @param coerceBoolean should a boolean be converted
    * @returns {ExcelDate} ExcelDate
    */
-  static valueToExcelDate(value: any) : ExcelDate {
+  static valueToExcelDate(value: any, coerceBoolean?: boolean) : ExcelDate {
     if (value instanceof ExcelDate) {
       return value;
     } else if (typeof value === "number") {
@@ -764,7 +766,10 @@ class TypeCaster {
         throw new ValueError("___ expects date values. But '" + value + "' is a text and cannot be coerced to a date.")
       }
     } else if (typeof value === "boolean") {
-      throw new ValueError("___ expects date values. But '" + value + "' is a text and cannot be coerced to a date.")
+      if (coerceBoolean) {
+        return new ExcelDate(value ? 1 : 0);
+      }
+      throw new ValueError("___ expects date values. But '" + value + "' is a boolean and cannot be coerced to a date.")
     }
   }
 }

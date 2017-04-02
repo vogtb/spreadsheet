@@ -1,5 +1,5 @@
 
-import { DATE, DATEVALUE, EDATE, EOMONTH } from "../src/RawFormulas/RawFormulas"
+import { DATE, DATEVALUE, EDATE, EOMONTH, DAY } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
 import moment = require("moment");
@@ -18,6 +18,36 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+// Test DAY
+assertEquals(DAY(DATE(1992, 6, 24)), 24);
+assertEquals(DAY(DATE(1992, 5, 10)), 10);
+assertEquals(DAY(DATE(1992, 5, 22)), 22);
+assertEquals(DAY(DATE(1992, 6, 1)), 1);
+assertEquals(DAY(DATE(2008, 1, 31)), 31);
+assertEquals(DAY("1992, 6, 24"), 24);
+assertEquals(DAY(["1992, 6, 24"]), 24);
+assertEquals(DAY(0), 30);
+assertEquals(DAY(false), 30);
+assertEquals(DAY(1), 31);
+assertEquals(DAY(true), 31);
+assertEquals(DAY(33779), 24);
+assertEquals(DAY([33779]), 24);
+assertEquals(DAY([33779, "str"]), 24);
+catchAndAssertEquals(function() {
+  DAY("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DAY();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DAY(DATE(1992, 6, 24), 4);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DAY(-1);
+}, ERRORS.NUM_ERROR);
+
+
 // Test EDATE
 assertEquals(EDATE(DATE(1992, 6, 24), 1), DATE(1992, 7, 24));
 assertEquals(EDATE(DATE(1992, 5, 24), 2), DATE(1992, 7, 24));
@@ -27,6 +57,8 @@ assertEquals(EDATE(DATE(1992, 6, 24), false), DATE(1992, 6, 24));
 assertEquals(EDATE("1992, 5, 24", 2), DATE(1992, 7, 24));
 assertEquals(EDATE("6/24/92", 1), DATE(1992, 7, 24));
 assertEquals(EDATE([DATE(1992, 6, 24), "str"], [1, "str"]), DATE(1992, 7, 24));
+assertEquals(EDATE(0, 1), DATE(1900, 1, 30));
+assertEquals(EDATE(false, 1), DATE(1900, 1, 30));
 catchAndAssertEquals(function() {
   EDATE("str", 2);
 }, ERRORS.VALUE_ERROR);
@@ -36,6 +68,12 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   EDATE(DATE(1992, 6, 24), 4, 4);
 }, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  EDATE(-1, 1);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  EDATE(DATEVALUE("01/13/0101"), 1);
+}, ERRORS.NUM_ERROR);
 
 
 // Test EOMONTH
@@ -52,12 +90,16 @@ assertEquals(EOMONTH(DATE(2004, 2, 24), 0), DATE(2004, 2, 29));
 assertEquals(EOMONTH(DATE(2008, 2, 24), 0), DATE(2008, 2, 29));
 // misc.
 assertEquals(EOMONTH([DATE(1992, 6, 24), "str"], [2, "str"]), DATE(1992, 8, 31));
+assertEquals(EOMONTH(0, 1), DATE(1900, 1, 31));
+assertEquals(EOMONTH(false, 1), DATE(1900, 1, 31));
+assertEquals(EOMONTH(1, 1), DATE(1900, 1, 31));
+assertEquals(EOMONTH(true, 1), DATE(1900, 1, 31));
 catchAndAssertEquals(function() {
   EOMONTH("str", 2);
 }, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  EOMONTH(false, 2);
-}, ERRORS.VALUE_ERROR);
+  EOMONTH(-1, 2);
+}, ERRORS.NUM_ERROR);
 
 
 // Test DATE
@@ -98,6 +140,9 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   DATEVALUE();
 }, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE(false);
+}, ERRORS.VALUE_ERROR);
 // MONTHDIG_DAY_YEAR, MM(fd)DD(fd)YYYY =================================================================================
 assertEquals(DATEVALUE("6/24/92"), 33779);
 assertEquals(DATEVALUE("6/24/1992"), 33779);

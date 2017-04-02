@@ -41,9 +41,8 @@ conversion inside parser.js.
 * Test all ExcelDate functions
 Right now we're just using the number of days since 1900, but we should check the other functions.
 
-* Verify that all white-space wild cards are implemented properly
-
 * Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
+
 
 
 # Testing Guidelines

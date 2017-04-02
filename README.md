@@ -9,8 +9,6 @@ And the same for MAX, MAXA, COUNT, COUNTA, etc. Look these over.
 
 ### Criteria evaluations should escape reg-ex characters: http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 
-### License for all code used.
-
 ### Document the functions pulled in from jStat.
 
 ### Bring back missing Excel functions

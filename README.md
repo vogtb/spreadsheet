@@ -7,15 +7,7 @@ Things I should do.
 ### SUM and SUMA should be different, and I'm pretty sure they're currently the same.
 And the same for MAX, MAXA, COUNT, COUNTA, etc. Look these over.
 
-### Protect against injection
-How do we protect against users injecting data that looks like `console.log(sensitive_data)` when we evaluate variables
-inside parser.js? If we ever want to impliment custom formulas, or even accept data in raw format, we need to guard
-against this. Or else someone could load a CSV with javascript and when our spreadsheet opens it, then suddenly
-arbitrary javascript is executed in the client machine.
-
 ### Criteria evaluations should escape reg-ex characters: http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
-
-### Criteria evaluations should accept dollar-to-number comparisons: `=COUNTIF({10, 20, 40}, ">=$20")`
 
 ### License for all code used.
 

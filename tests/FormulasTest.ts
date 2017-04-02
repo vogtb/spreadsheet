@@ -643,6 +643,13 @@ assertEquals(COUNTIF(["mom", "pop", "dad", "etc", "mom"], "?o?"), 3);
 assertEquals(COUNTIF(["mom", "pop", "dad", "etc", "mom"], "???"), 5);
 assertEquals(COUNTIF(["mom", "pop", "dad", "etc", "mom"], "????"), 0);
 assertEquals(COUNTIF(["mom", "pop", "dad", "etc", "mom"], "?"), 0);
+// dollar sign and negative values
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "=$5"), 4);
+assertEquals(COUNTIF([1, -5, -5, -5, 10, -5], "=-$5"), 4);
+assertEquals(COUNTIF([1, -5, -5, -5, 10, -5], "=-5"), 4);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], ">$5"), 1);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "=$10"), 1);
+assertEquals(COUNTIF([1, 5, 5, 5, 10, 5], "=  $ 10"), 1);
 catchAndAssertEquals(function() {
   COUNTIF([0, 1, 0, 1]);
 }, ERRORS.NA_ERROR);

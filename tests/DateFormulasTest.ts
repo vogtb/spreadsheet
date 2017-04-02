@@ -23,15 +23,18 @@ function catchAndAssertEquals(toExecute, expected) {
 assertEquals(EDATE(DATE(1992, 6, 24), 1), DATE(1992, 7, 24));
 assertEquals(EDATE(DATE(1992, 5, 24), 2), DATE(1992, 7, 24));
 assertEquals(EDATE(DATE(1992, 5, 24), 2.2), DATE(1992, 7, 24));
+assertEquals(EDATE("1992, 5, 24", 2), DATE(1992, 7, 24));
+assertEquals(EDATE("6/24/92", 1), DATE(1992, 7, 24));
+catchAndAssertEquals(function() {
+  EDATE("str", 2);
+}, ERRORS.VALUE_ERROR);
 
 
 // Test DATE
 assertEquals(DATE(1900, 1, 2).toNumber(), 3);
 assertEquals(DATE(1900, 1, 1).toNumber(), 2);
 assertEquals(DATE(1900, 1, 4).toNumber(), 5);
-catchAndAssertEquals(function() {
-  DATE(1900, 0, 4);
-}, ERRORS.NUM_ERROR);
+
 catchAndAssertEquals(function() {
   DATE(1900, 0, 5);
 }, ERRORS.NUM_ERROR);

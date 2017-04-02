@@ -22,6 +22,7 @@ function catchAndAssertEquals(toExecute, expected) {
 // // Test EDATE
 assertEquals(EDATE(DATE(1992, 6, 24), 1), DATE(1992, 7, 24));
 assertEquals(EDATE(DATE(1992, 5, 24), 2), DATE(1992, 7, 24));
+assertEquals(EDATE(DATE(1992, 5, 24), 2.2), DATE(1992, 7, 24));
 
 
 // Test DATE
@@ -36,6 +37,7 @@ catchAndAssertEquals(function() {
 }, ERRORS.NUM_ERROR);
 assertEquals(DATE(1992, 6, 24).toNumber(), 33779);
 assertEquals(DATE(2017, 2, 26).toNumber(), 42792);
+assertEquals(DATE(1999, 1, 13).toNumber(), 36173);
 // Leap day stuff
 assertEquals(DATE(2004, 2, 28).toNumber(), 38045);
 assertEquals(DATE(2004, 2, 29).toNumber(), 38046);

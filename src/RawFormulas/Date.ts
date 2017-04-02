@@ -340,10 +340,19 @@ var DATEVALUE = function (...values) : number {
 };
 
 
+/**
+ * Returns a date a specified number of months before or after another date.
+ * @param values[0] start_date - The date from which to calculate the result.
+ * @param values[1] months - The number of months before (negative) or after (positive) start_date to calculate.
+ * @returns {ExcelDate} date a specified number of months before or after another date
+ * @constructor
+ */
 var EDATE = function (...values) : ExcelDate {
   ArgsChecker.checkLength(values, 2);
   var startDate = TypeCaster.firstValueAsExcelDate(values[0]);
-  var months = TypeCaster.firstValueAsNumber(values[1]);
+  var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+  // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
+  // exclusive count of days.
   return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber() - 2, "days").add(months, "months"));
 };
 

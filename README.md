@@ -34,10 +34,6 @@ Group by error type and have some useful functions that will call with 0, N, N+1
 checker. Also, test for *all possible* errors that could be thrown, and *all possible types* that could be passed in.
 Another thing to think about would be throwing custom errors if an object is passed in.
 
-### DIV_ZERO Error
-This error is thrown every time we're about to divide by zero in a formula. There are definitely a couple formulas that
-don't check for this, and they should.
-
 ### jStat functions should know their caller
 Either through `arguments`, or directly passed in like `mean("FORMULA", [10, 20, 30])`
 

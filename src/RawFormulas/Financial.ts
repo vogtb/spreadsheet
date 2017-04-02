@@ -1,6 +1,7 @@
 import {
   ArgsChecker,
-  TypeCaster
+  TypeCaster,
+  checkForDevideByZero
 } from "./Utils";
 import {
   CellError
@@ -52,7 +53,7 @@ var DDB = function (...values) : number {
   var total = 0;
   var current = 0;
   for (var i = 1; i <= period; i++) {
-    current = Math.min((cost - total) * (factor / life), (cost - salvage - total));
+    current = Math.min((cost - total) * (factor / checkForDevideByZero(life)), (cost - salvage - total));
     total += current;
   }
   return current;
@@ -103,6 +104,9 @@ var DB = function (...values) : number {
   if (salvage >= cost) {
     return 0;
   }
+  if (cost === 0 && salvage !== 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function DB cause a divide by zero error.")
+  }
   var rate = (1 - Math.pow(salvage / cost, 1 / life));
   var initial = cost * rate * month / 12;
   var total = initial;
@@ -142,7 +146,12 @@ var DOLLAR = function (...values) : number {
   var v = TypeCaster.firstValueAsNumber(values[0]);
   var places = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 2;
   var sign = (v > 0) ? 1 : -1;
-  return sign * (Math.floor(Math.abs(v) * Math.pow(10, places))) / Math.pow(10, places);
+  var divisor = sign * (Math.floor(Math.abs(v) * Math.pow(10, places)));
+  var pow = Math.pow(10, places);
+  if (pow === 0 && divisor !== 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function DOLLAR cause a divide by zero error.")
+  }
+  return divisor / pow;
 };
 
 

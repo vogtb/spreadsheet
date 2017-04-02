@@ -144,6 +144,9 @@ var AVEDEV = function (...values) {
     result = result + TypeCaster.valueToNumber(flatValues[i]);
     count++;
   }
+  if (count === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function AVEDEV caused a devide by zero error.");
+  }
   var mean = result / count;
 
   for (var i = 0; i < flatValues.length; i++) {
@@ -175,6 +178,9 @@ var AVERAGEA = function (...values) {
       count++;
     }
   }
+  if (count === 0) {
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function AVEDEV caused a devide by zero error.");
+  }
   return result / count;
 };
 
@@ -205,6 +211,9 @@ var CORREL = function (...values) : number {
     return sum;
   }
   function mean(arr) {
+    if (arr.length === 0) {
+      throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function CORREL caused a divide by zero error.");
+    }
     return sum(arr) / arr.length;
   }
   function sumsqerr(arr) {
@@ -248,7 +257,7 @@ var CORREL = function (...values) : number {
   if (stdevArr1 === 0 || stdevArr2 === 0) {
     throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function CORREL caused a divide by zero error.");
   }
-  return covariance(arr1, arr2) / stdev(arr1, 1) / stdev(arr2, 1);
+  return covariance(arr1, arr2) / stdevArr1 / stdevArr2;
 };
 
 /**

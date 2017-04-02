@@ -119,18 +119,6 @@ import {
   YEARFRAC
 } from "./Date"
 
-import {
-  CriteriaFunctionFactory,
-  ArgsChecker,
-  Filter,
-  TypeCaster,
-  Serializer
-} from "./Utils";
-import {
-  CellError
-} from "../Errors"
-import * as ERRORS from "../Errors"
-
 var ACCRINT = Formula["ACCRINT"];
 var CONVERT = Formula["CONVERT"];
 

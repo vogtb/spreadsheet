@@ -897,6 +897,22 @@ class Serializer {
   }
 }
 
+/**
+ * Catches divide by zero situations and throws them as errors
+ * @param n number to check
+ * @returns {number} n as long as it's not zero.
+ */
+var checkForDevideByZero = function(n : number) : number {
+  n = +n;  // Coerce to number.
+  if (!n) {  // Matches +0, -0, NaN
+    throw new CellError(ERRORS.DIV_ZERO_ERROR, "Evaluation of function caused a divide by zero error.");
+  }
+  return n;
+};
+
+var divideAndCheck
+
+
 
 export {
   ArgsChecker,
@@ -904,5 +920,6 @@ export {
   DateRegExBuilder,
   Filter,
   Serializer,
-  TypeCaster
+  TypeCaster,
+  checkForDevideByZero
 }

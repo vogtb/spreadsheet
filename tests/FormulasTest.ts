@@ -1036,10 +1036,6 @@ assertEquals(AND(10), true);
 
 
 
-// TODO: Turned off while working on DATE().
-// assertEqualsDates(EDATE(DATE(1992, 6, 24), 1), new Date('7/24/1992'));
-
-
 // Test EFFECT
 assertEquals(EFFECT(0.99, 12), 1.5890167507927795);
 assertEquals(EFFECT(0.99, 12.111), 1.5890167507927795);

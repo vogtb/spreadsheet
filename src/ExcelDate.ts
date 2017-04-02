@@ -12,7 +12,7 @@ class ExcelDate {
 
   /**
    * Constructs an ExcelDate when given a day or moment.
-   * @param dayOrMoment number of days since 1900/1/1 or a Moment to use as the day.
+   * @param dayOrMoment number of days since 1900/1/1 (inclusively) or a Moment to use as the day.
    */
   constructor(dayOrMoment : number | moment.Moment) {
     if (typeof dayOrMoment === "number") {
@@ -28,18 +28,36 @@ class ExcelDate {
    * @returns {string} day in the format M/D/YYYY.
    */
   toString() {
-    return moment.utc(ORIGIN_MOMENT).add(this.day, 'days').format("M/D/Y");
+    return moment.utc(ORIGIN_MOMENT).add(this.toNumber() - 2, 'days').format("M/D/Y");
   }
 
   /**
-   * Returns the day as a number.
+   * Returns the day as a number of days since 1900/1/1, inclusively on both ends.
    * @returns {number} days since 1900/1/1
    */
   toNumber() {
     return this.day;
   }
+
+  /**
+   * Converts to a moment
+   * @returns {Moment}
+   */
+  toMoment() : moment.Moment {
+    return moment.utc(ORIGIN_MOMENT).add(this.toNumber() - 2, "days");
+  }
+
+  /**
+   * Tests equality.
+   * @param ed other ExcelDate to compare to
+   * @returns {boolean} true if equals
+   */
+  equals(ed : ExcelDate) : boolean {
+    return this.toNumber() === ed.toNumber();
+  }
 }
 
 export {
-  ExcelDate
+  ExcelDate,
+  ORIGIN_MOMENT
 }

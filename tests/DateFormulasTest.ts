@@ -1,7 +1,8 @@
 
-import { DATE, DATEVALUE } from "../src/RawFormulas/RawFormulas"
+import { DATE, DATEVALUE, EDATE } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
+import moment = require("moment");
 
 function catchAndAssertEquals(toExecute, expected) {
   var toThrow = null;
@@ -18,9 +19,14 @@ function catchAndAssertEquals(toExecute, expected) {
   }
 }
 
+// // Test EDATE
+assertEquals(EDATE(DATE(1992, 6, 24), 1), DATE(1992, 7, 24));
+assertEquals(EDATE(DATE(1992, 5, 24), 2), DATE(1992, 7, 24));
+
+
 // Test DATE
-assertEquals(DATE(1900, 1, 1).toNumber(), 2);
 assertEquals(DATE(1900, 1, 2).toNumber(), 3);
+assertEquals(DATE(1900, 1, 1).toNumber(), 2);
 assertEquals(DATE(1900, 1, 4).toNumber(), 5);
 catchAndAssertEquals(function() {
   DATE(1900, 0, 4);
@@ -44,6 +50,14 @@ assertEquals(DATE(-1900, 1, 1).toNumber(), 2);
 
 
 // Test DATEVALUE
+assertEquals(DATEVALUE("6/24/92"), 33779);
+assertEquals(DATEVALUE(["6/24/92", false]), 33779);
+catchAndAssertEquals(function() {
+  DATEVALUE("6/24/92", 10);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DATEVALUE();
+}, ERRORS.NA_ERROR);
 // MONTHDIG_DAY_YEAR, MM(fd)DD(fd)YYYY =================================================================================
 assertEquals(DATEVALUE("6/24/92"), 33779);
 assertEquals(DATEVALUE("6/24/1992"), 33779);
@@ -457,7 +471,7 @@ assertEquals(DATEVALUE("24/June/1992 10: 10 "), 33779);
 assertEquals(DATEVALUE("24/June/1992 10: 10 pm"), 33779);
 assertEquals(DATEVALUE("24/June/1992 10: 10: 10"), 33779);
 assertEquals(DATEVALUE("24/June/1992  10: 10: 10    am   "), 33779);
-// MONTHNAME_DAY_YEAR, Month(fd)DD(fd)YYYY, 'Aug 19 2020' =============================================================================
+// MONTHNAME_DAY_YEAR, Month(fd)DD(fd)YYYY, 'Aug 19 2020' ==============================================================
 assertEquals(DATEVALUE("Sun Feb 09 2017"), 42775);
 assertEquals(DATEVALUE("Sun Feb 9 2017"), 42775);
 assertEquals(DATEVALUE("Mon Feb 09 2017"), 42775);
@@ -508,7 +522,7 @@ catchAndAssertEquals(function() {
   DATEVALUE("2017.01");
 }, ERRORS.VALUE_ERROR);
 // timestamp test
-assertEquals(DATEVALUE("2017-01 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("2017-01 10am"), 42736);
 assertEquals(DATEVALUE("2017-01 10:10"), 42736);
 assertEquals(DATEVALUE("2017-01 10:10am"), 42736);
 assertEquals(DATEVALUE("2017-01 10:10:10"), 42736);
@@ -550,7 +564,7 @@ catchAndAssertEquals(function() {
   DATEVALUE("0/2017");
 }, ERRORS.VALUE_ERROR);
 // timestamp test
-assertEquals(DATEVALUE("01-2017 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("01-2017 10am"), 42736);
 assertEquals(DATEVALUE("01-2017 10:10"), 42736);
 assertEquals(DATEVALUE("01-2017 10:10am"), 42736);
 assertEquals(DATEVALUE("01-2017 10:10:10"), 42736);
@@ -588,7 +602,7 @@ catchAndAssertEquals(function() {
   DATEVALUE("2017.January");
 }, ERRORS.VALUE_ERROR);
 // timestamp test
-assertEquals(DATEVALUE("2017-January 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("2017-January 10am"), 42736);
 assertEquals(DATEVALUE("2017-January 10:10"), 42736);
 assertEquals(DATEVALUE("2017-January 10:10am"), 42736);
 assertEquals(DATEVALUE("2017-January 10:10:10"), 42736);
@@ -654,7 +668,7 @@ catchAndAssertEquals(function() {
   DATEVALUE("January.2017");
 }, ERRORS.VALUE_ERROR);
 // timestamp test
-assertEquals(DATEVALUE("January-2017 10am"), 42736); // TODO: come back to these. right now just testing to make sure they don't break anything.
+assertEquals(DATEVALUE("January-2017 10am"), 42736);
 assertEquals(DATEVALUE("January-2017 10:10"), 42736);
 assertEquals(DATEVALUE("January-2017 10:10am"), 42736);
 assertEquals(DATEVALUE("January-2017 10:10:10"), 42736);

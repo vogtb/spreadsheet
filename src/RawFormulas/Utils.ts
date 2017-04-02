@@ -1,5 +1,6 @@
 import { CellError } from "../Errors"
 import * as ERRORS from "../Errors"
+import {ExcelDate} from "../ExcelDate";
 
 /**
  * Converts wild-card style expressions (in which * matches zero or more characters, and ? matches exactly one character)
@@ -239,6 +240,36 @@ class TypeCaster {
       return TypeCaster.firstValueAsBoolean(input[0]);
     }
     return TypeCaster.valueToBoolean(input);
+  }
+
+  /**
+   * Takes the input type and will throw a REF_ERROR or coerce it into a ExcelDate
+   * @param input input to attempt to coerce to a ExcelDate
+   * @returns {ExcelDate} representing a date
+   */
+  static firstValueAsExcelDate(input: any) : ExcelDate {
+    if (input instanceof Array) {
+      if (input.length === 0) {
+        throw new CellError(ERRORS.REF_ERROR, "Reference does not exist.");
+      }
+      return TypeCaster.firstValueAsExcelDate(input[0]);
+    }
+    return TypeCaster.valueToExcelDate(input);
+  }
+
+  /**
+   * Convert a value to ExcelDate if possible.
+   * @param value of any type, including array. array cannot be empty.
+   * @returns {ExcelDate} ExcelDate
+   */
+  static valueToExcelDate(value: any) : ExcelDate {
+    if (value instanceof ExcelDate) {
+      return value;
+    } else if (typeof value === "number") {
+      return new ExcelDate(value);
+    } else if (typeof value === "string" || typeof value === "boolean") {
+      throw new CellError(ERRORS.VALUE_ERROR, "___ expects boolean values. But '" + value + "' is a text and cannot be coerced to a boolean.")
+    }
   }
 }
 

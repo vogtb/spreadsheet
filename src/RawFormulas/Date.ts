@@ -12,7 +12,8 @@ import {
   CellError
 } from "../Errors";
 import {
-  ExcelDate
+  ExcelDate,
+  ORIGIN_MOMENT
 } from "../ExcelDate";
 
 /**
@@ -20,10 +21,10 @@ import {
  * @param values[0] year - The year component of the date.
  * @param values[1] month - The month component of the date.
  * @param values[2] day - The day component of the date.
- * @returns {Date} newly created date.
+ * @returns {ExcelDate} newly created date.
  * @constructor
  */
-var DATE = function (...values) {
+var DATE = function (...values) : ExcelDate {
   const FIRST_YEAR = 1900;
   const ORIGIN_DATE = moment.utc([FIRST_YEAR]).startOf("year");
   ArgsChecker.checkLength(values, 3);
@@ -339,12 +340,17 @@ var DATEVALUE = function (...values) : number {
 };
 
 
+var EDATE = function (...values) : ExcelDate {
+  ArgsChecker.checkLength(values, 2);
+  var startDate = TypeCaster.firstValueAsExcelDate(values[0]);
+  var months = TypeCaster.firstValueAsNumber(values[1]);
+  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber() - 2, "days").add(months, "months"));
+};
+
+
 var DAY = Formula["DAY"];
 var DAYS = Formula["DAYS"];
 var DAYS360 = Formula["DAYS360"];
-var EDATE = function (start_date: Date, months) {
-  return moment(start_date).add(months, 'months').toDate();
-};
 var EOMONTH = function (start_date, months) {
   var edate = moment(start_date).add(months, 'months');
   return new Date(edate.year(), edate.month(), edate.daysInMonth());

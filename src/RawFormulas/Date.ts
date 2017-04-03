@@ -137,9 +137,55 @@ var DAYS = function (...values) : number {
 };
 
 
-var DAYS360 = Formula["DAYS360"];
-var YEARFRAC = Formula["YEARFRAC"];
+/**
+ * Returns the difference between two days based on the 360 day year used in some financial interest calculations.
+ * @param values[0] start_date - The start date to consider in the calculation. Must be a reference to a cell containing
+ * a date, a function returning a date type, or a number.
+ * @param values[1] end_date - The end date to consider in the calculation. Must be a reference to a cell containing a
+ * date, a function returning a date type, or a number.
+ * @param values[2] method - [ OPTIONAL - 0 by default ] - An indicator of what day count method to use.
+ * 0 indicates the US method - Under the US method, if start_date is the last day of a month, the day of month of
+ * start_date is changed to 30 for the purposes of the calculation. Furthermore if end_date is the last day of a month
+ * and the day of the month of start_date is earlier than the 30th, end_date is changed to the first day of the month
+ * following end_date, otherwise the day of month of end_date is changed to 30.
+ * Any other value indicates the European method - Under the European method, any start_date or end_date that falls on
+ * the 31st of a month has its day of month changed to 30.
+ * @returns {number} of days between two dates
+ * @constructor
+ */
+var DAYS360 = function (...values) {
+  ArgsChecker.checkLengthWithin(values, 2, 3);
+  var start = TypeCaster.firstValueAsExcelDate(values[0], true).toMoment(); // tell firstValueAsExcelDate to coerce boolean
+  var end = TypeCaster.firstValueAsExcelDate(values[1], true).toMoment(); // tell firstValueAsExcelDate to coerce boolean
+  var methodToUse = false;
+  if (values.length === 3) {
+    methodToUse = TypeCaster.firstValueAsBoolean(values[2]);
+  }
+  var smd = 31;
+  var emd = 31;
+  var sd = start.date();
+  var ed = end.date();
+  if (methodToUse) {
+    sd = (sd === 31) ? 30 : sd;
+    ed = (ed === 31) ? 30 : ed;
+  }
+  else {
+    if (start.month() === 1) {
+      smd = start.daysInMonth();
+    }
+    if (end.month() === 1) {
+      emd = end.daysInMonth();
+    }
+    sd = (sd === smd) ? 30 : sd;
+    if (sd === 30 || sd === smd) {
+      ed = (ed === emd) ? 30 : ed;
+    }
+  }
+  return 360 * (end.year() - start.year()) + 30 * (end.month() - start.month()) + (ed - sd);
+};
 
+
+var YEARFRAC = Formula["YEARFRAC"];
 // Functions unimplemented.
 var DATEDIF;
 var HOUR;

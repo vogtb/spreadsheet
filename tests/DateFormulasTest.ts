@@ -1,5 +1,5 @@
 
-import { DATE, DATEVALUE, EDATE, EOMONTH, DAY, DAYS } from "../src/RawFormulas/RawFormulas"
+import { DATE, DATEVALUE, EDATE, EOMONTH, DAY, DAYS, DAYS360 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
 import moment = require("moment");
@@ -18,6 +18,41 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+// Test DAYS360
+assertEquals(DAYS360(DATE(1992, 6, 24), DATE(1992, 6, 25)), 1);
+assertEquals(DAYS360(DATE(1992, 6, 25), DATE(1992, 6, 24)), -1);
+assertEquals(DAYS360(DATE(1992, 6, 25), DATE(1992, 6, 23)), -2);
+assertEquals(DAYS360(DATE(1992, 6, 24), DATE(1991, 6, 24)), -360);
+assertEquals(DAYS360(DATE(1993, 6, 24), DATE(1992, 6, 24)), -360);
+assertEquals(DAYS360(DATEVALUE("1993-6-24"), 1), -33653);
+assertEquals(DAYS360(DATEVALUE("1993-6-24"), true), -33653);
+assertEquals(DAYS360(DATEVALUE("1993-6-24"), 0), -33654);
+assertEquals(DAYS360(DATEVALUE("1993-6-24"), false), -33654);
+assertEquals(DAYS360("2191-6-24", "1992-6-24"), -71640);
+assertEquals(DAYS360("2191-6-24", "1992-6-24", true), -71640);
+assertEquals(DAYS360(1, 390, 1), 384);
+assertEquals(DAYS360(1, 390), 384);
+assertEquals(DAYS360(33779, 33780), 1);
+assertEquals(DAYS360([1, "str"], [390, "str"]), 384);
+catchAndAssertEquals(function() {
+  DAYS360();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DAYS360(100);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DAYS360(100, 200, true, "str");
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DAYS360("str", 100);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DAYS360("false", "true");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DAYS360([[], 100], 22);
+}, ERRORS.REF_ERROR);
 
 
 // Test DAYS

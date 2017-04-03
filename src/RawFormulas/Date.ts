@@ -122,10 +122,22 @@ var DAY = function (...values) : number {
 };
 
 
+/**
+ * Returns the number of days between two dates.
+ * @param values[0] end_date most recently occurring
+ * @param values[1] start_date not most recently occurring
+ * @returns {number} of days between start_date and end_date
+ * @constructor
+ */
+var DAYS = function (...values) : number {
+  ArgsChecker.checkLength(values, 2);
+  var end = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  var start = TypeCaster.firstValueAsExcelDate(values[1], true); // tell firstValueAsExcelDate to coerce boolean
+  return end.toNumber() - start.toNumber();
+};
 
-var DAYS = Formula["DAYS"];
+
 var DAYS360 = Formula["DAYS360"];
-
 var YEARFRAC = Formula["YEARFRAC"];
 
 // Functions unimplemented.

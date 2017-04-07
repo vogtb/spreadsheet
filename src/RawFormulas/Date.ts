@@ -185,12 +185,29 @@ var DAYS360 = function (...values) {
 };
 
 
+/**
+ * Returns the month of the year a specific date falls in, in numeric format.
+ * @param values[0] date - The date from which to extract the month. Must be a reference to a cell containing a date, a
+ * function returning a date type, or a number.
+ * @returns {number} month of the year that the input date falls on.
+ * @constructor
+ */
+var MONTH = function (...values) : number {
+  ArgsChecker.checkLength(values, 1);
+  var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  if (date.toNumber() < 0) {
+    throw new NumError("Function MONTH parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+  }
+  return date.toMoment().month() + 1;
+};
+
+
+
 var YEARFRAC = Formula["YEARFRAC"];
 // Functions unimplemented.
 var DATEDIF;
 var HOUR;
 var MINUTE;
-var MONTH;
 var NETWORKDAYS;
 var __COMPLEX_ITL = {
   "NETWORKDAYS.ITL": function () {},
@@ -214,5 +231,6 @@ export {
   DAYS360,
   EDATE,
   EOMONTH,
+  MONTH,
   YEARFRAC
 }

@@ -1,5 +1,5 @@
 
-import { DATE, DATEVALUE, EDATE, EOMONTH, DAY, DAYS, DAYS360 } from "../src/RawFormulas/RawFormulas"
+import { DATE, DATEVALUE, EDATE, EOMONTH, DAY, DAYS, DAYS360, MONTH } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
 import moment = require("moment");
@@ -18,6 +18,25 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+
+// Test MONTH
+assertEquals(MONTH(DATE(1992, 6, 24)), 6);
+assertEquals(MONTH(1312212), 9);
+assertEquals(MONTH(13122121), 2);
+catchAndAssertEquals(function() {
+  MONTH();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  MONTH(213123, 123123);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  MONTH("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  MONTH([]);
+}, ERRORS.REF_ERROR);
+
 
 // Test DAYS360
 assertEquals(DAYS360(DATE(1992, 6, 24), DATE(1992, 6, 25)), 1);

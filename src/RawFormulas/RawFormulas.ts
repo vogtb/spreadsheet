@@ -116,6 +116,7 @@ import {
   DAYS360,
   EDATE,
   EOMONTH,
+  MONTH,
   YEARFRAC
 } from "./Date"
 
@@ -236,5 +237,6 @@ export {
   TRUNC,
   XOR,
   YEARFRAC,
-  RADIANS
+  RADIANS,
+  MONTH
 }

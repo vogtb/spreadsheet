@@ -1,5 +1,5 @@
 
-import { DATE, DATEVALUE, EDATE, EOMONTH, DAY, DAYS, DAYS360, MONTH } from "../src/RawFormulas/RawFormulas"
+import { DATE, DATEVALUE, EDATE, EOMONTH, DAY, DAYS, DAYS360, MONTH, YEAR } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
 import moment = require("moment");
@@ -18,6 +18,32 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+
+// Test YEAR
+assertEquals(YEAR(DATE(1992, 6, 24)), 1992);
+assertEquals(YEAR(DATE(2000, 6, 24)), 2000);
+assertEquals(YEAR(DATE(100, 6, 24)), 2000);
+assertEquals(YEAR(DATE(44, 6, 24)), 1944);
+assertEquals(YEAR(1312212), 5492);
+assertEquals(YEAR(9), 1900);
+assertEquals(YEAR(0), 1899);
+assertEquals(YEAR(false), 1899);
+assertEquals(YEAR(1), 1899);
+assertEquals(YEAR(true), 1899);
+assertEquals(YEAR([1, "str"]), 1899);
+catchAndAssertEquals(function() {
+  YEAR();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  YEAR(213123, 123123);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  YEAR("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  YEAR([]);
+}, ERRORS.REF_ERROR);
 
 
 // Test MONTH

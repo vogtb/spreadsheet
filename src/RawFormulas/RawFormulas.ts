@@ -117,6 +117,7 @@ import {
   EDATE,
   EOMONTH,
   MONTH,
+  YEAR,
   YEARFRAC
 } from "./Date"
 
@@ -238,5 +239,6 @@ export {
   XOR,
   YEARFRAC,
   RADIANS,
-  MONTH
+  MONTH,
+  YEAR
 }

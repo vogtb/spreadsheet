@@ -202,6 +202,23 @@ var MONTH = function (...values) : number {
 };
 
 
+/**
+ * Returns the year specified by a given date.
+ * @param values[0] date - The date from which to calculate the year. Must be a cell reference to a cell containing a
+ * date, a function returning a date type, or a number.
+ * @returns {number} year of the input date
+ * @constructor
+ */
+var YEAR = function (...values) {
+  ArgsChecker.checkLength(values, 1);
+  var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  if (date.toNumber() < 0) {
+    throw new NumError("Function MONTH parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+  }
+  return date.toMoment().year();
+};
+
+
 
 var YEARFRAC = Formula["YEARFRAC"];
 // Functions unimplemented.
@@ -221,7 +238,6 @@ var TODAY;
 var WEEKDAY;
 var WEEKNUM;
 var WORKDAY;
-var YEAR;
 
 export {
   DATE,
@@ -232,5 +248,6 @@ export {
   EDATE,
   EOMONTH,
   MONTH,
+  YEAR,
   YEARFRAC
 }

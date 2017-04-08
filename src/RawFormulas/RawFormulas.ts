@@ -118,6 +118,7 @@ import {
   EOMONTH,
   MONTH,
   YEAR,
+  WEEKDAY,
   YEARFRAC
 } from "./Date"
 
@@ -240,5 +241,6 @@ export {
   YEARFRAC,
   RADIANS,
   MONTH,
-  YEAR
+  YEAR,
+  WEEKDAY
 }

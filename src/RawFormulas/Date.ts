@@ -213,9 +213,47 @@ var YEAR = function (...values) {
   ArgsChecker.checkLength(values, 1);
   var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
   if (date.toNumber() < 0) {
-    throw new NumError("Function MONTH parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+    throw new NumError("Function YEAR parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
   }
   return date.toMoment().year();
+};
+
+
+/**
+ * Returns a number representing the day of the week of the date provided.
+ * @param values[0] date - The date for which to determine the day of the week. Must be a reference to a cell containing
+ * a date, a function returning a date type, or a number.
+ * @param values[1] type - [ OPTIONAL - 1 by default ] - A number indicating which numbering system to use to represent
+ * weekdays. By default counts starting with Sunday = 1. If type is 1, days are counted from Sunday and the value of
+ * Sunday is 1, therefore the value of Saturday is 7. If type is 2, days are counted from Monday and the value of Monday
+ * is 1, therefore the value of Sunday is 7. If type is 3, days are counted from Monday and the value of Monday is 0,
+ * therefore the value of Sunday is 6.
+ * @returns {number} day of week
+ * @constructor
+ */
+var WEEKDAY = function (...values) {
+  ArgsChecker.checkLengthWithin(values, 1, 2);
+  var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  var offsetType = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 1;
+  if (date.toNumber() < 0) {
+    throw new NumError("Function WEEKDAY parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+  }
+  var day = date.toMoment().day();
+  if (offsetType === 1) {
+    return day + 1;
+  } else if (offsetType === 2) {
+    if (day === 0) {
+      return 7;
+    }
+    return day;
+  } else if (offsetType === 3) {
+    if (day === 0) {
+      return 6;
+    }
+    return day - 1;
+  } else {
+    throw new NumError("Function WEEKDAY parameter 2 value " + day + " is out of range.");
+  }
 };
 
 
@@ -235,7 +273,6 @@ var SECOND;
 var TIME;
 var TIMEVALUE;
 var TODAY;
-var WEEKDAY;
 var WEEKNUM;
 var WORKDAY;
 
@@ -249,5 +286,6 @@ export {
   EOMONTH,
   MONTH,
   YEAR,
+  WEEKDAY,
   YEARFRAC
 }

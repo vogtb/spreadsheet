@@ -1,5 +1,5 @@
 
-import { DATE, DATEVALUE, EDATE, EOMONTH, DAY, DAYS, DAYS360, MONTH, YEAR } from "../src/RawFormulas/RawFormulas"
+import { DATE, DATEVALUE, EDATE, EOMONTH, DAY, DAYS, DAYS360, MONTH, YEAR, WEEKDAY } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
 import moment = require("moment");
@@ -18,6 +18,68 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+
+// Test WEEKDAY
+assertEquals(WEEKDAY(DATE(1992, 6, 20)), 7);
+assertEquals(WEEKDAY(DATE(1992, 6, 21)), 1);
+assertEquals(WEEKDAY(DATE(1992, 6, 24)), 4);
+assertEquals(WEEKDAY(DATE(1992, 6, 25)), 5);
+assertEquals(WEEKDAY(1312211), 5);
+assertEquals(WEEKDAY(1312212), 6);
+assertEquals(WEEKDAY(1312213), 7);
+assertEquals(WEEKDAY(0), 7);
+assertEquals(WEEKDAY(false), 7);
+assertEquals(WEEKDAY(1), 1);
+assertEquals(WEEKDAY(true), 1);
+assertEquals(WEEKDAY(40909, 1), 1);
+assertEquals(WEEKDAY(40909, 2), 7);
+assertEquals(WEEKDAY(40909, 3), 6);
+assertEquals(WEEKDAY(411, 1), 5);
+assertEquals(WEEKDAY(411, 2), 4);
+assertEquals(WEEKDAY(411, 3), 3);
+assertEquals(WEEKDAY(40909, 1), 1);
+assertEquals(WEEKDAY(40910, 1), 2);
+assertEquals(WEEKDAY(40911, 1), 3);
+assertEquals(WEEKDAY(40912, 1), 4);
+assertEquals(WEEKDAY(40913, 1), 5);
+assertEquals(WEEKDAY(40914, 1), 6);
+assertEquals(WEEKDAY(40915, 1), 7);
+assertEquals(WEEKDAY(40916, 1), 1);
+assertEquals(WEEKDAY(40909, 2), 7);
+assertEquals(WEEKDAY(40910, 2), 1);
+assertEquals(WEEKDAY(40911, 2), 2);
+assertEquals(WEEKDAY(40912, 2), 3);
+assertEquals(WEEKDAY(40913, 2), 4);
+assertEquals(WEEKDAY(40914, 2), 5);
+assertEquals(WEEKDAY(40915, 2), 6);
+assertEquals(WEEKDAY(40916, 2), 7);
+assertEquals(WEEKDAY(40909, 3), 6);
+assertEquals(WEEKDAY(40910, 3), 0);
+assertEquals(WEEKDAY(40911, 3), 1);
+assertEquals(WEEKDAY(40912, 3), 2);
+assertEquals(WEEKDAY(40913, 3), 3);
+assertEquals(WEEKDAY(40914, 3), 4);
+assertEquals(WEEKDAY(40915, 3), 5);
+assertEquals(WEEKDAY(40916, 3), 6);
+catchAndAssertEquals(function() {
+  WEEKDAY();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  WEEKDAY(213123, 1, 1);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  WEEKDAY("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  WEEKDAY([]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  WEEKDAY(-10);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  WEEKDAY(10, 4);
+}, ERRORS.NUM_ERROR);
 
 
 // Test YEAR
@@ -44,6 +106,9 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   YEAR([]);
 }, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  YEAR(-10);
+}, ERRORS.NUM_ERROR);
 
 
 // Test MONTH
@@ -62,6 +127,9 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   MONTH([]);
 }, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  MONTH(-10);
+}, ERRORS.NUM_ERROR);
 
 
 // Test DAYS360

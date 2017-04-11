@@ -257,6 +257,22 @@ var WEEKDAY = function (...values) {
 };
 
 
+var WEEKNUM = function (...values) {
+  ArgsChecker.checkLength(values, 1);
+  var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  if (date.toNumber() < 0) {
+    throw new NumError("Function YEAR parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+  }
+  var dm = date.toMoment();
+  var week = dm.week();
+  // If this weekYear is not the same as the year, then we're technically in "week-53"
+  // See https://momentjs.com/docs/#/get-set/week-year/ for more info.
+  if (dm.weekYear() !== dm.year()) {
+    return 53;
+  }
+  return week;
+};
+
 
 var YEARFRAC = Formula["YEARFRAC"];
 // Functions unimplemented.
@@ -273,7 +289,6 @@ var SECOND;
 var TIME;
 var TIMEVALUE;
 var TODAY;
-var WEEKNUM;
 var WORKDAY;
 
 export {
@@ -287,5 +302,6 @@ export {
   MONTH,
   YEAR,
   WEEKDAY,
+  WEEKNUM,
   YEARFRAC
 }

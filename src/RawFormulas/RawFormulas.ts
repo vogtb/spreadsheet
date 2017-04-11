@@ -119,6 +119,7 @@ import {
   MONTH,
   YEAR,
   WEEKDAY,
+  WEEKNUM,
   YEARFRAC
 } from "./Date"
 
@@ -242,5 +243,6 @@ export {
   RADIANS,
   MONTH,
   YEAR,
-  WEEKDAY
+  WEEKDAY,
+  WEEKNUM
 }

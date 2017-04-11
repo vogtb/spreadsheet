@@ -1,5 +1,17 @@
 
-import { DATE, DATEVALUE, EDATE, EOMONTH, DAY, DAYS, DAYS360, MONTH, YEAR, WEEKDAY } from "../src/RawFormulas/RawFormulas"
+import {
+  DATE,
+  DATEVALUE,
+  EDATE,
+  EOMONTH,
+  DAY,
+  DAYS,
+  DAYS360,
+  MONTH,
+  YEAR,
+  WEEKDAY,
+  WEEKNUM
+} from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
 import moment = require("moment");
@@ -18,6 +30,55 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+
+// Test WEEKNUM
+assertEquals(WEEKNUM(DATE(1992, 6, 19)), 25);
+assertEquals(WEEKNUM(DATE(1992, 6, 20)), 25);
+assertEquals(WEEKNUM(DATE(1992, 6, 21)), 26);
+assertEquals(WEEKNUM(0), 52);
+assertEquals(WEEKNUM(false), 52);
+assertEquals(WEEKNUM(1), 53);
+assertEquals(WEEKNUM(true), 53);
+assertEquals(WEEKNUM(2), 1);
+assertEquals(WEEKNUM(3), 1);
+assertEquals(WEEKNUM(4), 1);
+assertEquals(WEEKNUM(5), 1);
+assertEquals(WEEKNUM(6), 1);
+assertEquals(WEEKNUM(7), 1);
+assertEquals(WEEKNUM(8), 2);
+assertEquals(WEEKNUM(9), 2);
+assertEquals(WEEKNUM(10), 2);
+assertEquals(WEEKNUM(11), 2);
+assertEquals(WEEKNUM(12), 2);
+assertEquals(WEEKNUM(13), 2);
+assertEquals(WEEKNUM(14), 2);
+assertEquals(WEEKNUM(15), 3);
+assertEquals(WEEKNUM(16), 3);
+assertEquals(WEEKNUM(17), 3);
+assertEquals(WEEKNUM(18), 3);
+assertEquals(WEEKNUM(23734), 52);
+assertEquals(WEEKNUM(23735), 52);
+assertEquals(WEEKNUM(23736), 52);
+assertEquals(WEEKNUM(23737), 52);
+assertEquals(WEEKNUM(23738), 53);
+assertEquals(WEEKNUM(23739), 53);
+assertEquals(WEEKNUM(23740), 53);
+assertEquals(WEEKNUM(23741), 53);
+assertEquals(WEEKNUM(23742), 53);
+assertEquals(WEEKNUM(23743), 1);
+assertEquals(WEEKNUM(23744), 1);
+assertEquals(WEEKNUM(23745), 2);
+assertEquals(WEEKNUM(23746), 2);
+assertEquals(WEEKNUM(23747), 2);
+assertEquals(WEEKNUM(23748), 2);
+assertEquals(WEEKNUM(23749), 2);
+assertEquals(WEEKNUM(23750), 2);
+assertEquals(WEEKNUM(23751), 2);
+assertEquals(WEEKNUM(23752), 3);
+
+
+
 
 
 // Test WEEKDAY

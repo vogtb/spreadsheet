@@ -257,20 +257,82 @@ var WEEKDAY = function (...values) {
 };
 
 
+/**
+ * Returns a number representing the week of the year where the provided date falls. When inputting the date, it is best
+ * to use the DATE function, as text values may return errors.
+ *
+ * Behind the scenes, there are two week numbering "systems" used for this function: System 1 - The first week of the
+ * year is considered to be the week containing January 1, which is numbered week 1. System 2 - The first week of the
+ * year is considered to be the week containing the first Thursday of the year, which is numbered as week 1. System 2 is
+ * the approach specified in ISO 8601, also known as the European system for numbering weeks.
+ *
+ * @param values[0] date - The date for which to determine the week number. Must be a reference to a cell containing a
+ * date, a function returning a date type, or a number.
+ * @param values[1] type - [ OPTIONAL - default is 1 ] - A number representing the day that a week starts on as well as
+ * the system used for determining the first week of the year (1=Sunday, 2=Monday).
+ * @returns {number} representing week number of year.
+ * @constructor
+ */
 var WEEKNUM = function (...values) {
-  ArgsChecker.checkLength(values, 1);
+  ArgsChecker.checkLengthWithin(values, 1, 2);
   var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  var shiftType = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 1;
   if (date.toNumber() < 0) {
     throw new NumError("Function YEAR parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
   }
   var dm = date.toMoment();
   var week = dm.week();
-  // If this weekYear is not the same as the year, then we're technically in "week-53"
-  // See https://momentjs.com/docs/#/get-set/week-year/ for more info.
-  if (dm.weekYear() !== dm.year()) {
-    return 53;
+  var dayOfWeek = dm.day() + 1; // between 1 and 7, inclusively
+  if (shiftType === 1) {
+    // If this weekYear is not the same as the year, then we're technically in "week 53"
+    // See https://momentjs.com/docs/#/get-set/week-year/ for more info.
+    if (dm.weekYear() !== dm.year()) {
+      week = 53;
+    }
+    return week;
+  } else if (shiftType === 2 || shiftType === 11) {
+    if (dm.weekYear() !== dm.year()) {
+      week = 53;
+    }
+    if (dayOfWeek === 1) { // sunday shift back
+      return week - 1;
+    }
+    return week;
+  } else if (shiftType === 12) {
+    if (dm.weekYear() !== dm.year()) {
+      week = 53;
+    }
+    if (dayOfWeek <= 2) { // sunday, monday shift back
+      return week - 1;
+    }
+    return week;
+  } else if (shiftType === 13) {
+    if (dm.weekYear() !== dm.year()) {
+      week = 53;
+    }
+    if (dayOfWeek <= 3) { // sunday, monday, tuesday shift back
+      return week - 1;
+    }
+    return week;
+  } else if (shiftType === 14) {
+    if (dm.weekYear() !== dm.year()) {
+      week = 53;
+    }
+    if (dayOfWeek <= 4) { // sunday, monday, tuesday, wednesday shift back
+      return week - 1;
+    }
+    return week;
+  } else if (shiftType === 15) {
+
+  } else if (shiftType === 16) {
+
+  } else if (shiftType === 17) {
+
+  } else if (shiftType === 21) {
+
+  } else {
+    throw new NumError("Function WEEKNUM parameter 2 value " + shiftType + " is out of range.");
   }
-  return week;
 };
 
 

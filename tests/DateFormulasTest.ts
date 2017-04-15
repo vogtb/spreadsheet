@@ -553,7 +553,27 @@ assertEquals(WEEKNUM(743, 21), 2);
 assertEquals(WEEKNUM(744, 21), 3);
 assertEquals(WEEKNUM(745, 21), 3);
 assertEquals(WEEKNUM(746, 21), 3);
-
+catchAndAssertEquals(function() {
+  WEEKNUM();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  WEEKNUM(213123, 1, 1);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  WEEKNUM("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  WEEKNUM([]);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  WEEKNUM(-10);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  WEEKNUM(10, 4);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  WEEKNUM(10, 22);
+}, ERRORS.NUM_ERROR);
 
 
 

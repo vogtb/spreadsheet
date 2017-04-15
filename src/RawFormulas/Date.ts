@@ -272,6 +272,7 @@ var WEEKDAY = function (...values) {
  * the system used for determining the first week of the year (1=Sunday, 2=Monday).
  * @returns {number} representing week number of year.
  * @constructor
+ * TODO: The performance of this function could be improved.
  */
 var WEEKNUM = function (...values) {
   ArgsChecker.checkLengthWithin(values, 1, 2);
@@ -358,13 +359,6 @@ var WEEKNUM = function (...values) {
   } else {
     throw new NumError("Function WEEKNUM parameter 2 value " + shiftType + " is out of range.");
   }
-
-
-
-  // var startOfYear = moment.utc(dm).startOf("year");
-  // var dayOfWeekOfNewYearsDay = startOfYear.weekday();
-  // var weekNum = 1;// let's start with the week being the first one, and walking it forward
-  // var shiftedNewYearsDay = dayShift[dayOfWeekOfNewYearsDay];
 };
 
 

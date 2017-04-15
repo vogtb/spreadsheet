@@ -111,6 +111,7 @@ import {
 import {
   DATE,
   DATEVALUE,
+  DATEDIF,
   DAYS,
   DAY,
   DAYS360,
@@ -244,5 +245,6 @@ export {
   MONTH,
   YEAR,
   WEEKDAY,
-  WEEKNUM
+  WEEKNUM,
+  DATEDIF
 }

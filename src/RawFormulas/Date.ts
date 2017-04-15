@@ -362,9 +362,79 @@ var WEEKNUM = function (...values) {
 };
 
 
+/**
+ * Calculates the number of days, months, or years between two dates.
+ * @param values[0] start_date - The start date to consider in the calculation. Must be a reference to a cell containing
+ * a DATE, a function returning a DATE type, or a number.
+ * @param values[1] end_date - The end date to consider in the calculation. Must be a reference to a cell containing a
+ * DATE, a function returning a DATE type, or a number.
+ * @param values[2] unit - A text abbreviation for unit of time. For example,"M" for month. Accepted values are "Y": the
+ * number of whole years between start_date and end_date, "M": the number of whole months between start_date and
+ * end_date, "D": the number of days between start_date and end_date, "MD": the number of days between start_date and
+ * end_date after subtracting whole months, "YM": the number of whole months between start_date and end_date after
+ * subtracting whole years, "YD": the number of days between start_date and end_date, assuming start_date and end_date
+ * were no more than one year apart.
+ * @returns {number} number of days, months, or years between two dates.
+ * @constructor
+ */
+var DATEDIF = function (...values) {
+  ArgsChecker.checkLength(values, 3);
+  var start = TypeCaster.firstValueAsExcelDate(values[0], true);
+  var end = TypeCaster.firstValueAsExcelDate(values[1], true);
+  var unit = TypeCaster.firstValueAsString(values[2]);
+  var unitClean = unit.toUpperCase();
+
+  if (start.toNumber() > end.toNumber()) {
+    throw new NumError("Function DATEDIF parameter 1 (" + start.toString() +
+        ") should be on or before Function DATEDIF parameter 2 (" + end.toString() + ").");
+  }
+
+  if (unitClean === "Y") {
+    return Math.floor(end.toMoment().diff(start.toMoment(), "years"));
+  } else if (unitClean === "M") {
+    return Math.floor(end.toMoment().diff(start.toMoment(), "months"));
+  } else if (unitClean === "D") {
+    return end.toNumber() - start.toNumber();
+  } else if (unitClean === "MD") {
+    var s = start.toMoment();
+    var e = end.toMoment();
+    while(s.isBefore(e)) {
+      s.add(1, "month");
+    }
+    s.subtract(1, "month");
+    var days = e.diff(s, "days");
+    return s.date() === e.date() ? 0 : days;
+  } else if (unitClean === "YM") {
+    var s = start.toMoment();
+    var e = end.toMoment();
+    while(s.isBefore(e)) {
+      s.add(1, "year");
+    }
+    s.subtract(1, "year");
+    var months = Math.floor(e.diff(s, "months"));
+    return months === 12 ? 0 : months;
+  } else if (unitClean === "YD") {
+    // var s = start.toMoment();
+    // var e = end.toMoment();
+    // var days = e.diff(s, "days");
+    // return days
+    var s = start.toMoment();
+    var e = end.toMoment();
+    while(s.isBefore(e)) {
+      s.add(1, "year");
+    }
+    s.subtract(1, "year");
+    var days = Math.floor(e.diff(s, "days"));
+    return days >= 365 ? 0 : days;
+  } else {
+    throw new NumError("Function DATEDIF parameter 3 value is " + unit +
+        ". It should be one of: 'Y', 'M', 'D', 'MD', 'YM', 'YD'.");
+  }
+};
+
+
 var YEARFRAC = Formula["YEARFRAC"];
 // Functions unimplemented.
-var DATEDIF;
 var HOUR;
 var MINUTE;
 var NETWORKDAYS;
@@ -382,6 +452,7 @@ var WORKDAY;
 export {
   DATE,
   DATEVALUE,
+  DATEDIF,
   DAYS,
   DAY,
   DAYS360,

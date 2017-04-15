@@ -2,6 +2,7 @@
 import {
   DATE,
   DATEVALUE,
+  DATEDIF,
   EDATE,
   EOMONTH,
   DAY,
@@ -30,6 +31,84 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+
+// Test DATEDIF
+assertEquals(DATEDIF("1992-6-19", "1996-6-19", "Y"), 4);
+assertEquals(DATEDIF("1992-6-19", "1996-6-0", "Y"), 3);
+assertEquals(DATEDIF("1992-6-19", "1992-8-1", "Y"), 0);
+assertEquals(DATEDIF("1992-6-19", "2199-8-1", "Y"), 207);
+assertEquals(DATEDIF("1992-6-19", "1996-6-19", "M"), 48);
+assertEquals(DATEDIF("1992-6-19", "1996-6-1", "M"), 47);
+assertEquals(DATEDIF("1992-6-19", "1992-8-1", "M"), 1);
+assertEquals(DATEDIF("1992-6-19", "2199-8-1", "M"), 2485);
+assertEquals(DATEDIF("1992-6-19", "1996-6-19", "D"), 1461);
+assertEquals(DATEDIF("1992-6-19", "1996-6-1", "D"), 1443);
+assertEquals(DATEDIF("1992-6-19", "1992-8-1", "D"), 43);
+assertEquals(DATEDIF("1992-6-19", "2199-8-1", "D"), 75648);
+assertEquals(DATEDIF("1992-6-19", "2199-8-1", "MD"), 13);
+assertEquals(DATEDIF("1992-6-19", "2012-7-22", "MD"), 3);
+assertEquals(DATEDIF("1992-6-19", "1993-8-1", "MD"), 13);
+assertEquals(DATEDIF("1992-6-19", "2000-1-19", "MD"), 0);
+assertEquals(DATEDIF("1992-6-19", "2000-1-20", "MD"), 1);
+assertEquals(DATEDIF("1992-6-19", "2000-1-21", "MD"), 2);
+assertEquals(DATEDIF("1992-6-19", "2000-1-22", "MD"), 3);
+assertEquals(DATEDIF("1992-6-19", "2000-1-23", "MD"), 4);
+assertEquals(DATEDIF("1992-6-19", "2000-1-24", "MD"), 5);
+assertEquals(DATEDIF("1992-6-19", "2000-1-25", "MD"), 6);
+assertEquals(DATEDIF("1992-6-20", "2000-1-25", "MD"), 5);
+assertEquals(DATEDIF("1992-6-19", "2199-8-1", "YM"), 1);
+assertEquals(DATEDIF("1992-6-19", "2012-7-22", "YM"), 1);
+assertEquals(DATEDIF("1992-6-19", "1993-8-1", "YM"), 1);
+assertEquals(DATEDIF("1992-6-19", "2000-1-19", "YM"), 7);
+assertEquals(DATEDIF("1992-6-19", "2000-1-20", "YM"), 7);
+assertEquals(DATEDIF("1992-6-19", "2000-1-21", "YM"), 7);
+assertEquals(DATEDIF("1992-6-19", "2000-1-22", "YM"), 7);
+assertEquals(DATEDIF("1992-6-19", "2000-1-23", "YM"), 7);
+assertEquals(DATEDIF("1992-6-19", "2000-1-24", "YM"), 7);
+assertEquals(DATEDIF("1992-6-19", "2000-1-25", "YM"), 7);
+assertEquals(DATEDIF("1992-6-20", "2000-1-25", "YM"), 7);
+assertEquals(DATEDIF("1992-6-19", "1992-6-19", "YM"), 0);
+assertEquals(DATEDIF("1992-6-19", "1992-7-19", "YM"), 1);
+assertEquals(DATEDIF("1992-6-19", "1993-7-19", "YM"), 1);
+assertEquals(DATEDIF("1992-6-19", "1993-6-19", "YM"), 0);
+assertEquals(DATEDIF("1992-6-19", "2199-8-1", "YD"), 43);
+assertEquals(DATEDIF("1992-6-19", "2012-7-22", "YD"), 33);
+assertEquals(DATEDIF("1992-6-19", "1993-8-1", "YD"), 43);
+assertEquals(DATEDIF("1992-6-19", "2000-1-19", "YD"), 214);
+assertEquals(DATEDIF("1992-6-19", "2000-1-20", "YD"), 215);
+assertEquals(DATEDIF("1992-6-19", "2000-1-21", "YD"), 216);
+assertEquals(DATEDIF("1992-6-19", "2000-1-22", "YD"), 217);
+assertEquals(DATEDIF("1992-6-19", "2000-1-23", "YD"), 218);
+assertEquals(DATEDIF("1992-6-19", "2000-1-24", "YD"), 219);
+assertEquals(DATEDIF("1992-6-19", "2000-1-25", "YD"), 220);
+assertEquals(DATEDIF("1992-6-19", "1992-6-19", "YD"), 0);
+assertEquals(DATEDIF("1992-6-19", "1992-7-19", "YD"), 30);
+assertEquals(DATEDIF("1992-6-19", "1993-7-19", "YD"), 30);
+assertEquals(DATEDIF("1992-6-19", "1993-6-19", "YD"), 0);
+assertEquals(DATEDIF("1992-6-19", "1993-6-19", "yd"), 0);
+assertEquals(DATEDIF(["1992-6-19", "str"], ["1993-6-19", []], ["yd"]), 0);
+catchAndAssertEquals(function() {
+  DATEDIF("1996-6-19", "1992-6-19", "Y");
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DATEDIF("1992-6-19", "1995-6-19", "Y ");
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DATEDIF("1992-6-19", "1995-6-19", "mm");
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  DATEDIF();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DATEDIF("1992-6-19", "1995-6-19", "mm", 0);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  DATEDIF("str", "1995-6-19", "mm");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  DATEDIF([], "1995-6-19", "mm");
+}, ERRORS.REF_ERROR);
 
 
 // Test WEEKNUM
@@ -574,29 +653,6 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   WEEKNUM(10, 22);
 }, ERRORS.NUM_ERROR);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Test WEEKDAY

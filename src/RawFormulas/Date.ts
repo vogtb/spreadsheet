@@ -377,7 +377,7 @@ var WEEKNUM = function (...values) {
  * @returns {number} number of days, months, or years between two dates.
  * @constructor
  */
-var DATEDIF = function (...values) {
+var DATEDIF = function (...values) : number {
   ArgsChecker.checkLength(values, 3);
   var start = TypeCaster.firstValueAsExcelDate(values[0], true);
   var end = TypeCaster.firstValueAsExcelDate(values[1], true);
@@ -433,7 +433,91 @@ var DATEDIF = function (...values) {
 };
 
 
-var YEARFRAC = Formula["YEARFRAC"];
+/**
+ * Returns the number of years, including fractional years, between two dates using a specified day count convention.
+ * @param values[0] start_date - The start date to consider in the calculation. Must be a reference to a cell
+ * containing a date, a function returning a date type, or a number.
+ * @param values[1] end_date - The end date to consider in the calculation. Must be a reference to a cell containing
+ * a date, a function returning a date type, or a number.
+ * @param values[2] day_count_convention - [ OPTIONAL - 0 by default ] - An indicator of what day count method to
+ * use.
+ * @returns {number}the number of years, including fractional years, between two dates
+ * @constructor
+ */
+var YEARFRAC = function (...values) : number {
+  ArgsChecker.checkLengthWithin(values, 2, 3);
+  var start = TypeCaster.firstValueAsExcelDate(values[0], true);
+  var end = TypeCaster.firstValueAsExcelDate(values[1], true);
+  var basis = values.length === 2 ? 0 : TypeCaster.firstValueAsNumber(values[2]);
+
+  var s = start.toMoment();
+  var e = end.toMoment();
+  if (e.isBefore(s)) {
+    var me = moment.utc(e);
+    e = moment.utc(s);
+    s = me;
+  }
+  var syear = s.year();
+  var smonth = s.month();
+  var sday = s.date();
+  var eyear = e.year();
+  var emonth = e.month();
+  var eday = e.date();
+
+  var feb29Between = function (date1, date2) {
+    // Requires year2 == (year1 + 1) or year2 == year1
+    // Returns TRUE if February 29 is between the two dates (date1 may be February 29), with two possibilities:
+    // year1 is a leap year and date1 <= Februay 29 of year1
+    // year2 is a leap year and date2 > Februay 29 of year2
+    var mar1year1 = moment.utc(new Date(date1.year(), 2, 1));
+    if (moment.utc([date1.year()]).isLeapYear() && date1.diff(mar1year1) < 0 && date2.diff(mar1year1) >= 0) {
+      return true;
+    }
+    var mar1year2 = moment.utc(new Date(date2.year(), 2, 1));
+    if (moment.utc([date2.year()]).isLeapYear() && date2.diff(mar1year2) >= 0 && date1.diff(mar1year2) < 0) {
+      return true;
+    }
+    return false;
+  };
+
+  switch (basis) {
+    case 0:
+      // US (NASD) 30/360
+      // Note: if eday == 31, it stays 31 if sday < 30
+      if (sday === 31 && eday === 31) {
+        sday = 30;
+        eday = 30;
+      } else if (sday === 31) {
+        sday = 30;
+      } else if (sday === 30 && eday === 31) {
+        eday = 30;
+      } else if (smonth === 1 && emonth === 1 && s.daysInMonth() === sday && e.daysInMonth() === eday) {
+        sday = 30;
+        eday = 30;
+      } else if (smonth === 1 && s.daysInMonth() === sday) {
+        sday = 30;
+      }
+      return Math.abs(((eday + emonth * 30 + eyear * 360) - (sday + smonth * 30 + syear * 360)) / 360);
+    case 1:
+      // Actual/actual
+      var ylength = 365;
+      if (syear === eyear || ((syear + 1) === eyear) && ((smonth > emonth) || ((smonth === emonth) && (sday >= eday)))) {
+        if (syear === eyear && moment.utc([syear]).isLeapYear()) {
+          ylength = 366;
+        } else if (feb29Between(s, e) || (emonth === 1 && eday === 29)) {
+          ylength = 366;
+        }
+        return Math.abs((end.toNumber() - start.toNumber()) / ylength);
+      } else {
+        var years = (eyear - syear) + 1;
+        var days = moment.utc([eyear+1]).startOf("year").diff(moment.utc([syear]).startOf("year"), 'days');
+        var average = days / years;
+        return Math.abs((end.toNumber() - start.toNumber()) / average);
+      }
+  }
+};
+
+
 // Functions unimplemented.
 var HOUR;
 var MINUTE;

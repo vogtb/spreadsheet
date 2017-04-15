@@ -2008,11 +2008,3 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   XOR([]);
 }, ERRORS.REF_ERROR);
-
-
-
-// assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 0), 18.994444444444444);
-// // assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 1)', 18.99587544); // This is slightly off
-// assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 2), 19.272222222222222);
-// assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 3), 19.008219178082193);
-// assertEquals(YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 4), 18.994444444444444);

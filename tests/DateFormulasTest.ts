@@ -11,7 +11,8 @@ import {
   MONTH,
   YEAR,
   WEEKDAY,
-  WEEKNUM
+  WEEKNUM,
+  YEARFRAC
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
@@ -31,6 +32,30 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+
+// Test YEARFRAC
+assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 0), 18.994444444444444);
+assertEquals(YEARFRAC("1969-7-6", "1988-7-22", 0), 19.044444444444444);
+assertEquals(YEARFRAC("1992-1-6", "2191-7-22", 0), 199.544444444444444);
+assertEquals(YEARFRAC("1992-1-6", "2191-1-21", 0), 199.041666666666667);
+assertEquals(YEARFRAC("1992-1-6", "2144-1-22", 0), 152.044444444444444);
+assertEquals(YEARFRAC("1992-1-6", "1992-1-6", 0), 0);
+assertEquals(YEARFRAC("1992-1-6", "1992-1-1", 0), 0.013888888888888888);
+assertEquals(YEARFRAC("1992-1-6", "1993-1-6", 0), 1);
+assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 1), 18.99520876112252);
+assertEquals(YEARFRAC("1969-7-6", "1988-7-22", 1), 19.044490075290895);
+assertEquals(YEARFRAC("1992-1-6", "2191-7-22", 1), 199.54003477118098);
+assertEquals(YEARFRAC("1992-1-6", "2191-1-21", 1), 199.04173910662706);
+assertEquals(YEARFRAC("1992-1-6", "2144-1-22", 1), 152.04174793765546);
+assertEquals(YEARFRAC("1992-1-6", "1992-1-6", 1), 0);
+assertEquals(YEARFRAC("1992-1-6", "1992-1-1", 1), 0.01366120218579235);
+assertEquals(YEARFRAC("1991-1-6", "1992-1-6", 1), 0.999962572);
+assertEquals(YEARFRAC("1992-1-6", "1993-1-6", 1), 1.000037428);
+
+// assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 2), 19.272222222222222);
+// assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 3), 19.008219178082193);
+// assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 4), 18.994444444444444);
 
 
 // Test DATEDIF

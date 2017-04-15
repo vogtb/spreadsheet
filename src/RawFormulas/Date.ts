@@ -335,11 +335,26 @@ var WEEKNUM = function (...values) {
     }
     return weeksCount;
   } else if (shiftType === 16) {
-
+    var SHIFTER = [1, 2, 3, 4, 5, 6, 0];
+    var startOfYear = moment.utc(dm).startOf("year");
+    var weeksCount = 1;
+    var d = moment.utc(dm).startOf("year").add(6 - SHIFTER[startOfYear.day()], "days");
+    while (d.isBefore(dm)) {
+      d.add(7, "days");
+      weeksCount++;
+    }
+    return weeksCount;
   } else if (shiftType === 17) {
-
+    var startOfYear = moment.utc(dm).startOf("year");
+    var weeksCount = 1;
+    var d = moment.utc(dm).startOf("year").add(6 - startOfYear.day(), "days");
+    while (d.isBefore(dm)) {
+      d.add(7, "days");
+      weeksCount++;
+    }
+    return weeksCount;
   } else if (shiftType === 21) {
-
+    return dm.isoWeek();
   } else {
     throw new NumError("Function WEEKNUM parameter 2 value " + shiftType + " is out of range.");
   }

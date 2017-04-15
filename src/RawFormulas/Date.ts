@@ -282,48 +282,58 @@ var WEEKNUM = function (...values) {
   }
   var dm = date.toMoment();
   var week = dm.week();
-  var dayOfWeek = dm.day() + 1; // between 1 and 7, inclusively
+  var dayOfWeek = dm.day(); // between 1 and 7, inclusively
   if (shiftType === 1) {
     // If this weekYear is not the same as the year, then we're technically in "week 53"
     // See https://momentjs.com/docs/#/get-set/week-year/ for more info.
     if (dm.weekYear() !== dm.year()) {
-      week = 53;
+      week = dm.weeksInYear() + 1;
     }
     return week;
   } else if (shiftType === 2 || shiftType === 11) {
     if (dm.weekYear() !== dm.year()) {
-      week = 53;
+      week = dm.weeksInYear() + 1;
     }
-    if (dayOfWeek === 1) { // sunday shift back
+    if (dayOfWeek === 0) { // sunday shift back
       return week - 1;
     }
     return week;
   } else if (shiftType === 12) {
     if (dm.weekYear() !== dm.year()) {
-      week = 53;
+      week = dm.weeksInYear() + 1;
     }
-    if (dayOfWeek <= 2) { // sunday, monday shift back
+    if (dayOfWeek <= 1) { // sunday, monday shift back
       return week - 1;
     }
     return week;
   } else if (shiftType === 13) {
     if (dm.weekYear() !== dm.year()) {
-      week = 53;
+      week = dm.weeksInYear() + 1;
     }
-    if (dayOfWeek <= 3) { // sunday, monday, tuesday shift back
+    if (dayOfWeek <= 2) { // sunday, monday, tuesday shift back
       return week - 1;
     }
     return week;
   } else if (shiftType === 14) {
-    if (dm.weekYear() !== dm.year()) {
-      week = 53;
+    var SHIFTER = [3, 4, 5, 6, 0, 1, 2];
+    var startOfYear = moment.utc(dm).startOf("year");
+    var weeksCount = 1;
+    var d = moment.utc(dm).startOf("year").add(6 - SHIFTER[startOfYear.day()], "days");
+    while (d.isBefore(dm)) {
+      d.add(7, "days");
+      weeksCount++;
     }
-    if (dayOfWeek <= 4) { // sunday, monday, tuesday, wednesday shift back
-      return week - 1;
-    }
-    return week;
+    return weeksCount;
   } else if (shiftType === 15) {
-
+    var SHIFTER = [2, 3, 4, 5, 6, 0, 1];
+    var startOfYear = moment.utc(dm).startOf("year");
+    var weeksCount = 1;
+    var d = moment.utc(dm).startOf("year").add(6 - SHIFTER[startOfYear.day()], "days");
+    while (d.isBefore(dm)) {
+      d.add(7, "days");
+      weeksCount++;
+    }
+    return weeksCount;
   } else if (shiftType === 16) {
 
   } else if (shiftType === 17) {
@@ -333,6 +343,13 @@ var WEEKNUM = function (...values) {
   } else {
     throw new NumError("Function WEEKNUM parameter 2 value " + shiftType + " is out of range.");
   }
+
+
+
+  // var startOfYear = moment.utc(dm).startOf("year");
+  // var dayOfWeekOfNewYearsDay = startOfYear.weekday();
+  // var weekNum = 1;// let's start with the week being the first one, and walking it forward
+  // var shiftedNewYearsDay = dayShift[dayOfWeekOfNewYearsDay];
 };
 
 

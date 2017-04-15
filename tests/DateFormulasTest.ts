@@ -204,6 +204,152 @@ assertEquals(WEEKNUM(23757, 14), 3);
 assertEquals(WEEKNUM(23758, 14), 3);
 assertEquals(WEEKNUM(23759, 14), 3);
 assertEquals(WEEKNUM(23760, 14), 3);
+//type=14 again
+assertEquals(WEEKNUM(355, 14), 52);
+assertEquals(WEEKNUM(356, 14), 52);
+assertEquals(WEEKNUM(357, 14), 52);
+assertEquals(WEEKNUM(358, 14), 52);
+assertEquals(WEEKNUM(359, 14), 52);
+assertEquals(WEEKNUM(360, 14), 52);
+assertEquals(WEEKNUM(361, 14), 52);
+assertEquals(WEEKNUM(362, 14), 53);
+assertEquals(WEEKNUM(363, 14), 53);
+assertEquals(WEEKNUM(364, 14), 53);
+assertEquals(WEEKNUM(365, 14), 53);
+assertEquals(WEEKNUM(366, 14), 53);
+assertEquals(WEEKNUM(367, 14), 1);
+assertEquals(WEEKNUM(368, 14), 1);
+assertEquals(WEEKNUM(369, 14), 2);
+assertEquals(WEEKNUM(370, 14), 2);
+assertEquals(WEEKNUM(371, 14), 2);
+assertEquals(WEEKNUM(372, 14), 2);
+assertEquals(WEEKNUM(373, 14), 2);
+assertEquals(WEEKNUM(374, 14), 2);
+assertEquals(WEEKNUM(375, 14), 2);
+assertEquals(WEEKNUM(376, 14), 3);
+assertEquals(WEEKNUM(377, 14), 3);
+assertEquals(WEEKNUM(378, 14), 3);
+assertEquals(WEEKNUM(379, 14), 3);
+assertEquals(WEEKNUM(380, 14), 3);
+assertEquals(WEEKNUM(381, 14), 3);
+//type=14 again
+assertEquals(WEEKNUM(730, 14), 53);
+assertEquals(WEEKNUM(731, 14), 53);
+assertEquals(WEEKNUM(732, 14), 1);
+assertEquals(WEEKNUM(733, 14), 2);
+assertEquals(WEEKNUM(734, 14), 2);
+assertEquals(WEEKNUM(735, 14), 2);
+assertEquals(WEEKNUM(736, 14), 2);
+assertEquals(WEEKNUM(737, 14), 2);
+assertEquals(WEEKNUM(738, 14), 2);
+assertEquals(WEEKNUM(739, 14), 2);
+assertEquals(WEEKNUM(740, 14), 3);
+assertEquals(WEEKNUM(741, 14), 3);
+assertEquals(WEEKNUM(742, 14), 3);
+assertEquals(WEEKNUM(743, 14), 3);
+assertEquals(WEEKNUM(744, 14), 3);
+assertEquals(WEEKNUM(745, 14), 3);
+assertEquals(WEEKNUM(746, 14), 3);
+
+//type=15
+assertEquals(WEEKNUM(23734, 15), 52);
+assertEquals(WEEKNUM(23735, 15), 52);
+assertEquals(WEEKNUM(23736, 15), 53);
+assertEquals(WEEKNUM(23737, 15), 53);
+assertEquals(WEEKNUM(23738, 15), 53);
+assertEquals(WEEKNUM(23739, 15), 53);
+assertEquals(WEEKNUM(23740, 15), 53);
+assertEquals(WEEKNUM(23741, 15), 53);
+assertEquals(WEEKNUM(23742, 15), 53);
+assertEquals(WEEKNUM(23743, 15), 1);
+assertEquals(WEEKNUM(23744, 15), 1);
+assertEquals(WEEKNUM(23745, 15), 1);
+assertEquals(WEEKNUM(23746, 15), 1);
+assertEquals(WEEKNUM(23747, 15), 1);
+assertEquals(WEEKNUM(23748, 15), 1);
+assertEquals(WEEKNUM(23749, 15), 1);
+assertEquals(WEEKNUM(23750, 15), 2);
+assertEquals(WEEKNUM(23751, 15), 2);
+assertEquals(WEEKNUM(23752, 15), 2);
+assertEquals(WEEKNUM(23753, 15), 2);
+assertEquals(WEEKNUM(23754, 15), 2);
+assertEquals(WEEKNUM(23755, 15), 2);
+assertEquals(WEEKNUM(23756, 15), 2);
+assertEquals(WEEKNUM(23757, 15), 3);
+assertEquals(WEEKNUM(23758, 15), 3);
+assertEquals(WEEKNUM(23759, 15), 3);
+assertEquals(WEEKNUM(23760, 15), 3);
+//type=15 again
+assertEquals(WEEKNUM(355, 15), 51);
+assertEquals(WEEKNUM(356, 15), 52);
+assertEquals(WEEKNUM(357, 15), 52);
+assertEquals(WEEKNUM(358, 15), 52);
+assertEquals(WEEKNUM(359, 15), 52);
+assertEquals(WEEKNUM(360, 15), 52);
+assertEquals(WEEKNUM(361, 15), 52);
+assertEquals(WEEKNUM(362, 15), 52);
+assertEquals(WEEKNUM(363, 15), 53);
+assertEquals(WEEKNUM(364, 15), 53);
+assertEquals(WEEKNUM(365, 15), 53);
+assertEquals(WEEKNUM(366, 15), 53);
+assertEquals(WEEKNUM(367, 15), 1);
+assertEquals(WEEKNUM(368, 15), 1);
+assertEquals(WEEKNUM(369, 15), 1);
+assertEquals(WEEKNUM(370, 15), 2);
+assertEquals(WEEKNUM(371, 15), 2);
+assertEquals(WEEKNUM(372, 15), 2);
+assertEquals(WEEKNUM(373, 15), 2);
+assertEquals(WEEKNUM(374, 15), 2);
+assertEquals(WEEKNUM(375, 15), 2);
+assertEquals(WEEKNUM(376, 15), 2);
+assertEquals(WEEKNUM(377, 15), 3);
+assertEquals(WEEKNUM(378, 15), 3);
+assertEquals(WEEKNUM(379, 15), 3);
+assertEquals(WEEKNUM(380, 15), 3);
+assertEquals(WEEKNUM(381, 15), 3);
+//type=15 again
+assertEquals(WEEKNUM(730, 15), 53);
+assertEquals(WEEKNUM(731, 15), 53);
+assertEquals(WEEKNUM(732, 15), 1);
+assertEquals(WEEKNUM(733, 15), 1);
+assertEquals(WEEKNUM(734, 15), 2);
+assertEquals(WEEKNUM(735, 15), 2);
+assertEquals(WEEKNUM(736, 15), 2);
+assertEquals(WEEKNUM(737, 15), 2);
+assertEquals(WEEKNUM(738, 15), 2);
+assertEquals(WEEKNUM(739, 15), 2);
+assertEquals(WEEKNUM(740, 15), 2);
+assertEquals(WEEKNUM(741, 15), 3);
+assertEquals(WEEKNUM(742, 15), 3);
+assertEquals(WEEKNUM(743, 15), 3);
+assertEquals(WEEKNUM(744, 15), 3);
+assertEquals(WEEKNUM(745, 15), 3);
+assertEquals(WEEKNUM(746, 15), 3);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Test WEEKDAY

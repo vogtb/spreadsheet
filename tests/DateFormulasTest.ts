@@ -50,12 +50,51 @@ assertEquals(YEARFRAC("1992-1-6", "2191-1-21", 1), 199.04173910662706);
 assertEquals(YEARFRAC("1992-1-6", "2144-1-22", 1), 152.04174793765546);
 assertEquals(YEARFRAC("1992-1-6", "1992-1-6", 1), 0);
 assertEquals(YEARFRAC("1992-1-6", "1992-1-1", 1), 0.01366120218579235);
-assertEquals(YEARFRAC("1991-1-6", "1992-1-6", 1), 0.999962572);
-assertEquals(YEARFRAC("1992-1-6", "1993-1-6", 1), 1.000037428);
-
-// assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 2), 19.272222222222222);
-// assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 3), 19.008219178082193);
-// assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 4), 18.994444444444444);
+assertEquals(YEARFRAC("1991-1-6", "1992-1-6", 1), 1);
+assertEquals(YEARFRAC("1992-1-6", "1993-1-6", 1), 1);
+assertEquals(YEARFRAC("1969-7-6", "1988-7-22", 2), 19.322222222222223);
+assertEquals(YEARFRAC("1992-1-6", "2191-7-22", 2), 202.44722222222222);
+assertEquals(YEARFRAC("1992-1-6", "2191-1-21", 2), 201.94166666666666);
+assertEquals(YEARFRAC("1992-1-6", "2144-1-22", 2), 154.25833333333333);
+assertEquals(YEARFRAC("1992-1-6", "1992-1-6", 2), 0);
+assertEquals(YEARFRAC("1992-1-6", "1992-1-1", 2), 0.013888888888888888);
+assertEquals(YEARFRAC("1991-1-6", "1992-1-6", 2), 1.0138888888888888);
+assertEquals(YEARFRAC("1992-1-6", "1993-1-6", 2), 1.0166666666666666);
+assertEquals(YEARFRAC("1969-7-6", "1988-7-22", 3), 19.057534246575344);
+assertEquals(YEARFRAC("1992-1-6", "2191-7-22", 3), 199.67397260273972);
+assertEquals(YEARFRAC("1992-1-6", "2191-1-21", 3), 199.17534246575343);
+assertEquals(YEARFRAC("1992-1-6", "2144-1-22", 3), 152.14520547945204);
+assertEquals(YEARFRAC("1992-1-6", "1992-1-6", 3), 0);
+assertEquals(YEARFRAC("1992-1-6", "1992-1-1", 3), 0.0136986301369863);
+assertEquals(YEARFRAC("1991-1-6", "1992-1-6", 3), 1);
+assertEquals(YEARFRAC("1992-1-6", "1993-1-6", 3), 1.0027397260273974);
+assertEquals(YEARFRAC("1969-7-6", "1988-7-22", 4), 19.044444444444444);
+assertEquals(YEARFRAC("1992-1-6", "2191-7-22", 4), 199.54444444444445);
+assertEquals(YEARFRAC("1992-1-6", "2191-1-21", 4), 199.04166666666666);
+assertEquals(YEARFRAC("1992-1-6", "2144-1-22", 4), 152.04444444444445);
+assertEquals(YEARFRAC("1992-1-6", "1992-1-6", 4), 0);
+assertEquals(YEARFRAC("1992-1-6", "1992-1-1", 4), 0.013888888888888888);
+assertEquals(YEARFRAC("1991-1-6", "1992-1-6", 4), 1);
+assertEquals(YEARFRAC("1992-1-6", "1993-1-6", 4), 1);
+assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 2), 19.272222222222222);
+assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 3), 19.008219178082193);
+assertEquals(YEARFRAC("1969-7-6", "1988-7-4", 4), 18.994444444444444);
+assertEquals(YEARFRAC(["1992-1-6", []], ["1993-1-6", "str"], [4]), 1);
+catchAndAssertEquals(function() {
+  YEARFRAC("1996-6-19", "1992-6-19", 5);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  YEARFRAC();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  YEARFRAC("1992-6-19", "1995-6-19", 1, 0);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  YEARFRAC("str", "1995-6-19", 1);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  YEARFRAC([], "1995-6-19", 1);
+}, ERRORS.REF_ERROR);
 
 
 // Test DATEDIF

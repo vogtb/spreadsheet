@@ -464,6 +464,7 @@ var YEARFRAC = function (...values) : number {
   var emonth = e.month();
   var eday = e.date();
 
+
   var feb29Between = function (date1, date2) {
     // Requires year2 == (year1 + 1) or year2 == year1
     // Returns TRUE if February 29 is between the two dates (date1 may be February 29), with two possibilities:
@@ -514,7 +515,20 @@ var YEARFRAC = function (...values) : number {
         var average = days / years;
         return Math.abs((end.toNumber() - start.toNumber()) / average);
       }
+    case 2:
+      // Actual/360
+      return Math.abs(e.diff(s, 'days') / 360);
+    case 3:
+      // Actual/365
+      return Math.abs(e.diff(s, 'days') / 365);
+    case 4:
+      // European 30/360
+      sday = sday === 31 ? 30 : sday;
+      eday = eday === 31 ? 30 : eday;
+      // Remarkably, do NOT change February 28 or February 29 at ALL
+      return Math.abs(((eday + emonth * 30 + eyear * 360) - (sday + smonth * 30 + syear * 360)) / 360);
   }
+  throw new NumError("Function YEARFRAC parameter 3 value is " + basis + ". Valid values are between 0 and 4 inclusive.");
 };
 
 

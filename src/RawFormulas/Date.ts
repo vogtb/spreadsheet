@@ -532,6 +532,24 @@ var YEARFRAC = function (...values) : number {
 };
 
 
+/**
+ * Returns the fraction of a 24-hour day the time represents.
+ * @param values[1] time_string - The string that holds the time representation. Eg: "10am", "10:10", "10:10am",
+ * "10:10:11", or "10:10:11am".
+ * @returns {number} representing the fraction of a 24-hour day
+ * @constructor
+ */
+var TIMEVALUE = function (...values) : number {
+  ArgsChecker.checkLength(values, 1);
+  var timeString = TypeCaster.firstValueAsString(values[0]);
+  try {
+    return TypeCaster.stringToTimeNumber(timeString);
+  } catch (e) {
+    throw new ValueError("TIMEVALUE parameter '" + timeString + "' cannot be parsed to date/time.");
+  }
+};
+
+
 // Functions unimplemented.
 var HOUR;
 var MINUTE;
@@ -543,7 +561,6 @@ var __COMPLEX_ITL = {
 var NOW;
 var SECOND;
 var TIME;
-var TIMEVALUE;
 var TODAY;
 var WORKDAY;
 
@@ -560,5 +577,6 @@ export {
   YEAR,
   WEEKDAY,
   WEEKNUM,
-  YEARFRAC
+  YEARFRAC,
+  TIMEVALUE
 }

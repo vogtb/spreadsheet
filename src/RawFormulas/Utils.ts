@@ -335,10 +335,85 @@ class CriteriaFunctionFactory {
   }
 }
 
+
+/**
+ * Matches a timestamp string, adding the units to the moment passed in.
+ * @param timestampString to parse. ok formats: "10am", "10:10", "10:10am", "10:10:10", "10:10:10am", etc.
+ * @param momentToMutate to mutate
+ * @returns {Moment} mutated and altered.
+ */
+function matchTimestampAndMutateMoment(timestampString : string, momentToMutate: moment.Moment) : moment.Moment {
+  var matches = timestampString.match(TIMESTAMP);
+  if (matches && matches[1] !== undefined) { // 10am
+    var hours = parseInt(matches[2]);
+    if (hours > 12) {
+      throw new Error();
+    }
+    momentToMutate.add(hours, 'hours');
+  } else if (matches && matches[6] !== undefined) { // 10:10
+    var hours = parseInt(matches[7]);
+    var minutes = parseInt(matches[8]);
+    momentToMutate.add(hours, 'hours').add(minutes, 'minutes');
+  } else if (matches && matches[11] !== undefined) { // 10:10am
+    var hours = parseInt(matches[13]);
+    var minutes = parseInt(matches[14]);
+    var pmTrue = (matches[16].toLowerCase() === "pm");
+    if (hours > 12) {
+      throw new Error();
+    }
+    if (pmTrue) {
+      // 12pm is just 0am, 4pm is 16, etc.
+      momentToMutate.set('hours', hours === 12 ? hours : 12 + hours);
+    } else {
+      if (hours !== 12) {
+        momentToMutate.set('hours', hours);
+      }
+    }
+    momentToMutate.add(minutes, 'minutes');
+  } else if (matches && matches[17] !== undefined) { // 10:10:10
+    var hours = parseInt(matches[19]);
+    var minutes = parseInt(matches[20]);
+    var seconds = parseInt(matches[21]);
+    momentToMutate.add(hours, 'hours').add(minutes, 'minutes').add(seconds, 'seconds');
+  } else if (matches && matches[23] !== undefined) { // // 10:10:10am
+    var hours = parseInt(matches[25]);
+    var minutes = parseInt(matches[26]);
+    var seconds = parseInt(matches[27]);
+    var pmTrue = (matches[28].toLowerCase() === "pm");
+    if (hours > 12) {
+      throw new Error();
+    }
+    if (pmTrue) {
+      // 12pm is just 0am, 4pm is 16, etc.
+      momentToMutate.set('hours', hours === 12 ? hours : 12 + hours);
+    } else {
+      if (hours !== 12) {
+        momentToMutate.set('hours', hours);
+      }
+    }
+    momentToMutate.add(minutes, 'minutes').add(seconds, 'seconds');
+  } else {
+    throw new Error();
+  }
+  return momentToMutate;
+}
+
+
 /**
  * Static class of helpers used to cast various types to each other.
  */
 class TypeCaster {
+
+  /**
+   * Converts a time-formatted string to a number between 0 and 1, exclusive on 1.
+   * @param timeString
+   * @returns {number} representing time of day
+   */
+  static stringToTimeNumber(timeString: string) : number {
+    var m = moment.utc([FIRST_YEAR]).startOf("year");
+    m = matchTimestampAndMutateMoment(timeString, m);
+    return (3600 * m.hours() + 60 * m.minutes() + m.seconds()) / 86400;
+  }
 
   /**
    * Casts a string to an ExcelDate. Throws error if parsing not possible.
@@ -376,68 +451,6 @@ class TypeCaster {
       return tmpMoment.add(days, 'days');
     }
 
-    /**
-     * Matches a timestamp string, adding the units to the moment passed in.
-     * @param timestampString to parse. ok formats: "10am", "10:10", "10:10am", "10:10:10", "10:10:10am", etc.
-     * @param momentToMutate to mutate
-     * @returns {Moment} mutated and altered.
-     */
-    function matchTimestampAndMutateMoment(timestampString : string, momentToMutate: moment.Moment) : moment.Moment {
-      var matches = timestampString.match(TIMESTAMP);
-      if (matches && matches[1] !== undefined) { // 10am
-        var hours = parseInt(matches[2]);
-        if (hours > 12) {
-          throw new Error();
-        }
-        // No op on momentToMutate because you can't overload hours with am/pm.
-      } else if (matches && matches[6] !== undefined) { // 10:10
-        var hours = parseInt(matches[7]);
-        var minutes = parseInt(matches[8]);
-        momentToMutate.add(hours, 'hours').add(minutes, 'minutes');
-      } else if (matches && matches[11] !== undefined) { // 10:10am
-        var hours = parseInt(matches[13]);
-        var minutes = parseInt(matches[14]);
-        var pmTrue = (matches[16].toLowerCase() === "pm");
-        if (hours > 12) {
-          throw new Error();
-        }
-        if (pmTrue) {
-          // 12pm is just 0am, 4pm is 16, etc.
-          momentToMutate.set('hours', hours === 12 ? hours : 12 + hours);
-        } else {
-          if (hours !== 12) {
-            momentToMutate.set('hours', hours);
-          }
-        }
-        momentToMutate.add(minutes, 'minutes');
-      } else if (matches && matches[17] !== undefined) { // 10:10:10
-        var hours = parseInt(matches[19]);
-        var minutes = parseInt(matches[20]);
-        var seconds = parseInt(matches[21]);
-        momentToMutate.add(hours, 'hours').add(minutes, 'minutes').add(seconds, 'seconds');
-      } else if (matches && matches[23] !== undefined) { // // 10:10:10am
-        var hours = parseInt(matches[25]);
-        var minutes = parseInt(matches[26]);
-        var seconds = parseInt(matches[27]);
-        var pmTrue = (matches[28].toLowerCase() === "pm");
-        if (hours > 12) {
-          throw new Error();
-        }
-        if (pmTrue) {
-          // 12pm is just 0am, 4pm is 16, etc.
-          momentToMutate.set('hours', hours === 12 ? hours : 12 + hours);
-        } else {
-          if (hours !== 12) {
-            momentToMutate.set('hours', hours);
-          }
-        }
-        momentToMutate.add(minutes, 'minutes').add(seconds, 'seconds');
-      } else {
-        throw new Error();
-      }
-      return momentToMutate.set('hours', 0).set('minutes', 0).set('seconds', 0);
-    }
-
     // Check YEAR_MONTHDIG, YYYY(fd)MM, '1992/06'
     // NOTE: Must come before YEAR_MONTHDIG_DAY matching.
     if (m === undefined) {
@@ -447,7 +460,10 @@ class TypeCaster {
         var months = parseInt(matches[5]) - 1; // Months are zero indexed.
         var tmpMoment = createMoment(years, months, 0);
         if (matches[6] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
+          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment)
+            .set('hours', 0)
+            .set('minutes', 0)
+            .set('seconds', 0);
         }
         m = tmpMoment;
       }
@@ -466,7 +482,10 @@ class TypeCaster {
         var days = parseInt(matches[7]) - 1; // Days are zero indexed.
         var tmpMoment = createMoment(years, months, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
+          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment)
+            .set('hours', 0)
+            .set('minutes', 0)
+            .set('seconds', 0);
         }
         m = tmpMoment;
       }
@@ -481,7 +500,10 @@ class TypeCaster {
         var months = parseInt(matches[3]) - 1; // Months are zero indexed.
         var tmpMoment = createMoment(years, months, 0);
         if (matches[6] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
+          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment)
+            .set('hours', 0)
+            .set('minutes', 0)
+            .set('seconds', 0);
         }
         m = tmpMoment;
       }
@@ -500,7 +522,10 @@ class TypeCaster {
         var days = parseInt(matches[5]) - 1; // Days are zero indexed.
         var tmpMoment = createMoment(years, months, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
+          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment)
+            .set('hours', 0)
+            .set('minutes', 0)
+            .set('seconds', 0);
         }
         m = tmpMoment;
       }
@@ -515,7 +540,10 @@ class TypeCaster {
         var monthName = matches[3];
         var tmpMoment = createMoment(years, monthName, 0);
         if (matches[6] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
+          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment)
+            .set('hours', 0)
+            .set('minutes', 0)
+            .set('seconds', 0);
         }
         m = tmpMoment;
       }
@@ -534,7 +562,10 @@ class TypeCaster {
         var days = parseInt(matches[5]) - 1; // Days are zero indexed.
         var tmpMoment = createMoment(years, monthName, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
+          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment)
+            .set('hours', 0)
+            .set('minutes', 0)
+            .set('seconds', 0);
         }
         m = tmpMoment;
       }
@@ -555,7 +586,10 @@ class TypeCaster {
         }
         var tmpMoment = createMoment(years, monthName, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
+          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment)
+            .set('hours', 0)
+            .set('minutes', 0)
+            .set('seconds', 0);
         }
         m = tmpMoment;
       }
@@ -569,7 +603,10 @@ class TypeCaster {
         var monthName = matches[5];
         var tmpMoment = createMoment(years, monthName, 0);
         if (matches[6] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
+          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment)
+            .set('hours', 0)
+            .set('minutes', 0)
+            .set('seconds', 0);
         }
         m = tmpMoment;
       }
@@ -652,6 +689,29 @@ class TypeCaster {
     } else if (value instanceof Array) {
       return this.valueToString(value[0]); // TODO: Take this out. It's stupid. We should handle arrays at a different level.
     }
+  }
+
+  /**
+   * Converts a value to a time number; a value between 0 and 1, exclusive on 1.
+   * @param value to convert
+   * @returns {number} representing a time value
+   */
+  static valueAsTimeNumber(value: any) : number {
+    if (typeof value === "number") {
+      return value;
+    } else if (typeof value === "string") {
+      try {
+        return TypeCaster.stringToTimeNumber(value)
+      } catch (e) {
+        if (TypeCaster.canCoerceToNumber(value)) {
+          return TypeCaster.valueToNumber(value);
+        }
+        throw new ValueError("___ expects date values. But '" + value + "' is a text and cannot be coerced to a time.")
+      }
+    } else if (typeof value === "boolean") {
+      return value ? 1 : 0;
+    }
+    return 0;
   }
 
   /**

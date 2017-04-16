@@ -12,7 +12,8 @@ import {
   YEAR,
   WEEKDAY,
   WEEKNUM,
-  YEARFRAC
+  YEARFRAC,
+  TIMEVALUE
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
@@ -32,6 +33,30 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+// Test TIMEVALUE
+assertEquals(TIMEVALUE("8am"), 0.3333333333333333);
+assertEquals(TIMEVALUE("8:10"), 0.3402777777777778);
+assertEquals(TIMEVALUE("8:10pm"), 0.8402777777777778);
+assertEquals(TIMEVALUE("8:10000pm"), 0.7777777777777778);
+assertEquals(TIMEVALUE("28:10000"), 0.1111111111111111);
+assertEquals(TIMEVALUE("14:23232:9999991"), 0.45730324074074075);
+assertEquals(TIMEVALUE(["8:10"]), 0.3402777777777778);
+assertEquals(TIMEVALUE("11:21222:2111pm"), 0.7202662037037038);
+assertEquals(TIMEVALUE("11:21222:2111am"), 0.2202662037037037);
+catchAndAssertEquals(function() {
+  TIMEVALUE("8:10", 5);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  TIMEVALUE();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  TIMEVALUE("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  TIMEVALUE([]);
+}, ERRORS.REF_ERROR);
+
 
 
 // Test YEARFRAC

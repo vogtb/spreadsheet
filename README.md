@@ -11,10 +11,7 @@ And the same for MAX, MAXA, COUNT, COUNTA, etc. Look these over.
 
 ### Document the functions pulled in from jStat.
 
-### Bring back missing Excel functions
-* COVARIANCEP
-* COVARIANCES
-* ...etc.
+### Double check all relevant formulas from MSExcel and GS have been implemented.
 
 ### Refactor the way tests are organized.
 Group by error type and have some useful functions that will call with 0, N, N+1 args to test the args
@@ -29,23 +26,27 @@ Although dollar functions look like they just format `number`s, it seems like th
 This means that we should do dollar->number casting in all casting functions. For now, just using number primitive.
 See `DOLLAR` function for more info.
 
+### Get a better way to tie formulas into single export
+Listing them inside RawFormulas.ts is unwieldy.
 
+### Use `arguments` instead of `...values` for performance reasons.
 
-# The Great Date Refactoring (TM)
+### Error formatting
+Pass name of calling formula into all functions that throw user-facing errors, or have some sort of error mapper.
 
-* Dates have special types
+### Dates have special types
 Like dollars, dates are special types, but can be compared as if they're primatives. For example, this statement is
 valid inside a cell: `=DATE(1992, 6, 6) > =DATE(1992, 6, 10)`. We should check types and and have Date-to-number
 conversion inside parser.js.
 
-* Test all ExcelDate functions
+### Test all ExcelDate functions
 Right now we're just using the number of days since 1900, but we should check the other functions.
 
-* Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
+### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
 
 
 
-# Testing Guidelines
+## Testing Guidelines
 
 All formulas should test for:
 1) One *less* argument than the formula expects, and one *more* argument than the formula expects.

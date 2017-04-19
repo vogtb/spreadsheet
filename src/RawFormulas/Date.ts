@@ -569,9 +569,25 @@ var HOUR = function (...values) : number {
 };
 
 
+/**
+ * Returns the minute component of a specific time, in numeric format.
+ * @param values[0] time - The time from which to calculate the minute component. Must be a reference to a cell
+ * containing a date/time, a function returning a date/time type, or a number.
+ * @returns {number} minute of the time passed in.
+ * @constructor
+ */
+var MINUTE = function (...values) {
+  ArgsChecker.checkLength(values, 1);
+  var time = TypeCaster.firstValueAsTimestampNumber(values[0]);
+  if (time % 1 === 0) {
+    return 0;
+  }
+  var m = moment.utc([1900]).add(time * MILLISECONDS_IN_DAY, "milliseconds");
+  return m.minute();
+};
+
 
 // Functions unimplemented.
-var MINUTE;
 var NETWORKDAYS;
 var __COMPLEX_ITL = {
   "NETWORKDAYS.ITL": function () {},
@@ -598,5 +614,6 @@ export {
   WEEKNUM,
   YEARFRAC,
   TIMEVALUE,
-  HOUR
+  HOUR,
+  MINUTE
 }

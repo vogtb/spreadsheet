@@ -14,7 +14,8 @@ import {
   WEEKNUM,
   YEARFRAC,
   TIMEVALUE,
-  HOUR
+  HOUR,
+  MINUTE
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
@@ -34,6 +35,47 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+// Test MINUTE
+assertEquals(MINUTE("8:10"), 10);
+assertEquals(MINUTE("8:11"), 11);
+assertEquals(MINUTE("8:44"), 44);
+assertEquals(MINUTE("8:70"), 10);
+assertEquals(MINUTE("8:120"), 0);
+assertEquals(MINUTE("8:10000pm"), 40);
+assertEquals(MINUTE("28:10000"), 40);
+assertEquals(MINUTE("14:23232:9999991"), 58);
+assertEquals(MINUTE(["8:10"]), 10);
+assertEquals(MINUTE("11:21222:2111pm"), 17);
+assertEquals(MINUTE("11:21222:2111am"), 17);
+assertEquals(MINUTE(""), 0);
+assertEquals(MINUTE(0), 0);
+assertEquals(MINUTE(1), 0);
+assertEquals(MINUTE(false), 0);
+assertEquals(MINUTE(true), 0);
+assertEquals(MINUTE(0.8), 12);
+assertEquals(MINUTE(0.5), 0);
+assertEquals(MINUTE(0.25), 0);
+assertEquals(MINUTE(0.125), 0);
+assertEquals(MINUTE(0.0625), 30);
+assertEquals(MINUTE(1.5), 0);
+assertEquals(MINUTE(99.5), 0);
+assertEquals(MINUTE("1969-7-6 5:05am"), 5);
+catchAndAssertEquals(function() {
+  MINUTE("8:10", 5);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  MINUTE();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  MINUTE("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  MINUTE(" ");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  MINUTE([]);
+}, ERRORS.REF_ERROR);
 
 
 // Test HOUR

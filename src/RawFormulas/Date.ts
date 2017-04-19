@@ -29,13 +29,13 @@ var DATE = function (...values) : ExcelDate {
   var month = Math.floor(TypeCaster.firstValueAsNumber(values[1])) - 1; // Months are between 0 and 11.
   var day = Math.floor(TypeCaster.firstValueAsNumber(values[2])) - 1; // Days are also zero-indexed.
   var m = moment.utc(ORIGIN_DATE).startOf("year")
-      .add(year < FIRST_YEAR ? year : year - FIRST_YEAR, 'years') // If the value is less than 1900, assume 1900 as start index for year
-      .add(month, 'months')
-      .add(day, 'days');
+    .add(year < FIRST_YEAR ? year : year - FIRST_YEAR, 'years') // If the value is less than 1900, assume 1900 as start index for year
+    .add(month, 'months')
+    .add(day, 'days');
   var excelDate = new ExcelDate(m);
   if (excelDate.toNumber() < 0) {
     throw new NumError("DATE evaluates to an out of range value " + excelDate.toNumber()
-        + ". It should be greater than or equal to 0.");
+      + ". It should be greater than or equal to 0.");
   }
   return excelDate;
 };
@@ -386,7 +386,7 @@ var DATEDIF = function (...values) : number {
 
   if (start.toNumber() > end.toNumber()) {
     throw new NumError("Function DATEDIF parameter 1 (" + start.toString() +
-        ") should be on or before Function DATEDIF parameter 2 (" + end.toString() + ").");
+      ") should be on or before Function DATEDIF parameter 2 (" + end.toString() + ").");
   }
 
   if (unitClean === "Y") {
@@ -428,7 +428,7 @@ var DATEDIF = function (...values) : number {
     return days >= 365 ? 0 : days;
   } else {
     throw new NumError("Function DATEDIF parameter 3 value is " + unit +
-        ". It should be one of: 'Y', 'M', 'D', 'MD', 'YM', 'YD'.");
+      ". It should be one of: 'Y', 'M', 'D', 'MD', 'YM', 'YD'.");
   }
 };
 
@@ -549,9 +549,28 @@ var TIMEVALUE = function (...values) : number {
   }
 };
 
+const MILLISECONDS_IN_DAY = 86400000;
+
+/**
+ * Returns the hour component of a specific time, in numeric format.
+ * @param values[0] time - The time from which to calculate the hour component. Must be a reference to a cell containing
+ * a date/time, a function returning a date/time type, or a number.
+ * @returns {number}
+ * @constructor
+ */
+var HOUR = function (...values) : number {
+  ArgsChecker.checkLength(values, 1);
+  var time = TypeCaster.firstValueAsTimestampNumber(values[0]);
+  if (time % 1 === 0) {
+    return 0;
+  }
+  var m = moment.utc([1900]).add(time * MILLISECONDS_IN_DAY, "milliseconds");
+  return m.hour();
+};
+
+
 
 // Functions unimplemented.
-var HOUR;
 var MINUTE;
 var NETWORKDAYS;
 var __COMPLEX_ITL = {
@@ -578,5 +597,6 @@ export {
   WEEKDAY,
   WEEKNUM,
   YEARFRAC,
-  TIMEVALUE
+  TIMEVALUE,
+  HOUR
 }

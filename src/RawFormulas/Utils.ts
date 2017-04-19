@@ -410,18 +410,25 @@ class TypeCaster {
    * @returns {number} representing time of day
    */
   static stringToTimeNumber(timeString: string) : number {
-    var m = moment.utc([FIRST_YEAR]).startOf("year");
-    m = matchTimestampAndMutateMoment(timeString, m);
+    var m;
+    try {
+      m = matchTimestampAndMutateMoment(timeString, moment.utc([FIRST_YEAR]).startOf("year"));
+    } catch (e) {
+      m = TypeCaster.parseStringToMoment(timeString);
+      if (m === undefined || !m.isValid()) {
+        throw new Error();
+      }
+    }
+    // If the parsing didn't work, try parsing as timestring alone
     return (3600 * m.hours() + 60 * m.minutes() + m.seconds()) / 86400;
   }
 
   /**
-   * Casts a string to an ExcelDate. Throws error if parsing not possible.
-   * @param dateString to parse
-   * @returns {ExcelDate} resulting date
+   * Parses a string returning a moment that is either valid, invalid or undefined.
+   * @param dateString to parse.
+   * @returns {moment}
    */
-  static stringToExcelDate(dateString : string) : ExcelDate {
-    // m will be set and valid or invalid, or will remain undefined
+  private static parseStringToMoment(dateString : string) : moment.Moment {
     var m;
 
     /**
@@ -460,10 +467,7 @@ class TypeCaster {
         var months = parseInt(matches[5]) - 1; // Months are zero indexed.
         var tmpMoment = createMoment(years, months, 0);
         if (matches[6] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment)
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0);
+          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
         }
         m = tmpMoment;
       }
@@ -482,10 +486,7 @@ class TypeCaster {
         var days = parseInt(matches[7]) - 1; // Days are zero indexed.
         var tmpMoment = createMoment(years, months, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment)
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0);
+          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
         }
         m = tmpMoment;
       }
@@ -500,10 +501,7 @@ class TypeCaster {
         var months = parseInt(matches[3]) - 1; // Months are zero indexed.
         var tmpMoment = createMoment(years, months, 0);
         if (matches[6] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment)
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0);
+          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
         }
         m = tmpMoment;
       }
@@ -522,10 +520,7 @@ class TypeCaster {
         var days = parseInt(matches[5]) - 1; // Days are zero indexed.
         var tmpMoment = createMoment(years, months, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment)
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0);
+          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
         }
         m = tmpMoment;
       }
@@ -540,10 +535,7 @@ class TypeCaster {
         var monthName = matches[3];
         var tmpMoment = createMoment(years, monthName, 0);
         if (matches[6] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment)
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0);
+          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
         }
         m = tmpMoment;
       }
@@ -562,10 +554,7 @@ class TypeCaster {
         var days = parseInt(matches[5]) - 1; // Days are zero indexed.
         var tmpMoment = createMoment(years, monthName, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment)
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0);
+          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
         }
         m = tmpMoment;
       }
@@ -586,10 +575,7 @@ class TypeCaster {
         }
         var tmpMoment = createMoment(years, monthName, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment)
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0);
+          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
         }
         m = tmpMoment;
       }
@@ -603,18 +589,26 @@ class TypeCaster {
         var monthName = matches[5];
         var tmpMoment = createMoment(years, monthName, 0);
         if (matches[6] !== undefined) {
-          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment)
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0);
+          tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
         }
         m = tmpMoment;
       }
     }
+    return m;
+  }
+
+  /**
+   * Casts a string to an ExcelDate. Throws error if parsing not possible.
+   * @param dateString to parse
+   * @returns {ExcelDate} resulting date
+   */
+  public static stringToExcelDate(dateString : string) : ExcelDate {
+    // m will be set and valid or invalid, or will remain undefined
+    var m = TypeCaster.parseStringToMoment(dateString);
     if (m === undefined || !m.isValid()) {
       throw new ValueError("DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
     }
-    return new ExcelDate(m);
+    return new ExcelDate(m.set('hours', 0).set('minutes', 0).set('seconds', 0));
   }
 
   /**
@@ -696,17 +690,20 @@ class TypeCaster {
    * @param value to convert
    * @returns {number} representing a time value
    */
-  static valueAsTimeNumber(value: any) : number {
+  static valueToTimestampNumber(value: any) : number {
     if (typeof value === "number") {
       return value;
     } else if (typeof value === "string") {
+      if (value == "") {
+        return 0;
+      }
       try {
         return TypeCaster.stringToTimeNumber(value)
       } catch (e) {
         if (TypeCaster.canCoerceToNumber(value)) {
           return TypeCaster.valueToNumber(value);
         }
-        throw new ValueError("___ expects date values. But '" + value + "' is a text and cannot be coerced to a time.")
+        throw new ValueError("___ expects number values. But '" + value + "' is a text and cannot be coerced to a number.")
       }
     } else if (typeof value === "boolean") {
       return value ? 1 : 0;
@@ -803,6 +800,16 @@ class TypeCaster {
       return TypeCaster.firstValueAsExcelDate(input[0], coerceBoolean);
     }
     return TypeCaster.valueToExcelDate(input, coerceBoolean);
+  }
+
+  static firstValueAsTimestampNumber(input : any) : number {
+    if (input instanceof Array) {
+      if (input.length === 0) {
+        throw new RefError("Reference does not exist.");
+      }
+      return TypeCaster.firstValueAsTimestampNumber(input[0]);
+    }
+    return TypeCaster.valueToTimestampNumber(input);
   }
 
   /**

@@ -122,7 +122,8 @@ import {
   WEEKDAY,
   WEEKNUM,
   YEARFRAC,
-  TIMEVALUE
+  TIMEVALUE,
+  HOUR
 } from "./Date"
 
 var ACCRINT = Formula["ACCRINT"];
@@ -248,5 +249,6 @@ export {
   WEEKDAY,
   WEEKNUM,
   DATEDIF,
-  TIMEVALUE
+  TIMEVALUE,
+  HOUR
 }

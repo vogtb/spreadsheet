@@ -13,7 +13,8 @@ import {
   WEEKDAY,
   WEEKNUM,
   YEARFRAC,
-  TIMEVALUE
+  TIMEVALUE,
+  HOUR
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
@@ -34,7 +35,63 @@ function catchAndAssertEquals(toExecute, expected) {
   }
 }
 
+
+// Test HOUR
+assertEquals(HOUR("8:10"), 8);
+assertEquals(HOUR("8am"), 8);
+assertEquals(HOUR("8:10pm"), 20);
+assertEquals(HOUR("8:10000pm"), 18);
+assertEquals(HOUR("28:10000"), 2);
+assertEquals(HOUR("14:23232:9999991"), 10);
+assertEquals(HOUR(["8:10"]), 8);
+assertEquals(HOUR("11:21222:2111pm"), 17);
+assertEquals(HOUR("11:21222:2111am"), 5);
+assertEquals(HOUR(""), 0);
+assertEquals(HOUR(0), 0);
+assertEquals(HOUR(1), 0);
+assertEquals(HOUR(false), 0);
+assertEquals(HOUR(true), 0);
+assertEquals(HOUR(0.8), 19);
+assertEquals(HOUR(0.5), 12);
+assertEquals(HOUR(0.25), 6);
+assertEquals(HOUR(0.125), 3);
+assertEquals(HOUR(0.0625), 1);
+assertEquals(HOUR(1.5), 12);
+assertEquals(HOUR(99.5), 12);
+assertEquals(HOUR("0.8"), 19);
+assertEquals(HOUR("0.5"), 12);
+assertEquals(HOUR("0.25"), 6);
+assertEquals(HOUR("0.125"), 3);
+assertEquals(HOUR("0.0625"), 1);
+assertEquals(HOUR("1969-7-6 5am"), 5);
+catchAndAssertEquals(function() {
+  HOUR("8:10", 5);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  HOUR();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  HOUR("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  HOUR(" ");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  HOUR([]);
+}, ERRORS.REF_ERROR);
+
+
 // Test TIMEVALUE
+assertEquals(TIMEVALUE("1969-7-6"), 0);
+assertEquals(TIMEVALUE("1969-7-6 8am"), 0.3333333333333333);
+assertEquals(TIMEVALUE("1969-7-28 8:10"), 0.3402777777777778);
+assertEquals(TIMEVALUE("2100-7-6 8:10pm"), 0.8402777777777778);
+assertEquals(TIMEVALUE("1999-1-1 8:10000pm"), 0.7777777777777778);
+assertEquals(TIMEVALUE("2012/1/1 28:10000"), 0.1111111111111111);
+assertEquals(TIMEVALUE("2012/1/1 14:23232:9999991"), 0.45730324074074075);
+assertEquals(TIMEVALUE(["2012/1/1 8:10"]), 0.3402777777777778);
+assertEquals(TIMEVALUE("2012/1/1 11:21222:2111pm"), 0.7202662037037038);
+assertEquals(TIMEVALUE("2012/1/1 11:21222:2111am"), 0.2202662037037037);
 assertEquals(TIMEVALUE("8am"), 0.3333333333333333);
 assertEquals(TIMEVALUE("8:10"), 0.3402777777777778);
 assertEquals(TIMEVALUE("8:10pm"), 0.8402777777777778);

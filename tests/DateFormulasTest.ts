@@ -15,7 +15,8 @@ import {
   YEARFRAC,
   TIMEVALUE,
   HOUR,
-  MINUTE
+  MINUTE,
+  SECOND
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
@@ -35,6 +36,38 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+
+// Test SECOND
+assertEquals(SECOND("8:10"), 0);
+assertEquals(SECOND("8:11"), 0);
+assertEquals(SECOND("8:44"), 0);
+assertEquals(SECOND("8:70"), 0);
+assertEquals(SECOND("8:120"), 0);
+assertEquals(SECOND("8:10:22"), 22);
+assertEquals(SECOND("8:11:12"), 12);
+assertEquals(SECOND("8:44:09"), 9);
+assertEquals(SECOND("8:70:02"), 2);
+assertEquals(SECOND("8:120:44"), 44);
+assertEquals(SECOND("8:120:104"), 44);
+assertEquals(SECOND("1992-1-1 8:120:104"), 44);
+assertEquals(SECOND(0.511111111111), 0);
+catchAndAssertEquals(function() {
+  SECOND("8:10", 5);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  SECOND();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  SECOND("str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  SECOND(" ");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  SECOND([]);
+}, ERRORS.REF_ERROR);
+
 
 // Test MINUTE
 assertEquals(MINUTE("8:10"), 10);

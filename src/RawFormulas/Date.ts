@@ -586,6 +586,23 @@ var MINUTE = function (...values) {
   return m.minute();
 };
 
+/**
+ * Returns the second component of a specific time, in numeric format.
+ * @param values[0] time - The time from which to calculate the second component. Must be a reference to a cell
+ * containing a date/time, a function returning a date/time type, or a number.
+ * @returns {number} second component of a specific time.
+ * @constructor
+ */
+var SECOND = function (...values) : number {
+  ArgsChecker.checkLength(values, 1);
+  var time = TypeCaster.firstValueAsTimestampNumber(values[0]);
+  if (time % 1 === 0) {
+    return 0;
+  }
+  var m = moment.utc([1900]).add(time * MILLISECONDS_IN_DAY, "milliseconds");
+  return m.second();
+};
+
 
 // Functions unimplemented.
 var NETWORKDAYS;
@@ -594,7 +611,6 @@ var __COMPLEX_ITL = {
   "WORKDAY.INTL": function () {}
 };
 var NOW;
-var SECOND;
 var TIME;
 var TODAY;
 var WORKDAY;
@@ -615,5 +631,6 @@ export {
   YEARFRAC,
   TIMEVALUE,
   HOUR,
-  MINUTE
+  MINUTE,
+  SECOND
 }

@@ -124,7 +124,8 @@ import {
   YEARFRAC,
   TIMEVALUE,
   HOUR,
-  MINUTE
+  MINUTE,
+  SECOND
 } from "./Date"
 
 var ACCRINT = Formula["ACCRINT"];
@@ -252,5 +253,6 @@ export {
   DATEDIF,
   TIMEVALUE,
   HOUR,
-  MINUTE
+  MINUTE,
+  SECOND
 }

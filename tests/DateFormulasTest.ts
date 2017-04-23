@@ -16,7 +16,8 @@ import {
   TIMEVALUE,
   HOUR,
   MINUTE,
-  SECOND
+  SECOND,
+  NETWORKDAYS
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
@@ -28,14 +29,64 @@ function catchAndAssertEquals(toExecute, expected) {
     toExecute();
     toThrow = true;
   } catch (actualError) {
-    if (actualError.name != expected) {
-      console.log(expected, "not equal to", actualError.name);
+    if (actualError.name !== expected) {
+      console.log("expected:", expected, " actual:", actualError.name);
+      console.trace();
     }
   }
   if (toThrow) {
     throw new Error("expected error: " + expected);
   }
 }
+
+// Test NETWORKDAYS
+assertEquals(NETWORKDAYS("1992-1-1", "1992-1-30"), 22);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-1"), 263);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-4"), 264);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-5"), 265);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-6"), 266);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-7"), 267);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-8"), 268);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-9"), 268);
+assertEquals(NETWORKDAYS("1992-1-1", "2000-4-24"), 2169);
+assertEquals(NETWORKDAYS("1992-1-1", false), -24003);
+assertEquals(NETWORKDAYS("2020-12-12", 0), -31555);
+assertEquals(NETWORKDAYS(12, 1423), 1008);
+assertEquals(NETWORKDAYS(12, 12), 1);
+assertEquals(NETWORKDAYS(DATE(1900, 1, 11), 12), 1);
+assertEquals(NETWORKDAYS(DATE(1998, 1, 1), DATE(1999, 1, 22)), 277);
+// Single holiday test
+assertEquals(NETWORKDAYS("1992-1-1", "1992-1-30", [DATEVALUE("1992-1-22")]), 21);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-1", [DATEVALUE("1992-6-19")]), 262);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-4", [DATEVALUE("1992-6-19")]), 263);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-5", [DATEVALUE("1992-6-19")]), 264);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-6", [DATEVALUE("1992-6-19")]), 265);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-7", [DATEVALUE("1992-6-19"), DATEVALUE("1992-6-18")]), 265);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-8", [DATEVALUE("1992-6-19")]), 267);
+assertEquals(NETWORKDAYS("1992-1-1", "1993-1-9", [DATEVALUE("1992-6-19")]), 267);
+assertEquals(NETWORKDAYS("1992-1-1", "2000-4-24", [DATEVALUE("1992-6-19")]), 2168);
+assertEquals(NETWORKDAYS("1992-1-1", false, [DATEVALUE("1991-6-19")]), -24002);
+assertEquals(NETWORKDAYS("2020-12-12", 0, [DATEVALUE("1992-6-19")]), -31554);
+assertEquals(NETWORKDAYS(12, 1423, [22]), 1008);// weekend and holdiay overlapping
+assertEquals(NETWORKDAYS(12, 1423, [20]), 1007);
+assertEquals(NETWORKDAYS(12, 12, [12]), 0);
+assertEquals(NETWORKDAYS(DATE(1998, 1, 1), DATE(1999, 1, 22), [DATE(1999, 1, 20)]), 276);
+catchAndAssertEquals(function() {
+  NETWORKDAYS(12, 12, [12], false);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  NETWORKDAYS(12);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  NETWORKDAYS("1992-1-1", "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  NETWORKDAYS(12, 12, ["1992-11-1"]);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  NETWORKDAYS("1992-1-1", "1992-1-1", []);
+}, ERRORS.REF_ERROR);
+
 
 
 // Test SECOND

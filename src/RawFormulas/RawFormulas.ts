@@ -125,7 +125,8 @@ import {
   TIMEVALUE,
   HOUR,
   MINUTE,
-  SECOND
+  SECOND,
+  NETWORKDAYS
 } from "./Date"
 
 var ACCRINT = Formula["ACCRINT"];
@@ -254,5 +255,6 @@ export {
   TIMEVALUE,
   HOUR,
   MINUTE,
-  SECOND
+  SECOND,
+  NETWORKDAYS
 }

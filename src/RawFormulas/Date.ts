@@ -1,12 +1,13 @@
 /// <reference path="../../node_modules/moment/moment.d.ts"/>
 import * as moment from "moment";
-import * as Formula from "formulajs"
 import {
   ArgsChecker,
   TypeCaster
 } from "./Utils";
 import {
-  NumError, ValueError
+  NumError,
+  ValueError,
+  RefError
 } from "../Errors";
 import {
   ExcelDate,
@@ -604,8 +605,69 @@ var SECOND = function (...values) : number {
 };
 
 
+/**
+ * Returns the number of net working days between two provided days.
+ * @param values[0] start_date - The start date of the period from which to calculate the number of net working days.
+ * @param values[1] end_date - The end date of the period from which to calculate the number of net working days.
+ * @param values[1] holidays - [ OPTIONAL ] - A range or array constant containing the date serial numbers to consider
+ * holidays. The values provided within an array for holidays must be date serial number values, as returned by N or
+ * date values, as returned by DATE, DATEVALUE or TO_DATE. Values specified by a range should be standard date values or
+ * date serial numbers.
+ * @returns {number} the number of net working days between two provided dates.
+ * @constructor
+ */
+var NETWORKDAYS = function (...values) : number {
+  ArgsChecker.checkLengthWithin(values, 2, 3);
+  var start = TypeCaster.firstValueAsExcelDate(values[0], true);
+  var end = TypeCaster.firstValueAsExcelDate(values[1], true);
+  var hasHolidays = values.length === 3;
+  var holidays = [];
+  if (hasHolidays) {
+    if (values[2].length === 0) {
+      throw new RefError("Reference does not exist.");
+    }
+    for (var holidayDateValue of values[2]) {
+      if (holidayDateValue instanceof ExcelDate) {
+        holidays.push(holidayDateValue.toNumber());
+      } else if (typeof holidayDateValue === "number") {
+        holidays.push(holidayDateValue);
+      } else {
+        throw new ValueError("NETWORKDAYS expects number values. But '"+holidayDateValue+"' is a " +
+            (typeof holidayDateValue) + " and cannot be coerced to a number.")
+      }
+    }
+  }
+  // Handle cases in which the start date is not before the end date.
+  var didSwap = start.toNumber() > end.toNumber();
+  if (didSwap) {
+    var swap = end;
+    end = start;
+    start = swap;
+  }
+
+  var c = moment.utc(start.toMoment());
+  var weekendDays = [6, 0]; // Default weekend_days.
+  var days = end.toNumber() - start.toNumber() + 1;
+  var networkDays = days;
+  var j = 0;
+  while (j < days) {
+    if (weekendDays.indexOf(c.day()) >= 0) {
+      networkDays--;
+    } else if (hasHolidays && holidays.indexOf(new ExcelDate(c).toNumber()) > -1) {
+      networkDays--;
+    }
+    c.add(1, 'days');
+    j++;
+  }
+  // If the we swapped the start and end date, the result should be a negative number of network days.
+  if (didSwap) {
+    return networkDays * -1;
+  }
+  return networkDays;
+};
+
+
 // Functions unimplemented.
-var NETWORKDAYS;
 var __COMPLEX_ITL = {
   "NETWORKDAYS.ITL": function () {},
   "WORKDAY.INTL": function () {}
@@ -632,5 +694,6 @@ export {
   TIMEVALUE,
   HOUR,
   MINUTE,
-  SECOND
+  SECOND,
+  NETWORKDAYS
 }

@@ -9,7 +9,7 @@ import {
 function assertEquals(actual, expected) {
   if (actual instanceof ExcelDate && expected instanceof ExcelDate) {
     if (!actual.equals(expected)) {
-      console.log("expected:", expected, " actual:", actual);
+      console.log("expected:", expected.toString(), " actual:", actual.toString());
       console.trace();
     }
   } else {
@@ -28,12 +28,12 @@ function assertEquals(actual, expected) {
 function assertArrayEquals(actual: Array<any>, expected: Array<any>, ) {
   if (expected.length != actual.length) {
     console.log("expected: ", expected, " actual:", actual);
-    throw Error();
+    console.trace();
   }
   for (var index in expected) {
     if (expected[index] != actual[index]) {
       console.log("expected: ", expected, " actual:", actual);
-      throw Error();
+      console.trace();
     }
   }
 }

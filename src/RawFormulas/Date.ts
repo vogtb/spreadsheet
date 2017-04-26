@@ -24,12 +24,12 @@ import {
  */
 var DATE = function (...values) : ExcelDate {
   const FIRST_YEAR = 1900;
-  const ORIGIN_DATE = moment.utc([FIRST_YEAR]).startOf("year");
   ArgsChecker.checkLength(values, 3);
   var year = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0]))); // No negative values for year
   var month = Math.floor(TypeCaster.firstValueAsNumber(values[1])) - 1; // Months are between 0 and 11.
   var day = Math.floor(TypeCaster.firstValueAsNumber(values[2])) - 1; // Days are also zero-indexed.
-  var m = moment.utc(ORIGIN_DATE).startOf("year")
+  var m = moment.utc(ORIGIN_MOMENT)
+    .add(2, "days")
     .add(year < FIRST_YEAR ? year : year - FIRST_YEAR, 'years') // If the value is less than 1900, assume 1900 as start index for year
     .add(month, 'months')
     .add(day, 'days');
@@ -80,7 +80,7 @@ var EDATE = function (...values) : ExcelDate {
   var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
   // exclusive count of days.
-  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber() - 2, "days").add(months, "months"));
+  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber(), "days").add(months, "months"));
 };
 
 
@@ -102,7 +102,7 @@ var EOMONTH = function (...values) : ExcelDate {
   var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
   // exclusive count of days.
-  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber() - 2, "days").add(months, "months").endOf("month"));
+  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber(), "days").add(months, "months").endOf("month"));
 };
 
 
@@ -767,10 +767,13 @@ var NETWORKDAYS$INTL = function (...values) : number {
   return networkDays;
 };
 
+var NOW = function () {
+  ArgsChecker.checkLength(arguments.length, 0);
+};
+
 
 // Functions unimplemented.
 var WORKDAY$INTL;
-var NOW;
 var TIME;
 var TODAY;
 var WORKDAY;

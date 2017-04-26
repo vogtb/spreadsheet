@@ -822,19 +822,19 @@ class TypeCaster {
     if (value instanceof ExcelDate) {
       return value;
     } else if (typeof value === "number") {
-      return new ExcelDate(value);
+      return ExcelDate.fromDay(value);
     } else if (typeof value === "string") {
       try {
         return TypeCaster.stringToExcelDate(value)
       } catch (e) {
         if (TypeCaster.canCoerceToNumber(value)) {
-          return new ExcelDate(TypeCaster.valueToNumber(value));
+          return ExcelDate.fromDay(TypeCaster.valueToNumber(value));
         }
         throw new ValueError("___ expects date values. But '" + value + "' is a text and cannot be coerced to a date.")
       }
     } else if (typeof value === "boolean") {
       if (coerceBoolean) {
-        return new ExcelDate(value ? 1 : 0);
+        return ExcelDate.fromDay(value ? 1 : 0);
       }
       throw new ValueError("___ expects date values. But '" + value + "' is a boolean and cannot be coerced to a date.")
     }

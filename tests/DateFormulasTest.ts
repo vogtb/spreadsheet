@@ -77,7 +77,15 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   NETWORKDAYS$INTL("1992-1-1", "1992-1-1", []);
 }, ERRORS.REF_ERROR);
-
+catchAndAssertEquals(function() {
+  NETWORKDAYS$INTL("1992-1-1", "1994-1-1", "000");
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  NETWORKDAYS$INTL("1992-1-1", "1994-1-1", 9);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  NETWORKDAYS$INTL("1992-1-1", "1994-1-1", false);
+}, ERRORS.VALUE_ERROR);
 
 
 // Test NETWORKDAYS

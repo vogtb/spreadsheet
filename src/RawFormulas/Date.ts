@@ -693,7 +693,8 @@ var NETWORKDAYS$INTL = function (...values) : number {
     var weekend = TypeCaster.firstValue(values[2]);
     if (typeof weekend === "string") {
       if (!/^[0-1]{6,}$/.test(weekend)) {
-        // TODO: throw error, it doesn't match
+        throw new NumError("Function NETWORKDAYS.INTL parameter 3 requires a number in the format '0000011'. "
+            + "Actual value is '" + weekend + "'");
       }
       var ws = weekend.split("");
       for (var i = 0; i < ws.length; i++) {
@@ -713,11 +714,12 @@ var NETWORKDAYS$INTL = function (...values) : number {
           weekendDays = [weekend - 10];
           break;
         default:
-          // TODO throw error, not a recognized number.
-          break;
+          throw new NumError("Function NETWORKDAYS.INTL parameter 3 requires a number in the range 1-7 or 11-17. "
+              + "Actual number is " + weekend + ".");
       }
     } else {
-      // TODO: Throw error.
+      throw new ValueError("Function NETWORKDAYS.INTL parameter 4 expects number values. But '" + weekend
+          + "' cannot be coerced to a number.")
     }
   } else {
     weekendDays = [1, 6];

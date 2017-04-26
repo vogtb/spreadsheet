@@ -126,7 +126,8 @@ import {
   HOUR,
   MINUTE,
   SECOND,
-  NETWORKDAYS
+  NETWORKDAYS,
+  NETWORKDAYS$INTL
 } from "./Date"
 
 var ACCRINT = Formula["ACCRINT"];
@@ -256,5 +257,6 @@ export {
   HOUR,
   MINUTE,
   SECOND,
-  NETWORKDAYS
+  NETWORKDAYS,
+  NETWORKDAYS$INTL
 }

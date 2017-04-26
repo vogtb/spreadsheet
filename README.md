@@ -44,6 +44,9 @@ Right now we're just using the number of days since 1900, but we should check th
 
 ### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
 
+### Scrape jsdocs from functions, put in simple index.html, doc.md files to serve up simple documentation
+
+### Numbers with commas in them should still parse to numbers.
 
 
 ## Testing Guidelines

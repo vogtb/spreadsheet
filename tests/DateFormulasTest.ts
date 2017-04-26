@@ -17,7 +17,8 @@ import {
   HOUR,
   MINUTE,
   SECOND,
-  NETWORKDAYS
+  NETWORKDAYS,
+  NETWORKDAYS$INTL
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals} from "./utils/Asserts"
@@ -38,6 +39,58 @@ function catchAndAssertEquals(toExecute, expected) {
     throw new Error("expected error: " + expected);
   }
 }
+
+// Test NETWORKDAYS$INTL
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-1-30"), 22);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-1"), 263);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-4"), 264);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-5"), 265);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-6"), 266);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-7"), 267);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-8"), 268);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-9"), 268);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-1-30", "0000011"), 22);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-1", "0000011"), 263);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-4", "0000011"), 264);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-5", "0000011"), 265);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-6", "0000011"), 266);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-7", "0000011"), 267);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-8", "0000011"), 268);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-9", "0000011"), 268);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-1-30", 1), 22);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-1", 1), 263);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-4", 1), 264);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-5", 1), 265);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-6", 1), 266);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-7", 1), 267);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-8", 1), 268);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-1-9", 1), 268);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-1-6", "1110011"), 2);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-1-14", "1110011"), 4);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-1-30", "1110011"), 9);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-1-30", "0001110"), 17);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-2-22", "0001110"), 29);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1993-2-22", "0001110"), 239);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-2-22", "0000110"), 37);
+assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-2-22", 1, [DATE(1992, 1, 10), DATE(1992, 1, 11), DATE(1992, 1, 12), DATE(1992, 1, 13), DATE(1992, 1, 14)]), 35);
+assertEquals(NETWORKDAYS$INTL(["1992-1-1"], ["1992-1-30"], ["0000011"]), 22);
+catchAndAssertEquals(function() {
+  NETWORKDAYS$INTL(12, 12, [12], false, 1);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  NETWORKDAYS$INTL(12);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  NETWORKDAYS$INTL("1992-1-1", "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  NETWORKDAYS$INTL(12, 12, 1, ["1992-11-1"]);
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  NETWORKDAYS$INTL("1992-1-1", "1992-1-1", []);
+}, ERRORS.REF_ERROR);
+
+
 
 // Test NETWORKDAYS
 assertEquals(NETWORKDAYS("1992-1-1", "1992-1-30"), 22);

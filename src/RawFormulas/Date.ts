@@ -632,7 +632,7 @@ var NETWORKDAYS = function (...values) : number {
       } else if (typeof holidayDateValue === "number") {
         holidays.push(holidayDateValue);
       } else {
-        throw new ValueError("NETWORKDAYS expects number values. But '"+holidayDateValue+"' is a " +
+        throw new ValueError("NETWORKDAYS expects number values. But '" + holidayDateValue + "' is a " +
             (typeof holidayDateValue) + " and cannot be coerced to a number.")
       }
     }
@@ -666,12 +666,110 @@ var NETWORKDAYS = function (...values) : number {
   return networkDays;
 };
 
+/**
+ * Returns the number of networking days between two provided days excluding specified weekend days and holidays.
+ * @param values[0] start_date - The start date of the period from which to calculate the number of net working days.
+ * @param values[1] end_date - The end date of the period from which to calculate the number of net working days.
+ * @param values[2] weekend - [ OPTIONAL - 1 by default ] - A number or string representing which days of the week are
+ * considered weekends. String method: weekends can be specified using seven 0’s and 1’s, where the first number in the
+ * set represents Monday and the last number is for Sunday. A zero means that the day is a work day, a 1 means that the
+ * day is a weekend. For example, “0000011” would mean Saturday and Sunday are weekends. Number method: instead of using
+ * the string method above, a single number can be used. 1 = Saturday/Sunday are weekends, 2 = Sunday/Monday, and this
+ * pattern repeats until 7 = Friday/Saturday. 11 = Sunday is the only weekend, 12 = Monday is the only weekend, and this
+ * pattern repeats until 17 = Saturday is the only weekend.
+ * @param values[3] holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider as holidays.
+ * The values provided within an array for holidays must be date serial number values, as returned by N or date values,
+ * as returned by DATE, DATEVALUE or TO_DATE. Values specified by a range should be standard date values or date serial
+ * numbers.
+ * @returns {number} of networking days between two provided days
+ * @constructor
+ */
+var NETWORKDAYS$INTL = function (...values) : number {
+  ArgsChecker.checkLengthWithin(values, 2, 4);
+  var start = TypeCaster.firstValueAsExcelDate(values[0], true);
+  var end = TypeCaster.firstValueAsExcelDate(values[1], true);
+  var weekendDays = [];
+  if (values.length >= 3) {
+    var weekend = TypeCaster.firstValue(values[2]);
+    if (typeof weekend === "string") {
+      if (!/^[0-1]{6,}$/.test(weekend)) {
+        // TODO: throw error, it doesn't match
+      }
+      var ws = weekend.split("");
+      for (var i = 0; i < ws.length; i++) {
+        if (ws[i] === "1") {
+          weekendDays.push(i === 6 ? 0 : i + 1);
+        }
+      }
+    } else if (typeof weekend === "number") {
+      switch (weekend) {
+        case 1:
+          weekendDays = [0, 6];
+          break;
+        case 2 || 3 || 4 || 5 || 6 || 7:
+          weekendDays = [weekend, weekend - 1];
+          break;
+        case 11 || 12 || 13 || 14 || 15 || 16 || 17:
+          weekendDays = [weekend - 10];
+          break;
+        default:
+          // TODO throw error, not a recognized number.
+          break;
+      }
+    } else {
+      // TODO: Throw error.
+    }
+  } else {
+    weekendDays = [1, 6];
+  }
+  var hasHolidays = values.length === 4;
+  var holidays = [];
+  if (hasHolidays) {
+    if (values[3].length === 0) {
+      throw new RefError("Reference does not exist.");
+    }
+    for (var holidayDateValue of values[3]) {
+      if (holidayDateValue instanceof ExcelDate) {
+        holidays.push(holidayDateValue.toNumber());
+      } else if (typeof holidayDateValue === "number") {
+        holidays.push(holidayDateValue);
+      } else {
+        throw new ValueError("NETWORKDAYS.INTL expects number values. But '" + holidayDateValue + "' is a " +
+          (typeof holidayDateValue) + " and cannot be coerced to a number.")
+      }
+    }
+  }
+  // Handle cases in which the start date is not before the end date.
+  var didSwap = start.toNumber() > end.toNumber();
+  if (didSwap) {
+    var swap = end;
+    end = start;
+    start = swap;
+  }
+
+  var c = moment.utc(start.toMoment());
+  var days = end.toNumber() - start.toNumber() + 1;
+  var networkDays = days;
+  var j = 0;
+  while (j < days) {
+    if (weekendDays.indexOf(c.day()) >= 0) {
+      networkDays--;
+    } else if (hasHolidays && holidays.indexOf(new ExcelDate(c).toNumber()) > -1) {
+      networkDays--;
+    }
+    c.add(1, 'days');
+    j++;
+  }
+  // If the we swapped the start and end date, the result should be a negative number of network days.
+  if (didSwap) {
+    return networkDays * -1;
+  }
+  return networkDays;
+};
+
 
 // Functions unimplemented.
-var __COMPLEX_ITL = {
-  "NETWORKDAYS.ITL": function () {},
-  "WORKDAY.INTL": function () {}
-};
+var WORKDAY$INTL;
 var NOW;
 var TIME;
 var TODAY;
@@ -695,5 +793,6 @@ export {
   HOUR,
   MINUTE,
   SECOND,
-  NETWORKDAYS
+  NETWORKDAYS,
+  NETWORKDAYS$INTL
 }

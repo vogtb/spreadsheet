@@ -21,25 +21,12 @@ import {
   NETWORKDAYS$INTL
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
-import {assertEquals} from "./utils/Asserts"
+import {
+  assertEquals,
+  catchAndAssertEquals
+} from "./utils/Asserts"
 import moment = require("moment");
 
-function catchAndAssertEquals(toExecute, expected) {
-  var toThrow = null;
-  try {
-    toExecute();
-    toThrow = true;
-  } catch (actualError) {
-    if (actualError.name !== expected) {
-      console.log("expected:", expected, " actual:", actualError.name);
-      console.trace();
-    }
-  }
-  if (toThrow) {
-    console.log("expected error: " + expected);
-    console.trace();
-  }
-}
 
 // Test NETWORKDAYS$INTL
 assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-1-30"), 22);

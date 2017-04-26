@@ -24,9 +24,9 @@ import {
  */
 var DATE = function (...values) : ExcelDate {
   const FIRST_YEAR = 1900;
-  ArgsChecker.checkLength(values, 3);
   var year = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0]))); // No negative values for year
   var month = Math.floor(TypeCaster.firstValueAsNumber(values[1])) - 1; // Months are between 0 and 11.
+  ArgsChecker.checkLength(values, 3);
   var day = Math.floor(TypeCaster.firstValueAsNumber(values[2])) - 1; // Days are also zero-indexed.
   var m = moment.utc(ORIGIN_MOMENT)
     .add(2, "days")
@@ -767,8 +767,14 @@ var NETWORKDAYS$INTL = function (...values) : number {
   return networkDays;
 };
 
-var NOW = function () {
-  ArgsChecker.checkLength(arguments.length, 0);
+/**
+ * Returns the current date and time as a date value.
+ * @returns {ExcelDate} representing the current date and time.
+ * @constructor
+ */
+var NOW = function (...values) : ExcelDate {
+  ArgsChecker.checkLength(values, 0);
+  return new ExcelDate(moment());
 };
 
 
@@ -797,5 +803,6 @@ export {
   MINUTE,
   SECOND,
   NETWORKDAYS,
-  NETWORKDAYS$INTL
+  NETWORKDAYS$INTL,
+  NOW
 }

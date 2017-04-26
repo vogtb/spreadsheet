@@ -38,7 +38,30 @@ function assertArrayEquals(actual: Array<any>, expected: Array<any>, ) {
   }
 }
 
+/**
+ * Catch exceptions, check their name for an expected value
+ * @param toExecute function to execute
+ * @param expected error message
+ */
+function catchAndAssertEquals(toExecute : Function, expected) {
+  var toThrow = null;
+  try {
+    toExecute();
+    toThrow = true;
+  } catch (actualError) {
+    if (actualError.name !== expected) {
+      console.log("expected:", expected, " actual:", actualError.name);
+      console.trace();
+    }
+  }
+  if (toThrow) {
+    console.log("expected error: " + expected);
+    console.trace();
+  }
+}
+
 export {
   assertEquals,
-  assertArrayEquals
+  assertArrayEquals,
+  catchAndAssertEquals
 }

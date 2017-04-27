@@ -24,9 +24,9 @@ import {
  */
 var DATE = function (...values) : ExcelDate {
   const FIRST_YEAR = 1900;
+  ArgsChecker.checkLength(values, 3);
   var year = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0]))); // No negative values for year
   var month = Math.floor(TypeCaster.firstValueAsNumber(values[1])) - 1; // Months are between 0 and 11.
-  ArgsChecker.checkLength(values, 3);
   var day = Math.floor(TypeCaster.firstValueAsNumber(values[2])) - 1; // Days are also zero-indexed.
   var m = moment.utc(ORIGIN_MOMENT)
     .add(2, "days")
@@ -790,9 +790,16 @@ var TODAY = function (...values) {
 };
 
 
+var TIME = function (...values) {
+  ArgsChecker.checkLength(values, 3);
+  var hours = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0])));
+  var minutes = Math.floor(TypeCaster.firstValueAsNumber(values[1])) - 1;
+  var seconds = Math.floor(TypeCaster.firstValueAsNumber(values[2])) - 1;
+};
+
+
 // Functions unimplemented.
 var WORKDAY$INTL;
-var TIME;
 var WORKDAY;
 
 export {

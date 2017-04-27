@@ -35,7 +35,7 @@ Listing them inside RawFormulas.ts is unwieldy.
 Pass name of calling formula into all functions that throw user-facing errors, or have some sort of error mapper.
 
 ### Dates have special types
-Like dollars, dates are special types, but can be compared as if they're primatives. For example, this statement is
+Like dollars, dates are special types, but can be compared as if they're primitives. For example, this statement is
 valid inside a cell: `=DATE(1992, 6, 6) > =DATE(1992, 6, 10)`. We should check types and and have Date-to-number
 conversion inside parser.js.
 

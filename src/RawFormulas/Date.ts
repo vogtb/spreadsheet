@@ -779,11 +779,20 @@ var NOW = function (...values) : ExcelDate {
   return new ExcelDate(moment());
 };
 
+/**
+ * Returns the current date as a date value.
+ * @returns {ExcelDate} today
+ * @constructor
+ */
+var TODAY = function (...values) {
+  ArgsChecker.checkLength(values, 0);
+  return new ExcelDate(moment().startOf("day"));
+};
+
 
 // Functions unimplemented.
 var WORKDAY$INTL;
 var TIME;
-var TODAY;
 var WORKDAY;
 
 export {
@@ -806,5 +815,6 @@ export {
   SECOND,
   NETWORKDAYS,
   NETWORKDAYS$INTL,
-  NOW
+  NOW,
+  TODAY
 }

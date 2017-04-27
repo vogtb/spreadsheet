@@ -13,6 +13,9 @@ import {
   ExcelDate,
   ORIGIN_MOMENT
 } from "../ExcelDate";
+import {
+  ExcelTime
+} from "../ExcelTime";
 
 /**
  * Converts a provided year, month, and day into a date.
@@ -790,11 +793,18 @@ var TODAY = function (...values) {
 };
 
 
-var TIME = function (...values) {
+/**
+ *
+ * @param values
+ * @returns {ExcelTime}
+ * @constructor
+ */
+var TIME = function (...values) : ExcelTime {
   ArgsChecker.checkLength(values, 3);
   var hours = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0])));
   var minutes = Math.floor(TypeCaster.firstValueAsNumber(values[1])) - 1;
   var seconds = Math.floor(TypeCaster.firstValueAsNumber(values[2])) - 1;
+  return new ExcelTime(hours, minutes, seconds);
 };
 
 

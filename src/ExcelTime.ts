@@ -43,3 +43,7 @@ class ExcelTime {
   }
 
 }
+
+export {
+  ExcelTime
+}

@@ -794,17 +794,24 @@ var TODAY = function (...values) {
 
 
 /**
- *
- * @param values
- * @returns {ExcelTime}
+ * Converts a provided hour, minute, and second into a time. Will silently recalculate numeric time values which fall
+ * outside of valid ranges. Eg: TIME(24, 0, 0) is the same as TIME(0, 0, 0).
+ * @param values[0] hour - The hour component of the time.
+ * @param values[1] minute - The minute component of the time.
+ * @param values[2] second - The second component of the time.
+ * @returns {ExcelTime} time
  * @constructor
  */
 var TIME = function (...values) : ExcelTime {
   ArgsChecker.checkLength(values, 3);
-  var hours = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0])));
-  var minutes = Math.floor(TypeCaster.firstValueAsNumber(values[1])) - 1;
-  var seconds = Math.floor(TypeCaster.firstValueAsNumber(values[2])) - 1;
-  return new ExcelTime(hours, minutes, seconds);
+  var hours = Math.floor(TypeCaster.firstValueAsNumber(values[0]));
+  var minutes = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+  var seconds = Math.floor(TypeCaster.firstValueAsNumber(values[2]));
+  var e = new ExcelTime(hours, minutes, seconds);
+  if (e.toNumber() < 0) {
+    throw new NumError("TIME evaluates to an out of range value -1.201273148. It should be greater than or equal to 0.");
+  }
+  return e;
 };
 
 
@@ -833,5 +840,6 @@ export {
   NETWORKDAYS,
   NETWORKDAYS$INTL,
   NOW,
-  TODAY
+  TODAY,
+  TIME
 }

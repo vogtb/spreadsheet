@@ -13,7 +13,8 @@ class ExcelTime {
    * @param seconds in this timestamp.
    */
   constructor(hours: number, minutes: number, seconds: number) {
-    this.fractionOfDay = (((hours % 24) * 60* 60) + ((minutes % 60) * 60) + (seconds % 60)) / 86400;
+    var v = (((hours % 24) * 60 * 60) + ((minutes) * 60) + (seconds)) / 86400;
+    this.fractionOfDay = v % 1;
   }
 
 

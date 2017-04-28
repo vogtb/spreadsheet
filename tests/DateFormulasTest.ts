@@ -18,7 +18,8 @@ import {
   MINUTE,
   SECOND,
   NETWORKDAYS,
-  NETWORKDAYS$INTL
+  NETWORKDAYS$INTL,
+  TIME
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {
@@ -26,6 +27,37 @@ import {
   catchAndAssertEquals
 } from "./utils/Asserts"
 import moment = require("moment");
+
+// Test TIME
+assertEquals(TIME(10, 10, 10).toNumber(), 0.4237268518518518);
+assertEquals(TIME(34, 10, 10).toNumber(), 0.4237268518518518);
+assertEquals(TIME(29, 10, 10).toNumber(), 0.2153935185185185);
+assertEquals(TIME(13, 9, 6).toNumber(), 0.5479861111111111);
+assertEquals(TIME(3, 1, 14).toNumber(), 0.12585648148148149);
+assertEquals(TIME(0, 0, 0).toNumber(), 0);
+assertEquals(TIME(24, 0, 0).toNumber(), 0);
+assertEquals(TIME(23, 60, 0).toNumber(), 0);
+assertEquals(TIME(23, 59, 60).toNumber(), 0);
+assertEquals(TIME(18, 0, 0).toNumber(), 0.75);
+assertEquals(TIME(12, 0, 0).toNumber(), 0.5);
+assertEquals(TIME(6, 0, 0).toNumber(), 0.25);
+assertEquals(TIME(3, 0, 0).toNumber(), 0.125);
+assertEquals(TIME("3", ["0"], false).toNumber(), 0.125);
+catchAndAssertEquals(function() {
+  TIME();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  TIME(1, 1);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  TIME(1, 1, 1, 1);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  TIME(-29, 10, 10);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  TIME(1, 1, []);
+}, ERRORS.REF_ERROR);
 
 
 // Test NETWORKDAYS$INTL

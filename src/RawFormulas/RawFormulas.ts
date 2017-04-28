@@ -129,7 +129,8 @@ import {
   NETWORKDAYS,
   NETWORKDAYS$INTL,
   NOW,
-  TODAY
+  TODAY,
+  TIME
 } from "./Date"
 
 var ACCRINT = Formula["ACCRINT"];
@@ -262,5 +263,6 @@ export {
   NETWORKDAYS,
   NETWORKDAYS$INTL,
   NOW,
-  TODAY
+  TODAY,
+  TIME
 }

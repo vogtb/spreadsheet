@@ -18,12 +18,12 @@ import {
   MAXA,
   MIN,
   MINA
-} from "../src/Formulas/Statistical";
-import * as ERRORS from "../src/Errors"
+} from "../../src/Formulas/Statistical";
+import * as ERRORS from "../../src/Errors";
 import {
   assertEquals,
   catchAndAssertEquals
-} from "./utils/Asserts";
+} from "../utils/Asserts";
 
 
 // Test AVEDEV

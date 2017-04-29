@@ -50,12 +50,12 @@ import {
   RADIANS,
   DEGREES,
   COMBIN
-} from "../src/Formulas/Math";
-import * as ERRORS from "../src/Errors"
+} from "../../src/Formulas/Math";
+import * as ERRORS from "../../src/Errors";
 import {
   assertEquals,
   catchAndAssertEquals
-} from "./utils/Asserts";
+} from "../utils/Asserts";
 
 
 // Test ABS

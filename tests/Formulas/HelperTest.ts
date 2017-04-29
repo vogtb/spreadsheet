@@ -1,5 +1,5 @@
-import { Helpers } from "../src/Helpers";
-import {assertEquals,} from "./utils/Asserts"
+import { Helpers } from "../../src/Helpers";
+import { assertEquals } from "../utils/Asserts"
 
 // Test Helpers.number
 assertEquals(-1, Helpers.number("-1"));

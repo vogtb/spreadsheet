@@ -6,12 +6,12 @@ import {
   DEC2HEX,
   DEC2OCT,
   DELTA
-} from "../src/Formulas/Engineering";
-import * as ERRORS from "../src/Errors"
+} from "../../src/Formulas/Engineering";
+import * as ERRORS from "../../src/Errors";
 import {
   assertEquals,
   catchAndAssertEquals
-} from "./utils/Asserts"
+} from "../utils/Asserts"
 
 
 // Test BIN2DEC

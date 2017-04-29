@@ -2,12 +2,12 @@ import {
   NOW,
   DATEVALUE,
   TODAY
-} from "../src/Formulas/Date"
-import * as ERRORS from "../src/Errors"
+} from "../../src/Formulas/Date"
+import * as ERRORS from "../../src/Errors";
 import {
   assertEquals,
   catchAndAssertEquals
-} from "./utils/Asserts"
+} from "../utils/Asserts"
 
 
 // WARNING: Locking in Date by overriding prototypes.

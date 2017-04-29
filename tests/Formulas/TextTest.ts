@@ -5,13 +5,13 @@ import {
   CONCATENATE,
   SPLIT,
   CONVERT
-} from "../src/Formulas/Text";
-import * as ERRORS from "../src/Errors";
+} from "../../src/Formulas/Text";
+import * as ERRORS from "../../src/Errors";
 import {
   assertEquals,
   assertArrayEquals,
   catchAndAssertEquals
-} from "./utils/Asserts";
+} from "../utils/Asserts";
 
 
 // Test SPLIT

@@ -6,12 +6,12 @@ import {
   NOT,
   OR,
   XOR
-} from "../src/Formulas/Logical";
-import * as ERRORS from "../src/Errors"
+} from "../../src/Formulas/Logical";
+import * as ERRORS from "../../src/Errors";
 import {
   assertEquals,
   catchAndAssertEquals
-} from "./utils/Asserts";
+} from "../utils/Asserts";
 
 
 // Test AND

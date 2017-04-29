@@ -22,12 +22,12 @@ import {
   TIME,
   WORKDAY,
   WORKDAY$INTL
-} from "../src/Formulas/Date"
-import * as ERRORS from "../src/Errors"
+} from "../../src/Formulas/Date"
+import * as ERRORS from "../../src/Errors";
 import {
   assertEquals,
   catchAndAssertEquals
-} from "./utils/Asserts"
+} from "../utils/Asserts"
 
 
 // Test WORKDAY.INTL

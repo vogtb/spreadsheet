@@ -8,18 +8,18 @@ import {
   DOLLARDE,
   DOLLARFR,
   EFFECT
-} from "../src/Formulas/Financial";
+} from "../../src/Formulas/Financial";
 import {
   DATE
-} from "../src/Formulas/Date";
+} from "../../src/Formulas/Date";
 import {
   PI
-} from "../src/Formulas/Math";
-import * as ERRORS from "../src/Errors"
+} from "../../src/Formulas/Math";
+import * as ERRORS from "../../src/Errors";
 import {
   assertEquals,
   catchAndAssertEquals
-} from "./utils/Asserts";
+} from "../utils/Asserts";
 
 // Test ACCRINT
 assertEquals(ACCRINT(DATE(2000, 1, 1), DATE(2000, 2, 1), DATE(2002, 12, 31), 0.05, 100, 4), 14.98631386861314);

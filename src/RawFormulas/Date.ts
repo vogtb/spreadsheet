@@ -725,7 +725,9 @@ var NETWORKDAYS$INTL = function (...values) : number {
           + "' cannot be coerced to a number.")
     }
   } else {
-    weekendDays = [1, 6];
+    // TODO: This had the wrong number of default weekend values and was still passing. Add a test that fails with
+    // TODO:     weekendDays = [1, 6] but not with [2, 6].
+    weekendDays = [0, 6];
   }
   var hasHolidays = values.length === 4;
   var holidays = [];
@@ -815,9 +817,56 @@ var TIME = function (...values) : ExcelTime {
 };
 
 
+/**
+ * Calculates the end date after a specified number of working days.
+ * @param values[0] start_date - The date from which to begin counting.
+ * @param values[1] num_days - The number of working days to advance from start_date. If negative, counts backwards. If
+ * not an integer, truncate.
+ * @param values[2] holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider holidays. The
+ * values provided within an array for holidays must be date serial number values, as returned by N or date values, as
+ * returned by DATE, DATEVALUE or TO_DATE. Values specified by a range should be standard date values or date serial
+ * numbers.
+ * @returns {ExcelDate} end date after a specified number of working days.
+ * @constructor
+ */
+var WORKDAY = function (...values) {
+  ArgsChecker.checkLengthWithin(values, 2, 3);
+  var start = TypeCaster.firstValueAsExcelDate(values[0], true);
+  var days = TypeCaster.firstValueAsNumber(values[1]);
+  var hasHolidays = values.length === 3;
+  var holidays = [];
+  if (hasHolidays) {
+    if (values[2].length === 0) {
+      throw new RefError("Reference does not exist.");
+    }
+    for (var holidayDateValue of values[2]) {
+      if (holidayDateValue instanceof ExcelDate) {
+        holidays.push(holidayDateValue.toNumber());
+      } else if (typeof holidayDateValue === "number") {
+        holidays.push(holidayDateValue);
+      } else {
+        throw new ValueError("WORKDAY expects number values. But '" + holidayDateValue + "' is a " +
+          (typeof holidayDateValue) + " and cannot be coerced to a number.")
+      }
+    }
+  }
+
+  var weekend_days = [0, 6];
+  var cd = moment.utc(start.toMoment());
+  var j = 0;
+  while (j < days) {
+    cd.add(1, 'days');
+    if (weekend_days.indexOf(cd.day()) < 0 && holidays.indexOf(new ExcelDate(cd).toNumber()) < 0) {
+      j++;
+    }
+  }
+  return new ExcelDate(cd);
+};
+
+
+
 // Functions unimplemented.
 var WORKDAY$INTL;
-var WORKDAY;
 
 export {
   DATE,
@@ -841,5 +890,6 @@ export {
   NETWORKDAYS$INTL,
   NOW,
   TODAY,
-  TIME
+  TIME,
+  WORKDAY
 }

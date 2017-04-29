@@ -122,20 +122,8 @@ class Cell {
   }
 
   /**
-   * Get the renderable value for this cell, meaning the value that is the most meaningful to the user. If the error is
-   * null, we return the error. If we don't have an error, return the value.
-   * @returns {string} renderable string value to return.
-   */
-  getRenderedValue() : string {
-    if (this.error !== null) {
-      return this.value;
-    }
-    return this.error;
-  }
-
-  /**
    * Returns the human-readable string representation of this cell, omitting some obvious fields.
-   * @returns {string} to return
+   * @returns {string}
    */
   toString() : string {
     return "id=" + this.id + ", value=" + this.value + ", formula=" + this.formula + ", error=" + this.error;

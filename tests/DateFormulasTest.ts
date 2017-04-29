@@ -19,7 +19,8 @@ import {
   SECOND,
   NETWORKDAYS,
   NETWORKDAYS$INTL,
-  TIME
+  TIME,
+  WORKDAY
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {
@@ -27,6 +28,13 @@ import {
   catchAndAssertEquals
 } from "./utils/Asserts"
 import moment = require("moment");
+
+
+// Test WORKDAY
+assertEquals(WORKDAY(DATE(1999, 2, 2), 10), DATE(1999, 2, 16));
+assertEquals(WORKDAY(DATE(1999, 10, 10), 100), DATE(2000, 2, 25));
+
+
 
 // Test TIME
 assertEquals(TIME(10, 10, 10).toNumber(), 0.4237268518518518);

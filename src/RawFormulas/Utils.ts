@@ -927,7 +927,7 @@ class ArgsChecker {
    * @param args to check length of
    * @param length expected length
    */
-  static checkLength(args: any, length: number) {
+  static checkLength(args: Array<any> | IArguments, length: number) {
     if (args.length !== length) {
       throw new NAError("Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
     }

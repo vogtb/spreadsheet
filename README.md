@@ -57,8 +57,6 @@ Right now we're just using the number of days since 1900, but we should check th
 
 ### Numbers with commas in them should still parse to numbers.
 
-### ArgsChecker.checkLength should be typed
-
 ## Testing Guidelines
 
 All formulas should test for:

@@ -6,7 +6,11 @@ import {
   TypeCaster
 } from "./Utils";
 import {
-  NumError, DivZeroError, RefError, ValueError, NAError
+  NumError,
+  DivZeroError,
+  RefError,
+  ValueError,
+  NAError
 } from "../Errors";
 
 /**

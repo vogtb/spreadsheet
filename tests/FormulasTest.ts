@@ -50,11 +50,26 @@ assertEquals(ACCRINT(10000, 1, 20000, 0.1, 1000, 4, 1), 2737.8507871321012); // 
 assertEquals(ACCRINT(10000, 1, 20000, 0.1, 1000, 4, 2), 2777.777777777778); // ms, gs: 2737.777778 (1.46% err)
 assertEquals(ACCRINT(10000, 1, 20000, 0.1, 1000, 4, 3), 2739.72602739726); //ms, gs: 2737.60274 (0.077% err)
 assertEquals(ACCRINT(10000, 1, 20000, 0.1, 1000, 4, 4), 2737.5);
+assertEquals(ACCRINT(1, 44, "1461", "0.1", [1000], [1]), 400);
+assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1), 400);
 assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1, 0), 400);
 assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1, 1), 400);
 assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1, 2), 405.55555555555554); // gs: 400
 assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1, 3), 400); // gs: 399.6575342
 assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1, 4), 400);
+catchAndAssertEquals(function() {
+  ACCRINT(1, -1, 100, 0.1, 1000, 1, 4);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  ACCRINT(100, 2, 1, 0.1, 1000, 1, 4);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  ACCRINT(100, 2, 1, 0.1, 1000);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  ACCRINT(1, 2, 1461, 0.1, 1000, 1, 1, 1);
+}, ERRORS.NA_ERROR);
+
 
 
 // Test ACOS

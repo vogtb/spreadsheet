@@ -364,6 +364,9 @@ var CUMIPMT = function (...values) : number {
 
 /**
  * Calculates the accrued interest of a security that has periodic payments.
+ * WARNING: This function has been implemented to specifications as outlined in Google Spreadsheets, LibreOffice, and
+ * OpenOffice. It functions much the same as MSExcel's ACCRINT, but there are several key differences. Below are links
+ * to illustrate the differences. Please see the source code for more information on differences.
  *
  * Links:
  * * https://quant.stackexchange.com/questions/7040/whats-the-algorithm-behind-excels-accrint
@@ -383,6 +386,8 @@ var CUMIPMT = function (...values) : number {
  * 0 or omitted = US (NASD) 30/360, 1 = Actual/actual, 2 = Actual/360, 3 = Actual/365, 4 = European 30/360.
  * @returns {number}
  * @constructor
+ * TODO: This function is based off of the open-source versions I was able to dig up online. We should implement a
+ * TODO:     second version that is closer to what MSExcel does and is named something like `ACCRINT.MS`.
  */
 var ACCRINT = function (...values) {
   ArgsChecker.checkLengthWithin(values, 6, 7);
@@ -391,7 +396,15 @@ var ACCRINT = function (...values) {
   // In MSE, there is a 7th (zero-indexed-6th) param that indicates the calculation-method to use, which indicates
   // weather the total accrued interest starting at the first_intrest date, instead of the issue date.
   var firstPayment = TypeCaster.firstValueAsExcelDate(values[1]);
+  if (firstPayment.toNumber() < 0) {
+    throw new NumError("Function ACCRINT parameter 2 value is " + firstPayment.toNumber()
+        + ". It should be greater than 0.");
+  }
   var settlement = TypeCaster.firstValueAsExcelDate(values[2]);
+  if (issue.toNumber() > settlement.toNumber()) {
+    throw new NumError("Function ACCRINT parameter 1 (" + issue.toString()
+      + ") should be on or before Function ACCRINT parameter 3 (" + settlement.toString() + ").")
+  }
   var rate = TypeCaster.firstValueAsNumber(values[3]);
   var redemption = TypeCaster.firstValueAsNumber(values[4]);// "par"
   // The frequency parameter also does not affect the resulting value of the formula in the GS implementation.

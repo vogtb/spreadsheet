@@ -493,8 +493,8 @@ var YEARFRAC = function (...values) : number {
   };
 
   switch (basis) {
+    // US (NASD) 30/360
     case 0:
-      // US (NASD) 30/360
       // Note: if eday == 31, it stays 31 if sday < 30
       if (sday === 31 && eday === 31) {
         sday = 30;
@@ -510,8 +510,8 @@ var YEARFRAC = function (...values) : number {
         sday = 30;
       }
       return Math.abs(((eday + emonth * 30 + eyear * 360) - (sday + smonth * 30 + syear * 360)) / 360);
+    // Actual/actual
     case 1:
-      // Actual/actual
       var ylength = 365;
       if (syear === eyear || ((syear + 1) === eyear) && ((smonth > emonth) || ((smonth === emonth) && (sday >= eday)))) {
         if (syear === eyear && moment.utc([syear]).isLeapYear()) {
@@ -526,14 +526,14 @@ var YEARFRAC = function (...values) : number {
         var average = days / years;
         return Math.abs((end.toNumber() - start.toNumber()) / average);
       }
+    // Actual/360
     case 2:
-      // Actual/360
       return Math.abs(e.diff(s, 'days') / 360);
+    // Actual/365
     case 3:
-      // Actual/365
       return Math.abs(e.diff(s, 'days') / 365);
+    // European 30/360
     case 4:
-      // European 30/360
       sday = sday === 31 ? 30 : sday;
       eday = eday === 31 ? 30 : eday;
       // Remarkably, do NOT change February 28 or February 29 at ALL

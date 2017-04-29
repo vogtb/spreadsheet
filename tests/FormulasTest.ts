@@ -1,9 +1,9 @@
 import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2, ATANH, AVEDEV, AVERAGE,
-    AVERAGEA, AVERAGEIF, BIN2DEC, BIN2HEX, BIN2OCT, CEILING,
+    AVERAGEA, AVERAGEIF, CEILING,
     CHAR, CODE, COMBIN, CONCATENATE, CONVERT, PEARSON,
     CORREL, COS, PI, COSH, COT, COTH, COUNT, COUNTA, COUNTIF, COUNTIFS, COUNTUNIQUE,
     CUMIPMT, CUMPRINC,
-    DB, DDB, DEC2BIN, DEC2HEX, DEC2OCT, DEGREES, DELTA, DEVSQ, DOLLAR, DOLLARDE, DOLLARFR,
+    DB, DDB, DEGREES, DEVSQ, DOLLAR, DOLLARDE, DOLLARFR,
     EFFECT, ERF, ERFC, EVEN, EXACT, EXPONDIST, FINV, FALSE, FLOOR, __COMPLEX, FISHER, FISHERINV, IF,
     INT, ISEVEN, ISODD, LN, LOG, LOG10, MAX, MAXA, MEDIAN, MIN, MINA, MOD, NOT, TRUE, ODD, OR,
     POWER, ROUND, ROUNDDOWN, ROUNDUP, SIN, SINH, SPLIT, SQRT, SQRTPI, SUM, SUMIF, SUMPRODUCT, RADIANS,
@@ -311,77 +311,6 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   AVERAGEIF([1, 5, 5, 5, 10, 5], "==5");
 }, ERRORS.DIV_ZERO_ERROR);
-
-
-// Test BIN2DEC
-assertEquals(BIN2DEC("1010101010"), -342);
-assertEquals(BIN2DEC("10"), 2);
-assertEquals(BIN2DEC(["10", "str"]), 2);
-catchAndAssertEquals(function() {
-  BIN2DEC(false);
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  BIN2DEC("str");
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  BIN2DEC();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  BIN2DEC("10", "10");
-}, ERRORS.NA_ERROR);
-
-
-// Test BIN2HEX
-assertEquals(BIN2HEX("1010101010"), "FFFFFFFEAA");
-assertEquals(BIN2HEX("10"), "2");
-assertEquals(BIN2HEX("10101010"), "AA");
-assertEquals(BIN2HEX("10101010", 4), "00AA");
-assertEquals(BIN2HEX(["10101010"], [4]), "00AA");
-catchAndAssertEquals(function() {
-  BIN2HEX("10101010", 22);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  BIN2HEX(false);
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  BIN2HEX("10101010", 0);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  BIN2DEC("str");
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  BIN2DEC();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  BIN2DEC("10", 4, 4);
-}, ERRORS.NA_ERROR);
-
-
-// Test BIN2OCT
-assertEquals(BIN2OCT("1010101010"), "7777777252");
-assertEquals(BIN2OCT("10"), "2");
-assertEquals(BIN2OCT("100"), "4");
-assertEquals(BIN2OCT("10101010"), "252");
-assertEquals(BIN2OCT("10101010", 4), "252");
-assertEquals(BIN2OCT(["10101010"], [4]), "252");
-catchAndAssertEquals(function() {
-  BIN2OCT("10101010", 22);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  BIN2OCT(false);
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  BIN2OCT("10101010", 0);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  BIN2OCT("str");
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  BIN2OCT();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  BIN2OCT("10", 4, 4);
-}, ERRORS.NA_ERROR);
 
 
 // Test CEILING
@@ -818,113 +747,6 @@ catchAndAssertEquals(function() {
 }, ERRORS.NUM_ERROR);
 
 
-// Test DEC2BIN
-assertEquals(DEC2BIN([100]), "1100100");
-assertEquals(DEC2BIN(100), "1100100");
-assertEquals(DEC2BIN(22), "10110");
-assertEquals(DEC2BIN(22.11), "10110");
-assertEquals(DEC2BIN(22.77), "10110");
-assertEquals(DEC2BIN("22.77"), "10110");
-assertEquals(DEC2BIN(100, 8), "01100100");
-assertEquals(DEC2BIN([100], [8]), "01100100");
-assertEquals(DEC2BIN(100, 7), "1100100");
-assertEquals(DEC2BIN(100, 10), "0001100100");
-assertEquals(DEC2BIN(-100), "1110011100");
-assertEquals(DEC2BIN("-22.77"), "1111101010");
-assertEquals(DEC2BIN(-22.11), "1111101010");
-assertEquals(DEC2BIN(-22), "1111101010");
-assertEquals(DEC2BIN(false), "0");
-assertEquals(DEC2BIN(true), "1");
-catchAndAssertEquals(function() {
-  DEC2BIN(100, 0);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  DEC2BIN(513, 10);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  DEC2BIN(100, 100, 10);
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  DEC2BIN();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  DEC2BIN("str");
-}, ERRORS.VALUE_ERROR);
-
-// Test DEC2HEX
-assertEquals(DEC2HEX([100]), "64");
-assertEquals(DEC2HEX(100), "64");
-assertEquals(DEC2HEX(22), "16");
-assertEquals(DEC2HEX(22.11), "16");
-assertEquals(DEC2HEX(22.77), "16");
-assertEquals(DEC2HEX("22.77"), "16");
-assertEquals(DEC2HEX(100, 8), "00000064");
-assertEquals(DEC2HEX([100], [8]), "00000064");
-assertEquals(DEC2HEX(100, 7), "0000064");
-assertEquals(DEC2HEX(100, 10), "0000000064");
-assertEquals(DEC2HEX(-100), "FFFFFFFF9C");
-assertEquals(DEC2HEX("-22.77"), "FFFFFFFFEA");
-assertEquals(DEC2HEX(-22.11), "FFFFFFFFEA");
-assertEquals(DEC2HEX(-22), "FFFFFFFFEA");
-assertEquals(DEC2HEX(false), "0");
-assertEquals(DEC2HEX(true), "1");
-catchAndAssertEquals(function() {
-  DEC2HEX(100, 0);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  DEC2HEX(549755813889, 10);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  DEC2HEX(54975581, -10);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  DEC2HEX(100, 100, 10);
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  DEC2HEX();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  DEC2HEX("str");
-}, ERRORS.VALUE_ERROR);
-
-
-// Test DEC2OCT
-assertEquals(DEC2OCT([100]), "144");
-assertEquals(DEC2OCT(100), "144");
-assertEquals(DEC2OCT(22), "26");
-assertEquals(DEC2OCT(22.11), "26");
-assertEquals(DEC2OCT(22.77), "26");
-assertEquals(DEC2OCT("22.77"), "26");
-assertEquals(DEC2OCT(100, 8), "00000144");
-assertEquals(DEC2OCT([100], [8]), "00000144");
-assertEquals(DEC2OCT(100, 7), "0000144");
-assertEquals(DEC2OCT(100, 10), "0000000144");
-assertEquals(DEC2OCT(-100), "7777777634");
-assertEquals(DEC2OCT("-22.77"), "7777777752");
-assertEquals(DEC2OCT(-22.11), "7777777752");
-assertEquals(DEC2OCT(-22), "7777777752");
-assertEquals(DEC2OCT(false), "0");
-assertEquals(DEC2OCT(true), "1");
-catchAndAssertEquals(function() {
-  DEC2OCT(100, 0);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  DEC2OCT(536870913, 10);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  DEC2OCT(536870910, -10);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  DEC2OCT(100, 100, 10);
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  DEC2OCT();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  DEC2OCT("str");
-}, ERRORS.VALUE_ERROR);
-
-
 // Test DEGREES
 assertEquals(DEGREES(PI()), 180);
 assertEquals(DEGREES([PI(), "str"]), 180);
@@ -940,31 +762,6 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 catchAndAssertEquals(function() {
   DEGREES(10, 10);
-}, ERRORS.NA_ERROR);
-
-
-// Test DELTA
-assertEquals(DELTA(2, 2), 1);
-assertEquals(DELTA(2, 1), 0);
-assertEquals(DELTA(2), 0);
-assertEquals(DELTA("", ""), 1);
-assertEquals(DELTA(false), 1);
-assertEquals(DELTA(true), 0);
-assertEquals(DELTA(2.2, 2.1), 0);
-assertEquals(DELTA(1, true), 1);
-assertEquals(DELTA(0, false), 1);
-assertEquals(DELTA(true, true), 1);
-catchAndAssertEquals(function() {
-  DELTA("str");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  DELTA("n", "n");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  DELTA();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  DELTA(1, 2, 3);
 }, ERRORS.NA_ERROR);
 
 

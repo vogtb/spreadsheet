@@ -374,6 +374,8 @@ var CUMIPMT = function (...values) : number {
  * * https://support.office.com/en-us/article/ACCRINT-function-fe45d089-6722-4fb3-9379-e1f911d8dc74
  *
  * * https://quant.stackexchange.com/questions/7040/whats-the-algorithm-behind-excels-accrint
+ *
+ * * https://support.google.com/docs/answer/3093200
  * @param values[0] issue - The date the security was initially issued.
  * @param values[1] first_payment - The first date interest will be paid.
  * @param values[2] settlement - The settlement date of the security, the date after issuance when the security is

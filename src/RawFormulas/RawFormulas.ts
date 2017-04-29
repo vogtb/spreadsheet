@@ -1,4 +1,3 @@
-import * as Formula from "formulajs"
 import {
   ABS,
   ACOS,
@@ -107,7 +106,8 @@ import {
   CHAR,
   CODE,
   SPLIT,
-  CONCATENATE
+  CONCATENATE,
+  CONVERT
 } from "./Text"
 import {
   DATE,
@@ -136,12 +136,11 @@ import {
   WORKDAY$INTL
 } from "./Date"
 
-var CONVERT = Formula["CONVERT"];
-
-
 // Using alias to bind dot-notation function names.
 var __COMPLEX = {
-  "F.DIST": FDIST$LEFTTAILED
+  "F.DIST": FDIST$LEFTTAILED,
+  "NETWORKDAYS.INTL": NETWORKDAYS$INTL,
+  "WORKDAY.INTL": WORKDAY$INTL
 };
 
 export {

@@ -94,6 +94,9 @@ catchAndAssertEquals(function() {
 
 // Test CONVERT
 assertEquals(CONVERT(5.1, "mm", "m"), 0.0050999999999999995);
+assertEquals(CONVERT(5.1, "mm", "km"), 0.0000050999999999999995);
+assertEquals(CONVERT(5.1, "g", "kg"), 0.0050999999999999995);
+assertEquals(CONVERT(35.7, "in^2", "m^2"), 0.023032212);
 
 
 // Test ARABIC

@@ -33,7 +33,19 @@ import moment = require("moment");
 // Test WORKDAY
 assertEquals(WORKDAY(DATE(1999, 2, 2), 10), DATE(1999, 2, 16));
 assertEquals(WORKDAY(DATE(1999, 10, 10), 100), DATE(2000, 2, 25));
-
+assertEquals(WORKDAY(DATE(1909, 12, 11), 222), DATE(1910, 10, 18));
+assertEquals(WORKDAY(DATE(1922, 4, 1), 1234), DATE(1926, 12, 23));
+assertEquals(WORKDAY(DATE(1945, 1, 14), 6000), DATE(1968, 1, 12));
+assertEquals(WORKDAY(DATE(1945, 1, 14), 6000, [23855, 23856, 23857, 23858, 23859]), DATE(1968, 1, 17));
+assertEquals(WORKDAY(DATE(1945, 1, 14), 6000, 23859), DATE(1968, 1, 15));
+assertEquals(WORKDAY(DATE(2012, 5, 29), 1000, [41058, 41059, 41060, 41061, 41062]), DATE(2016, 4, 1));
+assertEquals(WORKDAY([DATE(1999, 2, 2)], [10]), DATE(1999, 2, 16));
+catchAndAssertEquals(function() {
+  WORKDAY();
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  WORKDAY(DATE(2012, 5, 29), 1000, [10], 11);
+}, ERRORS.NA_ERROR);
 
 
 // Test TIME

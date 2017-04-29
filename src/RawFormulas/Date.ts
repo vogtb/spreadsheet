@@ -836,18 +836,22 @@ var WORKDAY = function (...values) {
   var hasHolidays = values.length === 3;
   var holidays = [];
   if (hasHolidays) {
-    if (values[2].length === 0) {
-      throw new RefError("Reference does not exist.");
-    }
-    for (var holidayDateValue of values[2]) {
-      if (holidayDateValue instanceof ExcelDate) {
-        holidays.push(holidayDateValue.toNumber());
-      } else if (typeof holidayDateValue === "number") {
-        holidays.push(holidayDateValue);
-      } else {
-        throw new ValueError("WORKDAY expects number values. But '" + holidayDateValue + "' is a " +
-          (typeof holidayDateValue) + " and cannot be coerced to a number.")
+    if (values[2] instanceof Array) {
+      if (values[2].length === 0) {
+        throw new RefError("Reference does not exist.");
       }
+      for (var holidayDateValue of values[2]) {
+        if (holidayDateValue instanceof ExcelDate) {
+          holidays.push(holidayDateValue.toNumber());
+        } else if (typeof holidayDateValue === "number") {
+          holidays.push(holidayDateValue);
+        } else {
+          throw new ValueError("WORKDAY expects number values. But '" + holidayDateValue + "' is a " +
+            (typeof holidayDateValue) + " and cannot be coerced to a number.")
+        }
+      }
+    } else {
+      holidays.push(TypeCaster.valueToNumber(values[2]));
     }
   }
 

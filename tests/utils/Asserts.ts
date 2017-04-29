@@ -50,7 +50,7 @@ function catchAndAssertEquals(toExecute : Function, expected) {
     toThrow = true;
   } catch (actualError) {
     if (actualError.name !== expected) {
-      console.log("expected:", expected, " actual:", actualError.name);
+      console.log("expected:", expected, " actual:", actualError.name, actualError.message);
       console.trace();
     }
   }

@@ -710,15 +710,26 @@ var NETWORKDAYS$INTL = function (...values) : number {
         case 1:
           weekendDays = [0, 6];
           break;
-        case 2 || 3 || 4 || 5 || 6 || 7:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
           weekendDays = [weekend, weekend - 1];
           break;
-        case 11 || 12 || 13 || 14 || 15 || 16 || 17:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+        case 16:
+        case 17:
           weekendDays = [weekend - 10];
           break;
         default:
           throw new NumError("Function NETWORKDAYS.INTL parameter 3 requires a number in the range 1-7 or 11-17. "
-              + "Actual number is " + weekend + ".");
+            + "Actual number is " + weekend + ".");
       }
     } else {
       throw new ValueError("Function NETWORKDAYS.INTL parameter 4 expects number values. But '" + weekend
@@ -726,7 +737,7 @@ var NETWORKDAYS$INTL = function (...values) : number {
     }
   } else {
     // TODO: This had the wrong number of default weekend values and was still passing. Add a test that fails with
-    // TODO:     weekendDays = [1, 6] but not with [2, 6].
+    // TODO:     weekendDays = [1, 6] but not with [0, 6].
     weekendDays = [0, 6];
   }
   var hasHolidays = values.length === 4;
@@ -855,12 +866,12 @@ var WORKDAY = function (...values) {
     }
   }
 
-  var weekend_days = [0, 6];
+  var weekendDays = [0, 6];
   var cd = moment.utc(start.toMoment());
   var j = 0;
   while (j < days) {
     cd.add(1, 'days');
-    if (weekend_days.indexOf(cd.day()) < 0 && holidays.indexOf(new ExcelDate(cd).toNumber()) < 0) {
+    if (weekendDays.indexOf(cd.day()) < 0 && holidays.indexOf(new ExcelDate(cd).toNumber()) < 0) {
       j++;
     }
   }
@@ -868,9 +879,103 @@ var WORKDAY = function (...values) {
 };
 
 
-
-// Functions unimplemented.
-var WORKDAY$INTL;
+/**
+ * Calculates the date after a specified number of workdays excluding specified weekend days and holidays.
+ * @param values[0] start_date - The date from which to begin counting.
+ * @param values[1] num_days - The number of working days to advance from start_date. If negative, counts backwards.
+ * @param values[2] weekend - [ OPTIONAL - 1 by default ] - A number or string representing which days of the week are
+ * considered weekends. String method: weekends can be specified using seven 0’s and 1’s, where the first number in the
+ * set represents Monday and the last number is for Sunday. A zero means that the day is a work day, a 1 means that the
+ * day is a weekend. For example, “0000011” would mean Saturday and Sunday are weekends. Number method: instead of using
+ * the string method above, a single number can be used. 1 = Saturday/Sunday are weekends, 2 = Sunday/Monday, and this
+ * pattern repeats until 7 = Friday/Saturday. 11 = Sunday is the only weekend, 12 = Monday is the only weekend, and this
+ * pattern repeats until 17 = Saturday is the only weekend.
+ * @param values[3] holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider holidays.
+ * @returns {ExcelDate}
+ * @constructor
+ */
+var WORKDAY$INTL = function (...values) {
+  ArgsChecker.checkLengthWithin(values, 2, 3);
+  var start = TypeCaster.firstValueAsExcelDate(values[0], true);
+  var days = TypeCaster.firstValueAsNumber(values[1]);
+  var weekendDays = [];
+  if (values.length >= 3) {
+    var weekend = TypeCaster.firstValue(values[2]);
+    if (typeof weekend === "string") {
+      if (!/^[0-1]{6,}$/.test(weekend)) {
+        throw new NumError("Function WORKDAY.INTL parameter 3 requires a number in the format '0000011'. "
+          + "Actual value is '" + weekend + "'");
+      }
+      var ws = weekend.split("");
+      for (var i = 0; i < ws.length; i++) {
+        if (ws[i] === "1") {
+          weekendDays.push(i === 6 ? 0 : i + 1);
+        }
+      }
+    } else if (typeof weekend === "number") {
+      switch (weekend) {
+        case 1:
+          weekendDays = [0, 6];
+          break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+          weekendDays = [weekend, weekend - 1];
+          break;
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+        case 16:
+        case 17:
+          weekendDays = [weekend - 10];
+          break;
+        default:
+          throw new NumError("Function WORKDAY.INTL parameter 3 requires a number in the range 1-7 or 11-17. "
+            + "Actual number is " + weekend + ".");
+      }
+    } else {
+      throw new ValueError("Function WORKDAY.INTL parameter 4 expects number values. But '" + weekend
+        + "' cannot be coerced to a number.")
+    }
+  } else {
+    weekendDays = [0, 6];
+  }
+  var hasHolidays = values.length === 3;
+  var holidays = [];
+  if (hasHolidays) {
+    if (values[3] instanceof Array) {
+      if (values[3].length === 0) {
+        throw new RefError("Reference does not exist.");
+      }
+      for (var holidayDateValue of values[3]) {
+        if (holidayDateValue instanceof ExcelDate) {
+          holidays.push(holidayDateValue.toNumber());
+        } else if (typeof holidayDateValue === "number") {
+          holidays.push(holidayDateValue);
+        } else {
+          throw new ValueError("WORKDAY expects number values. But '" + holidayDateValue + "' is a " +
+            (typeof holidayDateValue) + " and cannot be coerced to a number.")
+        }
+      }
+    } else {
+      holidays.push(TypeCaster.valueToNumber(values[3]));
+    }
+  }
+  var cd = moment.utc(start.toMoment());
+  var j = 0;
+  while (j < days) {
+    cd.add(1, 'days');
+    if (weekendDays.indexOf(cd.day()) < 0 && holidays.indexOf(new ExcelDate(cd).toNumber()) < 0) {
+      j++;
+    }
+  }
+  return new ExcelDate(cd);
+};
 
 export {
   DATE,
@@ -895,5 +1000,6 @@ export {
   NOW,
   TODAY,
   TIME,
-  WORKDAY
+  WORKDAY,
+  WORKDAY$INTL
 }

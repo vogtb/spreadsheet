@@ -20,14 +20,49 @@ import {
   NETWORKDAYS,
   NETWORKDAYS$INTL,
   TIME,
-  WORKDAY
+  WORKDAY,
+  WORKDAY$INTL
 } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {
   assertEquals,
   catchAndAssertEquals
 } from "./utils/Asserts"
-import moment = require("moment");
+
+
+// Test WORKDAY.INTL
+assertEquals(WORKDAY$INTL(DATE(1999, 2, 2), 10), DATE(1999, 2, 16));
+assertEquals(WORKDAY$INTL(DATE(1999, 10, 10), 100), DATE(2000, 2, 25));
+assertEquals(WORKDAY$INTL(DATE(1909, 12, 11), 222), DATE(1910, 10, 18));
+assertEquals(WORKDAY$INTL(DATE(1922, 4, 1), 1234), DATE(1926, 12, 23));
+assertEquals(WORKDAY$INTL(DATE(1945, 1, 14), 6000), DATE(1968, 1, 12));
+assertEquals(WORKDAY$INTL(DATE(1945, 1, 14), 6000, "0000011"), DATE(1968, 1, 12));
+assertEquals(WORKDAY$INTL(DATE(1945, 1, 14), 6000, "1000001"), DATE(1968, 1, 13));
+assertEquals(WORKDAY$INTL(DATE(1945, 1, 14), 6000, "1100001"), DATE(1973, 10, 13));
+assertEquals(WORKDAY$INTL(DATE(1945, 1, 14), 6000, "1110000"), DATE(1973, 10, 14));
+assertEquals(WORKDAY$INTL(DATE(1945, 1, 14), 6000, "1110001"), DATE(1983, 5, 14));
+assertEquals(WORKDAY$INTL(DATE(1945, 1, 14), 6000, 6), DATE(1968, 1, 14));
+catchAndAssertEquals(function() {
+  WORKDAY$INTL(12, 12, [12], false, 1);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  WORKDAY$INTL(12);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  WORKDAY$INTL("1992-1-1", "str");
+}, ERRORS.VALUE_ERROR);
+catchAndAssertEquals(function() {
+  WORKDAY$INTL("1992-1-1", 12, []);
+}, ERRORS.REF_ERROR);
+catchAndAssertEquals(function() {
+  WORKDAY$INTL("1992-1-1", 16, "000");
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  WORKDAY$INTL("1992-1-1", 12, 9);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  WORKDAY$INTL("1992-1-1", 66, false);
+}, ERRORS.VALUE_ERROR);
 
 
 // Test WORKDAY

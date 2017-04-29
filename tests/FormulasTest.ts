@@ -1,13 +1,12 @@
-import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2, ATANH, AVEDEV, AVERAGE,
+import { ABS, ACOS, ACOSH, ACOTH, ARABIC, ASIN, ASINH, ATAN, ATAN2, ATANH, AVEDEV, AVERAGE,
     AVERAGEA, AVERAGEIF, CEILING,
     CHAR, CODE, COMBIN, CONCATENATE, CONVERT, PEARSON,
     CORREL, COS, PI, COSH, COT, COTH, COUNT, COUNTA, COUNTIF, COUNTIFS, COUNTUNIQUE,
-    CUMIPMT, CUMPRINC,
-    DB, DDB, DEGREES, DEVSQ, DOLLAR, DOLLARDE, DOLLARFR,
-    EFFECT, ERF, ERFC, EVEN, EXACT, EXPONDIST, FINV, FALSE, FLOOR, __COMPLEX, FISHER, FISHERINV, IF,
-    INT, ISEVEN, ISODD, LN, LOG, LOG10, MAX, MAXA, MEDIAN, MIN, MINA, MOD, NOT, TRUE, ODD, OR,
+    DEGREES, DEVSQ,
+    ERF, ERFC, EVEN, EXPONDIST, FINV, FLOOR, __COMPLEX, FISHER, FISHERINV, IF,
+    INT, ISEVEN, ISODD, LN, LOG, LOG10, MAX, MAXA, MEDIAN, MIN, MINA, MOD, ODD,
     POWER, ROUND, ROUNDDOWN, ROUNDUP, SIN, SINH, SPLIT, SQRT, SQRTPI, SUM, SUMIF, SUMPRODUCT, RADIANS,
-    SUMSQ, SUMX2MY2, SUMX2PY2, TAN, TANH, TRUNC, XOR, DATE } from "../src/RawFormulas/RawFormulas"
+    SUMSQ, SUMX2MY2, SUMX2PY2, TAN, TANH, TRUNC } from "../src/RawFormulas/RawFormulas";
 import * as ERRORS from "../src/Errors"
 import {assertEquals, assertArrayEquals} from "./utils/Asserts"
 
@@ -82,27 +81,6 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   ACOTH(false);
 }, ERRORS.NUM_ERROR);
-
-
-// Test AND
-assertEquals(AND(10, 10), true);
-assertEquals(AND(10, 0), false);
-assertEquals(AND(10, false), false);
-assertEquals(AND(0, 0), false);
-catchAndAssertEquals(function() {
-  AND(1, "");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  AND();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  AND(1, "str");
-}, ERRORS.VALUE_ERROR);
-assertEquals(AND(0, [1, 1]), false);
-assertEquals(AND(1, [1, 1]), true);
-catchAndAssertEquals(function() {
-  AND(1, [1, "str"]);
-}, ERRORS.VALUE_ERROR);
 
 
 // Test ARABIC
@@ -674,10 +652,6 @@ catchAndAssertEquals(function() {
 }, ERRORS.REF_ERROR);
 
 
-// Test AND
-assertEquals(AND(10), true);
-
-
 // Test ERF
 assertEquals(ERF(2), 0.9953222650189527);
 assertEquals(ERF("2"), 0.9953222650189527);
@@ -730,32 +704,6 @@ catchAndAssertEquals(function() {
   EVEN("str");
 }, ERRORS.VALUE_ERROR);
 
-// Test EXACT
-assertEquals(EXACT("m", "M"), false);
-assertEquals(EXACT("m", "m"), true);
-assertEquals(EXACT("m", false), false);
-assertEquals(EXACT(false, false), true);
-assertEquals(EXACT(10, 10), true);
-assertEquals(EXACT(10, "10"), true);
-assertEquals(EXACT(10, "str"), false);
-assertEquals(EXACT([10], [10]), true);
-assertEquals(EXACT(["str"], [10, 22]), false);
-catchAndAssertEquals(function() {
-  EXACT([], []);
-}, ERRORS.REF_ERROR);
-catchAndAssertEquals(function() {
-  EXACT([]);
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  EXACT("m");
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  EXACT(10, 10, 10);
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  EXACT(false);
-}, ERRORS.NA_ERROR);
-
 
 // Test EXPONDIST
 assertEquals(EXPONDIST(4, 0.5, false), 0.06766764161830635);
@@ -779,10 +727,6 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   EXPONDIST(4, 0.5, true, 1);
 }, ERRORS.NA_ERROR);
-
-
-// Test FALSE
-assertEquals(FALSE(), false);
 
 
 // Test F.DIST
@@ -1121,44 +1065,6 @@ assertEquals(MOD(10.1, 3), 1.0999999999999996);
 assertEquals(MOD(10, 3.1), 0.6999999999999997);
 
 
-// Test NOT
-assertEquals(NOT(TRUE()), false);
-assertEquals(NOT(""), true);
-catchAndAssertEquals(function() {
-  NOT(" ");
-}, ERRORS.VALUE_ERROR);
-assertEquals(NOT(100), false);
-assertEquals(NOT(0), true);
-assertEquals(NOT(-1), false);
-assertEquals(NOT(1), false);
-catchAndAssertEquals(function() {
-  NOT("0");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  NOT([]);
-}, ERRORS.REF_ERROR);
-assertEquals(NOT([10]), false);
-assertEquals(NOT([0, 0]), true);
-assertEquals(NOT([0, false]), true);
-assertEquals(NOT([false, 0]), true);
-assertEquals(NOT([10, "str"]), false);
-catchAndAssertEquals(function() {
-  NOT("str");
-}, ERRORS.VALUE_ERROR);
-assertEquals(NOT([""]), true);
-assertEquals(NOT([0]), true);
-assertEquals(NOT([1]), false);
-assertEquals(NOT([0, 1]), true);
-catchAndAssertEquals(function() {
-  NOT("1.2");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  NOT();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  NOT(false, false);
-}, ERRORS.NA_ERROR);
-
 
 // Test ODD
 assertEquals(ODD(2), 3);
@@ -1180,31 +1086,7 @@ catchAndAssertEquals(function() {
 }, ERRORS.VALUE_ERROR);
 
 
-// Test OR
-assertEquals(OR(true, false), true);
-assertEquals(OR(false, false), false);
-assertEquals(OR(1, 0), true);
-assertEquals(OR([1, 0]), true);
-assertEquals(OR(false, 0, -10), true);
-assertEquals(OR([false, 0, -10]), true);
-assertEquals(OR([false, 0, [-10]]), true);
-catchAndAssertEquals(function() {
-  OR([false, 0, []]);
-}, ERRORS.REF_ERROR);
-catchAndAssertEquals(function() {
-  OR(false, "d");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  OR(false, "10");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  OR(false, "1.1");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  OR();
-}, ERRORS.NA_ERROR);
-
-
+// Test PI
 assertEquals(PI(), 3.141592653589793);
 
 
@@ -1573,10 +1455,6 @@ assertEquals(TANH([1, 44]), 0.7615941559557649);
 assertEquals(TANH([1, "str"]), 0.7615941559557649);
 
 
-// Test TRUE
-assertEquals(TRUE(), true);
-
-
 // Test TRUNC
 assertEquals(TRUNC(PI(), 2), 3.14);
 assertEquals(TRUNC("3.141592653589793", "2"), 3.14);
@@ -1594,24 +1472,3 @@ catchAndAssertEquals(function() {
 catchAndAssertEquals(function() {
   TRUNC(3.1, 1, 1);
 }, ERRORS.NA_ERROR);
-
-
-// Test XOR
-assertEquals(XOR(1, 1), false);
-assertEquals(XOR(1, 0), true);
-assertEquals(XOR(0, 0, 0), false);
-assertEquals(XOR(0, 0, 1), true);
-assertEquals(XOR(0, 0, [0, 0, 1]), true);
-assertEquals(XOR(0, 1, [0, 0, 1]), false);
-catchAndAssertEquals(function() {
-  XOR("str");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  XOR();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  XOR(1, []);
-}, ERRORS.REF_ERROR);
-catchAndAssertEquals(function() {
-  XOR([]);
-}, ERRORS.REF_ERROR);

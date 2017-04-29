@@ -7,6 +7,10 @@ import {
   NumError,
   DivZeroError
 } from "../Errors"
+import {
+  YEARFRAC
+} from "./Date";
+
 
 /**
  * Calculates the depreciation of an asset for a specified period using the double-declining balance method.
@@ -358,7 +362,51 @@ var CUMIPMT = function (...values) : number {
   return interest;
 };
 
+/**
+ * Calculates the accrued interest of a security that has periodic payments.
+ *
+ * Links:
+ * * https://quant.stackexchange.com/questions/7040/whats-the-algorithm-behind-excels-accrint
+ *
+ * * https://support.office.com/en-us/article/ACCRINT-function-fe45d089-6722-4fb3-9379-e1f911d8dc74
+ *
+ * * https://quant.stackexchange.com/questions/7040/whats-the-algorithm-behind-excels-accrint
+ * @param values[0] issue - The date the security was initially issued.
+ * @param values[1] first_payment - The first date interest will be paid.
+ * @param values[2] settlement - The settlement date of the security, the date after issuance when the security is
+ * delivered to the buyer. Is the maturity date of the security if it is held until maturity rather than sold.
+ * @param values[3] rate - The annualized rate of interest.
+ * @param values[4] redemption - The redemption amount per 100 face value, or par.
+ * @param values[5] frequency - The number of interest or coupon payments per year (1, 2, or 4).
+ * @param values[6] day_count_convention - [ OPTIONAL - 0 by default ] - An indicator of what day count method to use.
+ * 0 indicates US (NASD) 30/360 - This assumes 30 day months and 360 day years as per the National Association of
+ * Securities Dealers standard, and performs specific adjustments to entered dates which fall at the end of months.
+ * 1 indicates Actual/Actual - This calculates based upon the actual number of days between the specified dates, and the
+ * actual number of days in the intervening years. Used for US Treasury Bonds and Bills, but also the most relevant for
+ * non-financial use. 2 indicates Actual/360 - This calculates based on the actual number of days between the speficied
+ * dates, but assumes a 360 day year. 3 indicates Actual/365 - This calculates based on the actual number of days
+ * between the specified dates, but assumes a 365 day year. 4 indicates European 30/360 - Similar to 0, this calculates
+ * based on a 30 day month and 360 day year, but adjusts end-of-month dates according to European financial conventions.
+ * @returns {number}
+ * @constructor
+ */
+var ACCRINT = function (...values) {
+  ArgsChecker.checkLengthWithin(values, 6, 7);
+  var issue = TypeCaster.firstValueAsExcelDate(values[0]);
+  // firstPayment param is only here to check for errors for GS implementation.
+  var firstPayment = TypeCaster.firstValueAsExcelDate(values[1]);
+  var settlement = TypeCaster.firstValueAsExcelDate(values[2]);
+  var rate = TypeCaster.firstValueAsNumber(values[3]);
+  var redemption = TypeCaster.firstValueAsNumber(values[4]);// "par"
+  // The frequency parameter also does not affect the resulting value of the formula.
+  var frequency = TypeCaster.firstValueAsNumber(values[5]);
+  var dayCountConvention = values.length === 7 ? TypeCaster.firstValueAsNumber(values[6]) : 1;// "basis"
+  var factor = YEARFRAC(issue, settlement, dayCountConvention);
+  return redemption * rate * factor;
+};
+
 export {
+  ACCRINT,
   CUMPRINC,
   CUMIPMT,
   DB,

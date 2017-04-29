@@ -30,8 +30,6 @@ See `DOLLAR` function for more info.
 ### Get a better way to tie formulas into single export
 Listing them inside RawFormulas.ts is unwieldy.
 
-### Use `arguments` instead of `...values` for performance reasons.
-
 ### Error formatting
 Pass name of calling formula into all functions that throw user-facing errors, or have some sort of error mapper.
 
@@ -56,6 +54,9 @@ Right now we're just using the number of days since 1900, but we should check th
 ### Scrape jsdocs from functions, put in simple index.html, doc.md files to serve up simple documentation
 
 ### Numbers with commas in them should still parse to numbers.
+
+### Break tests out by category.
+
 
 ## Testing Guidelines
 

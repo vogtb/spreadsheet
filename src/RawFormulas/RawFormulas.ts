@@ -71,6 +71,7 @@ import {
   DELTA
 } from "./Engineering";
 import {
+  ACCRINT,
   CUMPRINC,
   CUMIPMT,
   DB,
@@ -135,7 +136,6 @@ import {
   WORKDAY$INTL
 } from "./Date"
 
-var ACCRINT = Formula["ACCRINT"];
 var CONVERT = Formula["CONVERT"];
 
 

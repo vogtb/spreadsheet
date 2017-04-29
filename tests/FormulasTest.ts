@@ -7,7 +7,7 @@ import { ABS, ACCRINT, ACOS, ACOSH, ACOTH, AND, ARABIC, ASIN, ASINH, ATAN, ATAN2
     EFFECT, ERF, ERFC, EVEN, EXACT, EXPONDIST, FINV, FALSE, FLOOR, __COMPLEX, FISHER, FISHERINV, IF,
     INT, ISEVEN, ISODD, LN, LOG, LOG10, MAX, MAXA, MEDIAN, MIN, MINA, MOD, NOT, TRUE, ODD, OR,
     POWER, ROUND, ROUNDDOWN, ROUNDUP, SIN, SINH, SPLIT, SQRT, SQRTPI, SUM, SUMIF, SUMPRODUCT, RADIANS,
-    SUMSQ, SUMX2MY2, SUMX2PY2, TAN, TANH, TRUNC, XOR } from "../src/RawFormulas/RawFormulas"
+    SUMSQ, SUMX2MY2, SUMX2PY2, TAN, TANH, TRUNC, XOR, DATE } from "../src/RawFormulas/RawFormulas"
 import * as ERRORS from "../src/Errors"
 import {assertEquals, assertArrayEquals} from "./utils/Asserts"
 
@@ -41,8 +41,20 @@ catchAndAssertEquals(function() {
 
 
 // Test ACCRINT
-// TODO: This formula doesn't work properly under some circumstances.
-// assertEquals(ACCRINT(DATE(2011, 1, 1), DATE(2011, 2, 1), DATE(2014, 7, 1), 0.1, 1000, 1, 0), 350);
+assertEquals(ACCRINT(DATE(2000, 1, 1), DATE(2000, 2, 1), DATE(2002, 12, 31), 0.05, 100, 4), 14.98631386861314);
+assertEquals(ACCRINT(DATE(2011, 1, 1), DATE(2011, 2, 1), DATE(2014, 7, 1), 0.1, 1000, 1, 0), 350);
+assertEquals(ACCRINT(DATE(2001, 1, 1), DATE(2011, 2, 1), DATE(2014, 7, 1), 0.1, 1000, 2, 1), 1349.6186192059456);
+assertEquals(ACCRINT(39508, 39691, 39569, 0.1, 1000, 2, 0), 16.666666666666664);
+assertEquals(ACCRINT(10000, 1, 20000, 0.1, 1000, 4, 0), 2737.5);
+assertEquals(ACCRINT(10000, 1, 20000, 0.1, 1000, 4, 1), 2737.8507871321012); // ms: 2787.087912 (1.76% err), gs: 2737.637363 (0.007% err)
+assertEquals(ACCRINT(10000, 1, 20000, 0.1, 1000, 4, 2), 2777.777777777778); // ms, gs: 2737.777778 (1.46% err)
+assertEquals(ACCRINT(10000, 1, 20000, 0.1, 1000, 4, 3), 2739.72602739726); //ms, gs: 2737.60274 (0.077% err)
+assertEquals(ACCRINT(10000, 1, 20000, 0.1, 1000, 4, 4), 2737.5);
+assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1, 0), 400);
+assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1, 1), 400);
+assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1, 2), 405.55555555555554); // gs: 400
+assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1, 3), 400); // gs: 399.6575342
+assertEquals(ACCRINT(1, 2, 1461, 0.1, 1000, 1, 4), 400);
 
 
 // Test ACOS

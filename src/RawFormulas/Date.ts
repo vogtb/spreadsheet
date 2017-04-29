@@ -439,6 +439,13 @@ var DATEDIF = function (...values) : number {
 
 /**
  * Returns the number of years, including fractional years, between two dates using a specified day count convention.
+ *
+ * Further reading:
+ *
+ * * http://christian-fries.de/blog/files/2013-yearfrac.html
+ *
+ * * http://finmath.net/finmath-lib/
+ *
  * @param values[0] start_date - The start date to consider in the calculation. Must be a reference to a cell
  * containing a date, a function returning a date type, or a number.
  * @param values[1] end_date - The end date to consider in the calculation. Must be a reference to a cell containing

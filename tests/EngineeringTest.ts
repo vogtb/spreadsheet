@@ -6,7 +6,7 @@ import {
   DEC2HEX,
   DEC2OCT,
   DELTA
-} from "../src/RawFormulas/Engineering";
+} from "../src/Formulas/Engineering";
 import * as ERRORS from "../src/Errors"
 import {
   assertEquals,

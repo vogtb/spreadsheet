@@ -1,5 +1,9 @@
-import { Sheet } from "../src/Sheet"
-import {assertEquals} from "./utils/Asserts"
+import {
+  Sheet
+} from "../src/Sheet";
+import {
+  assertEquals
+} from "./utils/Asserts";
 
 function testFormula(formula: string, expectation: any) {
   var sheet  = new Sheet();
@@ -7,14 +11,6 @@ function testFormula(formula: string, expectation: any) {
   var cell = sheet.getCell("A1");
   assertEquals(null, cell.getError());
   assertEquals(expectation, cell.getValue());
-}
-
-function testFormulaToDate(formula: string, expectation: any) {
-  var sheet  = new Sheet();
-  sheet.setCell("A1", formula);
-  var cell = sheet.getCell("A1");
-  assertEquals(null, cell.getError());
-  assertEquals(expectation, cell.getValue().getTime());
 }
 
 function testFormulaToArray(formula: string, expectation: any) {
@@ -31,11 +27,6 @@ function testFormulaToArray(formula: string, expectation: any) {
 // Test ABS formula
 testFormula("=ABS(-10)", 10);
 testFormula("=ABS(0)", 0);
-
-// Test ACCRINT
-// TODO: The second one is really close, but should be correct. Fix this.
-// testFormula("=ACCRINT(DATE(2011, 1, 1), DATE(2011, 2, 1), DATE(2014, 7, 1), 0.1, 1000, 1, 0)", 350);
-// testFormula('=ACCRINT(DATE(2000, 1, 1), DATE(2000, 2, 1), DATE(2002, 12, 31), 0.05, 100, 4)', 14.98611111);
 
 // Test ACOS
 testFormula("=ACOS(0)", 1.5707963267948966);
@@ -83,18 +74,11 @@ testFormula("=AVERAGEIF([1, 5, 10], '>2')", 7.5);
 // Test BIN2DEC
 testFormula("=BIN2DEC('1010101010')", -342);
 
-// Test BINOMINV
-// TODO: This should work.
-// testFormula('=BINOMINV(6, 0.5, 0.75)', 4);
-
 // Test BIN2HEX
 testFormula("=BIN2HEX(1010101010)", "FFFFFFFEAA");
 
 // Test BIN2OCT
 testFormula("=BIN2OCT(1010101010)", "7777777252");
-
-// Test BINOMDIST
-// TODO: This. FormulaJS implementation differs from GS.
 
 // Test CEIL
 testFormula("=CEILING(22.22, 0.1)", 22.3);
@@ -110,10 +94,6 @@ testFormula("=COMBIN(4, 2)", 6);
 
 // Test CONCATENATE
 testFormula('=CONCATENATE("hey", " ", "there")', "hey there");
-
-// Test CONFIDENCE
-// TODO: This should work.
-// testFormula('=CONFIDENCE(0.05, 1.6, 250)', 0.1983344105);
 
 // Test CONVERT
 testFormula('=CONVERT(5.1, "mm", "m")', 0.0050999999999999995);
@@ -139,9 +119,6 @@ testFormula('=COUNT([1, 5, 10])', 3);
 // Test COUNTA
 testFormula("=COUNTA(10, 10, 22)", 3);
 
-// Test COUNTBLANK
-// TODO: Fix COUNTBLANK. Does not work properly.
-
 // Test COUNTIF
 testFormula('=COUNTIF([1, 5, 10], ">4")', 2);
 
@@ -151,38 +128,11 @@ testFormula('=COUNTIFS([1, 5, 10], ">4", [1, 5, 10], ">4")', 2);
 // Test COUNTUNIQUE
 testFormula('=COUNTUNIQUE([1, 1, 10])', 2);
 
-// Test COVARIANCEP
-testFormula('=COVARIANCEP([3,2,4,5,6], [9,7,12,15,17])', 5.2);
-
-// Test COVARIANCES
-testFormula('=COVARIANCES([2,4,8], [5,11,12])', 9.666666666666668);
-
 // Test CUMIPMT
 testFormula("=CUMIPMT(0.12, 12, 100, 1, 5, 0)", -54.39423242396348);
 
 // Test CUMPRINC
 testFormula("=CUMPRINC(0.12, 12, 100, 1, 5, 0)", -26.324171373034403);
-
-// Test DATE
-// testFormulaToDate("=DATE(1992, 6, 24)", new Date("6/24/1992").getTime());
-// testFormulaToDate("=DATE(1992, 13, 24)", new Date("1/24/1993").getTime());
-// testFormulaToDate("=DATE(1992, 6, 44)", new Date("7/14/1992").getTime());
-// testFormulaToDate("=DATE(2, 6, 44)", new Date("7/14/1902").getTime());
-// testFormulaToDate("=DATE(2, 33, 44)", new Date("10/14/1904").getTime());
-// testFormulaToDate("=DATE(1976, 2, 29)", new Date("2/29/1976").getTime());
-// testFormulaToDate("=DATE(1976, 2, 30)", new Date("3/1/1976").getTime());
-//
-// // Test DATEVALUE
-// testFormulaToDate('=DATEVALUE("1992-6-24")', new Date("6/24/1992").getTime());
-//
-// // Test DAY
-// testFormula('=DAY(DATEVALUE("1992-6-24"))', 24);
-//
-// // Test DAYS
-// testFormula('=DAYS(DATEVALUE("1993-6-24"), DATEVALUE("1992-6-24"))', 365);
-//
-// // Test DAYS360
-// testFormula('=DAYS360(DATE(1969, 7, 16), DATE(1970, 7, 24), 1)', 368);
 
 // Test DB
 testFormula("=DB(100, 50, 10, 2, 12)", 6.2482428240683285);

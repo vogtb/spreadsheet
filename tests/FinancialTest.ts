@@ -8,13 +8,13 @@ import {
   DOLLARDE,
   DOLLARFR,
   EFFECT
-} from "../src/RawFormulas/Financial";
+} from "../src/Formulas/Financial";
 import {
   DATE
-} from "../src/RawFormulas/Date";
+} from "../src/Formulas/Date";
 import {
   PI
-} from "../src/RawFormulas/Math";
+} from "../src/Formulas/Math";
 import * as ERRORS from "../src/Errors"
 import {
   assertEquals,

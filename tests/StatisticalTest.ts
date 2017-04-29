@@ -18,7 +18,7 @@ import {
   MAXA,
   MIN,
   MINA
-} from "../src/RawFormulas/Statistical";
+} from "../src/Formulas/Statistical";
 import * as ERRORS from "../src/Errors"
 import {
   assertEquals,

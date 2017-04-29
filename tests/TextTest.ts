@@ -1,13 +1,11 @@
 import {
-  CONVERT
-} from "../src/RawFormulas/RawFormulas";
-import {
   ARABIC,
   CHAR,
   CODE,
   CONCATENATE,
-  SPLIT
-} from "../src/RawFormulas/Text";
+  SPLIT,
+  CONVERT
+} from "../src/Formulas/Text";
 import * as ERRORS from "../src/Errors";
 import {
   assertEquals,

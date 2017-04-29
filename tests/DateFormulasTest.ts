@@ -22,7 +22,7 @@ import {
   TIME,
   WORKDAY,
   WORKDAY$INTL
-} from "../src/RawFormulas/RawFormulas"
+} from "../src/Formulas/Date"
 import * as ERRORS from "../src/Errors"
 import {
   assertEquals,

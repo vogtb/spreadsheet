@@ -1,4 +1,4 @@
-import { Sheet } from "./Sheet"
+import { Sheet } from "./Sheet";
 
 var input = [
   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "=SUM(A1:D1, H1)"],

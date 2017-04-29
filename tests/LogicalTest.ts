@@ -6,7 +6,7 @@ import {
   NOT,
   OR,
   XOR
-} from "../src/RawFormulas/Logical";
+} from "../src/Formulas/Logical";
 import * as ERRORS from "../src/Errors"
 import {
   assertEquals,

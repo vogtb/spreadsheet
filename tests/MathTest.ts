@@ -50,7 +50,7 @@ import {
   RADIANS,
   DEGREES,
   COMBIN
-} from "../src/RawFormulas/Math";
+} from "../src/Formulas/Math";
 import * as ERRORS from "../src/Errors"
 import {
   assertEquals,

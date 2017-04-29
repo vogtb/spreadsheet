@@ -1,5 +1,5 @@
 # Spreadsheet
-TypeScript implementation of a spreadsheet.
+TypeScript/javascript implementation of a spreadsheet.
 
 ## TODO
 Things I should do.
@@ -10,14 +10,6 @@ And the same for MAX, MAXA, COUNT, COUNTA, etc. Look these over.
 ### Criteria evaluations should escape reg-ex characters
 http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 
-### Document the functions pulled in from jStat.
-
-### Double check all relevant formulas from MSExcel and GS have been implemented.
-
-### Refactor the way tests are organized.
-Group by error type and have some useful functions that will call with 0, N, N+1 args to test the args
-checker. Also, test for *all possible* errors that could be thrown, and *all possible types* that could be passed in.
-Another thing to think about would be throwing custom errors if an object is passed in.
 
 ### jStat functions should know their caller
 Either through `arguments`, or directly passed in like `mean("FORMULA", [10, 20, 30])`

@@ -228,6 +228,7 @@ catchAndAssertEquals(function() {
 
 // Test FINV
 assertEquals(FINV(0.42, 2, 3), 1.174597274485816);
+// TODO: Test this more.
 
 
 // Test FISHER

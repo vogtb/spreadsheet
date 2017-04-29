@@ -192,15 +192,30 @@ var AVERAGEA = function (...values) {
  * @constructor
  */
 var CORREL = function (...values) : number {
+  /**
+   * Return the standard deviation of a vector. By defaut, the population standard deviation is returned. Passing true
+   * for the flag parameter returns the sample standard deviation. See http://jstat.github.io/vector.html#stdev for
+   * more information.
+   */
   function stdev(arr, flag) {
     return Math.sqrt(variance(arr, flag));
   }
+
+  /**
+   * Return the variance of a vector. By default, the population variance is calculated. Passing true as the flag
+   * indicates computes the sample variance instead. See http://jstat.github.io/vector.html#variance for more
+   * information.
+   */
   function variance(arr, flag) {
     if ((arr.length - (flag ? 1 : 0)) === 0) {
       throw new DivZeroError("Evaluation of function CORREL caused a divide by zero error.");
     }
     return sumsqerr(arr) / (arr.length - (flag ? 1 : 0));
   }
+
+  /**
+   * Return the sum of a vector. See http://jstat.github.io/vector.html#sum for more information.
+   */
   function sum(arr) {
     var sum = 0;
     var i = arr.length;
@@ -209,12 +224,20 @@ var CORREL = function (...values) : number {
     }
     return sum;
   }
+  /**
+   * Return the mean of a vector. See http://jstat.github.io/vector.html#mean for more information.
+   */
   function mean(arr) {
     if (arr.length === 0) {
       throw new DivZeroError("Evaluation of function CORREL caused a divide by zero error.");
     }
     return sum(arr) / arr.length;
   }
+
+  /**
+   * Return the sum of squared errors of prediction of a vector. See http://jstat.github.io/vector.html#sumsqerr for
+   * more information.
+   */
   function sumsqerr(arr) {
     var m = mean(arr);
     var sum = 0;
@@ -226,6 +249,10 @@ var CORREL = function (...values) : number {
     }
     return sum;
   }
+
+  /**
+   * Return the covariance of two vectors. See http://jstat.github.io/vector.html#covariance for more information.
+   */
   function covariance(arr1, arr2) {
     var u = mean(arr1);
     var v = mean(arr2);
@@ -308,6 +335,10 @@ var EXPONDIST = function (...values) : number {
  * TODO: This function should be stricter in its return type.
  */
 var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
+  /**
+   * Returns the Log-Gamma function evaluated at x. See http://jstat.github.io/special-functions.html#gammaln for more
+   * information.
+   */
   function gammaln(x) {
     var j = 0;
     var cof = [
@@ -322,6 +353,11 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
       ser += cof[j] / ++y;
     return Math.log(2.5066282746310005 * ser / xx) - tmp;
   }
+
+  /**
+   * Returns the Gamma function evaluated at x. This is sometimes called the 'complete' gamma function. See
+   * http://jstat.github.io/special-functions.html#gammafn for more information.
+   */
   function gammafn(x) {
     var p = [-1.716185138865495, 24.76565080557592, -379.80425647094563,
       629.3311553128184, 866.9662027904133, -31451.272968848367,
@@ -369,6 +405,11 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
     }
     return res;
   }
+
+  /**
+   * Returns the continued fraction for the incomplete Beta function with parameters a and b modified by Lentz's method
+   * evaluated at x. For more information see http://jstat.github.io/special-functions.html#betacf.
+   */
   function betacf(x, a, b) {
     var fpmin = 1e-30;
     var m = 1;
@@ -414,6 +455,11 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
 
     return h;
   }
+
+  /**
+   * Returns the incomplete Beta function evaluated at (x,a,b). See http://jstat.github.io/special-functions.html#ibeta
+   * for more information.
+   */
   function ibeta(x, a, b) {
     // Factors in front of the continued fraction.
     var bt = (x === 0 || x === 1) ?  0 :
@@ -428,9 +474,21 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
     // else use continued fraction after making the symmetry transformation.
     return 1 - bt * betacf(1 - x, b, a) / b;
   }
+
+  /**
+   * Returns the value of x in the cdf of the Gamma distribution with the parameters shape (k) and scale (theta). Notice
+   * that if using the alpha beta convention, scale = 1/beta. For more information see
+   * http://jstat.github.io/distributions.html#jStat.gamma.cdf
+   */
   function cdf(x, df1, df2) {
     return ibeta((df1 * x) / (df1 * x + df2), df1 / 2, df2 / 2);
   }
+
+  /**
+   * Returns the value of x in the pdf of the Gamma distribution with the parameters shape (k) and scale (theta). Notice
+   * that if using the alpha beta convention, scale = 1/beta. For more information see
+   * http://jstat.github.io/distributions.html#jStat.gamma.pdf
+   */
   function pdf(x, df1, df2) {
     if (x < 0) {
       return undefined;
@@ -468,9 +526,13 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
  * @param values[2] deg_freedom2 - Required. The denominator degrees of freedom.
  * @returns {number} inverse of the (right-tailed) F probability distribution
  * @constructor
- * TODO: This function needs to be tested more thuroughly.
+ * TODO: This function needs to be tested more thoroughly.
  */
 var FINV = function (...values) : number {
+  /**
+   * Returns the continued fraction for the incomplete Beta function with parameters a and b modified by Lentz's method
+   * evaluated at x. For more information see http://jstat.github.io/special-functions.html#betacf
+   */
   function betacf(x, a, b) {
     var fpmin = 1e-30;
     var m = 1;
@@ -516,6 +578,11 @@ var FINV = function (...values) : number {
 
     return h;
   }
+
+  /**
+   * Returns the incomplete Beta function evaluated at (x,a,b). See http://jstat.github.io/special-functions.html#ibeta
+   * for more information.
+   */
   function ibeta(x, a, b) : number {
     // Factors in front of the continued fraction.
     var bt = (x === 0 || x === 1) ?  0 :
@@ -532,6 +599,11 @@ var FINV = function (...values) : number {
     // else use continued fraction after making the symmetry transformation.
     return 1 - bt * betacf(1 - x, b, a) / b;
   }
+
+  /**
+   * Returns the Log-Gamma function evaluated at x. For more information see
+   * http://jstat.github.io/special-functions.html#gammaln
+   */
   function gammaln(x) {
     var j = 0;
     var cof = [
@@ -546,6 +618,11 @@ var FINV = function (...values) : number {
       ser += cof[j] / ++y;
     return Math.log(2.5066282746310005 * ser / xx) - tmp;
   }
+
+  /**
+   * Returns the inverse of the incomplete Beta function evaluated at (p,a,b). For more information see
+   * http://jstat.github.io/special-functions.html#ibetainv
+   */
   function ibetainv(p, a, b) {
     var EPS = 1e-8;
     var a1 = a - 1;
@@ -595,6 +672,10 @@ var FINV = function (...values) : number {
     }
     return x;
   }
+
+  /**
+   * http://jstat.github.io/distributions.html
+   */
   function inv(x, df1, df2) {
     return df2 / (df1 * (1 / ibetainv(x, df1 / 2, df2 / 2) - 1));
   }

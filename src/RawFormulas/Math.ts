@@ -823,7 +823,17 @@ var ERF = function (...values) : number {
   return values.length === 1 ? erf(lower) : erf(upper) - erf(lower);
 };
 
-// erf function from jStat [http://www.jstat.org/]
+
+/**
+ * Returns the error function evaluated at x. See also:
+ *
+ * * http://jstat.github.io/special-functions.html#erf
+ *
+ * * https://github.com/jstat/jstat/search?utf8=%E2%9C%93&q=erf&type=
+ *
+ * @param x to evaluate
+ * @returns {number} error
+ */
 function erf(x) {
   var cof = [-1.3026537197817094, 6.4196979235649026e-1, 1.9476473204185836e-2,
     -9.561514786808631e-3, -9.46595344482036e-4, 3.66839497852761e-4,

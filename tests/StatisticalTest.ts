@@ -1,44 +1,29 @@
-import { ARABIC, AVEDEV, AVERAGE,
-    AVERAGEA, AVERAGEIF,
-    CHAR, CODE, CONCATENATE, CONVERT, PEARSON,
-    CORREL, COUNT, COUNTA,
-    DEVSQ,
-    EXPONDIST, FINV, __COMPLEX, FISHER, FISHERINV,
-    MAX, MAXA, MEDIAN, MIN, MINA,
-    SPLIT } from "../src/RawFormulas/RawFormulas";
+import {
+  AVERAGE,
+  AVERAGEA,
+  AVERAGEIF,
+  AVEDEV,
+  CORREL,
+  COUNT,
+  COUNTA,
+  PEARSON,
+  MEDIAN,
+  DEVSQ,
+  EXPONDIST,
+  FDIST$LEFTTAILED,
+  FINV,
+  FISHER,
+  FISHERINV,
+  MAX,
+  MAXA,
+  MIN,
+  MINA
+} from "../src/RawFormulas/Statistical";
 import * as ERRORS from "../src/Errors"
-import {assertEquals, assertArrayEquals} from "./utils/Asserts"
-
-function catchAndAssertEquals(toExecute, expected) {
-  var toThrow = null;
-  try {
-    toExecute();
-    toThrow = true;
-  } catch (actualError) {
-    if (actualError.name != expected) {
-      console.log(expected, "not equal to", actualError.name);
-    }
-  }
-  if (toThrow) {
-    throw new Error("expected error: " + expected);
-  }
-}
-
-
-
-// Test ARABIC
-assertEquals(ARABIC("XIV"), 14);
-assertEquals(ARABIC("M"), 1000);
-assertEquals(ARABIC("-IV"), -4);
-catchAndAssertEquals(function() {
-  ARABIC("b");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  ARABIC(false);
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  ARABIC(10);
-}, ERRORS.VALUE_ERROR);
+import {
+  assertEquals,
+  catchAndAssertEquals
+} from "./utils/Asserts";
 
 
 // Test AVEDEV
@@ -137,70 +122,6 @@ catchAndAssertEquals(function() {
   AVERAGEIF([1, 5, 5, 5, 10, 5], "==5");
 }, ERRORS.DIV_ZERO_ERROR);
 
-
-// Test CHAR
-assertEquals(CHAR(97), "a");
-assertEquals(CHAR("97"), "a");
-assertEquals(CHAR([97, "m"]), "a");
-assertEquals(CHAR([[97], "m"]), "a");
-catchAndAssertEquals(function() {
-  CHAR([[], [97], "m"]);
-}, ERRORS.REF_ERROR);
-catchAndAssertEquals(function() {
-  CHAR(false);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  CHAR(10000000);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  CHAR(0);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  CHAR();
-}, ERRORS.NA_ERROR);
-
-
-// Test CODE
-assertEquals(CODE('a'), 97);
-assertEquals(CODE('aa'), 97);
-assertEquals(CODE('aM'), 97);
-assertEquals(CODE('#'), 35);
-assertEquals(CODE(false), 70);
-assertEquals(CODE(true), 84);
-catchAndAssertEquals(function() {
-  CODE();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  CODE("a", "m");
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  CODE("");
-}, ERRORS.VALUE_ERROR);
-assertEquals(CODE(['a']), 97);
-assertEquals(CODE([['a'], 'p']), 97);
-
-
-// Test CONCATENATE
-assertEquals(CONCATENATE("hey", " ", "there"), "hey there");
-assertEquals(CONCATENATE(["hey", " ", "there"]), "hey there");
-assertEquals(CONCATENATE("hey"), "hey");
-assertEquals(CONCATENATE("hey", 2), "hey2");
-assertEquals(CONCATENATE("hey", false), "heyFALSE");
-assertEquals(CONCATENATE([22, 14, "m", false]), "2214mFALSE");
-assertEquals(CONCATENATE([22, 14, ["m", false]]), "2214mFALSE");
-catchAndAssertEquals(function() {
-  CONCATENATE();
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  CONCATENATE("10", 4, false, []);
-}, ERRORS.REF_ERROR);
-catchAndAssertEquals(function() {
-  CONCATENATE([]);
-}, ERRORS.REF_ERROR);
-
-
-// Test CONVERT
-assertEquals(CONVERT(5.1, "mm", "m"), 0.0050999999999999995);
 
 // Test CORREL
 assertEquals(CORREL([9, 5],[10, 4]), 1);
@@ -302,26 +223,6 @@ catchAndAssertEquals(function() {
 }, ERRORS.NA_ERROR);
 catchAndAssertEquals(function() {
   EXPONDIST(4, 0.5, true, 1);
-}, ERRORS.NA_ERROR);
-
-
-// Test F.DIST
-assertEquals(__COMPLEX["F.DIST"](15.35, 7, 6, false), 0.0003451054686025578);
-assertEquals(__COMPLEX["F.DIST"](15.35, 7, 6, true), 0.9980694465675269);
-assertEquals(__COMPLEX["F.DIST"](15.35, 7, 6, 1), 0.9980694465675269);
-assertEquals(__COMPLEX["F.DIST"](15.35, "7", [6], 1), 0.9980694465675269);
-assertEquals(__COMPLEX["F.DIST"](15.35, "7", [6], 10), 0.9980694465675269);
-catchAndAssertEquals(function() {
-  __COMPLEX["F.DIST"](15.35, 7, 6, "10");
-}, ERRORS.VALUE_ERROR);
-catchAndAssertEquals(function() {
-  __COMPLEX["F.DIST"](-15.35, 7, 6, 1);
-}, ERRORS.NUM_ERROR);
-catchAndAssertEquals(function() {
-  __COMPLEX["F.DIST"](15.35, 7, 6);
-}, ERRORS.NA_ERROR);
-catchAndAssertEquals(function() {
-  __COMPLEX["F.DIST"]();
 }, ERRORS.NA_ERROR);
 
 
@@ -454,16 +355,21 @@ catchAndAssertEquals(function() {
 assertEquals(MINA(100, 22, 44), 22);
 
 
-// Test SPLIT
-assertArrayEquals(SPLIT("1,2,3", ","), ['1', '2', '3']);
-assertArrayEquals(SPLIT("little kitty cat", "i"), ['l', 'ttle k', 'tty cat']);
-assertArrayEquals(SPLIT("father sister berzerker", "er", true), ['fath', ' sist', ' b', 'z', 'k']);
-assertArrayEquals(SPLIT("father sister berzerker", "er", [true]), ['fath', ' sist', ' b', 'z', 'k']);
-assertArrayEquals(SPLIT("father  sister   berzerker", "er", true), ['fath', '  sist', '   b', 'z', 'k']);
-assertArrayEquals(SPLIT(["father sister berzerker"], ["er"], true), ['fath', ' sist', ' b', 'z', 'k']);
+// Test F.DIST
+assertEquals(FDIST$LEFTTAILED(15.35, 7, 6, false), 0.0003451054686025578);
+assertEquals(FDIST$LEFTTAILED(15.35, 7, 6, true), 0.9980694465675269);
+assertEquals(FDIST$LEFTTAILED(15.35, 7, 6, 1), 0.9980694465675269);
+assertEquals(FDIST$LEFTTAILED(15.35, "7", [6], 1), 0.9980694465675269);
+assertEquals(FDIST$LEFTTAILED(15.35, "7", [6], 10), 0.9980694465675269);
 catchAndAssertEquals(function() {
-  SPLIT([], "er");
-}, ERRORS.REF_ERROR);
+  FDIST$LEFTTAILED(15.35, 7, 6, "10");
+}, ERRORS.VALUE_ERROR);
 catchAndAssertEquals(function() {
-  SPLIT("er", "er", true, 10);
+  FDIST$LEFTTAILED(-15.35, 7, 6, 1);
+}, ERRORS.NUM_ERROR);
+catchAndAssertEquals(function() {
+  FDIST$LEFTTAILED(15.35, 7, 6);
+}, ERRORS.NA_ERROR);
+catchAndAssertEquals(function() {
+  FDIST$LEFTTAILED();
 }, ERRORS.NA_ERROR);

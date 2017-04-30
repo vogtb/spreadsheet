@@ -60,8 +60,15 @@ function catchAndAssertEquals(toExecute : Function, expected) {
   }
 }
 
+function test(description: string, toRun: Function) {
+  console.log("Test:", description);
+  toRun();
+}
+
+
 export {
   assertEquals,
   assertArrayEquals,
-  catchAndAssertEquals
+  catchAndAssertEquals,
+  test
 }

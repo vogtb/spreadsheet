@@ -43,6 +43,8 @@ Right now we're just using the number of days since 1900, but we should check th
 
 ### Numbers with commas in them should still parse to numbers.
 
+### Ensure all formulas are tested inside of SheetFormulaTest.ts
+
 
 ## Testing Guidelines
 

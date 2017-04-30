@@ -2,10 +2,11 @@ import {
   Sheet
 } from "../src/Sheet";
 import {
-  assertEquals
+  assertEquals,
+  test
 } from "./utils/Asserts";
 
-function testFormula(formula: string, expectation: any) {
+function assertFormulaEquals(formula: string, expectation: any) {
   var sheet  = new Sheet();
   sheet.setCell("A1", formula);
   var cell = sheet.getCell("A1");
@@ -24,186 +25,235 @@ function testFormulaToArray(formula: string, expectation: any) {
   }
 }
 
-// Test ABS formula
-testFormula("=ABS(-10)", 10);
-testFormula("=ABS(0)", 0);
+test("Sheet ABS", function(){
+  assertFormulaEquals("=ABS(-10)", 10);
+  assertFormulaEquals("=ABS(0)", 0);
+});
 
-// Test ACOS
-testFormula("=ACOS(0)", 1.5707963267948966);
+test("Sheet ACOS", function(){
+  assertFormulaEquals("=ACOS(0)", 1.5707963267948966);
+});
 
-// Test ACOSH
-testFormula("=ACOSH(22)", 3.783672704329451);
+test("Sheet ACOSH", function(){
+  assertFormulaEquals("=ACOSH(22)", 3.783672704329451);
+});
 
-// Test ACOTH
-testFormula("=ACOTH(22)", 0.04548588910286339);
+test("Sheet ACOTH", function(){
+  assertFormulaEquals("=ACOTH(22)", 0.04548588910286339);
+});
 
-// Test AND
-testFormula("=AND(10, 10)", true);
-testFormula("=AND(10, 0)", false);
+test("Sheet AND", function(){
+  assertFormulaEquals("=AND(10, 10)", true);
+  assertFormulaEquals("=AND(10, 0)", false);
+});
 
-// Test ARABIC
-testFormula('=ARABIC("XIV")', 14);
+test("Sheet ARABIC", function(){
+  assertFormulaEquals('=ARABIC("XIV")', 14);
+});
 
-// Test ASIN
-testFormula("=ASIN(0.1)", 0.1001674211615598);
+test("Sheet ASIN", function(){
+  assertFormulaEquals("=ASIN(0.1)", 0.1001674211615598);
+});
 
-// Test ASINH
-testFormula("=ASINH(0.1)", 0.09983407889920758);
+test("Sheet ASINH", function(){
+  assertFormulaEquals("=ASINH(0.1)", 0.09983407889920758);
+});
 
-// Test ATAN
-testFormula("=ATAN(0.1)", 0.09966865249116204);
+test("Sheet ATAN", function(){
+  assertFormulaEquals("=ATAN(0.1)", 0.09966865249116204);
+});
 
-// Test ATAN2
-testFormula("=ATAN2(4, 3)", 0.6435011087932844);
+test("Sheet ATAN2", function(){
+  assertFormulaEquals("=ATAN2(4, 3)", 0.6435011087932844);
+});
 
-// Test ATANH
-testFormula("=ATANH(0.51)", 0.5627297693521489);
+test("Sheet ATANH", function(){
+  assertFormulaEquals("=ATANH(0.51)", 0.5627297693521489);
+});
 
-// Test AVEDEV
-testFormula("=AVEDEV(1, 2, 4, 56.7)", 20.387500000000003);
+test("Sheet AVEDEV", function(){
+  assertFormulaEquals("=AVEDEV(1, 2, 4, 56.7)", 20.387500000000003);
+});
 
-// Test AVERAGE
-testFormula("=AVERAGE(10, 20, 4.1)", 11.366666666666667);
+test("Sheet AVERAGE", function(){
+  assertFormulaEquals("=AVERAGE(10, 20, 4.1)", 11.366666666666667);
+});
 
-// Test AVERAGEA
-testFormula("=AVERAGEA(10, 20, 4.1)", 11.366666666666667);
+test("Sheet AVERAGEA", function(){
+  assertFormulaEquals("=AVERAGEA(10, 20, 4.1)", 11.366666666666667);
+});
 
-// Test AVERAGEIF
-testFormula("=AVERAGEIF([1, 5, 10], '>2')", 7.5);
+test("Sheet AVERAGEIF", function(){
+  assertFormulaEquals("=AVERAGEIF([1, 5, 10], '>2')", 7.5);
+});
 
-// Test BIN2DEC
-testFormula("=BIN2DEC('1010101010')", -342);
+test("Sheet BIN2DEC", function(){
+  assertFormulaEquals("=BIN2DEC('1010101010')", -342);
+});
 
-// Test BIN2HEX
-testFormula("=BIN2HEX(1010101010)", "FFFFFFFEAA");
+test("Sheet BIN2HEX", function(){
+  assertFormulaEquals("=BIN2HEX(1010101010)", "FFFFFFFEAA");
+});
 
-// Test BIN2OCT
-testFormula("=BIN2OCT(1010101010)", "7777777252");
+test("Sheet BIN2OCT", function(){
+  assertFormulaEquals("=BIN2OCT(1010101010)", "7777777252");
+});
 
-// Test CEIL
-testFormula("=CEILING(22.22, 0.1)", 22.3);
+test("Sheet CEILING", function(){
+  assertFormulaEquals("=CEILING(22.22, 0.1)", 22.3);
+});
 
-// Test CHAR
-testFormula("=CHAR(97)", "a");
+test("Sheet CHAR", function(){
+  assertFormulaEquals("=CHAR(97)", "a");
+});
 
-// Test CODE
-testFormula("=CODE('a')", 97);
+test("Sheet CODE", function(){
+  assertFormulaEquals("=CODE('a')", 97);
+});
 
-// Test COMBIN
-testFormula("=COMBIN(4, 2)", 6);
+test("Sheet COMBIN", function(){
+  assertFormulaEquals("=COMBIN(4, 2)", 6);
+});
 
-// Test CONCATENATE
-testFormula('=CONCATENATE("hey", " ", "there")', "hey there");
+test("Sheet CONCATENATE", function(){
+  assertFormulaEquals('=CONCATENATE("hey", " ", "there")', "hey there");
+});
 
-// Test CONVERT
-testFormula('=CONVERT(5.1, "mm", "m")', 0.0050999999999999995);
+test("Sheet CONVERT", function(){
+  assertFormulaEquals('=CONVERT(5.1, "mm", "m")', 0.0050999999999999995);
+});
 
-// Test CORREL
-testFormula('=CORREL([9, 5],[10, 4])', 1);
+test("Sheet CORREL", function(){
+  assertFormulaEquals('=CORREL([9, 5],[10, 4])', 1);
+});
 
-// Test COS
-testFormula("=COS(PI())", -1);
+test("Sheet COS", function(){
+  assertFormulaEquals("=COS(PI())", -1);
+});
 
-// Test COSH
-testFormula("=COSH(PI())", 11.591953275521522);
+test("Sheet COSH", function(){
+  assertFormulaEquals("=COSH(PI())", 11.591953275521522);
+});
 
-// Test COT
-testFormula('=COT(30)', -0.15611995216165922);
+test("Sheet COT", function(){
+  assertFormulaEquals('=COT(30)', -0.15611995216165922);
+});
 
-// Test COTH
-testFormula('=COTH(2)', 1.037314720727548);
+test("Sheet COTH", function(){
+  assertFormulaEquals('=COTH(2)', 1.037314720727548);
+});
 
-// Test COUNT
-testFormula('=COUNT([1, 5, 10])', 3);
+test("Sheet COUNT", function(){
+  assertFormulaEquals('=COUNT([1, 5, 10])', 3);
+});
 
-// Test COUNTA
-testFormula("=COUNTA(10, 10, 22)", 3);
+test("Sheet COUNTA", function(){
+  assertFormulaEquals("=COUNTA(10, 10, 22)", 3);
+});
 
-// Test COUNTIF
-testFormula('=COUNTIF([1, 5, 10], ">4")', 2);
+test("Sheet COUNTIF", function(){
+  assertFormulaEquals('=COUNTIF([1, 5, 10], ">4")', 2);
+});
 
-// Test COUNTIFS
-testFormula('=COUNTIFS([1, 5, 10], ">4", [1, 5, 10], ">4")', 2);
+test("Sheet COUNTIFS", function(){
+  assertFormulaEquals('=COUNTIFS([1, 5, 10], ">4", [1, 5, 10], ">4")', 2);
+});
 
-// Test COUNTUNIQUE
-testFormula('=COUNTUNIQUE([1, 1, 10])', 2);
+test("Sheet COUNTUNIQUE", function(){
+  assertFormulaEquals('=COUNTUNIQUE([1, 1, 10])', 2);
+});
 
-// Test CUMIPMT
-testFormula("=CUMIPMT(0.12, 12, 100, 1, 5, 0)", -54.39423242396348);
+test("Sheet CUMIPMT", function(){
+  assertFormulaEquals("=CUMIPMT(0.12, 12, 100, 1, 5, 0)", -54.39423242396348);
+});
 
-// Test CUMPRINC
-testFormula("=CUMPRINC(0.12, 12, 100, 1, 5, 0)", -26.324171373034403);
+test("Sheet COMPRINC", function(){
+  assertFormulaEquals("=CUMPRINC(0.12, 12, 100, 1, 5, 0)", -26.324171373034403);
+});
 
-// Test DB
-testFormula("=DB(100, 50, 10, 2, 12)", 6.2482428240683285);
+test("Sheet DB", function(){
+  assertFormulaEquals("=DB(100, 50, 10, 2, 12)", 6.2482428240683285);
+});
 
-// Test DDB
-testFormula("=DDB(100, 50, 10, 2, 2.25)", 17.4375);
+test("Sheet DDB", function(){
+  assertFormulaEquals("=DDB(100, 50, 10, 2, 2.25)", 17.4375);
+});
 
-// Test DEC2BIN
-testFormula('=DEC2BIN("100", 8)', "01100100");
+test("Sheet DEC2BIN", function(){
+  assertFormulaEquals('=DEC2BIN("100", 8)', "01100100");
+});
 
-// Test DEC2HEX
-testFormula('=DEC2HEX("100")', "64");
+test("Sheet DEC2HEX", function(){
+  assertFormulaEquals('=DEC2HEX("100")', "64");
+});
 
-// Test DEC2OCT
-testFormula('=DEC2OCT("100")', "144");
+test("Sheet DEC2OCT", function(){
+  assertFormulaEquals('=DEC2OCT("100")', "144");
+});
 
-// Test DEGREES
-testFormula('=DEGREES(PI())', 180);
+test("Sheet DEGREES", function(){
+  assertFormulaEquals('=DEGREES(PI())', 180);
+});
 
-// Test DELTA
-testFormula('=DELTA(2, 2)', 1);
+test("Sheet DELTA", function(){
+  assertFormulaEquals('=DELTA(2, 2)', 1);
+});
 
-// Test DEVSQ
-testFormula('=DEVSQ(1, 2)', 0.5);
+test("Sheet DEVSQ", function(){
+  assertFormulaEquals('=DEVSQ(1, 2)', 0.5);
+});
 
-// Test DOLLAR
-testFormula('=DOLLAR(1.2351, 4)', 1.2351);
+test("Sheet DOLLAR", function(){
+  assertFormulaEquals('=DOLLAR(1.2351, 4)', 1.2351);
+});
 
-// Test DOLLARDE
-testFormula('=DOLLARDE(100.1, 32)', 100.3125);
+test("Sheet DOLLARDE", function(){
+  assertFormulaEquals('=DOLLARDE(100.1, 32)', 100.3125);
+});
 
-// Test DOLLARFR
-testFormula('=DOLLARFR(100.1, 32)', 100.032);
+test("Sheet DOLLARFR", function(){
+  assertFormulaEquals('=DOLLARFR(100.1, 32)', 100.032);
+});
 
-// Test AND
-testFormula('=AND(10)', true);
+test("Sheet AND", function(){
+  assertFormulaEquals('=AND(10)', true);
+});
 
-// Test EDATE
-// testFormulaToDate('=EDATE(DATE(1992, 6, 24), 1)', new Date('7/24/1992').getTime());
+test("Sheet EFFECT", function(){
+  assertFormulaEquals('=EFFECT(0.99, 12)', 1.5890167507927795);
+});
 
-// Test EFFECT
-testFormula('=EFFECT(0.99, 12)', 1.5890167507927795);
+test("Sheet ERF", function(){
+  assertFormulaEquals('=ERF(2)', 0.9953222650189527);
+});
 
-// EOMONTH
-// testFormulaToDate('=EOMONTH(DATE(1992, 6, 24), 1)', new Date('7/31/1992').getTime());
+test("Sheet ERFC", function(){
+  assertFormulaEquals('=ERFC(2)', 0.004677734981047288);
+});
 
-// Test ERF
-testFormula('=ERF(2)', 0.9953222650189527);
+test("Sheet EVEN", function(){
+  assertFormulaEquals('=EVEN(3)', 4);
+});
 
-// Test ERFC
-testFormula('=ERFC(2)', 0.004677734981047288);
+test("Sheet EXACT", function(){
+  assertFormulaEquals('=EXACT("m", "M")', false);
+});
 
-// Test EVEN
-testFormula('=EVEN(3)', 4);
+test("Sheet EXPONDIST", function(){
+  assertFormulaEquals('=EXPONDIST(4, 0.5, false)', 0.06766764161830635);
+});
 
-// Test EXACT
-testFormula('=EXACT("m", "M")', false);
+test("Sheet FALSE", function(){
+  assertFormulaEquals('=FALSE()', false);
+});
 
-// Test EXPONDIST
-testFormula('=EXPONDIST(4, 0.5, false)', 0.06766764161830635);
-
-// Test FALSE
-testFormula('=FALSE()', false);
-
-// Test F.DIST
-
-testFormula('=F.DIST(15.35, 7, 6, false)', 0.0003451054686025578);
-testFormula('=F.DIST(15.35, 7, 6, true)', 0.9980694465675269);
+test("Sheet F.DIST", function(){
+  assertFormulaEquals('=F.DIST(15.35, 7, 6, false)', 0.0003451054686025578);
+  assertFormulaEquals('=F.DIST(15.35, 7, 6, true)', 0.9980694465675269);
+});
 
 // Test FDIST
-// TODO: This should work.
+// TODO: Test FDIST
 /*
  * F.DIST Calculates the left-tailed F probability distribution (degree of diversity) for two data sets with given input x. Alternately called Fisher-Snedecor distribution or Snedecor's F distribution.
  * FDIST Calculates the right-tailed F probability distribution (degree of diversity) for two data sets with given input x. Alternately called Fisher-Snedecor distribution or Snedecor's F distribution.
@@ -211,11 +261,12 @@ testFormula('=F.DIST(15.35, 7, 6, true)', 0.9980694465675269);
  * F.DIST is left-tailed. FDIST is right-tailed.
  */
 
-// Test FINV
-testFormula('=FINV(0.42, 2, 3)', 1.174597274485816);
+test("Sheet FINV", function(){
+  assertFormulaEquals('=FINV(0.42, 2, 3)', 1.174597274485816);
+});
 
 // Test F.INV
-// TODO: This should work.
+// TODO: Test F.INV
 /*
  * FINV Calculates the inverse of the right-tailed F probability distribution. Also called the Fisher-Snedecor distribution or Snedecor’s F distribution.
  * F.INV Calculates the inverse of the left-tailed F probability distribution. Also called the Fisher-Snedecor distribution or Snedecor’s F distribution.
@@ -223,138 +274,165 @@ testFormula('=FINV(0.42, 2, 3)', 1.174597274485816);
  * F.INV is left-tailed. FINV is right-tailed.
  */
 
-// Test FISHER
-testFormula('=FISHER(0.962)', 1.972066740199461);
+test("Sheet FISHER", function(){
+  assertFormulaEquals('=FISHER(0.962)', 1.972066740199461);
+});
 
-// Test FISHERINV
-testFormula('=FISHERINV(0.962)', 0.7451676440945232);
+test("Sheet FISHERINV", function(){
+  assertFormulaEquals('=FISHERINV(0.962)', 0.7451676440945232);
+});
 
-// Test IF
-testFormula('=IF("m" = "m", "hit", "miss")', 'hit');
+test("Sheet IF", function(){
+  assertFormulaEquals('=IF("m" = "m", "hit", "miss")', 'hit');
+});
 
-// Test INT
-testFormula('=INT(99.33)', 99);
+test("Sheet INT", function(){
+  assertFormulaEquals('=INT(99.33)', 99);
+});
 
-// Test ISEVEN
-testFormula('=ISEVEN(4)', true);
+test("Sheet ISEVEN", function(){
+  assertFormulaEquals('=ISEVEN(4)', true);
+});
 
-// Test ISODD
-testFormula('=ISODD(3)', true);
+test("Sheet ISODD", function(){
+  assertFormulaEquals('=ISODD(3)', true);
 
-// Test LN
-testFormula('=LN(100)', 4.605170185988092);
+});
 
-// Test LOG
-testFormula('=LOG(256, 2)', 8);
+test("Sheet LN", function(){
+  assertFormulaEquals('=LN(100)', 4.605170185988092);
+});
 
-// Test LOG10
-testFormula('=LOG10(100)', 2);
+test("Sheet LOG", function(){
+  assertFormulaEquals('=LOG(256, 2)', 8);
+});
 
-// Test MAX
-testFormula('=MAX(100, 22)', 100);
+test("Sheet LOG10", function(){
+  assertFormulaEquals('=LOG10(100)', 2);
+});
 
-// Test MAXA
-testFormula('=MAXA(100, 22, 44)', 100);
+test("Sheet MAX", function(){
+  assertFormulaEquals('=MAX(100, 22)', 100);
+});
 
-// Test MEDIAN
-testFormula('=MEDIAN(100, 22, 54)', 54);
+test("Sheet MAXA", function(){
+  assertFormulaEquals('=MAXA(100, 22, 44)', 100);
+});
 
-// Test MIN
-testFormula('=MIN(100, 22, 44)', 22);
+test("Sheet MEDIAN", function(){
+  assertFormulaEquals('=MEDIAN(100, 22, 54)', 54);
+});
 
-// Test MINA
-testFormula('=MINA(100, 22, 44)', 22);
+test("Sheet MIN", function(){
+  assertFormulaEquals('=MIN(100, 22, 44)', 22);
+});
 
-// Test MOD
-testFormula('=MOD(10, 3)', 1);
+test("Sheet MINA", function(){
+  assertFormulaEquals('=MINA(100, 22, 44)', 22);
+});
 
-// Test NOT
-testFormula('=NOT(TRUE())', false);
+test("Sheet MOD", function(){
+  assertFormulaEquals('=MOD(10, 3)', 1);
+});
 
-// Test ODD
-testFormula('=ODD(2)', 3);
+test("Sheet NOT", function(){
+  assertFormulaEquals('=NOT(TRUE())', false);
+});
 
-// Test OR
-testFormula('=OR("m" = "p", "n" = "n")', true);
+test("Sheet ODD", function(){
+  assertFormulaEquals('=ODD(2)', 3);
+});
 
-// Test PI()
-testFormula('=PI()', 3.141592653589793);
+test("Sheet OR", function(){
+  assertFormulaEquals('=OR("m" = "p", "n" = "n")', true);
+});
 
-// Test POWER
-testFormula('=POWER(4, 10)', 1048576);
+test("Sheet PI", function(){
+  assertFormulaEquals('=PI()', 3.141592653589793);
+});
 
-// Test ROUND
-testFormula('=ROUND(99.44, 1)', 99.4);
+test("Sheet POWER", function(){
+  assertFormulaEquals('=POWER(4, 10)', 1048576);
+});
 
-// Test ROUNDDOWN
-testFormula('=ROUNDDOWN(99.46, 1)', 99.4);
+test("Sheet ROUND", function(){
+  assertFormulaEquals('=ROUND(99.44, 1)', 99.4);
+});
 
-// Test ROUNDUP
-testFormula('=ROUNDUP(99.46, 1)', 99.5);
+test("Sheet ROUNDDOWN", function(){
+  assertFormulaEquals('=ROUNDDOWN(99.46, 1)', 99.4);
+});
 
-// Test SIN
-testFormula('=SIN(0)', 0);
-testFormula('=SIN(1)', 0.8414709848078965);
-testFormula('=SIN(PI() / 2)', 1);
-testFormula('=SIN(PI())', 0);
+test("Sheet ROUNDUP", function(){
+  assertFormulaEquals('=ROUNDUP(99.46, 1)', 99.5);
+});
 
+test("Sheet SIN", function(){
+  assertFormulaEquals('=SIN(0)', 0);
+  assertFormulaEquals('=SIN(1)', 0.8414709848078965);
+  assertFormulaEquals('=SIN(PI() / 2)', 1);
+  assertFormulaEquals('=SIN(PI())', 0);
+});
 
-// Test SINH
-testFormula('=SINH(PI())', 11.548739357257748);
+test("Sheet SINH", function(){
+  assertFormulaEquals('=SINH(PI())', 11.548739357257748);
+});
 
-// Test SPLIT
-testFormulaToArray('=SPLIT("1,2,3", ",", TRUE)', [ '1', '2', '3' ]);
+test("Sheet SPLIT", function(){
+  testFormulaToArray('=SPLIT("1,2,3", ",", TRUE)', [ '1', '2', '3' ]);
+});
 
-// Test SQRT
-testFormula('=SQRT(9)', 3);
+test("Sheet SQRT", function(){
+  assertFormulaEquals('=SQRT(9)', 3);
+});
 
-// Test SQRTPI
-testFormula('=SQRTPI(9)', 5.317361552716548);
+test("Sheet SQRTPI", function(){
+  assertFormulaEquals('=SQRTPI(9)', 5.317361552716548);
+});
 
-// Test SUM
-testFormula('=SUM(10, 10)', 20);
+test("Sheet SUM", function(){
+  assertFormulaEquals('=SUM(10, 10)', 20);
+});
 
-// Test SUMIF
-testFormula('=SUMIF([1, 5, 10], 5)', 5);
+test("Sheet SUMIF", function(){
+  assertFormulaEquals('=SUMIF([1, 5, 10], 5)', 5);
+});
 
-// Test SUMPRODUCT
-testFormula('=SUMPRODUCT([1, 5, 10], [2, 2, 2])', 32);
+test("Sheet SUMPRODUCT", function(){
+  assertFormulaEquals('=SUMPRODUCT([1, 5, 10], [2, 2, 2])', 32);
+});
 
-// Test SUMSQ
-testFormula('=SUMSQ([1, 5, 10], 10)', 226);
+test("Sheet SUMSQ", function(){
+  assertFormulaEquals('=SUMSQ([1, 5, 10], 10)', 226);
+});
 
-// Test SUMX2MY2
-testFormula('=SUMX2MY2([1,2,3],[4,5,6])', -63);
+test("Sheet SUMX2MY2", function(){
+  assertFormulaEquals('=SUMX2MY2([1,2,3],[4,5,6])', -63);
+});
 
-// Test SUMX2PY2
-testFormula('=SUMX2PY2([1, 2, 3], [4, 5, 6])', 91);
+test("Sheet SUMX2PY2", function(){
+  assertFormulaEquals('=SUMX2PY2([1, 2, 3], [4, 5, 6])', 91);
+});
 
-// Test SUMXMY2
-// TODO: This should work.
-// testFormula('=SUMXMY2([1,2,3],[4,5,6])', 27);
+test("Sheet TAN", function(){
+  assertFormulaEquals('=TAN(0)', 0);
+  assertFormulaEquals('=TAN(1)', 1.5574077246549023);
+  assertFormulaEquals('=TAN(PI() / 2)', 16331239353195370);
+  assertFormulaEquals('=TAN(PI())', 0);
+});
 
-// Test TAN
-testFormula('=TAN(0)', 0);
-testFormula('=TAN(1)', 1.5574077246549023);
-testFormula('=TAN(PI() / 2)', 16331239353195370);
-testFormula('=TAN(PI())', 0);
+test("Sheet TANH", function(){
+  assertFormulaEquals('=TANH(PI())', 0.9962720762207501);
+});
 
-// Test TANH
-testFormula('=TANH(PI())', 0.9962720762207501);
+test("Sheet TRUE", function(){
+  assertFormulaEquals('=TRUE()', true);
+});
 
-// Test TRUE
-testFormula('=TRUE()', true);
+test("Sheet TRUNC", function(){
+  assertFormulaEquals('=TRUNC(3.1415, 2)', 3.14);
+});
 
-// Test TRUE
-testFormula('=TRUNC(3.1415, 2)', 3.14);
-
-// Test XOR
-testFormula('=XOR(1, 1)', false);
-
-// Test YEARFRAC
-// testFormula('=YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 0)', 18.994444444444444);
-// // testFormula('=YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 1)', 18.99587544); // This is slightly off
-// testFormula('=YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 2)', 19.272222222222222);
-// testFormula('=YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 3)', 19.008219178082193);
-// testFormula('=YEARFRAC(DATE(1969, 7, 6), DATE(1988, 7, 4), 4)', 18.994444444444444);
-
+test("Sheet XOR", function(){
+  assertFormulaEquals('=XOR(1, 1)', false);
+});

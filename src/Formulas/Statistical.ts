@@ -1,9 +1,15 @@
 import {
-  ArgsChecker,
-  CriteriaFunctionFactory,
-  Filter,
+  ArgsChecker
+} from "../Utilities/ArgsChecker";
+import {
+  CriteriaFunctionFactory
+} from "../Utilities/CriteriaFunctionFactory";
+import {
+  Filter
+} from "../Utilities/Filter";
+import {
   TypeCaster
-} from "./Utils";
+} from "../Utilities/TypeCaster";
 import {
   RefError, NumError, DivZeroError, NAError
 } from "../Errors";

@@ -1,8 +1,10 @@
 import {
-  ArgsChecker,
+  ArgsChecker
+} from "../Utilities/ArgsChecker";
+import {
   TypeCaster,
   checkForDevideByZero
-} from "./Utils";
+} from "../Utilities/TypeCaster";
 import {
   NumError,
   DivZeroError

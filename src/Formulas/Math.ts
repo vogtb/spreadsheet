@@ -1,10 +1,18 @@
 import {
-  ArgsChecker,
-  CriteriaFunctionFactory,
-  Filter,
-  Serializer,
+  ArgsChecker
+} from "../Utilities/ArgsChecker";
+import {
   TypeCaster
-} from "./Utils";
+} from "../Utilities/TypeCaster";
+import {
+  Filter
+} from "../Utilities/Filter";
+import {
+  Serializer
+} from "../Utilities/Serializer";
+import {
+  CriteriaFunctionFactory
+} from "../Utilities/CriteriaFunctionFactory";
 import {
   NumError,
   DivZeroError,
@@ -933,7 +941,7 @@ var SUMX2MY2 = function (...values) : number {
 var COUNTUNIQUE = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1);
 
-  // Private function that will recursively generate an array of the unique primatives
+  // Private function that will recursively generate an array of the unique primitives
   var countUniquePrivate = function (values: Array<any>) : Object {
     var uniques = {};
     for (var i = 0; i < values.length; i++) {

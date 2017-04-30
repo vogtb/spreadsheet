@@ -1,5 +1,13 @@
-import { ArgsChecker, TypeCaster } from "./Utils"
-import { ValueError, RefError } from "../Errors"
+import {
+  ArgsChecker
+} from "../Utilities/ArgsChecker";
+import {
+  TypeCaster
+} from "../Utilities/TypeCaster";
+import {
+  ValueError,
+  RefError
+} from "../Errors";
 
 /**
  * Returns true if all of the provided arguments are logically true, and false if any of the provided arguments are logically false.

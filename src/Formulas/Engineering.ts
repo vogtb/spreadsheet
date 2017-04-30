@@ -1,7 +1,9 @@
 import {
-  ArgsChecker,
+  ArgsChecker
+} from "../Utilities/ArgsChecker";
+import {
   TypeCaster
-} from "./Utils";
+} from "../Utilities/TypeCaster";
 import {
   ValueError,
   NumError

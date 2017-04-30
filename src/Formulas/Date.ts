@@ -1,9 +1,11 @@
 /// <reference path="../../node_modules/moment/moment.d.ts"/>
 import * as moment from "moment";
 import {
-  ArgsChecker,
+  ArgsChecker
+} from "../Utilities/ArgsChecker";
+import {
   TypeCaster
-} from "./Utils";
+} from "../Utilities/TypeCaster";
 import {
   NumError,
   ValueError,

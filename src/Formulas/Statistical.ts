@@ -688,7 +688,8 @@ var FINV = function (...values) : number {
   ArgsChecker.checkLength(values, 3);
   var probability = TypeCaster.firstValueAsNumber(values[0]);
   if (probability <= 0.0 || probability > 1.0) {
-    // TODO: Throw num error.
+    throw new NumError("Function FINV parameter 1 value is " + probability
+      + ". It should be greater than or equal to 0, and less than 1.")
   }
   var d1 = TypeCaster.firstValueAsNumber(values[1]);
   var d2 = TypeCaster.firstValueAsNumber(values[2]);

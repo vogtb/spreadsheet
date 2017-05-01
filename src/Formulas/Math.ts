@@ -574,25 +574,28 @@ var IF = function (...values) : any {
 /**
  * Returns a conditional count across a range.
  * @param values[0] range - The range that is tested against criterion., value[1];
- * @param values[1] criterion - The pattern or test to apply to range. If the range to check against contains text, this must be a
- * string. It can be a comparison based string (e.g. "=1", "<1", ">=1") or it can be a wild-card string, in which *
- * matches any number of characters, and ? matches the next character. Both ? and * can be escaped by placing a ~ in
- * front of them. If it is neither, it will compared with values in the range using equality comparison.
+ * @param values[1] criterion - The pattern or test to apply to range. If the range to check against contains text,
+ * this must be a string. It can be a comparison based string (e.g. "=1", "<1", ">=1") or it can be a wild-card string,
+ * in which * matches any number of characters, and ? matches the next character. Both ? and * can be escaped by placing
+ * a ~ in front of them. If it is neither, it will compared with values in the range using equality comparison.
  * @returns {number}
  * @constructor
- * TODO: This needs to take nested range values.
  */
 var COUNTIF = function (...values) {
   ArgsChecker.checkLength(values, 2);
   var range = values[0];
+  if (!(range instanceof Array)) {
+    range = [range];
+  }
   var criteria = values[1];
-
   var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criteria);
 
   var count = 0;
   for (var i = 0; i < range.length; i++) {
     var x = range[i];
-    if (criteriaEvaluation(x)) {
+    if (x instanceof Array) {
+      count = count + COUNTIF.apply(this, [x, criteria]);
+    } else if (criteriaEvaluation(x)) {
       count++;
     }
   }

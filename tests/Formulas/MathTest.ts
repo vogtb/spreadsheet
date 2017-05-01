@@ -337,6 +337,10 @@ test("COTH", function(){
 
 
 test("COUNTIF", function(){
+  assertEquals(COUNTIF(10, "= 10"), 1);
+  assertEquals(COUNTIF([1, 5, 5, [5, 5, 5, 5], 10, 5], "= 5"), 7);
+  assertEquals(COUNTIF([1, 5, 5, [5, 5, 5, 5], [], 10, 5], "= 5"), 7);
+  assertEquals(COUNTIF([1, 5, 5, [5, 5, "5", "5.000"], [], 10, 5], "= 5"), 7);
   assertEquals(COUNTIF([1, 5, 10], ">4"), 2);
   assertEquals(COUNTIF([1, 2, 2, 2, 2, 2, 2, 2], ">1"), 7);
   assertEquals(COUNTIF([1, 5, 10], 5), 1);

@@ -10,8 +10,8 @@ And the same for MAX, MAXA, COUNT, COUNTA, etc. Look these over.
 ### Criteria evaluations should escape reg-ex characters
 http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 
-### jStat functions should know their caller
-Either through `arguments`, or directly passed in like `mean("FORMULA", [10, 20, 30])`
+### functions that throw errors should usually be able to include their caller in the error
+e.g. "SUM expects number values...", or "This function expects number values..."
 
 ### Dollar functions have special types
 Although dollar functions look like they just format `number`s, it seems like they have a special type under the hood.
@@ -39,18 +39,10 @@ Right now we're just using the number of days since 1900, but we should check th
 
 ### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
 
-### Scrape jsdocs from functions, put in simple index.html, doc.md files to serve up simple documentation
+### Scrape jsdocs for functions, put in simple index.html, doc.md files to serve up simple documentation
 
 ### Numbers with commas in them should still parse to numbers.
 
 ### Ensure all formulas are tested inside of SheetFormulaTest.ts
 
-
-## Testing Guidelines
-
-All formulas should test for:
-1) One *less* argument than the formula expects, and one *more* argument than the formula expects.
-2) If it accepts a number, test with false as 0, and true as 1.
-3) If it accepts a number, test with string parsing to number.
-4) If it accepts a date, test with number, number as string, date as string.
-5) Individual arguments as ranges with single values (eg: `[1]`), and ranges as multiple values (eg: `[1, "str"]`).
+### Test all functions in src/Utilities

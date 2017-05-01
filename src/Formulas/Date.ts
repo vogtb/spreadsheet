@@ -264,6 +264,23 @@ var WEEKDAY = function (...values) {
 
 
 /**
+ * Given a moment, an array of days of the week for shifting, will calculate the week number.
+ * @param dm moment to iterate towards
+ * @param shifterArray array of numbers for mapping week days to shifted weekdays
+ * @returns {number} of weeks in year
+ */
+function calculateWeekNum(dm : moment.Moment, shifterArray : Array<number>) : number {
+  var startOfYear = moment.utc(dm).startOf("year");
+  var weeksCount = 1;
+  var d = moment.utc(dm).startOf("year").add(6 - shifterArray[startOfYear.day()], "days");
+  while (d.isBefore(dm)) {
+    d.add(7, "days");
+    weeksCount++;
+  }
+  return weeksCount;
+}
+
+/**
  * Returns a number representing the week of the year where the provided date falls. When inputting the date, it is best
  * to use the DATE function, as text values may return errors.
  *
@@ -278,7 +295,6 @@ var WEEKDAY = function (...values) {
  * the system used for determining the first week of the year (1=Sunday, 2=Monday).
  * @returns {number} representing week number of year.
  * @constructor
- * TODO: The performance of this function could be improved.
  */
 var WEEKNUM = function (...values) {
   ArgsChecker.checkLengthWithin(values, 1, 2);
@@ -322,44 +338,13 @@ var WEEKNUM = function (...values) {
     }
     return week;
   } else if (shiftType === 14) {
-    var SHIFTER = [3, 4, 5, 6, 0, 1, 2];
-    var startOfYear = moment.utc(dm).startOf("year");
-    var weeksCount = 1;
-    var d = moment.utc(dm).startOf("year").add(6 - SHIFTER[startOfYear.day()], "days");
-    while (d.isBefore(dm)) {
-      d.add(7, "days");
-      weeksCount++;
-    }
-    return weeksCount;
+    return calculateWeekNum(dm, [3, 4, 5, 6, 0, 1, 2]);
   } else if (shiftType === 15) {
-    var SHIFTER = [2, 3, 4, 5, 6, 0, 1];
-    var startOfYear = moment.utc(dm).startOf("year");
-    var weeksCount = 1;
-    var d = moment.utc(dm).startOf("year").add(6 - SHIFTER[startOfYear.day()], "days");
-    while (d.isBefore(dm)) {
-      d.add(7, "days");
-      weeksCount++;
-    }
-    return weeksCount;
+    return calculateWeekNum(dm, [2, 3, 4, 5, 6, 0, 1]);
   } else if (shiftType === 16) {
-    var SHIFTER = [1, 2, 3, 4, 5, 6, 0];
-    var startOfYear = moment.utc(dm).startOf("year");
-    var weeksCount = 1;
-    var d = moment.utc(dm).startOf("year").add(6 - SHIFTER[startOfYear.day()], "days");
-    while (d.isBefore(dm)) {
-      d.add(7, "days");
-      weeksCount++;
-    }
-    return weeksCount;
+    return calculateWeekNum(dm, [1, 2, 3, 4, 5, 6, 0]);
   } else if (shiftType === 17) {
-    var startOfYear = moment.utc(dm).startOf("year");
-    var weeksCount = 1;
-    var d = moment.utc(dm).startOf("year").add(6 - startOfYear.day(), "days");
-    while (d.isBefore(dm)) {
-      d.add(7, "days");
-      weeksCount++;
-    }
-    return weeksCount;
+    return calculateWeekNum(dm, [0, 1, 2, 3, 4, 5, 6]);
   } else if (shiftType === 21) {
     return dm.isoWeek();
   } else {
@@ -420,10 +405,6 @@ var DATEDIF = function (...values) : number {
     var months = Math.floor(e.diff(s, "months"));
     return months === 12 ? 0 : months;
   } else if (unitClean === "YD") {
-    // var s = start.toMoment();
-    // var e = end.toMoment();
-    // var days = e.diff(s, "days");
-    // return days
     var s = start.toMoment();
     var e = end.toMoment();
     while(s.isBefore(e)) {

@@ -935,6 +935,9 @@ test("SUM", function(){
 
 
 test("SUMIF", function(){
+  assertEquals(SUMIF([1, 5, 10, [1, 1, 1, 1, 1], []], 1), 6);
+  assertEquals(SUMIF([], 1), 0);
+  assertEquals(SUMIF([1, 5, 10, [1, 1, "1.0", "1", 1]], 1), 4);
   assertEquals(SUMIF([1, 5, 10], 5), 5);
   assertEquals(SUMIF([1, 5, 5, 5, 10, 5], 5), 20);
   assertEquals(SUMIF([1, 5, 5, 5, 10, 5], 10), 10);

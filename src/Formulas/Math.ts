@@ -714,7 +714,6 @@ var ROUNDUP = function (...values) {
  * @param values[2] (optional) The range to be summed, if different from range.
  * @returns {number}
  * @constructor
- * TODO: This needs to take nested range values.
  */
 var SUMIF = function (...values) {
   ArgsChecker.checkLengthWithin(values, 2, 3);
@@ -730,13 +729,17 @@ var SUMIF = function (...values) {
   var sum = 0;
   for (var i = 0; i < range.length; i++) {
     var x = range[i];
-    if (sumRange && i > sumRange.length-1) {
-      continue;
-    }
-    if (values.length === 2 && TypeCaster.canCoerceToNumber(x) && criteriaEvaluation(x)) {
-      sum = sum + TypeCaster.valueToNumber(x);
-    } else if (values.length === 3 && TypeCaster.canCoerceToNumber(sumRange[i]) && criteriaEvaluation(x)) {
-      sum = sum + TypeCaster.valueToNumber(sumRange[i]);
+    if (x instanceof Array) {
+      sum += SUMIF.apply(this, [x, criteria]);
+    } else {
+      if (sumRange && i > sumRange.length-1) {
+        continue;
+      }
+      if (values.length === 2 && TypeCaster.canCoerceToNumber(x) && criteriaEvaluation(x)) {
+        sum = sum + TypeCaster.valueToNumber(x);
+      } else if (values.length === 3 && TypeCaster.canCoerceToNumber(sumRange[i]) && criteriaEvaluation(x)) {
+        sum = sum + TypeCaster.valueToNumber(sumRange[i]);
+      }
     }
   }
   return sum;

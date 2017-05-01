@@ -152,6 +152,13 @@ test("NETWORKDAYS$INTL", function () {
   assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-2-22", "0000110"), 37);
   assertEquals(NETWORKDAYS$INTL("1992-1-1", "1992-2-22", 1, [DATE(1992, 1, 10), DATE(1992, 1, 11), DATE(1992, 1, 12), DATE(1992, 1, 13), DATE(1992, 1, 14)]), 35);
   assertEquals(NETWORKDAYS$INTL(["1992-1-1"], ["1992-1-30"], ["0000011"]), 22);
+  assertEquals(NETWORKDAYS$INTL(900, 11999), 7928);
+  assertEquals(NETWORKDAYS$INTL(900, 12000), 7929);
+  assertEquals(NETWORKDAYS$INTL(900, 12001), 7930);
+  assertEquals(NETWORKDAYS$INTL(900, 12002), 7931);
+  assertEquals(NETWORKDAYS$INTL(900, 12003), 7932);
+  assertEquals(NETWORKDAYS$INTL(900, 12004), 7933);
+  assertEquals(NETWORKDAYS$INTL(900, 12005), 7933);
   catchAndAssertEquals(function() {
     NETWORKDAYS$INTL(12, 12, [12], false, 1);
   }, ERRORS.NA_ERROR);

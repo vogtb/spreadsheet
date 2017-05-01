@@ -726,8 +726,6 @@ var NETWORKDAYS$INTL = function (...values) : number {
           + "' cannot be coerced to a number.")
     }
   } else {
-    // TODO: This had the wrong number of default weekend values and was still passing. Add a test that fails with
-    // TODO:     weekendDays = [1, 6] but not with [0, 6].
     weekendDays = [0, 6];
   }
   var hasHolidays = values.length === 4;

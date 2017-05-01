@@ -411,6 +411,12 @@ test("COUNTIFS", function(){
   assertEquals(COUNTIFS(["mom", "pop", "dad", "etc", "mom"], "????"), 0);
   assertEquals(COUNTIFS(["mom", "pop", "dad", "etc", "mom"], "?"), 0);
   // Now actually test COUNTIFS
+  assertEquals(COUNTIFS([1, 5, 5, [5, 5, 5, 5], 10, 5], "= 5"), 7);
+  assertEquals(COUNTIFS([1, 5, 5, [5, 5, 5, 5], [], 10, 5], "= 5"), 7);
+  assertEquals(COUNTIFS([1, 5, 5, [5, 5, 5, 5], [], 10, 8], "> 4", [false, false, false, [true, true, true, true], [], false, false], "= true"), 0);
+  assertEquals(COUNTIFS([1, 5, 5, [5, 5, 5, 5], [], 10, 8], "> 4", [false, false, false, ["A", "A", "A", "A"], [], false, false], "= 'A'"), 0);
+  assertEquals(COUNTIFS([1, 5, 5, [5, 5, 5, 5], [], 10, 8], "> 4", [1, 5, 5, [5, 5, 5, 5], [], 10, 8], "> 5"), 2);
+  assertEquals(COUNTIFS([1, 5, 5, [5, 5, "5", "5.000"], [], 10, 5], "= 5"), 7);
   assertEquals(COUNTIFS([1, 5, 10, 20], ">4", [0, 0, 1, 1], "=1"), 2);
   assertEquals(COUNTIFS([1, 5, 10, 20], ">4", [0, 0, 1, 1], "=1"), 2);
   assertEquals(COUNTIFS([1, 5, 10, 20], ">4", [0, 0, 1, 1], "=1", [0, 0, 1, 1], "=1"), 2);

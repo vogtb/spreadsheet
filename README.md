@@ -46,3 +46,6 @@ Right now we're just using the number of days since 1900, but we should check th
 ### Ensure all formulas are tested inside of SheetFormulaTest.ts
 
 ### Test all functions in src/Utilities
+
+### Sheet.ts and parser.js should be able to concatenate strings
+E.g. `=COUNTIFS(A7:A24, ">6", B7:B24, "<"&DATE(1969,7,20))`

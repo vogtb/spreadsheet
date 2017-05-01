@@ -609,7 +609,6 @@ var COUNTIF = function (...values) {
  * @param values[2...N] Repeated sets of ranges and criterion to check.
  * @returns {number} count
  * @constructor
- * TODO: This needs to take nested range values.
  */
 var COUNTIFS = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 2);
@@ -620,19 +619,28 @@ var COUNTIFS = function (...values) {
       return function () {return false;}
     }
   });
-
+  var filteredValues = [];
+  // Flatten arrays/ranges
+  for (var x = 0; x < values.length; x++) {
+    // If this is an array/range parameter
+    if (x % 2 === 0) {
+      filteredValues.push(Filter.flatten(values[x]));
+    } else {
+      filteredValues.push(values[x]);
+    }
+  }
   var count = 0;
   // For every value in the range
-  for (var i = 0; i < values[0].length; i++) {
-    // check for criteria eval for other ranges and other criteria pairs
+  for (var i = 0; i < filteredValues[0].length; i++) {
+    // Check for criteria eval for other ranges and other criteria pairs.
     var otherCriteriaEvaluationSuccessfulSoFar = true;
-    for (var x = 0; x < values.length; x += 2) {
-      if (values[x].length < values[0].length) {
+    for (var x = 0; x < filteredValues.length; x += 2) {
+      if (filteredValues[x].length < filteredValues[0].length) {
         throw new ValueError("Array arguments to COUNTIFS are of different size.");
       }
       var criteriaEvaluation = criteriaEvaluationFunctions[x+1];
       if (otherCriteriaEvaluationSuccessfulSoFar) {
-        if (!criteriaEvaluation(values[x][i])) { // evaluate THIS value with x+1 index, which is criteria
+        if (!criteriaEvaluation(filteredValues[x][i])) { // evaluate THIS value with x+1 index, which is criteria.
           otherCriteriaEvaluationSuccessfulSoFar = false;
         }
       }

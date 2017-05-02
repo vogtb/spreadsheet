@@ -805,12 +805,11 @@ var MINA = function (...values) : number {
  * average instead.
  * @returns {number}
  * @constructor
- * TODO: This needs to take nested range values.
  * TODO: This needs to also accept a third parameter "average_range"
  */
 var AVERAGEIF = function (...values) {
   ArgsChecker.checkLength(values, 2);
-  var range = values[0];
+  var range = Filter.flatten(values[0]);
   var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(values[1]);
 
   var result = 0;

@@ -99,6 +99,7 @@ test("AVERAGEA", function(){
 
 
 test("AVERAGEIF", function(){
+  assertEquals(AVERAGEIF([1, 5, [5, 20, 100], [], [[2]], 10], '>2'), 28);
   assertEquals(AVERAGEIF([1, 5, 10], '>2'), 7.5);
   assertEquals(AVERAGEIF([1, 5, 10], ">4"), 7.5);
   assertEquals(AVERAGEIF([1, 2, 2, 2, 2, 2, 2, 2], ">1"), 2);

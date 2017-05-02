@@ -5,7 +5,8 @@
   "scripts": {
     "clean": "rm -rf output/* && rm -rf test_output/*",
     "build": "tsc && cp lib/parser.js output/",
-    "test": "./tests.sh"
+    "test": "./tests.sh",
+    "test:quiet": "./tests.sh | grep -v Test:"
   },
   "author": "vogtb <bvogt at gmail.com>",
   "license": "MIT",

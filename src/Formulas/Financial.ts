@@ -138,14 +138,6 @@ var DB = function (...values) : number {
  * @param values[1] places - [ OPTIONAL - 2 by default ] - The number of decimal places to display.
  * @returns {number} dollars
  * @constructor
- * TODO: In GS and Excel, Dollar values are primitive types at a certain level, meaning you can do =DOLLAR(10) + 10
- * TODO(cont.) and the result will be 20. Right now, JS allows you to inherit from primitives so you can use operators
- * TODO(cont.) on them (eg: new Number(10) + 10 == 20) but TS does not. So for now, Dollar values will be represented
- * TODO(cont.) with the primitive number type. At some point TS might allow me to suppress the warnings with
- * TODO(cont.) https://github.com/Microsoft/TypeScript/issues/9448 or
- * TODO(cont.) https://github.com/Microsoft/TypeScript/issues/11051
- *
- * TODO: Also, this does not do local-specific, as is.
  */
 var DOLLAR = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);

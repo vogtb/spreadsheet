@@ -46,21 +46,9 @@ var AND = function (...values) {
  */
 var EXACT = function (...values) {
   ArgsChecker.checkLength(values, 2);
-  var one = values[0];
-  var two = values[1];
-  if (one instanceof Array) {
-    if (one.length === 0) {
-      throw new RefError("Reference does not exist.");
-    }
-  }
-  if (two instanceof Array) {
-    if (two.length === 0) {
-      throw new RefError("Reference does not exist.");
-    }
-  }
-  one = TypeCaster.valueToString(one);
-  two = TypeCaster.valueToString(two);
-  return one === two;
+  var one = TypeCaster.firstValue(values[0]);
+  var two = TypeCaster.firstValue(values[1]);
+  return one.toString() === two.toString();
 };
 
 /**

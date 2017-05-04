@@ -405,8 +405,6 @@ class TypeCaster {
       return value;
     } else if (typeof value === "boolean") {
       return value ? "TRUE" : "FALSE";
-    } else if (value instanceof Array) {
-      return this.valueToString(value[0]); // TODO: Take this out. It's stupid. We should handle arrays at a different level.
     }
   }
 

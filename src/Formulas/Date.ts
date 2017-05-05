@@ -24,10 +24,10 @@ import {
  * @param values[0] year - The year component of the date.
  * @param values[1] month - The month component of the date.
  * @param values[2] day - The day component of the date.
- * @returns {ExcelDate} newly created date.
+ * @returns {number} newly created date.
  * @constructor
  */
-var DATE = function (...values) : ExcelDate {
+var DATE = function (...values) : number {
   const FIRST_YEAR = 1900;
   ArgsChecker.checkLength(values, 3);
   var year = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0]))); // No negative values for year
@@ -43,7 +43,7 @@ var DATE = function (...values) : ExcelDate {
     throw new NumError("DATE evaluates to an out of range value " + excelDate.toNumber()
       + ". It should be greater than or equal to 0.");
   }
-  return excelDate;
+  return excelDate.toNumber();
 };
 
 /**
@@ -65,7 +65,7 @@ var DATEVALUE = function (...values) : number {
   }
 
   // If we've not been able to parse the date by now, then we cannot parse it at all.
-  return date.toNumber();
+  return date.toNumberFloored();
 };
 
 
@@ -76,7 +76,7 @@ var DATEVALUE = function (...values) : number {
  * @returns {ExcelDate} date a specified number of months before or after another date
  * @constructor
  */
-var EDATE = function (...values) : ExcelDate {
+var EDATE = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
   var startDate = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
   if (startDate.toNumber() < 0) {
@@ -85,7 +85,7 @@ var EDATE = function (...values) : ExcelDate {
   var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
   // exclusive count of days.
-  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber(), "days").add(months, "months"));
+  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber(), "days").add(months, "months")).toNumber();
 };
 
 
@@ -98,7 +98,7 @@ var EDATE = function (...values) : ExcelDate {
  * @returns {ExcelDate} the last day of a month
  * @constructor
  */
-var EOMONTH = function (...values) : ExcelDate {
+var EOMONTH = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
   var startDate = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
   if (startDate.toNumber() < 0) {
@@ -107,7 +107,10 @@ var EOMONTH = function (...values) : ExcelDate {
   var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
   // exclusive count of days.
-  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber(), "days").add(months, "months").endOf("month"));
+  return new ExcelDate(moment.utc(ORIGIN_MOMENT)
+      .add(startDate.toNumber(), "days")
+      .add(months, "months")
+      .endOf("month")).toNumberFloored();
 };
 
 
@@ -159,7 +162,7 @@ var DAYS = function (...values) : number {
  * @returns {number} of days between two dates
  * @constructor
  */
-var DAYS360 = function (...values) {
+var DAYS360 = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 2, 3);
   var start = TypeCaster.firstValueAsExcelDate(values[0], true).toMoment(); // tell firstValueAsExcelDate to coerce boolean
   var end = TypeCaster.firstValueAsExcelDate(values[1], true).toMoment(); // tell firstValueAsExcelDate to coerce boolean
@@ -215,7 +218,7 @@ var MONTH = function (...values) : number {
  * @returns {number} year of the input date
  * @constructor
  */
-var YEAR = function (...values) {
+var YEAR = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
   if (date.toNumber() < 0) {
@@ -237,7 +240,7 @@ var YEAR = function (...values) {
  * @returns {number} day of week
  * @constructor
  */
-var WEEKDAY = function (...values) {
+var WEEKDAY = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
   var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
   var offsetType = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 1;
@@ -296,7 +299,7 @@ function calculateWeekNum(dm : moment.Moment, shifterArray : Array<number>) : nu
  * @returns {number} representing week number of year.
  * @constructor
  */
-var WEEKNUM = function (...values) {
+var WEEKNUM = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
   var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
   var shiftType = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 1;
@@ -570,7 +573,7 @@ var HOUR = function (...values) : number {
  * @returns {number} minute of the time passed in.
  * @constructor
  */
-var MINUTE = function (...values) {
+var MINUTE = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var time = TypeCaster.firstValueAsTimestampNumber(values[0]);
   if (time % 1 === 0) {
@@ -778,9 +781,9 @@ var NETWORKDAYS$INTL = function (...values) : number {
  * @returns {ExcelDate} representing the current date and time.
  * @constructor
  */
-var NOW = function (...values) : ExcelDate {
+var NOW = function (...values) : number {
   ArgsChecker.checkLength(values, 0);
-  return new ExcelDate(moment());
+  return new ExcelDate(moment.utc()).toNumber();
 };
 
 /**
@@ -788,9 +791,9 @@ var NOW = function (...values) : ExcelDate {
  * @returns {ExcelDate} today
  * @constructor
  */
-var TODAY = function (...values) {
+var TODAY = function (...values) : number {
   ArgsChecker.checkLength(values, 0);
-  return new ExcelDate(moment().startOf("day"));
+  return new ExcelDate(moment.utc().startOf("day")).toNumberFloored();
 };
 
 
@@ -803,13 +806,13 @@ var TODAY = function (...values) {
  * @returns {ExcelTime} time
  * @constructor
  */
-var TIME = function (...values) : ExcelTime {
+var TIME = function (...values) : number {
   ArgsChecker.checkLength(values, 3);
   var hours = Math.floor(TypeCaster.firstValueAsNumber(values[0]));
   var minutes = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   var seconds = Math.floor(TypeCaster.firstValueAsNumber(values[2]));
-  var e = new ExcelTime(hours, minutes, seconds);
-  if (e.toNumber() < 0) {
+  var e = new ExcelTime(hours, minutes, seconds).toNumber();
+  if (e < 0) {
     throw new NumError("TIME evaluates to an out of range value -1.201273148. It should be greater than or equal to 0.");
   }
   return e;
@@ -828,7 +831,7 @@ var TIME = function (...values) : ExcelTime {
  * @returns {ExcelDate} end date after a specified number of working days.
  * @constructor
  */
-var WORKDAY = function (...values) {
+var WORKDAY = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 2, 3);
   var start = TypeCaster.firstValueAsExcelDate(values[0], true);
   var days = TypeCaster.firstValueAsNumber(values[1]);
@@ -863,7 +866,7 @@ var WORKDAY = function (...values) {
       j++;
     }
   }
-  return new ExcelDate(cd);
+  return new ExcelDate(cd).toNumber();
 };
 
 
@@ -882,7 +885,7 @@ var WORKDAY = function (...values) {
  * @returns {ExcelDate}
  * @constructor
  */
-var WORKDAY$INTL = function (...values) {
+var WORKDAY$INTL = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 2, 3);
   var start = TypeCaster.firstValueAsExcelDate(values[0], true);
   var days = TypeCaster.firstValueAsNumber(values[1]);
@@ -962,7 +965,7 @@ var WORKDAY$INTL = function (...values) {
       j++;
     }
   }
-  return new ExcelDate(cd);
+  return new ExcelDate(cd).toNumber();
 };
 
 export {

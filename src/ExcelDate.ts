@@ -35,7 +35,11 @@ class ExcelDate {
    * @returns {number} days since 1900/1/1
    */
   toNumber() {
-    return Math.floor(this.seconds / SECONDS_IN_DAY);
+    return this.seconds / SECONDS_IN_DAY;
+  }
+
+  toNumberFloored() {
+    return Math.floor(this.toNumber());
   }
 
   /**

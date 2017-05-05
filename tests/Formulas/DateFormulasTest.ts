@@ -86,20 +86,20 @@ test("WORKDAY", function () {
 
 
 test("TIME", function () {
-  assertEquals(TIME(10, 10, 10).toNumber(), 0.4237268518518518);
-  assertEquals(TIME(34, 10, 10).toNumber(), 0.4237268518518518);
-  assertEquals(TIME(29, 10, 10).toNumber(), 0.2153935185185185);
-  assertEquals(TIME(13, 9, 6).toNumber(), 0.5479861111111111);
-  assertEquals(TIME(3, 1, 14).toNumber(), 0.12585648148148149);
-  assertEquals(TIME(0, 0, 0).toNumber(), 0);
-  assertEquals(TIME(24, 0, 0).toNumber(), 0);
-  assertEquals(TIME(23, 60, 0).toNumber(), 0);
-  assertEquals(TIME(23, 59, 60).toNumber(), 0);
-  assertEquals(TIME(18, 0, 0).toNumber(), 0.75);
-  assertEquals(TIME(12, 0, 0).toNumber(), 0.5);
-  assertEquals(TIME(6, 0, 0).toNumber(), 0.25);
-  assertEquals(TIME(3, 0, 0).toNumber(), 0.125);
-  assertEquals(TIME("3", ["0"], false).toNumber(), 0.125);
+  assertEquals(TIME(10, 10, 10), 0.4237268518518518);
+  assertEquals(TIME(34, 10, 10), 0.4237268518518518);
+  assertEquals(TIME(29, 10, 10), 0.2153935185185185);
+  assertEquals(TIME(13, 9, 6), 0.5479861111111111);
+  assertEquals(TIME(3, 1, 14), 0.12585648148148149);
+  assertEquals(TIME(0, 0, 0), 0);
+  assertEquals(TIME(24, 0, 0), 0);
+  assertEquals(TIME(23, 60, 0), 0);
+  assertEquals(TIME(23, 59, 60), 0);
+  assertEquals(TIME(18, 0, 0), 0.75);
+  assertEquals(TIME(12, 0, 0), 0.5);
+  assertEquals(TIME(6, 0, 0), 0.25);
+  assertEquals(TIME(3, 0, 0), 0.125);
+  assertEquals(TIME("3", ["0"], false), 0.125);
   catchAndAssertEquals(function() {
     TIME();
   }, ERRORS.NA_ERROR);
@@ -1375,9 +1375,9 @@ test("EOMONTH", function(){
 
 
 test("DATE", function(){
-  assertEquals(DATE(1900, 1, 2).toNumber(), 3);
-  assertEquals(DATE(1900, 1, 1).toNumber(), 2);
-  assertEquals(DATE(1900, 1, 4).toNumber(), 5);
+  assertEquals(DATE(1900, 1, 2), 3);
+  assertEquals(DATE(1900, 1, 1), 2);
+  assertEquals(DATE(1900, 1, 4), 5);
   catchAndAssertEquals(function() {
     DATE(1900, 0, 5);
   }, ERRORS.NUM_ERROR);
@@ -1387,20 +1387,20 @@ test("DATE", function(){
   catchAndAssertEquals(function() {
     DATE(1900, 0);
   }, ERRORS.NA_ERROR);
-  assertEquals(DATE(1992, 6, 24).toNumber(), 33779);
-  assertEquals(DATE(2017, 2, 26).toNumber(), 42792);
-  assertEquals(DATE(1999, 1, 13).toNumber(), 36173);
+  assertEquals(DATE(1992, 6, 24), 33779);
+  assertEquals(DATE(2017, 2, 26), 42792);
+  assertEquals(DATE(1999, 1, 13), 36173);
   // Leap day stuff
-  assertEquals(DATE(2004, 2, 28).toNumber(), 38045);
-  assertEquals(DATE(2004, 2, 29).toNumber(), 38046);
-  assertEquals(DATE(2004, 3, 1).toNumber(), 38047);
+  assertEquals(DATE(2004, 2, 28), 38045);
+  assertEquals(DATE(2004, 2, 29), 38046);
+  assertEquals(DATE(2004, 3, 1), 38047);
   // Overflow values
-  assertEquals(DATE(1992, 6, 44).toNumber(), 33799);
-  assertEquals(DATE(2, 33, 44).toNumber(), 1749);
-  assertEquals(DATE(1777, 33, 44).toNumber(), 650055);
-  assertEquals(DATE(1976, 2, -10).toNumber(), 27780);
-  assertEquals(DATE(-1900, 1, 1).toNumber(), 2);
-  assertEquals(DATE(1992, 1, 10).toNumber(), 33613);
+  assertEquals(DATE(1992, 6, 44), 33799);
+  assertEquals(DATE(2, 33, 44), 1749);
+  assertEquals(DATE(1777, 33, 44), 650055);
+  assertEquals(DATE(1976, 2, -10), 27780);
+  assertEquals(DATE(-1900, 1, 1), 2);
+  assertEquals(DATE(1992, 1, 10), 33613);
 });
 
 

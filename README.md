@@ -63,5 +63,9 @@ Right now we're just using the number of days since 1900, but we should check th
 ### Test all functions in src/Utilities
 
 
+### CONVERT could offer more accurate conversions for units in the same system
+For example 64 tbs to a qt.
+
+
 ### Sheet.ts and parser.js should be able to concatenate strings
 E.g. `=COUNTIFS(A7:A24, ">6", B7:B24, "<"&DATE(1969,7,20))`

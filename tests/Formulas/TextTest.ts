@@ -95,12 +95,21 @@ test("CONCATENATE", function(){
 });
 
 
-// TODO: More tests for CONVERT.
 test("CONVERT", function(){
   assertEquals(CONVERT(5.1, "mm", "m"), 0.0050999999999999995);
   assertEquals(CONVERT(5.1, "mm", "km"), 0.0000050999999999999995);
   assertEquals(CONVERT(5.1, "g", "kg"), 0.0050999999999999995);
   assertEquals(CONVERT(35.7, "in^2", "m^2"), 0.023032212);
+  assertEquals(CONVERT(100, "ft3", "in3"), 172800);
+  assertEquals(CONVERT(100, "in3", "ft3"), 0.057870370370370364);
+  assertEquals(CONVERT(0.0001, "ly", "ft"), 3103914197040.945);
+  assertEquals(CONVERT(44, "m/h", "m/s"), 0.01222222222222232);
+  assertEquals(CONVERT(10, "mph", "m/s"), 4.4704);
+  assertEquals(CONVERT(10, "mmHg", "Pa"), 1333.22);
+  assertEquals(CONVERT(10, "PS", "W"), 7354.987499999999);
+  assertEquals(CONVERT(10, "ton", "stone"), 1428.5714285714287);
+  assertEquals(CONVERT(10, "tspm", "bushel"), 0.0014188796696394089);
+  assertEquals(CONVERT(10, "c", "Wh"), 0.011622222222222223);
 });
 
 

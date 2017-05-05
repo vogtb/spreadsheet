@@ -252,27 +252,9 @@ test("Sheet F.DIST", function(){
   assertFormulaEquals('=F.DIST(15.35, 7, 6, true)', 0.9980694465675269);
 });
 
-// Test FDIST
-// TODO: Test FDIST
-/*
- * F.DIST Calculates the left-tailed F probability distribution (degree of diversity) for two data sets with given input x. Alternately called Fisher-Snedecor distribution or Snedecor's F distribution.
- * FDIST Calculates the right-tailed F probability distribution (degree of diversity) for two data sets with given input x. Alternately called Fisher-Snedecor distribution or Snedecor's F distribution.
- *
- * F.DIST is left-tailed. FDIST is right-tailed.
- */
-
 test("Sheet FINV", function(){
   assertFormulaEquals('=FINV(0.42, 2, 3)', 1.174597274485816);
 });
-
-// Test F.INV
-// TODO: Test F.INV
-/*
- * FINV Calculates the inverse of the right-tailed F probability distribution. Also called the Fisher-Snedecor distribution or Snedecor’s F distribution.
- * F.INV Calculates the inverse of the left-tailed F probability distribution. Also called the Fisher-Snedecor distribution or Snedecor’s F distribution.
- *
- * F.INV is left-tailed. FINV is right-tailed.
- */
 
 test("Sheet FISHER", function(){
   assertFormulaEquals('=FISHER(0.962)', 1.972066740199461);

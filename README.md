@@ -40,6 +40,10 @@ and flexibility in display. It would also simplify the types themselves, by havi
 helpers to convert, display, and do normal operations with them.
 
 
+### Implement TO_DATE, TO_NUMBER, TO_DOLLARS, TO_TEXT
+Contingent upon cells having formats or types for primitives.
+
+
 ### Test all ExcelDate functions
 Right now we're just using the number of days since 1900, but we should check the other functions.
 

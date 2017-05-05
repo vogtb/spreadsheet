@@ -241,7 +241,19 @@ test("EXPONDIST", function(){
 
 test("FINV", function(){
   assertEquals(FINV(0.42, 2, 3), 1.174597274485816);
+  assertEquals(FINV(0.42, 2, 5), 1.0370426242728021);
+  assertEquals(FINV(0.42, 33, 5), 1.303222112500911);
+  assertEquals(FINV(["0.42"], [33, []], [5]), 1.303222112500911);
   assertEquals(FINV("0.42", 2, 3), 1.174597274485816);
+  catchAndAssertEquals(function() {
+    FINV();
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    FINV(0.42, 2, 4, 4);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    FINV(0.42, 2, []);
+  }, ERRORS.REF_ERROR);
   catchAndAssertEquals(function() {
     FINV(-10, 2, 3);
   }, ERRORS.NUM_ERROR);

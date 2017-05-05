@@ -532,7 +532,6 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
  * @param values[2] deg_freedom2 - Required. The denominator degrees of freedom.
  * @returns {number} inverse of the (right-tailed) F probability distribution
  * @constructor
- * TODO: This function needs to be tested more thoroughly.
  */
 var FINV = function (...values) : number {
   /**

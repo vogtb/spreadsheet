@@ -4,8 +4,8 @@ import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
 import {
-  TypeCaster
-} from "../Utilities/TypeCaster";
+  TypeConverter
+} from "../Utilities/TypeConverter";
 import {
   NumError,
   ValueError,
@@ -23,15 +23,15 @@ import {
 var DATE = function (...values) : number {
   const FIRST_YEAR = 1900;
   ArgsChecker.checkLength(values, 3);
-  var year = Math.abs(Math.floor(TypeCaster.firstValueAsNumber(values[0]))); // No negative values for year
-  var month = Math.floor(TypeCaster.firstValueAsNumber(values[1])) - 1; // Months are between 0 and 11.
-  var day = Math.floor(TypeCaster.firstValueAsNumber(values[2])) - 1; // Days are also zero-indexed.
-  var m = moment.utc(TypeCaster.ORIGIN_MOMENT)
+  var year = Math.abs(Math.floor(TypeConverter.firstValueAsNumber(values[0]))); // No negative values for year
+  var month = Math.floor(TypeConverter.firstValueAsNumber(values[1])) - 1; // Months are between 0 and 11.
+  var day = Math.floor(TypeConverter.firstValueAsNumber(values[2])) - 1; // Days are also zero-indexed.
+  var m = moment.utc(TypeConverter.ORIGIN_MOMENT)
     .add(2, "days")
     .add(year < FIRST_YEAR ? year : year - FIRST_YEAR, 'years') // If the value is less than 1900, assume 1900 as start index for year
     .add(month, 'months')
     .add(day, 'days');
-  var dateAsNumber = TypeCaster.momentToDayNumber(m);
+  var dateAsNumber = TypeConverter.momentToDayNumber(m);
   if (dateAsNumber < 0) {
     throw new NumError("DATE evaluates to an out of range value " + dateAsNumber
       + ". It should be greater than or equal to 0.");
@@ -49,10 +49,10 @@ var DATE = function (...values) : number {
  */
 var DATEVALUE = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var dateString = TypeCaster.firstValueAsString(values[0]);
+  var dateString = TypeConverter.firstValueAsString(values[0]);
   var dateAsNumber;
   try {
-    dateAsNumber = TypeCaster.stringToDateNumber(dateString);
+    dateAsNumber = TypeConverter.stringToDateNumber(dateString);
   } catch (e) {
     throw new ValueError("DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
   }
@@ -71,14 +71,14 @@ var DATEVALUE = function (...values) : number {
  */
 var EDATE = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
-  var startDateNumber = TypeCaster.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+  var startDateNumber = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
   if (startDateNumber < 0) {
     throw new NumError("Function EDATE parameter 1 value is " + startDateNumber+ ". It should be greater than or equal to 0.");
   }
-  var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+  var months = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
   // While momentToDayNumber will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes exclusive
   // count of days.
-  return TypeCaster.momentToDayNumber(moment.utc(TypeCaster.ORIGIN_MOMENT).add(startDateNumber, "days").add(months, "months"));
+  return TypeConverter.momentToDayNumber(moment.utc(TypeConverter.ORIGIN_MOMENT).add(startDateNumber, "days").add(months, "months"));
 };
 
 
@@ -93,12 +93,12 @@ var EDATE = function (...values) : number {
  */
 var EOMONTH = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
-  var startDateNumber = TypeCaster.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+  var startDateNumber = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
   if (startDateNumber < 0) {
     throw new NumError("Function EOMONTH parameter 1 value is " + startDateNumber + ". It should be greater than or equal to 0.");
   }
-  var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
-  return TypeCaster.momentToDayNumber(moment.utc(TypeCaster.ORIGIN_MOMENT)
+  var months = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
+  return TypeConverter.momentToDayNumber(moment.utc(TypeConverter.ORIGIN_MOMENT)
     .add(startDateNumber, "days")
     .add(months, "months")
     .endOf("month"));
@@ -114,11 +114,11 @@ var EOMONTH = function (...values) : number {
  */
 var DAY = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var dateNumber = TypeCaster.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+  var dateNumber = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
   if (dateNumber < 0) {
     throw new NumError("Function DAY parameter 1 value is " + dateNumber + ". It should be greater than or equal to 0.");
   }
-  return TypeCaster.numberToMoment(dateNumber).date();
+  return TypeConverter.numberToMoment(dateNumber).date();
 };
 
 
@@ -131,8 +131,8 @@ var DAY = function (...values) : number {
  */
 var DAYS = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
-  var end = TypeCaster.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
-  var start = TypeCaster.firstValueAsDateNumber(values[1], true); // tell firstValueAsDateNumber to coerce boolean
+  var end = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+  var start = TypeConverter.firstValueAsDateNumber(values[1], true); // tell firstValueAsDateNumber to coerce boolean
   return end - start;
 };
 
@@ -155,11 +155,11 @@ var DAYS = function (...values) : number {
  */
 var DAYS360 = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 2, 3);
-  var start = TypeCaster.numberToMoment(TypeCaster.firstValueAsDateNumber(values[0], true)); // tell firstValueAsDateNumber to coerce boolean
-  var end = TypeCaster.numberToMoment(TypeCaster.firstValueAsDateNumber(values[1], true)); // tell firstValueAsDateNumber to coerce boolean
+  var start = TypeConverter.numberToMoment(TypeConverter.firstValueAsDateNumber(values[0], true)); // tell firstValueAsDateNumber to coerce boolean
+  var end = TypeConverter.numberToMoment(TypeConverter.firstValueAsDateNumber(values[1], true)); // tell firstValueAsDateNumber to coerce boolean
   var methodToUse = false;
   if (values.length === 3) {
-    methodToUse = TypeCaster.firstValueAsBoolean(values[2]);
+    methodToUse = TypeConverter.firstValueAsBoolean(values[2]);
   }
   var smd = 31;
   var emd = 31;
@@ -194,11 +194,11 @@ var DAYS360 = function (...values) : number {
  */
 var MONTH = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var date = TypeCaster.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+  var date = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
   if (date < 0) {
     throw new NumError("Function MONTH parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
-  return TypeCaster.numberToMoment(date).month() + 1;
+  return TypeConverter.numberToMoment(date).month() + 1;
 };
 
 
@@ -211,11 +211,11 @@ var MONTH = function (...values) : number {
  */
 var YEAR = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var date = TypeCaster.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+  var date = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
   if (date < 0) {
     throw new NumError("Function YEAR parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
-  return TypeCaster.numberToMoment(date).year();
+  return TypeConverter.numberToMoment(date).year();
 };
 
 
@@ -233,12 +233,12 @@ var YEAR = function (...values) : number {
  */
 var WEEKDAY = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var date = TypeCaster.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
-  var offsetType = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 1;
+  var date = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+  var offsetType = values.length === 2 ? TypeConverter.firstValueAsNumber(values[1]) : 1;
   if (date < 0) {
     throw new NumError("Function WEEKDAY parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
-  var day = TypeCaster.numberToMoment(date).day();
+  var day = TypeConverter.numberToMoment(date).day();
   if (offsetType === 1) {
     return day + 1;
   } else if (offsetType === 2) {
@@ -292,12 +292,12 @@ function calculateWeekNum(dm : moment.Moment, shifterArray : Array<number>) : nu
  */
 var WEEKNUM = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var date = TypeCaster.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
-  var shiftType = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 1;
+  var date = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+  var shiftType = values.length === 2 ? TypeConverter.firstValueAsNumber(values[1]) : 1;
   if (date < 0) {
     throw new NumError("Function YEAR parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
-  var dm = TypeCaster.numberToMoment(date);
+  var dm = TypeConverter.numberToMoment(date);
   var week = dm.week();
   var dayOfWeek = dm.day(); // between 1 and 7, inclusively
   if (shiftType === 1) {
@@ -364,12 +364,12 @@ var WEEKNUM = function (...values) : number {
  */
 var DATEDIF = function (...values) : number {
   ArgsChecker.checkLength(values, 3);
-  var start = TypeCaster.firstValueAsDateNumber(values[0], true);
-  var end = TypeCaster.firstValueAsDateNumber(values[1], true);
-  var unit = TypeCaster.firstValueAsString(values[2]);
+  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
+  var end = TypeConverter.firstValueAsDateNumber(values[1], true);
+  var unit = TypeConverter.firstValueAsString(values[2]);
   var unitClean = unit.toUpperCase();
-  var startMoment = TypeCaster.numberToMoment(start);
-  var endMoment = TypeCaster.numberToMoment(end);
+  var startMoment = TypeConverter.numberToMoment(start);
+  var endMoment = TypeConverter.numberToMoment(end);
 
   if (start > end) {
     throw new NumError("Function DATEDIF parameter 1 (" + start.toString() +
@@ -433,12 +433,12 @@ var DATEDIF = function (...values) : number {
  */
 var YEARFRAC = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 2, 3);
-  var start = TypeCaster.firstValueAsDateNumber(values[0], true);
-  var end = TypeCaster.firstValueAsDateNumber(values[1], true);
-  var basis = values.length === 2 ? 0 : TypeCaster.firstValueAsNumber(values[2]);
+  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
+  var end = TypeConverter.firstValueAsDateNumber(values[1], true);
+  var basis = values.length === 2 ? 0 : TypeConverter.firstValueAsNumber(values[2]);
 
-  var s = TypeCaster.numberToMoment(start);
-  var e = TypeCaster.numberToMoment(end);
+  var s = TypeConverter.numberToMoment(start);
+  var e = TypeConverter.numberToMoment(end);
   if (e.isBefore(s)) {
     var me = moment.utc(e);
     e = moment.utc(s);
@@ -528,9 +528,9 @@ var YEARFRAC = function (...values) : number {
  */
 var TIMEVALUE = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var timeString = TypeCaster.firstValueAsString(values[0]);
+  var timeString = TypeConverter.firstValueAsString(values[0]);
   try {
-    return TypeCaster.stringToTimeNumber(timeString);
+    return TypeConverter.stringToTimeNumber(timeString);
   } catch (e) {
     throw new ValueError("TIMEVALUE parameter '" + timeString + "' cannot be parsed to date/time.");
   }
@@ -547,7 +547,7 @@ const MILLISECONDS_IN_DAY = 86400000;
  */
 var HOUR = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var time = TypeCaster.firstValueAsTimestampNumber(values[0]);
+  var time = TypeConverter.firstValueAsTimestampNumber(values[0]);
   if (time % 1 === 0) {
     return 0;
   }
@@ -565,7 +565,7 @@ var HOUR = function (...values) : number {
  */
 var MINUTE = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var time = TypeCaster.firstValueAsTimestampNumber(values[0]);
+  var time = TypeConverter.firstValueAsTimestampNumber(values[0]);
   if (time % 1 === 0) {
     return 0;
   }
@@ -582,7 +582,7 @@ var MINUTE = function (...values) : number {
  */
 var SECOND = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var time = TypeCaster.firstValueAsTimestampNumber(values[0]);
+  var time = TypeConverter.firstValueAsTimestampNumber(values[0]);
   if (time % 1 === 0) {
     return 0;
   }
@@ -604,8 +604,8 @@ var SECOND = function (...values) : number {
  */
 var NETWORKDAYS = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 2, 3);
-  var start = TypeCaster.firstValueAsDateNumber(values[0], true);
-  var end = TypeCaster.firstValueAsDateNumber(values[1], true);
+  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
+  var end = TypeConverter.firstValueAsDateNumber(values[1], true);
   var hasHolidays = values.length === 3;
   var holidays = [];
   if (hasHolidays) {
@@ -629,7 +629,7 @@ var NETWORKDAYS = function (...values) : number {
     start = swap;
   }
 
-  var countMoment = moment.utc(TypeCaster.numberToMoment(start));
+  var countMoment = moment.utc(TypeConverter.numberToMoment(start));
   var weekendDays = [6, 0]; // Default weekend_days.
   var days = end - start + 1;
   var networkDays = days;
@@ -637,7 +637,7 @@ var NETWORKDAYS = function (...values) : number {
   while (j < days) {
     if (weekendDays.indexOf(countMoment.day()) >= 0) {
       networkDays--;
-    } else if (hasHolidays && holidays.indexOf(TypeCaster.momentToDayNumber(countMoment)) > -1) {
+    } else if (hasHolidays && holidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) > -1) {
       networkDays--;
     }
     countMoment.add(1, 'days');
@@ -670,11 +670,11 @@ var NETWORKDAYS = function (...values) : number {
  */
 var NETWORKDAYS$INTL = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 2, 4);
-  var start = TypeCaster.firstValueAsDateNumber(values[0], true);
-  var end = TypeCaster.firstValueAsDateNumber(values[1], true);
+  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
+  var end = TypeConverter.firstValueAsDateNumber(values[1], true);
   var weekendDays = [];
   if (values.length >= 3) {
-    var weekend = TypeCaster.firstValue(values[2]);
+    var weekend = TypeConverter.firstValue(values[2]);
     if (typeof weekend === "string") {
       if (!/^[0-1]{6,}$/.test(weekend)) {
         throw new NumError("Function NETWORKDAYS.INTL parameter 3 requires a number in the format '0000011'. "
@@ -742,14 +742,14 @@ var NETWORKDAYS$INTL = function (...values) : number {
     start = swap;
   }
 
-  var countMoment = moment.utc(TypeCaster.numberToMoment(start));
+  var countMoment = moment.utc(TypeConverter.numberToMoment(start));
   var days = end - start + 1;
   var networkDays = days;
   var j = 0;
   while (j < days) {
     if (weekendDays.indexOf(countMoment.day()) >= 0) {
       networkDays--;
-    } else if (hasHolidays && holidays.indexOf(TypeCaster.momentToDayNumber(countMoment)) > -1) {
+    } else if (hasHolidays && holidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) > -1) {
       networkDays--;
     }
     countMoment.add(1, 'days');
@@ -769,7 +769,7 @@ var NETWORKDAYS$INTL = function (...values) : number {
  */
 var NOW = function (...values) : number {
   ArgsChecker.checkLength(values, 0);
-  return TypeCaster.momentToNumber(moment.utc());
+  return TypeConverter.momentToNumber(moment.utc());
 };
 
 /**
@@ -779,7 +779,7 @@ var NOW = function (...values) : number {
  */
 var TODAY = function (...values) : number {
   ArgsChecker.checkLength(values, 0);
-  return TypeCaster.momentToNumber(moment.utc().startOf("day"));
+  return TypeConverter.momentToNumber(moment.utc().startOf("day"));
 };
 
 
@@ -794,10 +794,10 @@ var TODAY = function (...values) : number {
  */
 var TIME = function (...values) : number {
   ArgsChecker.checkLength(values, 3);
-  var hours = Math.floor(TypeCaster.firstValueAsNumber(values[0]));
-  var minutes = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
-  var seconds = Math.floor(TypeCaster.firstValueAsNumber(values[2]));
-  var e = TypeCaster.unitsToTimeNumber(hours, minutes, seconds);
+  var hours = Math.floor(TypeConverter.firstValueAsNumber(values[0]));
+  var minutes = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
+  var seconds = Math.floor(TypeConverter.firstValueAsNumber(values[2]));
+  var e = TypeConverter.unitsToTimeNumber(hours, minutes, seconds);
   if (e < 0) {
     throw new NumError("TIME evaluates to an out of range value " + e + ". It should be greater than or equal to 0.");
   }
@@ -819,8 +819,8 @@ var TIME = function (...values) : number {
  */
 var WORKDAY = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 2, 3);
-  var start = TypeCaster.firstValueAsDateNumber(values[0], true);
-  var days = TypeCaster.firstValueAsNumber(values[1]);
+  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
+  var days = TypeConverter.firstValueAsNumber(values[1]);
   var hasHolidays = values.length === 3;
   var holidays = [];
   if (hasHolidays) {
@@ -837,20 +837,20 @@ var WORKDAY = function (...values) : number {
         }
       }
     } else {
-      holidays.push(TypeCaster.valueToNumber(values[2]));
+      holidays.push(TypeConverter.valueToNumber(values[2]));
     }
   }
 
   var weekendDays = [0, 6];
-  var countMoment = moment.utc(TypeCaster.numberToMoment(start));
+  var countMoment = moment.utc(TypeConverter.numberToMoment(start));
   var j = 0;
   while (j < days) {
     countMoment.add(1, 'days');
-    if (weekendDays.indexOf(countMoment.day()) < 0 && holidays.indexOf(TypeCaster.momentToDayNumber(countMoment)) < 0) {
+    if (weekendDays.indexOf(countMoment.day()) < 0 && holidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) < 0) {
       j++;
     }
   }
-  return TypeCaster.momentToDayNumber(countMoment);
+  return TypeConverter.momentToDayNumber(countMoment);
 };
 
 
@@ -871,11 +871,11 @@ var WORKDAY = function (...values) : number {
  */
 var WORKDAY$INTL = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 2, 3);
-  var start = TypeCaster.firstValueAsDateNumber(values[0], true);
-  var days = TypeCaster.firstValueAsNumber(values[1]);
+  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
+  var days = TypeConverter.firstValueAsNumber(values[1]);
   var weekendDays = [];
   if (values.length >= 3) {
-    var weekend = TypeCaster.firstValue(values[2]);
+    var weekend = TypeConverter.firstValue(values[2]);
     if (typeof weekend === "string") {
       if (!/^[0-1]{6,}$/.test(weekend)) {
         throw new NumError("Function WORKDAY.INTL parameter 3 requires a number in the format '0000011'. "
@@ -936,18 +936,18 @@ var WORKDAY$INTL = function (...values) : number {
         }
       }
     } else {
-      holidays.push(TypeCaster.valueToNumber(values[3]));
+      holidays.push(TypeConverter.valueToNumber(values[3]));
     }
   }
-  var countMoment = moment.utc(TypeCaster.numberToMoment(start));
+  var countMoment = moment.utc(TypeConverter.numberToMoment(start));
   var j = 0;
   while (j < days) {
     countMoment.add(1, 'days');
-    if (weekendDays.indexOf(countMoment.day()) < 0 && holidays.indexOf(TypeCaster.momentToDayNumber(countMoment)) < 0) {
+    if (weekendDays.indexOf(countMoment.day()) < 0 && holidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) < 0) {
       j++;
     }
   }
-  return TypeCaster.momentToDayNumber(countMoment);
+  return TypeConverter.momentToDayNumber(countMoment);
 };
 
 export {

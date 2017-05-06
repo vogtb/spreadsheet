@@ -122,9 +122,9 @@ function matchTimestampAndMutateMoment(timestampString : string, momentToMutate:
 }
 
 /**
- * Static class of helpers used to cast various types to each other.
+ * Static class of helpers used to convert various types to each other.
  */
-class TypeCaster {
+class TypeConverter {
 
   public static ORIGIN_MOMENT = moment.utc([1899, 11, 30]).startOf("day");
   private static SECONDS_IN_DAY = 86400;
@@ -140,7 +140,7 @@ class TypeCaster {
     try {
       m = matchTimestampAndMutateMoment(timeString, moment.utc([FIRST_YEAR]).startOf("year"));
     } catch (e) {
-      m = TypeCaster.parseStringToMoment(timeString);
+      m = TypeConverter.parseStringToMoment(timeString);
       if (m === undefined || !m.isValid()) {
         throw new Error();
       }
@@ -330,11 +330,11 @@ class TypeCaster {
    */
   public static stringToDateNumber(dateString : string) : number {
     // m will be set and valid or invalid, or will remain undefined
-    var m = TypeCaster.parseStringToMoment(dateString);
+    var m = TypeConverter.parseStringToMoment(dateString);
     if (m === undefined || !m.isValid()) {
       throw new ValueError("DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
     }
-    return TypeCaster.momentToDayNumber(m.set('hours', 0).set('minutes', 0).set('seconds', 0));
+    return TypeConverter.momentToDayNumber(m.set('hours', 0).set('minutes', 0).set('seconds', 0));
   }
 
   /**
@@ -374,7 +374,7 @@ class TypeCaster {
    */
   static valueToNumberGracefully(value: any) : number {
     try {
-      return TypeCaster.valueToNumber(value);
+      return TypeConverter.valueToNumber(value);
     } catch (e) {
       return 0;
     }
@@ -422,10 +422,10 @@ class TypeCaster {
         return 0;
       }
       try {
-        return TypeCaster.stringToTimeNumber(value)
+        return TypeConverter.stringToTimeNumber(value)
       } catch (e) {
-        if (TypeCaster.canCoerceToNumber(value)) {
-          return TypeCaster.valueToNumber(value);
+        if (TypeConverter.canCoerceToNumber(value)) {
+          return TypeConverter.valueToNumber(value);
         }
         throw new ValueError("___ expects number values. But '" + value + "' is a text and cannot be coerced to a number.")
       }
@@ -465,9 +465,9 @@ class TypeCaster {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      return TypeCaster.firstValueAsNumber(input[0]);
+      return TypeConverter.firstValueAsNumber(input[0]);
     }
-    return TypeCaster.valueToNumber(input);
+    return TypeConverter.valueToNumber(input);
   }
 
   /**
@@ -480,9 +480,9 @@ class TypeCaster {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      return TypeCaster.firstValueAsString(input[0]);
+      return TypeConverter.firstValueAsString(input[0]);
     }
-    return TypeCaster.valueToString(input);
+    return TypeConverter.valueToString(input);
   }
 
   static firstValue(input: any) : any {
@@ -490,7 +490,7 @@ class TypeCaster {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      return TypeCaster.firstValue(input[0]);
+      return TypeConverter.firstValue(input[0]);
     }
     return input;
   }
@@ -505,9 +505,9 @@ class TypeCaster {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      return TypeCaster.firstValueAsBoolean(input[0]);
+      return TypeConverter.firstValueAsBoolean(input[0]);
     }
-    return TypeCaster.valueToBoolean(input);
+    return TypeConverter.valueToBoolean(input);
   }
 
   /**
@@ -521,9 +521,9 @@ class TypeCaster {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      return TypeCaster.firstValueAsDateNumber(input[0], coerceBoolean);
+      return TypeConverter.firstValueAsDateNumber(input[0], coerceBoolean);
     }
-    return TypeCaster.valueToDateNumber(input, coerceBoolean);
+    return TypeConverter.valueToDateNumber(input, coerceBoolean);
   }
 
   static firstValueAsTimestampNumber(input : any) : number {
@@ -531,9 +531,9 @@ class TypeCaster {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      return TypeCaster.firstValueAsTimestampNumber(input[0]);
+      return TypeConverter.firstValueAsTimestampNumber(input[0]);
     }
-    return TypeCaster.valueToTimestampNumber(input);
+    return TypeConverter.valueToTimestampNumber(input);
   }
 
   /**
@@ -547,10 +547,10 @@ class TypeCaster {
       return value;
     } else if (typeof value === "string") {
       try {
-        return TypeCaster.stringToDateNumber(value)
+        return TypeConverter.stringToDateNumber(value)
       } catch (e) {
-        if (TypeCaster.canCoerceToNumber(value)) {
-          return TypeCaster.valueToNumber(value);
+        if (TypeConverter.canCoerceToNumber(value)) {
+          return TypeConverter.valueToNumber(value);
         }
         throw new ValueError("___ expects date values. But '" + value + "' is a text and cannot be coerced to a date.")
       }
@@ -563,7 +563,7 @@ class TypeCaster {
   }
 
   /**
-   * Casts a moment to a date number.
+   * Converts a moment to a date number.
    * @param m to convert
    * @returns {number} date
    */
@@ -572,21 +572,21 @@ class TypeCaster {
   }
 
   /**
-   * Casts a moment to a date number, floored to the whole day date.
+   * Converts a moment to a date number, floored to the whole day date.
    * @param m to convert
    * @returns {number} date
    */
   static momentToDayNumber(m : moment.Moment) : number {
-    return Math.floor(TypeCaster.momentToNumber(m));
+    return Math.floor(TypeConverter.momentToNumber(m));
   }
 
   /**
-   * Casts a number to moment.
+   * Converts a number to moment.
    * @param n to convert
    * @returns {Moment} date
    */
   static numberToMoment(n : number) : moment.Moment {
-    return moment.utc(TypeCaster.ORIGIN_MOMENT).add(n, "days");
+    return moment.utc(TypeConverter.ORIGIN_MOMENT).add(n, "days");
   }
 
   /**
@@ -616,6 +616,6 @@ var checkForDevideByZero = function(n : number) : number {
 };
 
 export {
-  TypeCaster,
+  TypeConverter,
   checkForDevideByZero
 }

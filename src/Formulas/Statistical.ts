@@ -8,8 +8,8 @@ import {
   Filter
 } from "../Utilities/Filter";
 import {
-  TypeCaster
-} from "../Utilities/TypeCaster";
+  TypeConverter
+} from "../Utilities/TypeConverter";
 import {
   RefError, NumError, DivZeroError, NAError
 } from "../Errors";
@@ -31,13 +31,13 @@ var DEVSQ = function (...values) : number {
   var result = 0;
   var count = 0;
   for (var i = 0; i < range.length; i++) {
-    result = result + TypeCaster.valueToNumber(range[i]);
+    result = result + TypeConverter.valueToNumber(range[i]);
     count++;
   }
   var mean = result / count;
   var result = 0;
   for (var i = 0; i < range.length; i++) {
-    result += Math.pow((TypeCaster.valueToNumber(range[i]) - mean), 2);
+    result += Math.pow((TypeConverter.valueToNumber(range[i]) - mean), 2);
   }
   return result;
 };
@@ -59,16 +59,16 @@ var MEDIAN = function (...values) : number {
       var filtered = Filter.filterOutStringValues(currentValue);
       sortedArray = sortedArray.concat(filtered);
     } else {
-      sortedArray.push(TypeCaster.valueToNumber(currentValue));
+      sortedArray.push(TypeConverter.valueToNumber(currentValue));
     }
   });
   sortedArray = sortedArray.sort(function (a, b) {
-    var aN = TypeCaster.valueToNumber(a);
-    var bN = TypeCaster.valueToNumber(b);
+    var aN = TypeConverter.valueToNumber(a);
+    var bN = TypeConverter.valueToNumber(b);
     return aN - bN;
   });
   if (sortedArray.length === 1) {
-    return TypeCaster.valueToNumber(sortedArray[0]);
+    return TypeConverter.valueToNumber(sortedArray[0]);
   }
   if (sortedArray.length === 0) {
     throw new NumError("MEDIAN has no valid input data.");
@@ -106,7 +106,7 @@ var AVERAGE = function (...values) : number {
       result = result + SUM.apply(this, filtered);
       count += filtered.length;
     } else {
-      result = result + TypeCaster.valueToNumber(values[i]);
+      result = result + TypeConverter.valueToNumber(values[i]);
       count++;
     }
   }
@@ -133,20 +133,20 @@ var AVEDEV = function (...values) {
       }
       arrayValues.push(X);
     } else {
-      nonArrayValues.push(TypeCaster.valueToNumber(X));
+      nonArrayValues.push(TypeConverter.valueToNumber(X));
     }
   }
 
   // Remove string values from array-values, but not from non-array-values, and concat.
   var flatValues = Filter.filterOutStringValues(Filter.flatten(arrayValues)).map(function (value) {
-    return TypeCaster.valueToNumber(value);
+    return TypeConverter.valueToNumber(value);
   }).concat(nonArrayValues);
 
   // Calculating mean
   var result = 0;
   var count = 0;
   for (var i = 0; i < flatValues.length; i++) {
-    result = result + TypeCaster.valueToNumber(flatValues[i]);
+    result = result + TypeConverter.valueToNumber(flatValues[i]);
     count++;
   }
   if (count === 0) {
@@ -155,7 +155,7 @@ var AVEDEV = function (...values) {
   var mean = result / count;
 
   for (var i = 0; i < flatValues.length; i++) {
-    flatValues[i] = ABS(TypeCaster.valueToNumber(flatValues[i]) - mean);
+    flatValues[i] = ABS(TypeConverter.valueToNumber(flatValues[i]) - mean);
   }
   return SUM(flatValues) / flatValues.length;
 };
@@ -179,7 +179,7 @@ var AVERAGEA = function (...values) {
       result = result + SUM.apply(this, filtered);
       count += filtered.length;
     } else {
-      result = result + TypeCaster.valueToNumber(values[i]);
+      result = result + TypeConverter.valueToNumber(values[i]);
       count++;
     }
   }
@@ -321,9 +321,9 @@ var EXPONDIST = function (...values) : number {
     return x < 0 ? 0 : rate * Math.exp(-rate * x);
   }
   ArgsChecker.checkLength(values, 3);
-  var x = TypeCaster.firstValueAsNumber(values[0]);
-  var lambda = TypeCaster.firstValueAsNumber(values[1]);
-  var cumulative = TypeCaster.firstValueAsBoolean(values[2]);
+  var x = TypeConverter.firstValueAsNumber(values[0]);
+  var lambda = TypeConverter.firstValueAsNumber(values[1]);
+  var cumulative = TypeConverter.firstValueAsBoolean(values[2]);
   return (cumulative) ? cdf(x, lambda) : pdf(x, lambda);
 };
 
@@ -514,13 +514,13 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
     return (x + y > 170) ? Math.exp(betaln(x, y)) : gammafn(x) * gammafn(y) / gammafn(x + y);
   }
   ArgsChecker.checkLength(values, 4);
-  var x = TypeCaster.firstValueAsNumber(values[0]);
+  var x = TypeConverter.firstValueAsNumber(values[0]);
   if (x < 0) {
     throw new NumError("Function F.DIST parameter 1 value is " + x + ". It should be greater than or equal to 0.");
   }
-  var d1 = TypeCaster.firstValueAsNumber(values[1]);
-  var d2 = TypeCaster.firstValueAsNumber(values[2]);
-  var cumulative = TypeCaster.firstValueAsBoolean(values[3]);
+  var d1 = TypeConverter.firstValueAsNumber(values[1]);
+  var d2 = TypeConverter.firstValueAsNumber(values[2]);
+  var cumulative = TypeConverter.firstValueAsBoolean(values[3]);
   return (cumulative) ? cdf(x, d1, d2) : pdf(x, d1, d2);
 };
 
@@ -685,13 +685,13 @@ var FINV = function (...values) : number {
     return df2 / (df1 * (1 / ibetainv(x, df1 / 2, df2 / 2) - 1));
   }
   ArgsChecker.checkLength(values, 3);
-  var probability = TypeCaster.firstValueAsNumber(values[0]);
+  var probability = TypeConverter.firstValueAsNumber(values[0]);
   if (probability <= 0.0 || probability > 1.0) {
     throw new NumError("Function FINV parameter 1 value is " + probability
       + ". It should be greater than or equal to 0, and less than 1.")
   }
-  var d1 = TypeCaster.firstValueAsNumber(values[1]);
-  var d2 = TypeCaster.firstValueAsNumber(values[2]);
+  var d1 = TypeConverter.firstValueAsNumber(values[1]);
+  var d2 = TypeConverter.firstValueAsNumber(values[2]);
   return inv(1.0 - probability, d1, d2);
 };
 
@@ -703,7 +703,7 @@ var FINV = function (...values) : number {
  */
 var FISHER = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var x = TypeCaster.firstValueAsNumber(values[0]);
+  var x = TypeConverter.firstValueAsNumber(values[0]);
   if (x <= -1 || x >= 1) {
     throw new NumError("Function FISHER parameter 1 value is " + x + ". Valid values are between -1 and 1 exclusive.");
   }
@@ -718,7 +718,7 @@ var FISHER = function (...values) : number {
  */
 var FISHERINV = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var y = TypeCaster.firstValueAsNumber(values[0]);
+  var y = TypeConverter.firstValueAsNumber(values[0]);
   var e2y = Math.exp(2 * y);
   return (e2y - 1) / (e2y + 1);
 };
@@ -742,7 +742,7 @@ var MAX = function (...values) {
         maxSoFar = Math.max(MAX.apply(this, filtered), maxSoFar);
       }
     } else {
-      maxSoFar = Math.max(TypeCaster.valueToNumber(values[i]), maxSoFar);
+      maxSoFar = Math.max(TypeConverter.valueToNumber(values[i]), maxSoFar);
     }
   }
   return maxSoFar;
@@ -778,7 +778,7 @@ var MIN = function (...values) {
         minSoFar = Math.min(MIN.apply(this, filtered), minSoFar);
       }
     } else {
-      minSoFar = Math.min(TypeCaster.valueToNumber(values[i]), minSoFar);
+      minSoFar = Math.min(TypeConverter.valueToNumber(values[i]), minSoFar);
     }
   }
   return minSoFar;
@@ -814,7 +814,7 @@ var AVERAGEIF = function (...values) {
   var result = 0;
   var count = 0;
   for (var i = 0; i < range.length; i++) {
-    var val = TypeCaster.valueToNumber(range[i]);
+    var val = TypeConverter.valueToNumber(range[i]);
     if (criteriaEvaluation(val)) {
       result = result + val;
       count++;
@@ -841,7 +841,7 @@ var COUNT = function (...values) : number {
       if (values[i].length > 0) {
         count += COUNT.apply(this, values[i]);
       }
-    } else if (TypeCaster.canCoerceToNumber(values[i])) {
+    } else if (TypeConverter.canCoerceToNumber(values[i])) {
       count++;
     }
   }

@@ -14,7 +14,7 @@ Things I should do.
 ### COUNT and COUNTA should be different.
 
 
-### All formulas should used TypeCaster to pull parameters from `values`
+### All formulas should used TypeConverter to pull parameters from `values`
 
 
 ### Criteria evaluations should escape reg-ex characters

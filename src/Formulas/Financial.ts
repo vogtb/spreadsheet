@@ -2,9 +2,9 @@ import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
 import {
-  TypeCaster,
+  TypeConverter,
   checkForDevideByZero
-} from "../Utilities/TypeCaster";
+} from "../Utilities/TypeConverter";
 import {
   NumError,
   DivZeroError
@@ -26,11 +26,11 @@ import {
  */
 var DDB = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 4, 5);
-  var cost = TypeCaster.firstValueAsNumber(values[0]);
-  var salvage = TypeCaster.firstValueAsNumber(values[1]);
-  var life = TypeCaster.firstValueAsNumber(values[2]);
-  var period = TypeCaster.firstValueAsNumber(values[3]);
-  var factor = values.length === 5 ? TypeCaster.firstValueAsNumber(values[4]) : 2;
+  var cost = TypeConverter.firstValueAsNumber(values[0]);
+  var salvage = TypeConverter.firstValueAsNumber(values[1]);
+  var life = TypeConverter.firstValueAsNumber(values[2]);
+  var period = TypeConverter.firstValueAsNumber(values[3]);
+  var factor = values.length === 5 ? TypeConverter.firstValueAsNumber(values[4]) : 2;
 
   if (cost < 0) {
     throw new NumError("Function DDB parameter 1 value is "
@@ -78,11 +78,11 @@ var DDB = function (...values) : number {
  */
 var DB = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 4, 5);
-  var cost = TypeCaster.firstValueAsNumber(values[0]);
-  var salvage = TypeCaster.firstValueAsNumber(values[1]);
-  var life = TypeCaster.firstValueAsNumber(values[2]);
-  var period = TypeCaster.firstValueAsNumber(values[3]);
-  var month = values.length === 5 ? Math.floor(TypeCaster.firstValueAsNumber(values[4])) : 12;
+  var cost = TypeConverter.firstValueAsNumber(values[0]);
+  var salvage = TypeConverter.firstValueAsNumber(values[1]);
+  var life = TypeConverter.firstValueAsNumber(values[2]);
+  var period = TypeConverter.firstValueAsNumber(values[3]);
+  var month = values.length === 5 ? Math.floor(TypeConverter.firstValueAsNumber(values[4])) : 12;
   if (cost < 0) {
     throw new NumError("Function DB parameter 1 value is "
       + cost + ". It should be greater than or equal to 0.");
@@ -141,8 +141,8 @@ var DB = function (...values) : number {
  */
 var DOLLAR = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var v = TypeCaster.firstValueAsNumber(values[0]);
-  var places = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 2;
+  var v = TypeConverter.firstValueAsNumber(values[0]);
+  var places = values.length === 2 ? TypeConverter.firstValueAsNumber(values[1]) : 2;
   var sign = (v > 0) ? 1 : -1;
   var divisor = sign * (Math.floor(Math.abs(v) * Math.pow(10, places)));
   var pow = Math.pow(10, places);
@@ -162,8 +162,8 @@ var DOLLAR = function (...values) : number {
  */
 var DOLLARDE = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
-  var dollar = TypeCaster.firstValueAsNumber(values[0]);
-  var fraction = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+  var dollar = TypeConverter.firstValueAsNumber(values[0]);
+  var fraction = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
   if (fraction === 0) {
     throw new DivZeroError("Function DOLLARDE parameter 2 cannot be zero.");
   }
@@ -187,8 +187,8 @@ var DOLLARDE = function (...values) : number {
  */
 var DOLLARFR = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
-  var dollar = TypeCaster.firstValueAsNumber(values[0]);
-  var unit = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+  var dollar = TypeConverter.firstValueAsNumber(values[0]);
+  var unit = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
   if (unit === 0) {
     throw new DivZeroError("Function DOLLARFR parameter 2 cannot be zero.");
   }
@@ -207,8 +207,8 @@ var DOLLARFR = function (...values) : number {
  */
 var EFFECT = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
-  var rate = TypeCaster.firstValueAsNumber(values[0]);
-  var periods = TypeCaster.firstValueAsNumber(values[1]);
+  var rate = TypeConverter.firstValueAsNumber(values[0]);
+  var periods = TypeConverter.firstValueAsNumber(values[1]);
   if (rate <= 0) {
     throw new NumError("Function EFFECT parameter 1 value is " + rate + ". It should be greater than to 0");
   }
@@ -267,21 +267,21 @@ function fv(rate, periods, payment, value, type) {
  */
 var CUMPRINC = function (...values) : number {
   ArgsChecker.checkLength(values, 6);
-  var rate = TypeCaster.firstValueAsNumber(values[0]);
-  var periods = TypeCaster.firstValueAsNumber(values[1]);
-  var value = TypeCaster.firstValueAsNumber(values[2]);
-  var start = TypeCaster.firstValueAsNumber(values[3]);
+  var rate = TypeConverter.firstValueAsNumber(values[0]);
+  var periods = TypeConverter.firstValueAsNumber(values[1]);
+  var value = TypeConverter.firstValueAsNumber(values[2]);
+  var start = TypeConverter.firstValueAsNumber(values[3]);
   if (start < 1) {
     throw new NumError("Function CUMPRINC parameter 4 value is " + start + ". It should be greater than or equal to 1.");
   }
-  var end = TypeCaster.firstValueAsNumber(values[4]);
+  var end = TypeConverter.firstValueAsNumber(values[4]);
   if (end < 1) {
     throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to 1.");
   }
   if (end < start) {
     throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to " + start + ".");
   }
-  var type = TypeCaster.firstValueAsBoolean(values[5]);
+  var type = TypeConverter.firstValueAsBoolean(values[5]);
 
   var payment = pmt(rate, periods, value, 0, type);
   var principal = 0;
@@ -319,21 +319,21 @@ var CUMPRINC = function (...values) : number {
  */
 var CUMIPMT = function (...values) : number {
   ArgsChecker.checkLength(values, 6);
-  var rate = TypeCaster.firstValueAsNumber(values[0]);
-  var periods = TypeCaster.firstValueAsNumber(values[1]);
-  var value = TypeCaster.firstValueAsNumber(values[2]);
-  var start = TypeCaster.firstValueAsNumber(values[3]);
+  var rate = TypeConverter.firstValueAsNumber(values[0]);
+  var periods = TypeConverter.firstValueAsNumber(values[1]);
+  var value = TypeConverter.firstValueAsNumber(values[2]);
+  var start = TypeConverter.firstValueAsNumber(values[3]);
   if (start < 1) {
     throw new NumError("Function CUMPRINC parameter 4 value is " + start + ". It should be greater than or equal to 1.");
   }
-  var end = TypeCaster.firstValueAsNumber(values[4]);
+  var end = TypeConverter.firstValueAsNumber(values[4]);
   if (end < 1) {
     throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to 1.");
   }
   if (end < start) {
     throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to " + start + ".");
   }
-  var type = TypeCaster.firstValueAsBoolean(values[5]);
+  var type = TypeConverter.firstValueAsBoolean(values[5]);
 
   var payment = pmt(rate, periods, value, 0, type);
   var interest = 0;
@@ -387,28 +387,28 @@ var CUMIPMT = function (...values) : number {
  */
 var ACCRINT = function (...values) {
   ArgsChecker.checkLengthWithin(values, 6, 7);
-  var issue = TypeCaster.firstValueAsDateNumber(values[0]);
+  var issue = TypeConverter.firstValueAsDateNumber(values[0]);
   // "firstPayment" param is only here to check for errors for GS implementation.
   // In MSE, there is a 7th (zero-indexed-6th) param that indicates the calculation-method to use, which indicates
   // weather the total accrued interest starting at the first_intrest date, instead of the issue date.
-  var firstPayment = TypeCaster.firstValueAsDateNumber(values[1]);
+  var firstPayment = TypeConverter.firstValueAsDateNumber(values[1]);
   if (firstPayment < 0) {
     throw new NumError("Function ACCRINT parameter 2 value is " + firstPayment
         + ". It should be greater than 0.");
   }
-  var settlement = TypeCaster.firstValueAsDateNumber(values[2]);
+  var settlement = TypeConverter.firstValueAsDateNumber(values[2]);
   if (issue > settlement) {
     throw new NumError("Function ACCRINT parameter 1 (" + issue.toString()
       + ") should be on or before Function ACCRINT parameter 3 (" + settlement.toString() + ").")
   }
-  var rate = TypeCaster.firstValueAsNumber(values[3]);
-  var redemption = TypeCaster.firstValueAsNumber(values[4]);// "par"
+  var rate = TypeConverter.firstValueAsNumber(values[3]);
+  var redemption = TypeConverter.firstValueAsNumber(values[4]);// "par"
   // The frequency parameter also does not affect the resulting value of the formula in the GS implementation.
   // In MSE, frequency is used to calculate a more accurate value, by breaking apart the year, and computing interest
   // on an on-going basis. In this implementation, we use YEARFRAC to get a numerical value that encompasses the
   // functionality of "frequency".
-  var frequency = TypeCaster.firstValueAsNumber(values[5]);
-  var dayCountConvention = values.length === 7 ? TypeCaster.firstValueAsNumber(values[6]) : 1;// "basis"
+  var frequency = TypeConverter.firstValueAsNumber(values[5]);
+  var dayCountConvention = values.length === 7 ? TypeConverter.firstValueAsNumber(values[6]) : 1;// "basis"
   var factor = YEARFRAC(issue, settlement, dayCountConvention);
   return redemption * rate * factor;
 };

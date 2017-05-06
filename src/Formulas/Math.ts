@@ -2,8 +2,8 @@ import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
 import {
-  TypeCaster
-} from "../Utilities/TypeCaster";
+  TypeConverter
+} from "../Utilities/TypeConverter";
 import {
   Filter
 } from "../Utilities/Filter";
@@ -29,7 +29,7 @@ import {
  */
 var ABS = function (...values) {
   ArgsChecker.checkLength(values, 1);
-  var v = TypeCaster.valueToNumber(values[0]);
+  var v = TypeConverter.valueToNumber(values[0]);
   return Math.abs(v);
 };
 
@@ -41,7 +41,7 @@ var ABS = function (...values) {
  */
 var ACOS = function (value?) {
   ArgsChecker.checkLength(arguments, 1);
-  value = TypeCaster.valueToNumber(value);
+  value = TypeConverter.valueToNumber(value);
   if (value === -1) {
     return Math.PI;
   } else if (value > 1 || value < -1) {
@@ -58,7 +58,7 @@ var ACOS = function (value?) {
  */
 var ACOSH = function (value?) {
   ArgsChecker.checkLength(arguments, 1);
-  value = TypeCaster.valueToNumber(value);
+  value = TypeConverter.valueToNumber(value);
   if (value < 1) {
     throw new NumError("Function ACOSH parameter 1 value is " + value + ". It should be greater than or equal to 1.");
   }
@@ -73,7 +73,7 @@ var ACOSH = function (value?) {
  */
 var ACOTH = function (value?) {
   ArgsChecker.checkLength(arguments, 1);
-  value = TypeCaster.valueToNumber(value);
+  value = TypeConverter.valueToNumber(value);
   if (value <= 1 && value >= -1) {
     throw new NumError("Function ACOTH parameter 1 value is " + value + ". Valid values cannot be between -1 and 1 inclusive.")
   }
@@ -88,7 +88,7 @@ var ACOTH = function (value?) {
  */
 var ASIN = function (value?) {
   ArgsChecker.checkLength(arguments, 1);
-  value = TypeCaster.valueToNumber(value);
+  value = TypeConverter.valueToNumber(value);
   if (value === -1) {
     return Math.PI;
   } else if (value > 1 || value < -1) {
@@ -105,7 +105,7 @@ var ASIN = function (value?) {
  */
 var ASINH = function (value?) {
   ArgsChecker.checkLength(arguments, 1);
-  value = TypeCaster.valueToNumber(value);
+  value = TypeConverter.valueToNumber(value);
   return Math.log(value + Math.sqrt(value * value + 1));
 };
 
@@ -118,7 +118,7 @@ var ASINH = function (value?) {
  */
 var ATAN = function (value?) {
   ArgsChecker.checkLength(arguments, 1);
-  value = TypeCaster.valueToNumber(value);
+  value = TypeConverter.valueToNumber(value);
   if (value === -1) {
     return Math.PI;
   } else if (value > 1 || value < -1) {
@@ -137,8 +137,8 @@ var ATAN = function (value?) {
  */
 var ATAN2 = function (x, y) {
   ArgsChecker.checkLength(arguments, 2);
-  x = TypeCaster.valueToNumber(x);
-  y = TypeCaster.valueToNumber(y);
+  x = TypeConverter.valueToNumber(x);
+  y = TypeConverter.valueToNumber(y);
   if (x === 0 && y === 0) {
     throw new DivZeroError("Evaluation of function ATAN2 caused a divide by zero error.");
   }
@@ -154,7 +154,7 @@ var ATAN2 = function (x, y) {
  */
 var ATANH = function (value?) : number {
   ArgsChecker.checkLength(arguments, 1);
-  value = TypeCaster.valueToNumber(value);
+  value = TypeConverter.valueToNumber(value);
   if (value >= 1 || value <= -1) {
     throw new NumError("Function ATANH parameter 1 value is " + value + ". Valid values are between -1 and 1 exclusive.");
   }
@@ -178,7 +178,7 @@ var EVEN = function (...values) : number {
     }
     return EVEN(values[0][0]);
   }
-  var X = TypeCaster.valueToNumber(values[0]);
+  var X = TypeConverter.valueToNumber(values[0]);
   return X % 2 === 1 ? X + 1 : X;
 };
 
@@ -191,8 +191,8 @@ var EVEN = function (...values) : number {
  */
 var MOD = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
-  var oneN = TypeCaster.valueToNumber(values[0]);
-  var twoN =  TypeCaster.valueToNumber(values[1]);
+  var oneN = TypeConverter.valueToNumber(values[0]);
+  var twoN =  TypeConverter.valueToNumber(values[1]);
   if (twoN === 0) {
     throw new DivZeroError("Function MOD parameter 2 cannot be zero.");
   }
@@ -214,7 +214,7 @@ var ODD = function (...values) : number {
     }
     return ODD(values[0][0]);
   }
-  var X = TypeCaster.valueToNumber(values[0]);
+  var X = TypeConverter.valueToNumber(values[0]);
   return X % 2 === 1 ? X : X + 1;
 };
 
@@ -227,8 +227,8 @@ var ODD = function (...values) : number {
  */
 var POWER = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
-  var p = TypeCaster.firstValueAsNumber(values[1]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
+  var p = TypeConverter.firstValueAsNumber(values[1]);
   return Math.pow(n, p);
 };
 
@@ -248,7 +248,7 @@ var SUM = function (...values) : number {
       if (values[i] === "") {
         throw new ValueError("Function SUM parameter "+i+" expects number values. But '"+values[i]+"' is a text and cannot be coerced to a number.");
       }
-      result = result + TypeCaster.valueToNumber(values[i]);
+      result = result + TypeConverter.valueToNumber(values[i]);
     }
   }
   return result;
@@ -262,7 +262,7 @@ var SUM = function (...values) : number {
  */
 var SQRT = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var x = TypeCaster.firstValueAsNumber(values[0]);
+  var x = TypeConverter.firstValueAsNumber(values[0]);
   if (x < 0) {
     throw new ValueError("Function SQRT parameter 1 expects number values. But '" + values[0] + "' is a text and cannot be coerced to a number.");
   }
@@ -277,7 +277,7 @@ var SQRT = function (...values) : number {
  */
 var SQRTPI = function (...values) : number{
   ArgsChecker.checkLength(values, 1);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 0) {
     throw new NumError("Function SQRTPI parameter 1 value is " + n + ". It should be greater than or equal to 0.");
   }
@@ -292,7 +292,7 @@ var SQRTPI = function (...values) : number{
  */
 var COS = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var r = TypeCaster.firstValueAsNumber(values[0]);
+  var r = TypeConverter.firstValueAsNumber(values[0]);
   return Math.cos(r);
 };
 
@@ -304,7 +304,7 @@ var COS = function (...values) : number {
  */
 var COSH = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var r = TypeCaster.firstValueAsNumber(values[0]);
+  var r = TypeConverter.firstValueAsNumber(values[0]);
   return Math["cosh"](r);
 };
 
@@ -316,7 +316,7 @@ var COSH = function (...values) : number {
  */
 var COT = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var x = TypeCaster.firstValueAsNumber(values[0]);
+  var x = TypeConverter.firstValueAsNumber(values[0]);
   if (x === 0) {
     throw new DivZeroError("Evaluation of function COT caused a divide by zero error.");
   }
@@ -331,7 +331,7 @@ var COT = function (...values) : number {
  */
 var COTH = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var x = TypeCaster.firstValueAsNumber(values[0]);
+  var x = TypeConverter.firstValueAsNumber(values[0]);
   if (x === 0) {
     throw new DivZeroError("Evaluation of function COTH caused a divide by zero error.");
   }
@@ -346,7 +346,7 @@ var COTH = function (...values) : number {
  */
 var INT = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var x = TypeCaster.firstValueAsNumber(values[0]);
+  var x = TypeConverter.firstValueAsNumber(values[0]);
   return Math.floor(x);
 };
 
@@ -362,7 +362,7 @@ var ISEVEN = function (...values) : boolean {
   if (values[0] === "") {
     throw new ValueError("Function ISEVEN parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
   }
-  var x = TypeCaster.firstValueAsNumber(values[0]);
+  var x = TypeConverter.firstValueAsNumber(values[0]);
   return Math.floor(x) % 2 === 0;
 };
 
@@ -378,7 +378,7 @@ var ISODD = function (...values) : boolean {
   if (values[0] === "") {
     throw new ValueError("Function ISODD parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
   }
-  var x = TypeCaster.firstValueAsNumber(values[0]);
+  var x = TypeConverter.firstValueAsNumber(values[0]);
   return Math.floor(x) % 2 === 1;
 };
 
@@ -390,7 +390,7 @@ var ISODD = function (...values) : boolean {
  */
 var SIN = function (...values) {
   ArgsChecker.checkLength(values, 1);
-  var rad = TypeCaster.firstValueAsNumber(values[0]);
+  var rad = TypeConverter.firstValueAsNumber(values[0]);
   return rad === Math.PI ? 0 : Math.sin(rad);
 };
 
@@ -402,7 +402,7 @@ var SIN = function (...values) {
  */
 var SINH = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var rad = TypeCaster.firstValueAsNumber(values[0]);
+  var rad = TypeConverter.firstValueAsNumber(values[0]);
   return Math["sinh"](rad);
 };
 
@@ -423,7 +423,7 @@ var PI = function () {
  */
 var LOG10 = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 1) {
     throw new NumError("Function LOG10 parameter 1 value is " + n + ". It should be greater than 0.");
   }
@@ -441,10 +441,10 @@ var LOG10 = function (...values) : number {
  */
 var LOG = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   var b = 10;
   if (values.length > 1) {
-    b = TypeCaster.firstValueAsNumber(values[1]);
+    b = TypeConverter.firstValueAsNumber(values[1]);
     if (b < 1) {
       throw new NumError("Function LOG parameter 2 value is " + b + ". It should be greater than 0.");
     }
@@ -468,7 +468,7 @@ var LOG = function (...values) : number {
  */
 var LN = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 1) {
     throw new NumError("Function LN parameter 1 value is " + n + ". It should be greater than 0.");
   }
@@ -483,7 +483,7 @@ var LN = function (...values) : number {
  */
 var TAN = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var rad = TypeCaster.firstValueAsNumber(values[0]);
+  var rad = TypeConverter.firstValueAsNumber(values[0]);
   return rad === Math.PI ? 0 : Math.tan(rad);
 };
 
@@ -495,7 +495,7 @@ var TAN = function (...values) : number {
  */
 var TANH = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var rad = TypeCaster.firstValueAsNumber(values[0]);
+  var rad = TypeConverter.firstValueAsNumber(values[0]);
   return Math["tanh"](rad);
 };
 
@@ -508,11 +508,11 @@ var TANH = function (...values) : number {
  */
 var CEILING = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var num = TypeCaster.firstValueAsNumber(values[0]);
+  var num = TypeConverter.firstValueAsNumber(values[0]);
   if (values.length === 1) {
     return Math.ceil(num);
   }
-  var significance = TypeCaster.firstValueAsNumber(values[1]);
+  var significance = TypeConverter.firstValueAsNumber(values[1]);
   if (significance === 0) {
     throw new DivZeroError("Function CEILING parameter 2 cannot be zero.");
   }
@@ -533,11 +533,11 @@ var CEILING = function (...values) : number {
  */
 var FLOOR = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var num = TypeCaster.firstValueAsNumber(values[0]);
+  var num = TypeConverter.firstValueAsNumber(values[0]);
   if (values.length === 1) {
     return Math.floor(num);
   }
-  var significance = TypeCaster.firstValueAsNumber(values[1]);
+  var significance = TypeConverter.firstValueAsNumber(values[1]);
   if (significance === 0) {
     throw new DivZeroError("Function FLOOR parameter 2 cannot be zero.");
   }
@@ -567,7 +567,7 @@ var IF = function (...values) : any {
   } else if (values[0] === "") {
     return values[2];
   }
-  return (TypeCaster.valueToBoolean(values[0])) ? values[1] : values[2];
+  return (TypeConverter.valueToBoolean(values[0])) ? values[1] : values[2];
 };
 
 
@@ -662,11 +662,11 @@ var COUNTIFS = function (...values) {
  */
 var ROUND = function (...values) {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   if (values.length === 1) {
     return Math.round(n);
   }
-  var d = TypeCaster.firstValueAsNumber(values[1]);
+  var d = TypeConverter.firstValueAsNumber(values[1]);
   return Math.round(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
@@ -679,11 +679,11 @@ var ROUND = function (...values) {
  */
 var ROUNDDOWN = function (...values) {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   if (values.length === 1) {
     return Math.floor(n);
   }
-  var d = TypeCaster.firstValueAsNumber(values[1]);
+  var d = TypeConverter.firstValueAsNumber(values[1]);
   return Math.floor(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
@@ -696,11 +696,11 @@ var ROUNDDOWN = function (...values) {
  */
 var ROUNDUP = function (...values) {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   if (values.length === 1) {
     return Math.ceil(n);
   }
-  var d = TypeCaster.firstValueAsNumber(values[1]);
+  var d = TypeConverter.firstValueAsNumber(values[1]);
   return Math.ceil(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
@@ -735,10 +735,10 @@ var SUMIF = function (...values) {
       if (sumRange && i > sumRange.length-1) {
         continue;
       }
-      if (values.length === 2 && TypeCaster.canCoerceToNumber(x) && criteriaEvaluation(x)) {
-        sum = sum + TypeCaster.valueToNumber(x);
-      } else if (values.length === 3 && TypeCaster.canCoerceToNumber(sumRange[i]) && criteriaEvaluation(x)) {
-        sum = sum + TypeCaster.valueToNumber(sumRange[i]);
+      if (values.length === 2 && TypeConverter.canCoerceToNumber(x) && criteriaEvaluation(x)) {
+        sum = sum + TypeConverter.valueToNumber(x);
+      } else if (values.length === 3 && TypeConverter.canCoerceToNumber(sumRange[i]) && criteriaEvaluation(x)) {
+        sum = sum + TypeConverter.valueToNumber(sumRange[i]);
       }
     }
   }
@@ -761,7 +761,7 @@ var SUMSQ = function (...values) {
       }
       result = result + SUMSQ.apply(this, Filter.filterOutNonNumberValues(values[i]));
     } else {
-      var n = TypeCaster.valueToNumber(values[i]);
+      var n = TypeConverter.valueToNumber(values[i]);
       result = result + (n * n);
     }
   }
@@ -782,10 +782,10 @@ var SUMSQ = function (...values) {
  */
 var TRUNC = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   var digits = 0;
   if (values.length === 2) {
-    digits = TypeCaster.firstValueAsNumber(values[1]);
+    digits = TypeConverter.firstValueAsNumber(values[1]);
   }
   var sign = (n > 0) ? 1 : -1;
   return sign * (Math.floor(Math.abs(n) * Math.pow(10, digits))) / Math.pow(10, digits);
@@ -800,7 +800,7 @@ var TRUNC = function (...values) : number {
  */
 var RADIANS = function (...values) {
   ArgsChecker.checkLength(values, 1);
-  var d = TypeCaster.firstValueAsNumber(values[0]);
+  var d = TypeConverter.firstValueAsNumber(values[0]);
   return d * Math.PI / 180;
 };
 
@@ -812,7 +812,7 @@ var RADIANS = function (...values) {
  */
 var DEGREES = function (...values) {
   ArgsChecker.checkLength(values, 1);
-  var r = TypeCaster.firstValueAsNumber(values[0]);
+  var r = TypeConverter.firstValueAsNumber(values[0]);
   return r * 180 / Math.PI;
 };
 
@@ -825,7 +825,7 @@ var DEGREES = function (...values) {
  */
 var ERFC = function (...values) {
   ArgsChecker.checkLength(values, 1);
-  var v = TypeCaster.firstValueAsNumber(values[0]);
+  var v = TypeConverter.firstValueAsNumber(values[0]);
   return v === 0 ? 1 : 1 - erf(v);
 };
 
@@ -840,8 +840,8 @@ var ERFC = function (...values) {
  */
 var ERF = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var lower = TypeCaster.firstValueAsNumber(values[0]);
-  var upper = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 0;
+  var lower = TypeConverter.firstValueAsNumber(values[0]);
+  var upper = values.length === 2 ? TypeConverter.firstValueAsNumber(values[1]) : 0;
   return values.length === 1 ? erf(lower) : erf(upper) - erf(lower);
 };
 
@@ -1011,7 +1011,7 @@ var SUMPRODUCT = function (...values) : number {
   for (var i = 0; i < flattenedValues[0].length; i++) {
     var product = 1;
     for (var x = 0; x < flattenedValues.length; x++) {
-      product *= TypeCaster.valueToNumberGracefully(flattenedValues[x][i]);
+      product *= TypeConverter.valueToNumberGracefully(flattenedValues[x][i]);
     }
     result += product;
   }
@@ -1040,8 +1040,8 @@ var COMBIN = function (...values) : number {
     }
   }
   ArgsChecker.checkLength(values, 2);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
-  var c = TypeCaster.firstValueAsNumber(values[1]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
+  var c = TypeConverter.firstValueAsNumber(values[1]);
   if (n < c) {
     throw new NumError("Function COMBIN parameter 2 value is "
       + c + ". It should be less than or equal to value of Function COMBIN parameter 1 with " + n + ".");

@@ -2,8 +2,8 @@ import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
 import {
-  TypeCaster
-} from "../Utilities/TypeCaster";
+  TypeConverter
+} from "../Utilities/TypeConverter";
 import {
   ValueError,
   RefError
@@ -46,8 +46,8 @@ var AND = function (...values) {
  */
 var EXACT = function (...values) {
   ArgsChecker.checkLength(values, 2);
-  var one = TypeCaster.firstValue(values[0]);
-  var two = TypeCaster.firstValue(values[1]);
+  var one = TypeConverter.firstValue(values[0]);
+  var two = TypeConverter.firstValue(values[1]);
   return one.toString() === two.toString();
 };
 
@@ -117,7 +117,7 @@ var OR = function (...values) {
       if (OR.apply(this, values[i])) {
         return true;
       }
-    } else if (TypeCaster.valueToBoolean(values[i])) {
+    } else if (TypeConverter.valueToBoolean(values[i])) {
       return true;
     }
   }
@@ -144,7 +144,7 @@ var XOR = function (...values) {
         }
         alreadyTruthy = true;
       }
-    } else if (TypeCaster.valueToBoolean(values[i])) {
+    } else if (TypeConverter.valueToBoolean(values[i])) {
       if (alreadyTruthy) {
         return false;
       }

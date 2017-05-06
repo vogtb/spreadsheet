@@ -2,8 +2,8 @@ import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
 import {
-  TypeCaster
-} from "../Utilities/TypeCaster";
+  TypeConverter
+} from "../Utilities/TypeConverter";
 import {
   ValueError,
   NumError
@@ -19,10 +19,10 @@ import {
  */
 var BIN2DEC = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  if (typeof TypeCaster.firstValue(values[0]) === "boolean") {
+  if (typeof TypeConverter.firstValue(values[0]) === "boolean") {
     throw new ValueError("Function BIN2DEC parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
   }
-  var n = TypeCaster.firstValueAsString(values[0]);
+  var n = TypeConverter.firstValueAsString(values[0]);
   if (!(/^[01]{1,10}$/).test(n)) {
     throw new NumError("Input for BIN2DEC ('" + n + "') is not a valid binary representation.");
   }
@@ -45,13 +45,13 @@ var BIN2DEC = function (...values) : number {
  */
 var BIN2HEX = function (...values) : string {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  if (typeof TypeCaster.firstValue(values[0]) === "boolean") {
+  if (typeof TypeConverter.firstValue(values[0]) === "boolean") {
     throw new ValueError("Function BIN2HEX parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
   }
-  var n = TypeCaster.firstValueAsString(values[0]);
+  var n = TypeConverter.firstValueAsString(values[0]);
   var p = 10;
   if (values.length === 2) {
-    p = TypeCaster.firstValueAsNumber(values[1]);
+    p = TypeConverter.firstValueAsNumber(values[1]);
   }
   if (!(/^[01]{1,10}$/).test(n)) {
     throw new NumError("Input for BIN2HEX ('"+n+"') is not a valid binary representation.");
@@ -91,13 +91,13 @@ var BIN2HEX = function (...values) : string {
  */
 var BIN2OCT = function (...values) : string {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  if (typeof TypeCaster.firstValue(values[0]) === "boolean") {
+  if (typeof TypeConverter.firstValue(values[0]) === "boolean") {
     throw new ValueError("Function BIN2OCT parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
   }
-  var n = TypeCaster.firstValueAsString(values[0]);
+  var n = TypeConverter.firstValueAsString(values[0]);
   var p = 10;
   if (values.length === 2) {
-    p = TypeCaster.firstValueAsNumber(values[1]);
+    p = TypeConverter.firstValueAsNumber(values[1]);
   }
   if (!(/^[01]{1,10}$/).test(n)) {
     throw new NumError("Input for BIN2OCT ('"+n+"') is not a valid binary representation.");
@@ -136,7 +136,7 @@ var BIN2OCT = function (...values) : string {
  */
 var DEC2OCT = function (...values) : string {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 0) {
     n = Math.ceil(n);
   }
@@ -146,7 +146,7 @@ var DEC2OCT = function (...values) : string {
   var p = 10;
   var placesPresent = false;
   if (values.length === 2) {
-    p = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+    p = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
     placesPresent = true;
   }
   if (n < -53687092 || n > 536870911) {
@@ -184,7 +184,7 @@ var DEC2OCT = function (...values) : string {
  */
 var DEC2HEX = function (...values) : string {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 0) {
     n = Math.ceil(n);
   }
@@ -194,7 +194,7 @@ var DEC2HEX = function (...values) : string {
   var p = 10;
   var placesPresent = false;
   if (values.length === 2) {
-    p = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+    p = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
     placesPresent = true;
   }
   if (n < -549755813888 || n > 549755813887) {
@@ -232,7 +232,7 @@ var DEC2HEX = function (...values) : string {
  */
 var DEC2BIN = function (...values) : string {
   ArgsChecker.checkLengthWithin(values, 1, 2);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 0) {
     n = Math.ceil(n);
   }
@@ -245,7 +245,7 @@ var DEC2BIN = function (...values) : string {
   var p = 10;
   var placesPresent = false;
   if (values.length === 2) {
-    p = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
+    p = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
     placesPresent = true;
   }
 
@@ -301,9 +301,9 @@ var DEC2BIN = function (...values) : string {
 var DELTA = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
   if (values.length === 1) {
-    return TypeCaster.valueToNumber(values[0]) === 0 ? 1 : 0;
+    return TypeConverter.valueToNumber(values[0]) === 0 ? 1 : 0;
   }
-  return TypeCaster.valueToNumber(values[0]) === TypeCaster.valueToNumber(values[1]) ? 1 : 0;
+  return TypeConverter.valueToNumber(values[0]) === TypeConverter.valueToNumber(values[1]) ? 1 : 0;
 };
 
 export {

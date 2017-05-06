@@ -2,8 +2,8 @@ import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
 import {
-  TypeCaster
-} from "../Utilities/TypeCaster";
+  TypeConverter
+} from "../Utilities/TypeConverter";
 import {
   ValueError,
   NumError,
@@ -49,7 +49,7 @@ var ARABIC = function (text?) {
  */
 var CHAR = function (...values) : string {
   ArgsChecker.checkLength(values, 1);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 1 || n > 1114112) { //limit
     throw new NumError("Function CHAR parameter 1 value " + n + " is out of range.");
   }
@@ -64,7 +64,7 @@ var CHAR = function (...values) : string {
  */
 var CODE = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var text = TypeCaster.firstValueAsString(values[0]);
+  var text = TypeConverter.firstValueAsString(values[0]);
   if (text === "") {
     throw new ValueError("Function CODE parameter 1 value should be non-empty.");
   }
@@ -83,11 +83,11 @@ var CODE = function (...values) : number {
  */
 var SPLIT = function (...values) : Array<string> {
   ArgsChecker.checkLengthWithin(values, 2, 3);
-  var text = TypeCaster.firstValueAsString(values[0]);
-  var delimiter = TypeCaster.firstValueAsString(values[1]);
+  var text = TypeConverter.firstValueAsString(values[0]);
+  var delimiter = TypeConverter.firstValueAsString(values[1]);
   var splitByEach = false;
   if (values.length === 3) {
-    splitByEach = TypeCaster.firstValueAsBoolean(values[2]);
+    splitByEach = TypeConverter.firstValueAsBoolean(values[2]);
   }
   if (splitByEach) {
     var result = [text];
@@ -123,7 +123,7 @@ var CONCATENATE = function (...values) : string {
       }
       string += CONCATENATE.apply(this, arguments[i]);
     } else {
-      string += TypeCaster.valueToString(values[i]);
+      string += TypeConverter.valueToString(values[i]);
     }
   }
   return string;
@@ -140,9 +140,9 @@ var CONCATENATE = function (...values) : string {
  */
 var CONVERT = function (...values) {
   ArgsChecker.checkLength(values, 3);
-  var n = TypeCaster.firstValueAsNumber(values[0]);
-  var fromUnit = TypeCaster.firstValueAsString(values[1]);
-  var toUnit = TypeCaster.firstValueAsString(values[2]);
+  var n = TypeConverter.firstValueAsNumber(values[0]);
+  var fromUnit = TypeConverter.firstValueAsString(values[1]);
+  var toUnit = TypeConverter.firstValueAsString(values[2]);
 
   // NOTE: A lot of the code for this method is from https://github.com/sutoiku/formula.js. I'm relying on them to have
   // gotten it right, but I'm spot checking some of their work against GS, MSE, LibreOffice, OpenOffice.

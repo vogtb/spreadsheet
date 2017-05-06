@@ -5,9 +5,6 @@ import {
   ValueError, DivZeroError
 } from "../Errors";
 import {
-  ExcelDate
-} from "../ExcelDate";
-import {
   DateRegExBuilder
 } from "./DateRegExBuilder";
 
@@ -57,7 +54,7 @@ const TIMESTAMP = DateRegExBuilder.DateRegExBuilder()
   .TIMESTAMP_UNITS_CAPTURE_GROUP()
   .end()
   .build();
-// The first year to use when calculating the number of days in an ExcelDate
+// The first year to use when calculating the number of days in a date
 const FIRST_YEAR = 1900;
 // The year 2000.
 const Y2K_YEAR = 2000;
@@ -129,7 +126,7 @@ function matchTimestampAndMutateMoment(timestampString : string, momentToMutate:
  */
 class TypeCaster {
 
-  private static ORIGIN_MOMENT = moment.utc([1899, 11, 30]).startOf("day");
+  public static ORIGIN_MOMENT = moment.utc([1899, 11, 30]).startOf("day");
   private static SECONDS_IN_DAY = 86400;
 
 
@@ -327,11 +324,11 @@ class TypeCaster {
   }
 
   /**
-   * Casts a string to an ExcelDate. Throws error if parsing not possible.
+   * Parses a string as a date number. Throws error if parsing not possible.
    * @param dateString to parse
-   * @returns {ExcelDate} resulting date
+   * @returns {number} resulting date
    */
-  public static stringToExcelDate(dateString : string) : number {
+  public static stringToDateNumber(dateString : string) : number {
     // m will be set and valid or invalid, or will remain undefined
     var m = TypeCaster.parseStringToMoment(dateString);
     if (m === undefined || !m.isValid()) {
@@ -514,19 +511,19 @@ class TypeCaster {
   }
 
   /**
-   * Takes the input type and will throw a REF_ERROR or coerce it into a ExcelDate
-   * @param input input to attempt to coerce to a ExcelDate
+   * Takes the input type and will throw a REF_ERROR or coerce it into a date number
+   * @param input input to attempt to coerce to a date number
    * @param coerceBoolean should a boolean be converted
-   * @returns {ExcelDate} representing a date
+   * @returns {number} representing a date
    */
-  static firstValueAsExcelDate(input: any, coerceBoolean?: boolean) : number {
+  static firstValueAsDateNumber(input: any, coerceBoolean?: boolean) : number {
     if (input instanceof Array) {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      return TypeCaster.firstValueAsExcelDate(input[0], coerceBoolean);
+      return TypeCaster.firstValueAsDateNumber(input[0], coerceBoolean);
     }
-    return TypeCaster.valueToExcelDate(input, coerceBoolean);
+    return TypeCaster.valueToDateNumber(input, coerceBoolean);
   }
 
   static firstValueAsTimestampNumber(input : any) : number {
@@ -540,17 +537,17 @@ class TypeCaster {
   }
 
   /**
-   * Convert a value to ExcelDate if possible.
+   * Convert a value to date number if possible.
    * @param value to convert
    * @param coerceBoolean should a boolean be converted
-   * @returns {ExcelDate} ExcelDate
+   * @returns {number} date
    */
-  static valueToExcelDate(value: any, coerceBoolean?: boolean) : number {
+  static valueToDateNumber(value: any, coerceBoolean?: boolean) : number {
     if (typeof value === "number") {
       return value;
     } else if (typeof value === "string") {
       try {
-        return TypeCaster.stringToExcelDate(value)
+        return TypeCaster.stringToDateNumber(value)
       } catch (e) {
         if (TypeCaster.canCoerceToNumber(value)) {
           return TypeCaster.valueToNumber(value);

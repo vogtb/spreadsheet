@@ -10,10 +10,6 @@ const SECONDS_IN_DAY = 86400;
 class ExcelDate {
   private seconds : number;
 
-  static fromDay(day : number) {
-    return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(day, 'days'));
-  }
-
   /**
    * Constructs an ExcelDate when given a day or moment.
    * @param m Moment to use as the day.
@@ -36,18 +32,6 @@ class ExcelDate {
    */
   toNumber() {
     return this.seconds / SECONDS_IN_DAY;
-  }
-
-  toNumberFloored() {
-    return Math.floor(this.toNumber());
-  }
-
-  /**
-   * Converts to a moment
-   * @returns {Moment}
-   */
-  toMoment() : moment.Moment {
-    return moment.utc(ORIGIN_MOMENT).add(this.toNumber(), "days");
   }
 
   /**

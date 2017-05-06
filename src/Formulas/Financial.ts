@@ -387,16 +387,16 @@ var CUMIPMT = function (...values) : number {
  */
 var ACCRINT = function (...values) {
   ArgsChecker.checkLengthWithin(values, 6, 7);
-  var issue = TypeCaster.firstValueAsExcelDate(values[0]);
+  var issue = TypeCaster.firstValueAsDateNumber(values[0]);
   // "firstPayment" param is only here to check for errors for GS implementation.
   // In MSE, there is a 7th (zero-indexed-6th) param that indicates the calculation-method to use, which indicates
   // weather the total accrued interest starting at the first_intrest date, instead of the issue date.
-  var firstPayment = TypeCaster.firstValueAsExcelDate(values[1]);
+  var firstPayment = TypeCaster.firstValueAsDateNumber(values[1]);
   if (firstPayment < 0) {
     throw new NumError("Function ACCRINT parameter 2 value is " + firstPayment
         + ". It should be greater than 0.");
   }
-  var settlement = TypeCaster.firstValueAsExcelDate(values[2]);
+  var settlement = TypeCaster.firstValueAsDateNumber(values[2]);
   if (issue > settlement) {
     throw new NumError("Function ACCRINT parameter 1 (" + issue.toString()
       + ") should be on or before Function ACCRINT parameter 3 (" + settlement.toString() + ").")

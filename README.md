@@ -51,6 +51,10 @@ Right now we're just using the number of days since 1900, but we should check th
 ### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
 
 
+### Percentage inputs should be parsed to numbers
+Input like `10%` should be parsed and stored as a number.
+
+
 ### Scrape jsdocs for functions, put in simple index.html, doc.md files to serve up simple documentation
 
 

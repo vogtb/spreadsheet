@@ -588,6 +588,18 @@ class TypeCaster {
   static numberToMoment(n : number) : moment.Moment {
     return moment.utc(TypeCaster.ORIGIN_MOMENT).add(n, "days");
   }
+
+  /**
+   * Using timestamp units, create a time number between 0 and 1, exclusive on end.
+   * @param hours
+   * @param minutes
+   * @param seconds
+   * @returns {number} representing time of day between 0 and 1, exclusive on end.
+   */
+  static unitsToTimeNumber(hours: number, minutes: number, seconds: number): number {
+    var v = (((hours % 24) * 60 * 60) + ((minutes) * 60) + (seconds)) / 86400;
+    return v % 1;
+  }
 }
 
 /**

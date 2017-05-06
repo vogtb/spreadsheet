@@ -30,7 +30,7 @@ Pass name of calling formula into all functions that throw user-facing errors, o
 
 
 ### Cells should have `formatAs` fields.
-Instead of having non-primitives, (i.e. ExcelTime, Dollar), cells should have formats based on the
+Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the
 highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might
 return a number, but the cell that called `DATE` would be aware of it calling a formula that returns an non-primative
 type, and would display the returned number as a Date. If you're using `DATE` in conjunction with `DOLLAR` it would
@@ -67,5 +67,5 @@ Right now we're just using the number of days since 1900, but we should check th
 For example 64 tbs to a qt.
 
 
-### Sheet.ts and parser.js should be able to concatenate strings
+### Sheet.ts and parser.js should be able to concatenate criteria and values
 E.g. `=COUNTIFS(A7:A24, ">6", B7:B24, "<"&DATE(1969,7,20))`

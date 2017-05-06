@@ -11,9 +11,6 @@ import {
   ValueError,
   RefError
 } from "../Errors";
-import {
-  ExcelTime
-} from "../ExcelTime";
 
 /**
  * Converts a provided year, month, and day into a date.
@@ -792,7 +789,7 @@ var TODAY = function (...values) : number {
  * @param values[0] hour - The hour component of the time.
  * @param values[1] minute - The minute component of the time.
  * @param values[2] second - The second component of the time.
- * @returns {ExcelTime} time
+ * @returns {number} time of day
  * @constructor
  */
 var TIME = function (...values) : number {
@@ -800,9 +797,9 @@ var TIME = function (...values) : number {
   var hours = Math.floor(TypeCaster.firstValueAsNumber(values[0]));
   var minutes = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   var seconds = Math.floor(TypeCaster.firstValueAsNumber(values[2]));
-  var e = new ExcelTime(hours, minutes, seconds).toNumber();
+  var e = TypeCaster.unitsToTimeNumber(hours, minutes, seconds);
   if (e < 0) {
-    throw new NumError("TIME evaluates to an out of range value -1.201273148. It should be greater than or equal to 0.");
+    throw new NumError("TIME evaluates to an out of range value " + e + ". It should be greater than or equal to 0.");
   }
   return e;
 };

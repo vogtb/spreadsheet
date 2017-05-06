@@ -562,14 +562,29 @@ class TypeCaster {
     }
   }
 
+  /**
+   * Casts a moment to a date number.
+   * @param m to convert
+   * @returns {number} date
+   */
   static momentToNumber(m : moment.Moment) : number {
     return m.diff(this.ORIGIN_MOMENT, "seconds") / this.SECONDS_IN_DAY;
   }
 
+  /**
+   * Casts a moment to a date number, floored to the whole day date.
+   * @param m to convert
+   * @returns {number} date
+   */
   static momentToDayNumber(m : moment.Moment) : number {
     return Math.floor(TypeCaster.momentToNumber(m));
   }
 
+  /**
+   * Casts a number to moment.
+   * @param n to convert
+   * @returns {Moment} date
+   */
   static numberToMoment(n : number) : moment.Moment {
     return moment.utc(TypeCaster.ORIGIN_MOMENT).add(n, "days");
   }

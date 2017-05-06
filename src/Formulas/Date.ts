@@ -69,7 +69,7 @@ var DATEVALUE = function (...values) : number {
  * Returns a date a specified number of months before or after another date.
  * @param values[0] start_date - The date from which to calculate the result.
  * @param values[1] months - The number of months before (negative) or after (positive) start_date to calculate.
- * @returns {ExcelDate} date a specified number of months before or after another date
+ * @returns {number} date a specified number of months before or after another date
  * @constructor
  */
 var EDATE = function (...values) : number {
@@ -91,7 +91,7 @@ var EDATE = function (...values) : number {
  * @param values[0] start_date - The date from which to calculate the the result.
  * @param values[1] months - The number of months before (negative) or after (positive) start_date to consider. The last
  * calendar day of the calculated month is returned.
- * @returns {ExcelDate} the last day of a month
+ * @returns {number} the last day of a month
  * @constructor
  */
 var EOMONTH = function (...values) : number {
@@ -767,7 +767,7 @@ var NETWORKDAYS$INTL = function (...values) : number {
 
 /**
  * Returns the current date and time as a date value.
- * @returns {ExcelDate} representing the current date and time.
+ * @returns {number} representing the current date and time.
  * @constructor
  */
 var NOW = function (...values) : number {
@@ -777,7 +777,7 @@ var NOW = function (...values) : number {
 
 /**
  * Returns the current date as a date value.
- * @returns {ExcelDate} today
+ * @returns {number} today
  * @constructor
  */
 var TODAY = function (...values) : number {
@@ -817,7 +817,7 @@ var TIME = function (...values) : number {
  * values provided within an array for holidays must be date serial number values, as returned by N or date values, as
  * returned by DATE, DATEVALUE or TO_DATE. Values specified by a range should be standard date values or date serial
  * numbers.
- * @returns {ExcelDate} end date after a specified number of working days.
+ * @returns {number} end date after a specified number of working days.
  * @constructor
  */
 var WORKDAY = function (...values) : number {
@@ -869,7 +869,7 @@ var WORKDAY = function (...values) : number {
  * pattern repeats until 7 = Friday/Saturday. 11 = Sunday is the only weekend, 12 = Monday is the only weekend, and this
  * pattern repeats until 17 = Saturday is the only weekend.
  * @param values[3] holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider holidays.
- * @returns {ExcelDate}
+ * @returns {number}
  * @constructor
  */
 var WORKDAY$INTL = function (...values) : number {

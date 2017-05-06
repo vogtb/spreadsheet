@@ -30,11 +30,11 @@ Pass name of calling formula into all functions that throw user-facing errors, o
 
 
 ### Cells should have `formatAs` fields.
-Instead of having non-primitives, (i.e. ExcelDate, ExcelTime, Dollar), cells should have formats based on the
+Instead of having non-primitives, (i.e. ExcelTime, Dollar), cells should have formats based on the
 highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might
 return a number, but the cell that called `DATE` would be aware of it calling a formula that returns an non-primative
 type, and would display the returned number as a Date. If you're using `DATE` in conjunction with `DOLLAR` it would
-still display the returned value as a Date. The heirarhchy would look like: [ExcelDate, ExcelTime, Dollar, number,
+still display the returned value as a Date. The heirarhchy would look like: [Date, DateTime, Time, Dollar, number,
 boolean, string]. Advantages to this would include not having to cast down when using primitive operators,
 and flexibility in display. It would also simplify the types themselves, by having types be constants and just having
 helpers to convert, display, and do normal operations with them.
@@ -44,7 +44,7 @@ helpers to convert, display, and do normal operations with them.
 Contingent upon cells having formats or types for primitives.
 
 
-### Test all ExcelDate functions
+### Test all Date-related functions
 Right now we're just using the number of days since 1900, but we should check the other functions.
 
 

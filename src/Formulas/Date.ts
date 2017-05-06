@@ -12,7 +12,6 @@ import {
   RefError
 } from "../Errors";
 import {
-  ExcelDate,
   ORIGIN_MOMENT
 } from "../ExcelDate";
 import {
@@ -83,9 +82,9 @@ var EDATE = function (...values) : number {
     throw new NumError("Function EDATE parameter 1 value is " + startDateNumber+ ". It should be greater than or equal to 0.");
   }
   var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
-  // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
-  // exclusive count of days.
-  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDateNumber, "days").add(months, "months")).toNumber();
+  // While momentToDayNumber will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes exclusive
+  // count of days.
+  return TypeCaster.momentToDayNumber(moment.utc(ORIGIN_MOMENT).add(startDateNumber, "days").add(months, "months"));
 };
 
 
@@ -105,8 +104,6 @@ var EOMONTH = function (...values) : number {
     throw new NumError("Function EOMONTH parameter 1 value is " + startDateNumber + ". It should be greater than or equal to 0.");
   }
   var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
-  // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
-  // exclusive count of days.
   return TypeCaster.momentToDayNumber(moment.utc(ORIGIN_MOMENT)
     .add(startDateNumber, "days")
     .add(months, "months")
@@ -464,8 +461,8 @@ var YEARFRAC = function (...values) : number {
   var feb29Between = function (date1, date2) {
     // Requires year2 == (year1 + 1) or year2 == year1
     // Returns TRUE if February 29 is between the two dates (date1 may be February 29), with two possibilities:
-    // year1 is a leap year and date1 <= Februay 29 of year1
-    // year2 is a leap year and date2 > Februay 29 of year2
+    // year1 is a leap year and date1 <= February 29 of year1
+    // year2 is a leap year and date2 > February 29 of year2
     var mar1year1 = moment.utc(new Date(date1.year(), 2, 1));
     if (moment.utc([date1.year()]).isLeapYear() && date1.diff(mar1year1) < 0 && date2.diff(mar1year1) >= 0) {
       return true;
@@ -622,9 +619,7 @@ var NETWORKDAYS = function (...values) : number {
       throw new RefError("Reference does not exist.");
     }
     for (var holidayDateValue of values[2]) {
-      if (holidayDateValue instanceof ExcelDate) {
-        holidays.push(holidayDateValue.toNumber());
-      } else if (typeof holidayDateValue === "number") {
+      if (typeof holidayDateValue === "number") {
         holidays.push(holidayDateValue);
       } else {
         throw new ValueError("NETWORKDAYS expects number values. But '" + holidayDateValue + "' is a " +
@@ -640,18 +635,18 @@ var NETWORKDAYS = function (...values) : number {
     start = swap;
   }
 
-  var c = moment.utc(TypeCaster.numberToMoment(start));
+  var countMoment = moment.utc(TypeCaster.numberToMoment(start));
   var weekendDays = [6, 0]; // Default weekend_days.
   var days = end - start + 1;
   var networkDays = days;
   var j = 0;
   while (j < days) {
-    if (weekendDays.indexOf(c.day()) >= 0) {
+    if (weekendDays.indexOf(countMoment.day()) >= 0) {
       networkDays--;
-    } else if (hasHolidays && holidays.indexOf(new ExcelDate(c).toNumber()) > -1) {
+    } else if (hasHolidays && holidays.indexOf(TypeCaster.momentToDayNumber(countMoment)) > -1) {
       networkDays--;
     }
-    c.add(1, 'days');
+    countMoment.add(1, 'days');
     j++;
   }
   // If the we swapped the start and end date, the result should be a negative number of network days.
@@ -737,9 +732,7 @@ var NETWORKDAYS$INTL = function (...values) : number {
       throw new RefError("Reference does not exist.");
     }
     for (var holidayDateValue of values[3]) {
-      if (holidayDateValue instanceof ExcelDate) {
-        holidays.push(holidayDateValue.toNumber());
-      } else if (typeof holidayDateValue === "number") {
+      if (typeof holidayDateValue === "number") {
         holidays.push(holidayDateValue);
       } else {
         throw new ValueError("NETWORKDAYS.INTL expects number values. But '" + holidayDateValue + "' is a " +
@@ -755,17 +748,17 @@ var NETWORKDAYS$INTL = function (...values) : number {
     start = swap;
   }
 
-  var c = moment.utc(TypeCaster.numberToMoment(start));
+  var countMoment = moment.utc(TypeCaster.numberToMoment(start));
   var days = end - start + 1;
   var networkDays = days;
   var j = 0;
   while (j < days) {
-    if (weekendDays.indexOf(c.day()) >= 0) {
+    if (weekendDays.indexOf(countMoment.day()) >= 0) {
       networkDays--;
-    } else if (hasHolidays && holidays.indexOf(new ExcelDate(c).toNumber()) > -1) {
+    } else if (hasHolidays && holidays.indexOf(TypeCaster.momentToDayNumber(countMoment)) > -1) {
       networkDays--;
     }
-    c.add(1, 'days');
+    countMoment.add(1, 'days');
     j++;
   }
   // If the we swapped the start and end date, the result should be a negative number of network days.
@@ -782,7 +775,7 @@ var NETWORKDAYS$INTL = function (...values) : number {
  */
 var NOW = function (...values) : number {
   ArgsChecker.checkLength(values, 0);
-  return new ExcelDate(moment.utc()).toNumber();
+  return TypeCaster.momentToNumber(moment.utc());
 };
 
 /**
@@ -792,7 +785,7 @@ var NOW = function (...values) : number {
  */
 var TODAY = function (...values) : number {
   ArgsChecker.checkLength(values, 0);
-  return new ExcelDate(moment.utc().startOf("day")).toNumberFloored();
+  return TypeCaster.momentToNumber(moment.utc().startOf("day"));
 };
 
 
@@ -842,9 +835,7 @@ var WORKDAY = function (...values) : number {
         throw new RefError("Reference does not exist.");
       }
       for (var holidayDateValue of values[2]) {
-        if (holidayDateValue instanceof ExcelDate) {
-          holidays.push(holidayDateValue.toNumber());
-        } else if (typeof holidayDateValue === "number") {
+        if (typeof holidayDateValue === "number") {
           holidays.push(holidayDateValue);
         } else {
           throw new ValueError("WORKDAY expects number values. But '" + holidayDateValue + "' is a " +
@@ -857,15 +848,15 @@ var WORKDAY = function (...values) : number {
   }
 
   var weekendDays = [0, 6];
-  var cd = moment.utc(TypeCaster.numberToMoment(start));
+  var countMoment = moment.utc(TypeCaster.numberToMoment(start));
   var j = 0;
   while (j < days) {
-    cd.add(1, 'days');
-    if (weekendDays.indexOf(cd.day()) < 0 && holidays.indexOf(new ExcelDate(cd).toNumber()) < 0) {
+    countMoment.add(1, 'days');
+    if (weekendDays.indexOf(countMoment.day()) < 0 && holidays.indexOf(TypeCaster.momentToDayNumber(countMoment)) < 0) {
       j++;
     }
   }
-  return new ExcelDate(cd).toNumber();
+  return TypeCaster.momentToDayNumber(countMoment);
 };
 
 
@@ -943,9 +934,7 @@ var WORKDAY$INTL = function (...values) : number {
         throw new RefError("Reference does not exist.");
       }
       for (var holidayDateValue of values[3]) {
-        if (holidayDateValue instanceof ExcelDate) {
-          holidays.push(holidayDateValue.toNumber());
-        } else if (typeof holidayDateValue === "number") {
+        if (typeof holidayDateValue === "number") {
           holidays.push(holidayDateValue);
         } else {
           throw new ValueError("WORKDAY expects number values. But '" + holidayDateValue + "' is a " +
@@ -956,15 +945,15 @@ var WORKDAY$INTL = function (...values) : number {
       holidays.push(TypeCaster.valueToNumber(values[3]));
     }
   }
-  var cd = moment.utc(TypeCaster.numberToMoment(start));
+  var countMoment = moment.utc(TypeCaster.numberToMoment(start));
   var j = 0;
   while (j < days) {
-    cd.add(1, 'days');
-    if (weekendDays.indexOf(cd.day()) < 0 && holidays.indexOf(new ExcelDate(cd).toNumber()) < 0) {
+    countMoment.add(1, 'days');
+    if (weekendDays.indexOf(countMoment.day()) < 0 && holidays.indexOf(TypeCaster.momentToDayNumber(countMoment)) < 0) {
       j++;
     }
   }
-  return new ExcelDate(cd).toNumber();
+  return TypeCaster.momentToDayNumber(countMoment);
 };
 
 export {

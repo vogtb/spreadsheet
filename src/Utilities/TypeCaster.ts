@@ -129,6 +129,10 @@ function matchTimestampAndMutateMoment(timestampString : string, momentToMutate:
  */
 class TypeCaster {
 
+  private static ORIGIN_MOMENT = moment.utc([1899, 11, 30]).startOf("day");
+  private static SECONDS_IN_DAY = 86400;
+
+
   /**
    * Converts a time-formatted string to a number between 0 and 1, exclusive on 1.
    * @param timeString
@@ -327,13 +331,13 @@ class TypeCaster {
    * @param dateString to parse
    * @returns {ExcelDate} resulting date
    */
-  public static stringToExcelDate(dateString : string) : ExcelDate {
+  public static stringToExcelDate(dateString : string) : number {
     // m will be set and valid or invalid, or will remain undefined
     var m = TypeCaster.parseStringToMoment(dateString);
     if (m === undefined || !m.isValid()) {
       throw new ValueError("DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
     }
-    return new ExcelDate(m.set('hours', 0).set('minutes', 0).set('seconds', 0));
+    return TypeCaster.momentToDayNumber(m.set('hours', 0).set('minutes', 0).set('seconds', 0));
   }
 
   /**
@@ -515,7 +519,7 @@ class TypeCaster {
    * @param coerceBoolean should a boolean be converted
    * @returns {ExcelDate} representing a date
    */
-  static firstValueAsExcelDate(input: any, coerceBoolean?: boolean) : ExcelDate {
+  static firstValueAsExcelDate(input: any, coerceBoolean?: boolean) : number {
     if (input instanceof Array) {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
@@ -541,26 +545,36 @@ class TypeCaster {
    * @param coerceBoolean should a boolean be converted
    * @returns {ExcelDate} ExcelDate
    */
-  static valueToExcelDate(value: any, coerceBoolean?: boolean) : ExcelDate {
-    if (value instanceof ExcelDate) {
+  static valueToExcelDate(value: any, coerceBoolean?: boolean) : number {
+    if (typeof value === "number") {
       return value;
-    } else if (typeof value === "number") {
-      return ExcelDate.fromDay(value);
     } else if (typeof value === "string") {
       try {
         return TypeCaster.stringToExcelDate(value)
       } catch (e) {
         if (TypeCaster.canCoerceToNumber(value)) {
-          return ExcelDate.fromDay(TypeCaster.valueToNumber(value));
+          return TypeCaster.valueToNumber(value);
         }
         throw new ValueError("___ expects date values. But '" + value + "' is a text and cannot be coerced to a date.")
       }
     } else if (typeof value === "boolean") {
       if (coerceBoolean) {
-        return ExcelDate.fromDay(value ? 1 : 0);
+        return value ? 1 : 0;
       }
       throw new ValueError("___ expects date values. But '" + value + "' is a boolean and cannot be coerced to a date.")
     }
+  }
+
+  static momentToNumber(m : moment.Moment) : number {
+    return m.diff(this.ORIGIN_MOMENT, "seconds") / this.SECONDS_IN_DAY;
+  }
+
+  static momentToDayNumber(m : moment.Moment) : number {
+    return Math.floor(TypeCaster.momentToNumber(m));
+  }
+
+  static numberToMoment(n : number) : moment.Moment {
+    return moment.utc(TypeCaster.ORIGIN_MOMENT).add(n, "days");
   }
 }
 

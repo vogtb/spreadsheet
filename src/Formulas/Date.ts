@@ -38,12 +38,12 @@ var DATE = function (...values) : number {
     .add(year < FIRST_YEAR ? year : year - FIRST_YEAR, 'years') // If the value is less than 1900, assume 1900 as start index for year
     .add(month, 'months')
     .add(day, 'days');
-  var excelDate = new ExcelDate(m);
-  if (excelDate.toNumber() < 0) {
-    throw new NumError("DATE evaluates to an out of range value " + excelDate.toNumber()
+  var dateAsNumber = TypeCaster.momentToDayNumber(m);
+  if (dateAsNumber < 0) {
+    throw new NumError("DATE evaluates to an out of range value " + dateAsNumber
       + ". It should be greater than or equal to 0.");
   }
-  return excelDate.toNumber();
+  return dateAsNumber;
 };
 
 /**
@@ -57,15 +57,15 @@ var DATE = function (...values) : number {
 var DATEVALUE = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var dateString = TypeCaster.firstValueAsString(values[0]);
-  var date;
+  var dateAsNumber;
   try {
-    date = TypeCaster.stringToExcelDate(dateString);
+    dateAsNumber = TypeCaster.stringToExcelDate(dateString);
   } catch (e) {
     throw new ValueError("DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
   }
 
   // If we've not been able to parse the date by now, then we cannot parse it at all.
-  return date.toNumberFloored();
+  return dateAsNumber;
 };
 
 
@@ -78,14 +78,14 @@ var DATEVALUE = function (...values) : number {
  */
 var EDATE = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
-  var startDate = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
-  if (startDate.toNumber() < 0) {
-    throw new NumError("Function EDATE parameter 1 value is " + startDate.toNumber() + ". It should be greater than or equal to 0.");
+  var startDateNumber = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  if (startDateNumber < 0) {
+    throw new NumError("Function EDATE parameter 1 value is " + startDateNumber+ ". It should be greater than or equal to 0.");
   }
   var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
   // exclusive count of days.
-  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDate.toNumber(), "days").add(months, "months")).toNumber();
+  return new ExcelDate(moment.utc(ORIGIN_MOMENT).add(startDateNumber, "days").add(months, "months")).toNumber();
 };
 
 
@@ -100,17 +100,17 @@ var EDATE = function (...values) : number {
  */
 var EOMONTH = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
-  var startDate = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
-  if (startDate.toNumber() < 0) {
-    throw new NumError("Function EOMONTH parameter 1 value is " + startDate.toNumber() + ". It should be greater than or equal to 0.");
+  var startDateNumber = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  if (startDateNumber < 0) {
+    throw new NumError("Function EOMONTH parameter 1 value is " + startDateNumber + ". It should be greater than or equal to 0.");
   }
   var months = Math.floor(TypeCaster.firstValueAsNumber(values[1]));
   // While ExcelDate.toNumber() will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes
   // exclusive count of days.
-  return new ExcelDate(moment.utc(ORIGIN_MOMENT)
-      .add(startDate.toNumber(), "days")
-      .add(months, "months")
-      .endOf("month")).toNumberFloored();
+  return TypeCaster.momentToDayNumber(moment.utc(ORIGIN_MOMENT)
+    .add(startDateNumber, "days")
+    .add(months, "months")
+    .endOf("month"));
 };
 
 
@@ -123,11 +123,11 @@ var EOMONTH = function (...values) : number {
  */
 var DAY = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
-  var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
-  if (date.toNumber() < 0) {
-    throw new NumError("Function DAY parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+  var dateNumber = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
+  if (dateNumber < 0) {
+    throw new NumError("Function DAY parameter 1 value is " + dateNumber + ". It should be greater than or equal to 0.");
   }
-  return date.toMoment().date();
+  return TypeCaster.numberToMoment(dateNumber).date();
 };
 
 
@@ -142,7 +142,7 @@ var DAYS = function (...values) : number {
   ArgsChecker.checkLength(values, 2);
   var end = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
   var start = TypeCaster.firstValueAsExcelDate(values[1], true); // tell firstValueAsExcelDate to coerce boolean
-  return end.toNumber() - start.toNumber();
+  return end - start;
 };
 
 
@@ -164,8 +164,8 @@ var DAYS = function (...values) : number {
  */
 var DAYS360 = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 2, 3);
-  var start = TypeCaster.firstValueAsExcelDate(values[0], true).toMoment(); // tell firstValueAsExcelDate to coerce boolean
-  var end = TypeCaster.firstValueAsExcelDate(values[1], true).toMoment(); // tell firstValueAsExcelDate to coerce boolean
+  var start = TypeCaster.numberToMoment(TypeCaster.firstValueAsExcelDate(values[0], true)); // tell firstValueAsExcelDate to coerce boolean
+  var end = TypeCaster.numberToMoment(TypeCaster.firstValueAsExcelDate(values[1], true)); // tell firstValueAsExcelDate to coerce boolean
   var methodToUse = false;
   if (values.length === 3) {
     methodToUse = TypeCaster.firstValueAsBoolean(values[2]);
@@ -204,10 +204,10 @@ var DAYS360 = function (...values) : number {
 var MONTH = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
-  if (date.toNumber() < 0) {
-    throw new NumError("Function MONTH parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+  if (date < 0) {
+    throw new NumError("Function MONTH parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
-  return date.toMoment().month() + 1;
+  return TypeCaster.numberToMoment(date).month() + 1;
 };
 
 
@@ -221,10 +221,10 @@ var MONTH = function (...values) : number {
 var YEAR = function (...values) : number {
   ArgsChecker.checkLength(values, 1);
   var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
-  if (date.toNumber() < 0) {
-    throw new NumError("Function YEAR parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+  if (date < 0) {
+    throw new NumError("Function YEAR parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
-  return date.toMoment().year();
+  return TypeCaster.numberToMoment(date).year();
 };
 
 
@@ -244,10 +244,10 @@ var WEEKDAY = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
   var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
   var offsetType = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 1;
-  if (date.toNumber() < 0) {
-    throw new NumError("Function WEEKDAY parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+  if (date < 0) {
+    throw new NumError("Function WEEKDAY parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
-  var day = date.toMoment().day();
+  var day = TypeCaster.numberToMoment(date).day();
   if (offsetType === 1) {
     return day + 1;
   } else if (offsetType === 2) {
@@ -303,10 +303,10 @@ var WEEKNUM = function (...values) : number {
   ArgsChecker.checkLengthWithin(values, 1, 2);
   var date = TypeCaster.firstValueAsExcelDate(values[0], true); // tell firstValueAsExcelDate to coerce boolean
   var shiftType = values.length === 2 ? TypeCaster.firstValueAsNumber(values[1]) : 1;
-  if (date.toNumber() < 0) {
-    throw new NumError("Function YEAR parameter 1 value is " + date.toNumber() + ". It should be greater than or equal to 0.");
+  if (date < 0) {
+    throw new NumError("Function YEAR parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
-  var dm = date.toMoment();
+  var dm = TypeCaster.numberToMoment(date);
   var week = dm.week();
   var dayOfWeek = dm.day(); // between 1 and 7, inclusively
   if (shiftType === 1) {
@@ -377,44 +377,43 @@ var DATEDIF = function (...values) : number {
   var end = TypeCaster.firstValueAsExcelDate(values[1], true);
   var unit = TypeCaster.firstValueAsString(values[2]);
   var unitClean = unit.toUpperCase();
+  var startMoment = TypeCaster.numberToMoment(start);
+  var endMoment = TypeCaster.numberToMoment(end);
 
-  if (start.toNumber() > end.toNumber()) {
+  if (start > end) {
     throw new NumError("Function DATEDIF parameter 1 (" + start.toString() +
       ") should be on or before Function DATEDIF parameter 2 (" + end.toString() + ").");
   }
 
   if (unitClean === "Y") {
-    return Math.floor(end.toMoment().diff(start.toMoment(), "years"));
+    return Math.floor(endMoment.diff(startMoment, "years"));
   } else if (unitClean === "M") {
-    return Math.floor(end.toMoment().diff(start.toMoment(), "months"));
+    return Math.floor(endMoment.diff(startMoment, "months"));
   } else if (unitClean === "D") {
-    return end.toNumber() - start.toNumber();
+    return end - start;
   } else if (unitClean === "MD") {
-    var s = start.toMoment();
-    var e = end.toMoment();
-    while(s.isBefore(e)) {
+    var s = startMoment;
+    while(s.isBefore(endMoment)) {
       s.add(1, "month");
     }
     s.subtract(1, "month");
-    var days = e.diff(s, "days");
-    return s.date() === e.date() ? 0 : days;
+    var days = endMoment.diff(s, "days");
+    return s.date() === endMoment.date() ? 0 : days;
   } else if (unitClean === "YM") {
-    var s = start.toMoment();
-    var e = end.toMoment();
-    while(s.isBefore(e)) {
+    var s = startMoment;
+    while(s.isBefore(endMoment)) {
       s.add(1, "year");
     }
     s.subtract(1, "year");
-    var months = Math.floor(e.diff(s, "months"));
+    var months = Math.floor(endMoment.diff(s, "months"));
     return months === 12 ? 0 : months;
   } else if (unitClean === "YD") {
-    var s = start.toMoment();
-    var e = end.toMoment();
-    while(s.isBefore(e)) {
+    var s = startMoment;
+    while(s.isBefore(endMoment)) {
       s.add(1, "year");
     }
     s.subtract(1, "year");
-    var days = Math.floor(e.diff(s, "days"));
+    var days = Math.floor(endMoment.diff(s, "days"));
     return days >= 365 ? 0 : days;
   } else {
     throw new NumError("Function DATEDIF parameter 3 value is " + unit +
@@ -447,8 +446,8 @@ var YEARFRAC = function (...values) : number {
   var end = TypeCaster.firstValueAsExcelDate(values[1], true);
   var basis = values.length === 2 ? 0 : TypeCaster.firstValueAsNumber(values[2]);
 
-  var s = start.toMoment();
-  var e = end.toMoment();
+  var s = TypeCaster.numberToMoment(start);
+  var e = TypeCaster.numberToMoment(end);
   if (e.isBefore(s)) {
     var me = moment.utc(e);
     e = moment.utc(s);
@@ -505,12 +504,12 @@ var YEARFRAC = function (...values) : number {
         } else if (feb29Between(s, e) || (emonth === 1 && eday === 29)) {
           ylength = 366;
         }
-        return Math.abs((end.toNumber() - start.toNumber()) / ylength);
+        return Math.abs((end - start) / ylength);
       } else {
         var years = (eyear - syear) + 1;
         var days = moment.utc([eyear+1]).startOf("year").diff(moment.utc([syear]).startOf("year"), 'days');
         var average = days / years;
-        return Math.abs((end.toNumber() - start.toNumber()) / average);
+        return Math.abs((end - start) / average);
       }
     // Actual/360
     case 2:
@@ -634,16 +633,16 @@ var NETWORKDAYS = function (...values) : number {
     }
   }
   // Handle cases in which the start date is not before the end date.
-  var didSwap = start.toNumber() > end.toNumber();
+  var didSwap = start > end;
   if (didSwap) {
     var swap = end;
     end = start;
     start = swap;
   }
 
-  var c = moment.utc(start.toMoment());
+  var c = moment.utc(TypeCaster.numberToMoment(start));
   var weekendDays = [6, 0]; // Default weekend_days.
-  var days = end.toNumber() - start.toNumber() + 1;
+  var days = end - start + 1;
   var networkDays = days;
   var j = 0;
   while (j < days) {
@@ -749,15 +748,15 @@ var NETWORKDAYS$INTL = function (...values) : number {
     }
   }
   // Handle cases in which the start date is not before the end date.
-  var didSwap = start.toNumber() > end.toNumber();
+  var didSwap = start > end;
   if (didSwap) {
     var swap = end;
     end = start;
     start = swap;
   }
 
-  var c = moment.utc(start.toMoment());
-  var days = end.toNumber() - start.toNumber() + 1;
+  var c = moment.utc(TypeCaster.numberToMoment(start));
+  var days = end - start + 1;
   var networkDays = days;
   var j = 0;
   while (j < days) {
@@ -858,7 +857,7 @@ var WORKDAY = function (...values) : number {
   }
 
   var weekendDays = [0, 6];
-  var cd = moment.utc(start.toMoment());
+  var cd = moment.utc(TypeCaster.numberToMoment(start));
   var j = 0;
   while (j < days) {
     cd.add(1, 'days');
@@ -957,7 +956,7 @@ var WORKDAY$INTL = function (...values) : number {
       holidays.push(TypeCaster.valueToNumber(values[3]));
     }
   }
-  var cd = moment.utc(start.toMoment());
+  var cd = moment.utc(TypeCaster.numberToMoment(start));
   var j = 0;
   while (j < days) {
     cd.add(1, 'days');

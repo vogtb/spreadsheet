@@ -392,12 +392,12 @@ var ACCRINT = function (...values) {
   // In MSE, there is a 7th (zero-indexed-6th) param that indicates the calculation-method to use, which indicates
   // weather the total accrued interest starting at the first_intrest date, instead of the issue date.
   var firstPayment = TypeCaster.firstValueAsExcelDate(values[1]);
-  if (firstPayment.toNumber() < 0) {
-    throw new NumError("Function ACCRINT parameter 2 value is " + firstPayment.toNumber()
+  if (firstPayment < 0) {
+    throw new NumError("Function ACCRINT parameter 2 value is " + firstPayment
         + ". It should be greater than 0.");
   }
   var settlement = TypeCaster.firstValueAsExcelDate(values[2]);
-  if (issue.toNumber() > settlement.toNumber()) {
+  if (issue > settlement) {
     throw new NumError("Function ACCRINT parameter 1 (" + issue.toString()
       + ") should be on or before Function ACCRINT parameter 3 (" + settlement.toString() + ").")
   }

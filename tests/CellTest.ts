@@ -14,6 +14,7 @@ test("Cell.constructor", function(){
   assertArrayEquals(cell.getDependencies(), []);
   assertEquals(cell.getId(), "A1");
   assertEquals(cell.getFormula(), null);
+  assertEquals(cell.hasFormula(), false);
 });
 
 test("Cell.updateDependencies", function(){

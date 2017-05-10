@@ -1,12 +1,16 @@
 /**
- * Cell represents a cell in the spreadsheet. It contains a nullable formula, and a value, which is not nullable unless
- * the parsing of the formula results in an error.
+ * Cell represents a cell in the spreadsheet. It contains a nullable rawFormulaText, and a value, which is not nullable unless
+ * the parsing of the rawFormulaText results in an error.
  */
 class Cell {
-  private formula: string;
-  private value: string;
-  private dependencies: Array<string>;
-  private error: string;
+  /**
+   * The raw formula text that can be parse, excluding the proceeding =
+   * E.g: SUM(A2:A4, 10)
+   */
+  private rawFormulaText: string = null;
+  private typedValue: any = null;
+  private dependencies: Array<string> = [];
+  private error: string = null;
   private id: string;
   private row: number;
   private col: number;
@@ -18,10 +22,6 @@ class Cell {
   constructor(id: string) {
     var key = parseKey(id);
 
-    this.formula = null;
-    this.value = null;
-    this.dependencies = [];
-    this.error = null;
     this.id = id;
     this.row = key.y;
     this.col = key.x;
@@ -41,7 +41,7 @@ class Cell {
 
   /**
    * Return a list of dependencies in A1-format cell IDs, in no particular order, but likely in order of occurrence in
-   * formula.
+   * rawFormulaText.
    * @returns {Array<string>} list of dependencies in A1-format
    */
   getDependencies() : Array<string> {
@@ -73,60 +73,60 @@ class Cell {
   }
 
   /**
-   * Set the formula of this cell.
-   * @param formula to set.
-   */
-  setFormula(formula: string) {
-    this.formula = formula;
-  }
-
-  /**
-   * Get the formula of this cell if set. Defaults to null, so could return null.
-   * @returns {string} formula of this cell, if set. Nullable.
+   * Get the rawFormulaText of this cell if set. Defaults to null, so should be used in combination with hasFormula().
+   * @returns {string} rawFormulaText of this cell, if set. Nullable.
    */
   getFormula() : string {
-    return this.formula;
+    return this.rawFormulaText;
   }
 
   /**
-   * Set the value of this cell. If this cell has a primitive value (does not contain a formula), it could be set to a
-   * value while the formula field is still null.
+   * Returns true if this cell has a formula to be parsed.
+   * @returns {boolean}
+   */
+  hasFormula() : boolean {
+    return this.rawFormulaText !== null;
+  }
+
+  /**
+   * Set the value of this cell. If this cell has a primitive value (does not contain a rawFormulaText), it could be set to a
+   * value while the rawFormulaText field is still null.
    * @param value to set
    */
-  setValue(value: string) {
-    this.value = value;
+  setValue(value: any) {
+    this.typedValue = value;
   }
 
   /**
-   * Sets the value or formula for this cell. If the input begins with =, then it is considered to be a formula. If it
+   * Sets the value or rawFormulaText for this cell. If the input begins with =, then it is considered to be a rawFormulaText. If it
    * is not, then it is a value, and set as the raw value for this cell.
    * @param rawFormula
    */
-  setRawFormula(rawFormula: string) {
+  setRawValue(rawFormula: string) {
     if (rawFormula.charAt(0) === "=") {
-      this.formula = rawFormula.substr(1);
+      this.rawFormulaText = rawFormula.substr(1);
     } else {
-      this.value = rawFormula;
+      this.typedValue = rawFormula;
     }
   }
 
   /**
-   * Get the value of this cell. Since value could be null do to an error in the formula, this could return null.
-   * @returns {string}
+   * Get the value of this cell. Since value could be null do to an error in the rawFormulaText, this could return null.
+   * @returns {any}
    */
-  getValue() : string {
-    return this.value;
+  getValue() : any {
+    return this.typedValue;
   }
 
   /**
    * CLears a cells value.
    */
   clearValue() {
-    this.value = null;
+    this.typedValue = null;
   }
 
   /**
-   * Set error for this cell. Usually in the case of a parse error when parsing the formula.
+   * Set error for this cell. Usually in the case of a parse error when parsing the rawFormulaText.
    * @param error to set.
    */
   setError(error: string) {
@@ -134,7 +134,7 @@ class Cell {
   }
 
   /**
-   * Get the error for this cell. If the formula is not parsed properly, or is null, this could be null.
+   * Get the error for this cell. If the rawFormulaText is not parsed properly, or is null, this could be null.
    * @returns {string} error to return, could be null.
    */
   getError() : string {
@@ -146,7 +146,7 @@ class Cell {
    * @returns {string}
    */
   toString() : string {
-    return "id=" + this.id + ", value=" + this.value + ", formula=" + this.formula + ", error=" + this.error;
+    return "id=" + this.id + ", value=" + this.typedValue + ", rawFormulaText=" + this.rawFormulaText + ", error=" + this.error;
   }
 }
 

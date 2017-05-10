@@ -88,12 +88,7 @@ var Sheet = (function () {
         this.data[cellId] = cell;
       } else {
         this.getCell(cellId).updateDependencies(cell.getDependencies());
-        var cellValue = cell.getValue();
-        if (cellValue === null) {
-          this.getCell(cellId).clearValue();
-        } else {
-          this.getCell(cellId).setValue(cellValue);
-        }
+        this.getCell(cellId).setValue(cell.getValue());
         this.getCell(cellId).setError(cell.getError());
       }
 
@@ -154,7 +149,7 @@ var Sheet = (function () {
      */
     setCell(id: string, rawFormula: string) {
       var cell = new Cell(id);
-      cell.setRawFormula(rawFormula);
+      cell.setRawValue(rawFormula);
       registerCellInMatrix(cell);
       recalculateCellDependencies(cell);
     }
@@ -169,7 +164,7 @@ var Sheet = (function () {
 
     allDependencies.forEach(function (refId) {
       var currentCell = instance.matrix.getCell(refId);
-      if (currentCell && currentCell.getFormula()) {
+      if (currentCell && currentCell.hasFormula()) {
         calculateCellFormula(currentCell);
       }
     });
@@ -184,11 +179,7 @@ var Sheet = (function () {
     // to avoid double translate formulas, update cell data in parser
     var parsed = parse(cell.getFormula(), cell.getId());
 
-    if (parsed.result === null) {
-      instance.matrix.getCell(cell.getId()).clearValue();
-    } else {
-      instance.matrix.getCell(cell.getId()).setValue(parsed.result);
-    }
+    instance.matrix.getCell(cell.getId()).setValue(parsed.result);
     instance.matrix.getCell(cell.getId()).setError(parsed.error);
 
     return parsed;
@@ -200,7 +191,7 @@ var Sheet = (function () {
    */
   var registerCellInMatrix = function (cell: Cell) {
     instance.matrix.addCell(cell);
-    if (cell.getFormula() !== null) {
+    if (cell.hasFormula()) {
       calculateCellFormula(cell);
     }
   };
@@ -231,7 +222,7 @@ var Sheet = (function () {
     },
 
     isSet: function (value) {
-      return !utils.isUndefined(value) && !utils.isNull(value);
+      return !utils.isNull(value);
     },
 
     toNum: function (chr) {
@@ -469,8 +460,8 @@ var Sheet = (function () {
         origin = this,
         cell = instance.matrix.getCell(cellId);
 
-      // get value
-      value = cell ? cell.getValue() : "0"; // TODO: fix this, it's sloppy.
+      // get value, defaulting to undefined
+      value = cell ? cell.getValue() : undefined;
       //update dependencies
       instance.matrix.getCell(origin).updateDependencies([cellId]);
       // check references error

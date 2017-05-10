@@ -106,6 +106,13 @@ class Cell {
   }
 
   /**
+   * CLears a cells value.
+   */
+  clearValue() {
+    this.value = null;
+  }
+
+  /**
    * Set error for this cell. Usually in the case of a parse error when parsing the formula.
    * @param error to set.
    */

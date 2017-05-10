@@ -145,14 +145,14 @@ var Sheet = (function () {
     /**
      * Set a cell in this matrix. Could update an existing cell, or add a new one.
      * @param id to of cell to create of update
-     * @param formula of cell to create or update
+     * @param rawFormula of cell to create or update
      */
-    setCell(id: string, formula: string) {
+    setCell(id: string, rawFormula: string) {
       var cell = new Cell(id);
-      if (formula.charAt(0) === "=") {
-        cell.setFormula(formula.substr(1));
+      if (rawFormula.charAt(0) === "=") {
+        cell.setFormula(rawFormula.substr(1));
       } else {
-        cell.setValue(formula);
+        cell.setValue(rawFormula);
       }
       registerCellInMatrix(cell);
       recalculateCellDependencies(cell);
@@ -183,7 +183,11 @@ var Sheet = (function () {
     // to avoid double translate formulas, update cell data in parser
     var parsed = parse(cell.getFormula(), cell.getId());
 
-    instance.matrix.getCell(cell.getId()).setValue(parsed.result);
+    if (parsed.result === null) {
+      instance.matrix.getCell(cell.getId()).clearValue();
+    } else {
+      instance.matrix.getCell(cell.getId()).setValue(parsed.result);
+    }
     instance.matrix.getCell(cell.getId()).setError(parsed.error);
 
     return parsed;
@@ -538,7 +542,7 @@ var Sheet = (function () {
         result = null;
         deps.forEach(function (id) {
           instance.matrix.getCell(id).setError(Errors.get('REF'));
-          instance.matrix.getCell(id).setValue(null);
+          instance.matrix.getCell(id).clearValue();
         });
         throw Error('REF');
       }

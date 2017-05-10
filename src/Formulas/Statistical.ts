@@ -16,7 +16,7 @@ import {
 import {
   SUM,
   ABS
-} from "./Math"
+} from "./Math";
 
 
 /**

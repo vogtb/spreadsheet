@@ -55,6 +55,11 @@ Right now we're just using the number of days since 1900, but we should check th
 Input like `10%` should be parsed and stored as a number.
 
 
+### Sheet.ts and Helpers.ts should be check conversion capabilities in same way as TypeConverter
+When we check to see if a value taken from a cell is of a certain type, we should check in the same way as the
+TypeConverter.
+
+
 ### Scrape jsdocs for functions, put in simple index.html, doc.md files to serve up simple documentation
 
 

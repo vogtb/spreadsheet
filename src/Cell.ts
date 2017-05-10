@@ -19,7 +19,7 @@ class Cell {
     var key = parseKey(id);
 
     this.formula = null;
-    this.value = "";
+    this.value = null;
     this.dependencies = [];
     this.error = null;
     this.id = id;
@@ -95,6 +95,19 @@ class Cell {
    */
   setValue(value: string) {
     this.value = value;
+  }
+
+  /**
+   * Sets the value or formula for this cell. If the input begins with =, then it is considered to be a formula. If it
+   * is not, then it is a value, and set as the raw value for this cell.
+   * @param rawFormula
+   */
+  setRawFormula(rawFormula: string) {
+    if (rawFormula.charAt(0) === "=") {
+      this.formula = rawFormula.substr(1);
+    } else {
+      this.value = rawFormula;
+    }
   }
 
   /**

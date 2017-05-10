@@ -88,7 +88,12 @@ var Sheet = (function () {
         this.data[cellId] = cell;
       } else {
         this.getCell(cellId).updateDependencies(cell.getDependencies());
-        this.getCell(cellId).setValue(cell.getValue());
+        var cellValue = cell.getValue();
+        if (cellValue === null) {
+          this.getCell(cellId).clearValue();
+        } else {
+          this.getCell(cellId).setValue(cellValue);
+        }
         this.getCell(cellId).setError(cell.getError());
       }
 
@@ -149,11 +154,7 @@ var Sheet = (function () {
      */
     setCell(id: string, rawFormula: string) {
       var cell = new Cell(id);
-      if (rawFormula.charAt(0) === "=") {
-        cell.setFormula(rawFormula.substr(1));
-      } else {
-        cell.setValue(rawFormula);
-      }
+      cell.setRawFormula(rawFormula);
       registerCellInMatrix(cell);
       recalculateCellDependencies(cell);
     }

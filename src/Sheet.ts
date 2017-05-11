@@ -417,6 +417,9 @@ var Sheet = (function () {
           if (number2 === 0) {
             throw new DivZeroError("Evaluation caused divide by zero error.");
           }
+          if (number2 !== 0 && number1 === 0) {
+            result = 0;
+          }
           result = number1 / number2;
           if (result == Infinity) {
             throw new DivZeroError("Evaluation caused divide by zero error.");

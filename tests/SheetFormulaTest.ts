@@ -431,7 +431,6 @@ test("Sheet XOR", function(){
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);
-  assertFormulaEquals('= 10 * 0', 0);
   assertFormulaEquals('= 1 * 1', 1);
 });
 
@@ -439,5 +438,17 @@ test("Sheet /", function(){
   assertFormulaEquals('= 10 / 2', 5);
   assertFormulaEquals('= 10 / 1', 10);
   assertFormulaEquals('= 1 / 1', 1);
+  assertFormulaEquals('= 0 / 1', 0);
+  assertFormulaEquals('="1" / 1', 1);
+  assertFormulaEquals('="500" / 1', 500);
   assertFormulaEqualsError('= 10 / 0', DIV_ZERO_ERROR);
+  assertFormulaEqualsError('= 0 / 0', DIV_ZERO_ERROR);
+  assertFormulaEquals('= P9 / 1', 0);
+});
+
+test("Sheet ^", function(){
+  assertFormulaEquals('= 10 ^ 10', 10000000000);
+  assertFormulaEquals('= 10 ^ 0', 1);
+  assertFormulaEquals('= 1 ^ 1', 1);
+  assertFormulaEquals('= 2 ^ 10', 1024);
 });

@@ -1,9 +1,9 @@
 /// <reference path="parser.d.ts"/>
 import { Parser } from "./Parser";
 import { Cell } from "./Cell"
-import {DivZeroError, RefError, NameError} from "./Errors"
-import { Helpers } from "./Helpers";
+import { DivZeroError, RefError, NameError } from "./Errors"
 import { Formulas } from "./Formulas";
+import { TypeConverter } from "./Utilities/TypeConverter";
 
 
 /**
@@ -335,7 +335,10 @@ var Sheet = (function () {
   };
 
   var helper = {
-    number: Helpers.number,
+    /**
+     * Is the value a number or can the value be interpreted as a number
+     */
+    number: TypeConverter.valueToNumber,
 
     string: function (str) {
       return str.substring(1, str.length - 1);

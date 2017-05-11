@@ -7,7 +7,8 @@ import {
   test
 } from "./utils/Asserts";
 import {
-  Errors
+  REF_ERROR,
+  NAME_ERROR
 } from "../src/Errors";
 
 test("Sheet.setCell, Sheet.getCell", function(){
@@ -97,11 +98,11 @@ test("Sheet REF error", function(){
   sheet.setCell("B2", "=SUM(A1, B1)");
   var B1 = sheet.getCell("B1");
   assertEquals(null, B1.getValue());
-  assertEquals(Errors.get("REF"), B1.getError());
+  assertEquals(REF_ERROR, B1.getError().name);
   assertArrayEquals(['A3', 'B2'], B1.getDependencies());
   var B2 = sheet.getCell("B2");
   assertEquals(null, B2.getValue());
-  assertEquals(Errors.get("REF"), B2.getError());
+  assertEquals(REF_ERROR, B2.getError().name);
   assertArrayEquals(['A1', 'B1'], B2.getDependencies());
 });
 
@@ -111,7 +112,7 @@ test("Sheet cell NAME error", function(){
   sheet.setCell("A2", "=SUM(A1, NN)");
   var A2 = sheet.getCell("A2");
   assertEquals(null, A2.getValue());
-  assertEquals(Errors.get("NAME"), A2.getError());
+  assertEquals(NAME_ERROR, A2.getError().name);
   assertArrayEquals(['A1'], A2.getDependencies());
 });
 
@@ -121,7 +122,7 @@ test("Sheet unsupported formula NAME error", function(){
   sheet.setCell("A2", "=BEN(A1)");
   var A2 = sheet.getCell("A2");
   assertEquals(null, A2.getValue());
-  assertEquals(Errors.get("NAME"), A2.getError());
+  assertEquals(NAME_ERROR, A2.getError().name);
   assertArrayEquals(['A1'], A2.getDependencies());
 });
 

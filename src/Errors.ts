@@ -6,35 +6,6 @@ var NAME_ERROR = "#NAME!";
 var NUM_ERROR = "#NUM!";
 var NA_ERROR = "#N/A";
 
-var Errors = {
-  errors: {
-    'NULL': '#NULL',
-    '#NULL': '#NULL',
-    'DIV_ZERO': '#DIV/0!',
-    '#DIV/0!': '#DIV/0!',
-    'VALUE': '#VALUE!',
-    '#VALUE!': '#VALUE!',
-    'REF': '#REF!',
-    '#REF!': '#REF!',
-    'NAME': '#NAME?',
-    '#NAME?': '#NAME?',
-    'NUM': '#NUM!',
-    '#NUM!': '#NUM!',
-    'NOT_AVAILABLE': '#N/A!',
-    '#N/A!': '#N/A!',
-    '#N/A': '#N/A',
-    'ERROR': '#ERROR',
-    '#ERROR': '#ERROR'
-  },
-  get: function (type) {
-    if (type in Errors.errors) {
-      return Errors.errors[type];
-    }
-    return null;
-  }
-};
-
-
 class NullError extends Error {
   constructor(message: string) {
     super(message);
@@ -85,7 +56,6 @@ class NAError extends Error {
 }
 
 export {
-  Errors,
   DIV_ZERO_ERROR,
   NULL_ERROR,
   VALUE_ERROR,

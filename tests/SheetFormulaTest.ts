@@ -5,13 +5,22 @@ import {
   assertEquals,
   test
 } from "./utils/Asserts";
+import {DIV_ZERO_ERROR} from "../src/Errors";
+
+function assertFormulaEqualsError(formula: string, errorString: string) {
+  var sheet  = new Sheet();
+  sheet.setCell("A1", formula);
+  var cell = sheet.getCell("A1");
+  assertEquals(cell.getError().name, errorString);
+  assertEquals(cell.getValue(), null);
+}
 
 function assertFormulaEquals(formula: string, expectation: any) {
   var sheet  = new Sheet();
   sheet.setCell("A1", formula);
   var cell = sheet.getCell("A1");
-  assertEquals(null, cell.getError());
-  assertEquals(expectation, cell.getValue());
+  assertEquals(cell.getError(), null);
+  assertEquals(cell.getValue(), expectation);
 }
 
 function testFormulaToArray(formula: string, expectation: any) {
@@ -417,4 +426,18 @@ test("Sheet TRUNC", function(){
 
 test("Sheet XOR", function(){
   assertFormulaEquals('=XOR(1, 1)', false);
+});
+
+test("Sheet *", function(){
+  assertFormulaEquals('= 10 * 10', 100);
+  assertFormulaEquals('= 10 * 0', 0);
+  assertFormulaEquals('= 10 * 0', 0);
+  assertFormulaEquals('= 1 * 1', 1);
+});
+
+test("Sheet /", function(){
+  assertFormulaEquals('= 10 / 2', 5);
+  assertFormulaEquals('= 10 / 1', 10);
+  assertFormulaEquals('= 1 / 1', 1);
+  assertFormulaEqualsError('= 10 / 0', DIV_ZERO_ERROR);
 });

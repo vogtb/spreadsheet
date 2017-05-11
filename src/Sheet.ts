@@ -1,7 +1,7 @@
 /// <reference path="parser.d.ts"/>
 import { Parser } from "./Parser";
 import { Cell } from "./Cell"
-import { Errors } from "./Errors"
+import {DivZeroError, RefError, NameError} from "./Errors"
 import { Helpers } from "./Helpers";
 import { Formulas } from "./Formulas";
 
@@ -62,10 +62,7 @@ var Sheet = (function () {
     /**
      * Holds cells inside an object for quick access.
      */
-    public data: Object;
-    constructor() {
-      this.data = {};
-    }
+    public data: Object = {};
 
     /**
      * Gets the cell corresponding to the key. If the value is not defined, will return undefined.
@@ -398,11 +395,12 @@ var Sheet = (function () {
     mathMatch: function (type, number1, number2) {
       var result;
 
+      // TODO: These should convert
       number1 = helper.number(number1);
       number2 = helper.number(number2);
 
       if (isNaN(number1) || isNaN(number2)) {
-        throw Error('VALUE');
+        throw Error('VALUE'); // TODO: we should catch and handle this when we convert the numbers...
       }
 
       switch (type) {
@@ -413,11 +411,14 @@ var Sheet = (function () {
           result = number1 - number2;
           break;
         case '/':
+          if (number2 === 0) {
+            throw new DivZeroError("Evaluation caused divide by zero error.");
+          }
           result = number1 / number2;
           if (result == Infinity) {
-            throw Error('DIV_ZERO');
+            throw new DivZeroError("Evaluation caused divide by zero error.");
           } else if (isNaN(result)) {
-            throw Error('VALUE');
+            throw new DivZeroError("Evaluation caused divide by zero error.");
           }
           break;
         case '*':
@@ -438,7 +439,7 @@ var Sheet = (function () {
         return Formulas.get(fn).apply(this, args);
       }
 
-      throw Error('NAME');
+      throw new NameError("Unknown function: '" + fn + "'.");
     },
 
     callVariable: function (args) {
@@ -452,7 +453,7 @@ var Sheet = (function () {
         }
       }
 
-      throw Error('NAME');
+      throw new NameError("Unknown variable: '" + str + "'.");
     },
 
     cellValue: function (cellId) {
@@ -467,13 +468,13 @@ var Sheet = (function () {
       // check references error
       if (cell && cell.getDependencies()) {
         if (cell.getDependencies().indexOf(cellId) !== -1) {
-          throw Error('REF');
+          throw new RefError("Reference does not exist.");
         }
       }
 
       // check if any error occurs
       if (cell && cell.getError()) {
-        throw Error(cell.getError());
+        throw cell.getError()
       }
 
       // return value if is set
@@ -484,7 +485,7 @@ var Sheet = (function () {
       }
 
       // cell is not available
-      throw Error('NOT_AVAILABLE');
+      return undefined;
     },
 
     cellRangeValue: function (start: string, end: string) {
@@ -533,18 +534,13 @@ var Sheet = (function () {
       if (deps.indexOf(cellId) !== -1) {
         result = null;
         deps.forEach(function (id) {
-          instance.matrix.getCell(id).setError(Errors.get('REF'));
+          instance.matrix.getCell(id).setError(new RefError("Reference does not exist"));
           instance.matrix.getCell(id).clearValue();
         });
-        throw Error('REF');
+        throw new RefError("Reference does not exist.");
       }
     } catch (ex) {
-      var message = Errors.get(ex.message);
-      if (message) {
-        error = message;
-      } else {
-        error = Errors.get('ERROR');
-      }
+      error = ex;
     }
 
     return {

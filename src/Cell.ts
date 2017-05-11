@@ -10,7 +10,7 @@ class Cell {
   private rawFormulaText: string = null;
   private typedValue: any = null;
   private dependencies: Array<string> = [];
-  private error: string = null;
+  private error: Error = null;
   private id: string;
   private row: number;
   private col: number;
@@ -129,15 +129,15 @@ class Cell {
    * Set error for this cell. Usually in the case of a parse error when parsing the rawFormulaText.
    * @param error to set.
    */
-  setError(error: string) {
+  setError(error: Error) {
     this.error = error;
   }
 
   /**
    * Get the error for this cell. If the rawFormulaText is not parsed properly, or is null, this could be null.
-   * @returns {string} error to return, could be null.
+   * @returns {Error} error to return, could be null.
    */
-  getError() : string {
+  getError() : Error {
     return this.error;
   }
 

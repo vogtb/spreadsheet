@@ -5,7 +5,7 @@ import {
   assertEquals,
   test
 } from "./utils/Asserts";
-import {DIV_ZERO_ERROR} from "../src/Errors";
+import {DIV_ZERO_ERROR, VALUE_ERROR} from "../src/Errors";
 
 function assertFormulaEqualsError(formula: string, errorString: string) {
   var sheet  = new Sheet();
@@ -451,4 +451,13 @@ test("Sheet ^", function(){
   assertFormulaEquals('= 10 ^ 0', 1);
   assertFormulaEquals('= 1 ^ 1', 1);
   assertFormulaEquals('= 2 ^ 10', 1024);
+});
+
+test("Sheet mathMathc", function(){
+  assertFormulaEquals('= "10" + 10', 20);
+  // TODO: throws parse error, should clean up
+  // assertFormulaEqualsError('= 10e / 1', VALUE_ERROR);
+  // TODO: Should fail, but doesn't because 10e parses to a string
+  // assertFormulaEqualsError('= "10e" + 10', VALUE_ERROR);
+  assertFormulaEqualsError('= "MR" + 10', VALUE_ERROR);
 });

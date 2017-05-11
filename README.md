@@ -69,7 +69,19 @@ TypeConverter.
 ### Ensure all formulas are tested inside of SheetFormulaTest.ts
 
 
-### Test all functions in src/Utilities
+### Test ArgsChecker
+
+
+### Test CriteriaFunctionFactory
+
+
+### Test Filter
+
+
+### Test Serilaizer
+
+
+### Test TypeConverter
 
 
 ### CONVERT could offer more accurate conversions for units in the same system

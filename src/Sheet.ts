@@ -398,13 +398,8 @@ var Sheet = (function () {
     mathMatch: function (type, number1, number2) {
       var result;
 
-      // TODO: These should convert
       number1 = helper.number(number1);
       number2 = helper.number(number2);
-
-      if (isNaN(number1) || isNaN(number2)) {
-        throw Error('VALUE'); // TODO: we should catch and handle this when we convert the numbers...
-      }
 
       switch (type) {
         case '+':

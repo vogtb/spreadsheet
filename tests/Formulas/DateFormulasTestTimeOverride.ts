@@ -8,7 +8,7 @@ import {
   assertEquals,
   catchAndAssertEquals,
   test
-} from "../utils/Asserts"
+} from "../Utils/Asserts"
 
 
 // WARNING: Locking in Date by overriding prototypes.

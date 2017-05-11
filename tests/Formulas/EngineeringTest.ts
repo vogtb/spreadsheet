@@ -12,7 +12,7 @@ import {
   assertEquals,
   catchAndAssertEquals,
   test
-} from "../utils/Asserts";
+} from "../Utils/Asserts";
 
 
 test("BIN2DEC", function(){

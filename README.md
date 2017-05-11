@@ -52,7 +52,8 @@ Right now we're just using the number of days since 1900, but we should check th
 
 
 ### Percentage inputs should be parsed to numbers
-Input like `10%` should be parsed and stored as a number.
+Input like `10%` should be parsed and stored as a number. It should be X*0.01, not X/100. For example `=2 * 1 * 10%` is
+0.2, while `=2 * 1 * 10/1` is 20.
 
 
 ### Sheet.ts and Helpers.ts should be check conversion capabilities in same way as TypeConverter
@@ -69,13 +70,7 @@ TypeConverter.
 ### Ensure all formulas are tested inside of SheetFormulaTest.ts
 
 
-### Test ArgsChecker
-
-
 ### Test CriteriaFunctionFactory
-
-
-### Test Filter
 
 
 ### Test Serilaizer

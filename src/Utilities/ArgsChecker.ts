@@ -24,7 +24,7 @@ class ArgsChecker {
    */
   static checkAtLeastLength(args: any, length: number) {
     if (args.length < length) {
-      throw new NAError("Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
+      throw new NAError("Wrong number of arguments to ___. Expected " + length + " arguments, but got " + args.length + " arguments.");
     }
   }
 

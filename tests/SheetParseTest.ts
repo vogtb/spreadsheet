@@ -4,7 +4,7 @@ import {
 import {
   assertEquals,
   test
-} from "./utils/Asserts";
+} from "./Utils/Asserts";
 
 
 test("Sheet parsing math formulas", function(){

@@ -4,7 +4,7 @@ import {
 import {
   assertEquals,
   test
-} from "./utils/Asserts";
+} from "./Utils/Asserts";
 import {DIV_ZERO_ERROR, VALUE_ERROR} from "../src/Errors";
 
 function assertFormulaEqualsError(formula: string, errorString: string) {

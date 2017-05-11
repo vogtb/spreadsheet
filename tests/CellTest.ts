@@ -5,7 +5,7 @@ import {
   assertEquals,
   assertArrayEquals,
   test
-} from "./utils/Asserts";
+} from "./Utils/Asserts";
 
 test("Cell.constructor", function(){
   var cell = new Cell("A1");

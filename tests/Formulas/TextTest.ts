@@ -12,7 +12,7 @@ import {
   assertArrayEquals,
   catchAndAssertEquals,
   test
-} from "../utils/Asserts";
+} from "../Utils/Asserts";
 
 
 test("SPLIT", function(){

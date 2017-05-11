@@ -5,7 +5,7 @@ import {
   assertEquals,
   assertArrayEquals,
   test
-} from "./utils/Asserts";
+} from "./Utils/Asserts";
 import {
   REF_ERROR,
   NAME_ERROR

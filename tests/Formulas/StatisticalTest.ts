@@ -24,7 +24,7 @@ import {
   assertEquals,
   catchAndAssertEquals,
   test
-} from "../utils/Asserts";
+} from "../Utils/Asserts";
 
 
 test("AVEDEV", function(){

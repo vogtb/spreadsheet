@@ -44,10 +44,6 @@ helpers to convert, display, and do normal operations with them.
 Contingent upon cells having formats or types for primitives.
 
 
-### Test all Date-related functions
-Right now we're just using the number of days since 1900, but we should check the other functions.
-
-
 ### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
 
 
@@ -71,9 +67,6 @@ TypeConverter.
 
 
 ### Test CriteriaFunctionFactory
-
-
-### Test TypeConverter
 
 
 ### CONVERT could offer more accurate conversions for units in the same system

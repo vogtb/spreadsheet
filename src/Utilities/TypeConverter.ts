@@ -330,7 +330,12 @@ class TypeConverter {
    */
   public static stringToDateNumber(dateString : string) : number {
     // m will be set and valid or invalid, or will remain undefined
-    var m = TypeConverter.parseStringToMoment(dateString);
+    var m;
+    try {
+      m = TypeConverter.parseStringToMoment(dateString);
+    } catch (e) {
+      throw new ValueError("DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
+    }
     if (m === undefined || !m.isValid()) {
       throw new ValueError("DATEVALUE parameter '" + dateString + "' cannot be parsed to date/time.");
     }
@@ -341,8 +346,9 @@ class TypeConverter {
    * Converts any value to a number or throws an error if it cannot coerce it to the number type
    * @param value to convert
    * @returns {number} to return. Will always return a number or throw an error. Never returns undefined.
+   * TODO: This function is far to loosely defined. JS lets anything starting with a digit parse to a number. Not good.
    */
-  static valueToNumber(value : any) {
+  public static valueToNumber(value : any) {
     if (typeof value === "number") {
       return value;
     } else if (typeof value === "string") {
@@ -372,7 +378,7 @@ class TypeConverter {
    * @param value to conver
    * @returns {number} to return. Will always return a number or 0.
    */
-  static valueToNumberGracefully(value: any) : number {
+  public static valueToNumberGracefully(value: any) : number {
     try {
       return TypeConverter.valueToNumber(value);
     } catch (e) {
@@ -385,7 +391,7 @@ class TypeConverter {
    * @param value to convert
    * @returns {boolean} to return.
    */
-  static valueToBoolean(value: any) {
+  public static valueToBoolean(value: any) {
     if (typeof value === "number") {
       return value !== 0;
     } else if (typeof value === "string") {
@@ -399,7 +405,7 @@ class TypeConverter {
    * @param value of any type, including array. array cannot be empty.
    * @returns {string} string representation of value
    */
-  static valueToString(value: any) : string {
+  public static valueToString(value: any) : string {
     if (typeof value === "number") {
       return value.toString();
     } else if (typeof value === "string") {
@@ -414,7 +420,7 @@ class TypeConverter {
    * @param value to convert
    * @returns {number} representing a time value
    */
-  static valueToTimestampNumber(value: any) : number {
+  public static valueToTimestampNumber(value: any) : number {
     if (typeof value === "number") {
       return value;
     } else if (typeof value === "string") {
@@ -430,7 +436,7 @@ class TypeConverter {
         throw new ValueError("___ expects number values. But '" + value + "' is a text and cannot be coerced to a number.")
       }
     } else if (typeof value === "boolean") {
-      return value ? 1 : 0;
+      return 0; // value between 0 and 1, exclusive on 1.
     }
     return 0;
   }
@@ -439,8 +445,9 @@ class TypeConverter {
    * Returns true if we can coerce it to the number type.
    * @param value to coerce
    * @returns {boolean} if could be coerced to a number
+   TODO: Similar to valueToNumber, JS lets anything starting with a digit parse to a number.
    */
-  static canCoerceToNumber(value: any) : boolean {
+  public static canCoerceToNumber(value: any) : boolean {
     if (typeof value === "number" || typeof value === "boolean") {
       return true;
     } else if (typeof value === "string") {
@@ -460,7 +467,7 @@ class TypeConverter {
    * @param input to attempt to coerce into a number
    * @returns {number} number representation of the input
    */
-  static firstValueAsNumber(input: any) : number {
+  public static firstValueAsNumber(input: any) : number {
     if (input instanceof Array) {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
@@ -475,7 +482,7 @@ class TypeConverter {
    * @param input to attempt to coerce into a string
    * @returns {number} number representation of the input
    */
-  static firstValueAsString(input: any) : string {
+  public static firstValueAsString(input: any) : string {
     if (input instanceof Array) {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
@@ -485,7 +492,13 @@ class TypeConverter {
     return TypeConverter.valueToString(input);
   }
 
-  static firstValue(input: any) : any {
+
+  /**
+   * Returns the first value that is not of the type array. Will throw RefError if any empty arrays are passed in.
+   * @param input to retrieve first value of
+   * @returns {any} any non-array value.
+   */
+  public static firstValue(input: any) : any {
     if (input instanceof Array) {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
@@ -500,7 +513,7 @@ class TypeConverter {
    * @param input to attempt to coerce into a string
    * @returns {number} number representation of the input
    */
-  static firstValueAsBoolean(input: any): boolean {
+  public static firstValueAsBoolean(input: any): boolean {
     if (input instanceof Array) {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
@@ -516,7 +529,7 @@ class TypeConverter {
    * @param coerceBoolean should a boolean be converted
    * @returns {number} representing a date
    */
-  static firstValueAsDateNumber(input: any, coerceBoolean?: boolean) : number {
+  public static firstValueAsDateNumber(input: any, coerceBoolean?: boolean) : number {
     if (input instanceof Array) {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
@@ -526,7 +539,12 @@ class TypeConverter {
     return TypeConverter.valueToDateNumber(input, coerceBoolean);
   }
 
-  static firstValueAsTimestampNumber(input : any) : number {
+  /**
+   * Takes the input type and will throw a REF_ERROR or coerce it into a time number
+   * @param input input to attempt to coerce to a time number
+   * @returns {number} representing time of day
+   */
+  public static firstValueAsTimestampNumber(input : any) : number {
     if (input instanceof Array) {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
@@ -542,7 +560,7 @@ class TypeConverter {
    * @param coerceBoolean should a boolean be converted
    * @returns {number} date
    */
-  static valueToDateNumber(value: any, coerceBoolean?: boolean) : number {
+  public static valueToDateNumber(value: any, coerceBoolean?: boolean) : number {
     if (typeof value === "number") {
       return value;
     } else if (typeof value === "string") {
@@ -567,7 +585,7 @@ class TypeConverter {
    * @param m to convert
    * @returns {number} date
    */
-  static momentToNumber(m : moment.Moment) : number {
+  public static momentToNumber(m : moment.Moment) : number {
     return m.diff(this.ORIGIN_MOMENT, "seconds") / this.SECONDS_IN_DAY;
   }
 
@@ -576,7 +594,7 @@ class TypeConverter {
    * @param m to convert
    * @returns {number} date
    */
-  static momentToDayNumber(m : moment.Moment) : number {
+  public static momentToDayNumber(m : moment.Moment) : number {
     return Math.floor(TypeConverter.momentToNumber(m));
   }
 
@@ -585,7 +603,7 @@ class TypeConverter {
    * @param n to convert
    * @returns {Moment} date
    */
-  static numberToMoment(n : number) : moment.Moment {
+  public static numberToMoment(n : number) : moment.Moment {
     return moment.utc(TypeConverter.ORIGIN_MOMENT).add(n, "days");
   }
 
@@ -596,7 +614,7 @@ class TypeConverter {
    * @param seconds
    * @returns {number} representing time of day between 0 and 1, exclusive on end.
    */
-  static unitsToTimeNumber(hours: number, minutes: number, seconds: number): number {
+  public static unitsToTimeNumber(hours: number, minutes: number, seconds: number): number {
     var v = (((hours % 24) * 60 * 60) + ((minutes) * 60) + (seconds)) / 86400;
     return v % 1;
   }

@@ -10,10 +10,13 @@ class ArgsChecker {
    * Checks to see if the arguments are of the correct length.
    * @param args to check length of
    * @param length expected length
+   * @param caller name of the function calling this function, for use in error message formatting
    */
-  static checkLength(args: Array<any> | IArguments, length: number) {
+  static checkLength(args: Array<any> | IArguments, length: number, caller?: string) {
     if (args.length !== length) {
-      throw new NAError("Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
+      var functionName = caller !== undefined ? " to " + caller : "";
+      throw new NAError("Wrong number of arguments" + functionName + ". Expected " + length
+          + " arguments, but got " + args.length + " arguments.");
     }
   }
 
@@ -21,10 +24,13 @@ class ArgsChecker {
    * Checks to see if the arguments are at least a certain length.
    * @param args to check length of
    * @param length expected length
+   * @param caller name of the function calling this function, for use in error message formatting
    */
-  static checkAtLeastLength(args: any, length: number) {
+  static checkAtLeastLength(args: any, length: number, caller?: string) {
     if (args.length < length) {
-      throw new NAError("Wrong number of arguments to ___. Expected " + length + " arguments, but got " + args.length + " arguments.");
+      var functionName = caller !== undefined ? " to " + caller : "";
+      throw new NAError("Wrong number of arguments" + functionName + ". Expected " + length
+        + " arguments, but got " + args.length + " arguments.");
     }
   }
 
@@ -33,10 +39,13 @@ class ArgsChecker {
    * @param args to check length of
    * @param low least number of arguments
    * @param high max number of arguments
+   * @param caller name of the function calling this function, for use in error message formatting
    */
-  static checkLengthWithin(args: any, low: number, high: number) {
+  static checkLengthWithin(args: any, low: number, high: number, caller?: string) {
     if (args.length > high || args.length < low) {
-      throw new NAError("Wrong number of arguments to ___. Expected 1 arguments, but got " + args.length + " arguments.");
+      var functionName = caller !== undefined ? " to " + caller : "";
+      throw new NAError("Wrong number of arguments" + functionName + ". Expected between" + low
+        + "and " + high + " arguments, but got " + args.length + " arguments.");
     }
   }
 }

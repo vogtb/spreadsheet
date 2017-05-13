@@ -25,7 +25,7 @@ import {
  * @constructor
  */
 var DDB = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 4, 5);
+  ArgsChecker.checkLengthWithin(values, 4, 5, "DDB");
   var cost = TypeConverter.firstValueAsNumber(values[0]);
   var salvage = TypeConverter.firstValueAsNumber(values[1]);
   var life = TypeConverter.firstValueAsNumber(values[2]);
@@ -77,7 +77,7 @@ var DDB = function (...values) : number {
  * @constructor
  */
 var DB = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 4, 5);
+  ArgsChecker.checkLengthWithin(values, 4, 5, "DB");
   var cost = TypeConverter.firstValueAsNumber(values[0]);
   var salvage = TypeConverter.firstValueAsNumber(values[1]);
   var life = TypeConverter.firstValueAsNumber(values[2]);
@@ -140,7 +140,7 @@ var DB = function (...values) : number {
  * @constructor
  */
 var DOLLAR = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 1, 2);
+  ArgsChecker.checkLengthWithin(values, 1, 2, "DOLLAR");
   var v = TypeConverter.firstValueAsNumber(values[0]);
   var places = values.length === 2 ? TypeConverter.firstValueAsNumber(values[1]) : 2;
   var sign = (v > 0) ? 1 : -1;
@@ -161,7 +161,7 @@ var DOLLAR = function (...values) : number {
  * @constructor
  */
 var DOLLARDE = function (...values) : number {
-  ArgsChecker.checkLength(values, 2);
+  ArgsChecker.checkLength(values, 2, "DOLLARDE");
   var dollar = TypeConverter.firstValueAsNumber(values[0]);
   var fraction = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
   if (fraction === 0) {
@@ -186,7 +186,7 @@ var DOLLARDE = function (...values) : number {
  * @constructor
  */
 var DOLLARFR = function (...values) : number {
-  ArgsChecker.checkLength(values, 2);
+  ArgsChecker.checkLength(values, 2, "DOLLARFR");
   var dollar = TypeConverter.firstValueAsNumber(values[0]);
   var unit = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
   if (unit === 0) {
@@ -206,7 +206,7 @@ var DOLLARFR = function (...values) : number {
  * @constructor
  */
 var EFFECT = function (...values) : number {
-  ArgsChecker.checkLength(values, 2);
+  ArgsChecker.checkLength(values, 2, "EFFECT");
   var rate = TypeConverter.firstValueAsNumber(values[0]);
   var periods = TypeConverter.firstValueAsNumber(values[1]);
   if (rate <= 0) {
@@ -266,7 +266,7 @@ function fv(rate, periods, payment, value, type) {
  * @constructor
  */
 var CUMPRINC = function (...values) : number {
-  ArgsChecker.checkLength(values, 6);
+  ArgsChecker.checkLength(values, 6, "CUMPRINC");
   var rate = TypeConverter.firstValueAsNumber(values[0]);
   var periods = TypeConverter.firstValueAsNumber(values[1]);
   var value = TypeConverter.firstValueAsNumber(values[2]);
@@ -318,7 +318,7 @@ var CUMPRINC = function (...values) : number {
  * @constructor
  */
 var CUMIPMT = function (...values) : number {
-  ArgsChecker.checkLength(values, 6);
+  ArgsChecker.checkLength(values, 6, "CUMIPMT");
   var rate = TypeConverter.firstValueAsNumber(values[0]);
   var periods = TypeConverter.firstValueAsNumber(values[1]);
   var value = TypeConverter.firstValueAsNumber(values[2]);
@@ -386,7 +386,7 @@ var CUMIPMT = function (...values) : number {
  * TODO:     second version that is closer to what MSExcel does and is named something like `ACCRINT.MS`.
  */
 var ACCRINT = function (...values) {
-  ArgsChecker.checkLengthWithin(values, 6, 7);
+  ArgsChecker.checkLengthWithin(values, 6, 7, "ACCRINT");
   var issue = TypeConverter.firstValueAsDateNumber(values[0]);
   // "firstPayment" param is only here to check for errors for GS implementation.
   // In MSE, there is a 7th (zero-indexed-6th) param that indicates the calculation-method to use, which indicates

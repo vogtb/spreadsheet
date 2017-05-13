@@ -18,7 +18,7 @@ import {
  * @constructor
  */
 var AND = function (...values) {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "AND");
   var result = true;
   for (var i = 0; i < values.length; i++) {
     if (typeof values[i] === "string") {
@@ -45,7 +45,7 @@ var AND = function (...values) {
  * @constructor
  */
 var EXACT = function (...values) {
-  ArgsChecker.checkLength(values, 2);
+  ArgsChecker.checkLength(values, 2, "EXACT");
   var one = TypeConverter.firstValue(values[0]);
   var two = TypeConverter.firstValue(values[1]);
   return one.toString() === two.toString();
@@ -55,6 +55,7 @@ var EXACT = function (...values) {
  * Returns true.
  * @returns {boolean} true boolean
  * @constructor
+ * TODO: Should throw NA error if param passed in.
  */
 var TRUE = function () : boolean {
   return true;
@@ -64,6 +65,7 @@ var TRUE = function () : boolean {
  * Returns false.
  * @returns {boolean} false boolean
  * @constructor
+ * TODO: Should throw NA error if param passed in.
  */
 var FALSE = function () : boolean {
   return false;
@@ -76,7 +78,7 @@ var FALSE = function () : boolean {
  * @constructor
  */
 var NOT = function (...values) : boolean {
-  ArgsChecker.checkLength(values, 1);
+  ArgsChecker.checkLength(values, 1, "NOT");
   var X = values[0];
   if (typeof(X) === "boolean") {
     return !X;
@@ -108,7 +110,7 @@ var NOT = function (...values) : boolean {
  * @constructor
  */
 var OR = function (...values) {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "OR");
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
@@ -131,7 +133,7 @@ var OR = function (...values) {
  * @constructor
  */
 var XOR = function (...values) {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "XOR");
   var alreadyTruthy = false;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {

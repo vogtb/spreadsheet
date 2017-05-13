@@ -25,10 +25,6 @@ http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-r
 e.g. "SUM expects number values...", or "This function expects number values..."
 
 
-### Error formatting
-Pass name of calling formula into all functions that throw user-facing errors, or have some sort of error mapper.
-
-
 ### Cells should have `formatAs` fields.
 Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the
 highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might
@@ -67,6 +63,13 @@ TypeConverter.
 
 
 ### Test CriteriaFunctionFactory
+
+
+### Use `arguments` instead of `...values` for performance reasons.
+And use `.call()` when testing with weird param numbers.
+
+
+### Pull static functions outside of formulas, declare once.
 
 
 ### CONVERT could offer more accurate conversions for units in the same system

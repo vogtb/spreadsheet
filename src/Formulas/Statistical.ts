@@ -26,7 +26,7 @@ import {
  * @constructor
  */
 var DEVSQ = function (...values) : number {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "DEVSQ");
   var range = Filter.flattenAndThrow(values);
   var result = 0;
   var count = 0;
@@ -49,7 +49,7 @@ var DEVSQ = function (...values) : number {
  * @constructor
  */
 var MEDIAN = function (...values) : number {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "MEDIAN");
   var sortedArray = [];
   values.forEach(function (currentValue) {
     if (currentValue instanceof Array) {
@@ -94,7 +94,7 @@ var MEDIAN = function (...values) : number {
  * @constructor
  */
 var AVERAGE = function (...values) : number {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "AVERAGE");
   var result = 0;
   var count = 0;
   for (var i = 0; i < values.length; i++) {
@@ -120,7 +120,7 @@ var AVERAGE = function (...values) : number {
  * @constructor
  */
 var AVEDEV = function (...values) {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "AVEDEV");
 
   // Sort to array-values, and non-array-values
   var arrayValues = [];
@@ -167,7 +167,7 @@ var AVEDEV = function (...values) {
  * @constructor
  */
 var AVERAGEA = function (...values) {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "AVERAGEA");
   var result = 0;
   var count = 0;
   for (var i = 0; i < values.length; i++) {
@@ -272,7 +272,7 @@ var CORREL = function (...values) : number {
     }
     return sum(sq_dev) / (arr1Len - 1);
   }
-  ArgsChecker.checkLength(values, 2);
+  ArgsChecker.checkLength(values, 2, "CORREL");
   if (!Array.isArray(values[0])) {
     values[0] = [values[0]];
   }
@@ -301,6 +301,7 @@ var CORREL = function (...values) : number {
  * @constructor
  */
 var PEARSON = function (...values) {
+  ArgsChecker.checkLength(values, 2, "PEARSON");
   return CORREL.apply(this, values);
 };
 
@@ -314,13 +315,13 @@ var PEARSON = function (...values) {
  * @constructor
  */
 var EXPONDIST = function (...values) : number {
+  ArgsChecker.checkLength(values, 3, "EXPONDIST");
   function cdf(x, rate) {
     return x < 0 ? 0 : 1 - Math.exp(-rate * x);
   }
   function pdf(x, rate) {
     return x < 0 ? 0 : rate * Math.exp(-rate * x);
   }
-  ArgsChecker.checkLength(values, 3);
   var x = TypeConverter.firstValueAsNumber(values[0]);
   var lambda = TypeConverter.firstValueAsNumber(values[1]);
   var cumulative = TypeConverter.firstValueAsBoolean(values[2]);
@@ -341,6 +342,7 @@ var EXPONDIST = function (...values) : number {
  * TODO: This function should be stricter in its return type.
  */
 var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
+  ArgsChecker.checkLength(values, 4, "FDIST$LEFTTAILED");
   /**
    * Returns the Log-Gamma function evaluated at x. See http://jstat.github.io/special-functions.html#gammaln for more
    * information.
@@ -513,7 +515,6 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
     // make sure x + y doesn't exceed the upper limit of usable values
     return (x + y > 170) ? Math.exp(betaln(x, y)) : gammafn(x) * gammafn(y) / gammafn(x + y);
   }
-  ArgsChecker.checkLength(values, 4);
   var x = TypeConverter.firstValueAsNumber(values[0]);
   if (x < 0) {
     throw new NumError("Function F.DIST parameter 1 value is " + x + ". It should be greater than or equal to 0.");
@@ -534,6 +535,7 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
  * @constructor
  */
 var FINV = function (...values) : number {
+  ArgsChecker.checkLength(values, 3, "FINV");
   /**
    * Returns the continued fraction for the incomplete Beta function with parameters a and b modified by Lentz's method
    * evaluated at x. For more information see http://jstat.github.io/special-functions.html#betacf
@@ -684,7 +686,6 @@ var FINV = function (...values) : number {
   function inv(x, df1, df2) {
     return df2 / (df1 * (1 / ibetainv(x, df1 / 2, df2 / 2) - 1));
   }
-  ArgsChecker.checkLength(values, 3);
   var probability = TypeConverter.firstValueAsNumber(values[0]);
   if (probability <= 0.0 || probability > 1.0) {
     throw new NumError("Function FINV parameter 1 value is " + probability
@@ -702,7 +703,7 @@ var FINV = function (...values) : number {
  * @constructor
  */
 var FISHER = function (...values) : number {
-  ArgsChecker.checkLength(values, 1);
+  ArgsChecker.checkLength(values, 1, "FISHER");
   var x = TypeConverter.firstValueAsNumber(values[0]);
   if (x <= -1 || x >= 1) {
     throw new NumError("Function FISHER parameter 1 value is " + x + ". Valid values are between -1 and 1 exclusive.");
@@ -717,7 +718,7 @@ var FISHER = function (...values) : number {
  * @constructor
  */
 var FISHERINV = function (...values) : number {
-  ArgsChecker.checkLength(values, 1);
+  ArgsChecker.checkLength(values, 1, "FISHERINV");
   var y = TypeConverter.firstValueAsNumber(values[0]);
   var e2y = Math.exp(2 * y);
   return (e2y - 1) / (e2y + 1);
@@ -730,7 +731,7 @@ var FISHERINV = function (...values) : number {
  * @constructor
  */
 var MAX = function (...values) {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "MAX");
   var maxSoFar = -Infinity;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
@@ -755,6 +756,7 @@ var MAX = function (...values) {
  * @constructor
  */
 var MAXA = function (...values) : number {
+  ArgsChecker.checkAtLeastLength(values, 1, "MAXA");
   return MAX.apply(this, values);
 };
 
@@ -766,7 +768,7 @@ var MAXA = function (...values) : number {
  * @constructor
  */
 var MIN = function (...values) {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "MIN");
   var minSoFar = Infinity;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
@@ -792,6 +794,7 @@ var MIN = function (...values) {
  * @constructor
  */
 var MINA = function (...values) : number {
+  ArgsChecker.checkAtLeastLength(values, 1, "MINA");
   return MIN.apply(this, values);
 };
 
@@ -807,7 +810,7 @@ var MINA = function (...values) : number {
  * TODO: This needs to also accept a third parameter "average_range"
  */
 var AVERAGEIF = function (...values) {
-  ArgsChecker.checkLength(values, 2);
+  ArgsChecker.checkLength(values, 2, "AVERAGEIF");
   var range = Filter.flatten(values[0]);
   var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(values[1]);
 
@@ -834,7 +837,7 @@ var AVERAGEIF = function (...values) {
  * @constructor
  */
 var COUNT = function (...values) : number {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "COUNT");
   var count = 0;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
@@ -855,7 +858,7 @@ var COUNT = function (...values) : number {
  * @constructor
  */
 var COUNTA = function (...values) : number {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "COUNTA");
   var count = 0;
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {

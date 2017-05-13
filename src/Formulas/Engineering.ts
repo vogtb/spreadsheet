@@ -18,7 +18,7 @@ import {
  * @constructor
  */
 var BIN2DEC = function (...values) : number {
-  ArgsChecker.checkLength(values, 1);
+  ArgsChecker.checkLength(values, 1, "BIN2DEC");
   if (typeof TypeConverter.firstValue(values[0]) === "boolean") {
     throw new ValueError("Function BIN2DEC parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
   }
@@ -44,7 +44,7 @@ var BIN2DEC = function (...values) : number {
  * @constructor
  */
 var BIN2HEX = function (...values) : string {
-  ArgsChecker.checkLengthWithin(values, 1, 2);
+  ArgsChecker.checkLengthWithin(values, 1, 2, "BIN2HEX");
   if (typeof TypeConverter.firstValue(values[0]) === "boolean") {
     throw new ValueError("Function BIN2HEX parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
   }
@@ -90,7 +90,7 @@ var BIN2HEX = function (...values) : string {
  * @constructor
  */
 var BIN2OCT = function (...values) : string {
-  ArgsChecker.checkLengthWithin(values, 1, 2);
+  ArgsChecker.checkLengthWithin(values, 1, 2, "BIN2OCT");
   if (typeof TypeConverter.firstValue(values[0]) === "boolean") {
     throw new ValueError("Function BIN2OCT parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
   }
@@ -135,7 +135,7 @@ var BIN2OCT = function (...values) : string {
  * @constructor
  */
 var DEC2OCT = function (...values) : string {
-  ArgsChecker.checkLengthWithin(values, 1, 2);
+  ArgsChecker.checkLengthWithin(values, 1, 2, "DEC2OCT");
   var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 0) {
     n = Math.ceil(n);
@@ -183,7 +183,7 @@ var DEC2OCT = function (...values) : string {
  * @constructor
  */
 var DEC2HEX = function (...values) : string {
-  ArgsChecker.checkLengthWithin(values, 1, 2);
+  ArgsChecker.checkLengthWithin(values, 1, 2, "DEC2HEX");
   var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 0) {
     n = Math.ceil(n);
@@ -231,7 +231,7 @@ var DEC2HEX = function (...values) : string {
  * @constructor
  */
 var DEC2BIN = function (...values) : string {
-  ArgsChecker.checkLengthWithin(values, 1, 2);
+  ArgsChecker.checkLengthWithin(values, 1, 2, "DEC2BIN");
   var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 0) {
     n = Math.ceil(n);
@@ -299,7 +299,7 @@ var DEC2BIN = function (...values) : string {
  * @constructor
  */
 var DELTA = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 1, 2);
+  ArgsChecker.checkLengthWithin(values, 1, 2, "DELTA");
   if (values.length === 1) {
     return TypeConverter.valueToNumber(values[0]) === 0 ? 1 : 0;
   }

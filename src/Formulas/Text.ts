@@ -18,7 +18,7 @@ import {
  * @constructor
  */
 var ARABIC = function (text?) {
-  ArgsChecker.checkLength(arguments, 1);
+  ArgsChecker.checkLength(arguments, 1, "ARABIC");
   if (typeof text !== "string") {
     throw new ValueError('Invalid roman numeral in ARABIC evaluation.');
   }
@@ -48,7 +48,7 @@ var ARABIC = function (text?) {
  * @constructor
  */
 var CHAR = function (...values) : string {
-  ArgsChecker.checkLength(values, 1);
+  ArgsChecker.checkLength(values, 1, "CHAR");
   var n = TypeConverter.firstValueAsNumber(values[0]);
   if (n < 1 || n > 1114112) { //limit
     throw new NumError("Function CHAR parameter 1 value " + n + " is out of range.");
@@ -63,7 +63,7 @@ var CHAR = function (...values) : string {
  * @constructor
  */
 var CODE = function (...values) : number {
-  ArgsChecker.checkLength(values, 1);
+  ArgsChecker.checkLength(values, 1, "CODE");
   var text = TypeConverter.firstValueAsString(values[0]);
   if (text === "") {
     throw new ValueError("Function CODE parameter 1 value should be non-empty.");
@@ -82,7 +82,7 @@ var CODE = function (...values) : number {
  * TODO: At some point this needs to return a more complex type than Array. Needs to return a type that has a dimension.
  */
 var SPLIT = function (...values) : Array<string> {
-  ArgsChecker.checkLengthWithin(values, 2, 3);
+  ArgsChecker.checkLengthWithin(values, 2, 3, "SPLIT");
   var text = TypeConverter.firstValueAsString(values[0]);
   var delimiter = TypeConverter.firstValueAsString(values[1]);
   var splitByEach = false;
@@ -114,7 +114,7 @@ var SPLIT = function (...values) : Array<string> {
  * @constructor
  */
 var CONCATENATE = function (...values) : string {
-  ArgsChecker.checkAtLeastLength(values, 1);
+  ArgsChecker.checkAtLeastLength(values, 1, "CONCATENATE");
   var string = '';
   for (var i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
@@ -139,7 +139,7 @@ var CONCATENATE = function (...values) : string {
  * TODO: Looking up units is not efficient at all. We should use an object instead of iterating through an array.
  */
 var CONVERT = function (...values) {
-  ArgsChecker.checkLength(values, 3);
+  ArgsChecker.checkLength(values, 3, "CONVERT");
   var n = TypeConverter.firstValueAsNumber(values[0]);
   var fromUnit = TypeConverter.firstValueAsString(values[1]);
   var toUnit = TypeConverter.firstValueAsString(values[2]);

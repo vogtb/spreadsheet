@@ -14,18 +14,18 @@ import {
 
 /**
  * Converts a provided year, month, and day into a date.
- * @param values[0] year - The year component of the date.
- * @param values[1] month - The month component of the date.
- * @param values[2] day - The day component of the date.
+ * @param year - The year component of the date.
+ * @param month - The month component of the date.
+ * @param day - The day component of the date.
  * @returns {number} newly created date.
  * @constructor
  */
-var DATE = function (...values) : number {
+var DATE = function (year, month, day) : number {
   const FIRST_YEAR = 1900;
-  ArgsChecker.checkLength(values, 3, "DATE");
-  var year = Math.abs(Math.floor(TypeConverter.firstValueAsNumber(values[0]))); // No negative values for year
-  var month = Math.floor(TypeConverter.firstValueAsNumber(values[1])) - 1; // Months are between 0 and 11.
-  var day = Math.floor(TypeConverter.firstValueAsNumber(values[2])) - 1; // Days are also zero-indexed.
+  ArgsChecker.checkLength(arguments, 3, "DATE");
+  year = Math.abs(Math.floor(TypeConverter.firstValueAsNumber(year))); // No negative values for year
+  month = Math.floor(TypeConverter.firstValueAsNumber(month)) - 1; // Months are between 0 and 11.
+  day = Math.floor(TypeConverter.firstValueAsNumber(day)) - 1; // Days are also zero-indexed.
   var m = moment.utc(TypeConverter.ORIGIN_MOMENT)
     .add(2, "days")
     .add(year < FIRST_YEAR ? year : year - FIRST_YEAR, 'years') // If the value is less than 1900, assume 1900 as start index for year
@@ -41,15 +41,15 @@ var DATE = function (...values) : number {
 
 /**
  * Converts a provided date string in a known format to a date value.
- * @param values[0] date_string - The string representing the date. Understood formats include any date format which is
+ * @param dateString - The string representing the date. Understood formats include any date format which is
  * normally auto-converted when entered, without quotation marks, directly into a cell. Understood formats may depend on
  * region and language settings.
  * @returns {number} of days since 1900/1/1, inclusively.
  * @constructor
  */
-var DATEVALUE = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "DATEVALUE");
-  var dateString = TypeConverter.firstValueAsString(values[0]);
+var DATEVALUE = function (dateString) : number {
+  ArgsChecker.checkLength(arguments, 1, "DATEVALUE");
+  dateString = TypeConverter.firstValueAsString(dateString);
   var dateAsNumber;
   try {
     dateAsNumber = TypeConverter.stringToDateNumber(dateString);
@@ -64,18 +64,18 @@ var DATEVALUE = function (...values) : number {
 
 /**
  * Returns a date a specified number of months before or after another date.
- * @param values[0] start_date - The date from which to calculate the result.
- * @param values[1] months - The number of months before (negative) or after (positive) start_date to calculate.
+ * @param startDate - The date from which to calculate the result.
+ * @param months - The number of months before (negative) or after (positive) start_date to calculate.
  * @returns {number} date a specified number of months before or after another date
  * @constructor
  */
-var EDATE = function (...values) : number {
-  ArgsChecker.checkLength(values, 2, "EDATE");
-  var startDateNumber = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+var EDATE = function (startDate, months) : number {
+  ArgsChecker.checkLength(arguments, 2, "EDATE");
+  var startDateNumber = TypeConverter.firstValueAsDateNumber(startDate, true); // tell firstValueAsDateNumber to coerce boolean
   if (startDateNumber < 0) {
     throw new NumError("Function EDATE parameter 1 value is " + startDateNumber+ ". It should be greater than or equal to 0.");
   }
-  var months = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
+  months = Math.floor(TypeConverter.firstValueAsNumber(months));
   // While momentToDayNumber will return an inclusive count of days since 1900/1/1, moment.Moment.add assumes exclusive
   // count of days.
   return TypeConverter.momentToDayNumber(moment.utc(TypeConverter.ORIGIN_MOMENT).add(startDateNumber, "days").add(months, "months"));
@@ -85,19 +85,19 @@ var EDATE = function (...values) : number {
 /**
  * Returns a date representing the last day of a month which falls a specified number of months before or after another
  * date.
- * @param values[0] start_date - The date from which to calculate the the result.
- * @param values[1] months - The number of months before (negative) or after (positive) start_date to consider. The last
+ * @param startDate - The date from which to calculate the the result.
+ * @param months - The number of months before (negative) or after (positive) start_date to consider. The last
  * calendar day of the calculated month is returned.
  * @returns {number} the last day of a month
  * @constructor
  */
-var EOMONTH = function (...values) : number {
-  ArgsChecker.checkLength(values, 2, "EOMONTH");
-  var startDateNumber = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+var EOMONTH = function (startDate, months) : number {
+  ArgsChecker.checkLength(arguments, 2, "EOMONTH");
+  var startDateNumber = TypeConverter.firstValueAsDateNumber(startDate, true); // tell firstValueAsDateNumber to coerce boolean
   if (startDateNumber < 0) {
     throw new NumError("Function EOMONTH parameter 1 value is " + startDateNumber + ". It should be greater than or equal to 0.");
   }
-  var months = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
+  months = Math.floor(TypeConverter.firstValueAsNumber(months));
   return TypeConverter.momentToDayNumber(moment.utc(TypeConverter.ORIGIN_MOMENT)
     .add(startDateNumber, "days")
     .add(months, "months")
@@ -107,43 +107,43 @@ var EOMONTH = function (...values) : number {
 
 /**
  * Returns the day of the month that a specific date falls on, in numeric format.
- * @param values[0] date - The date from which to extract the day. Must be a reference to a cell containing a date, a
+ * @param date - The date from which to extract the day. Must be a reference to a cell containing a date, a
  * function returning a date type, or a number.
  * @returns {number} day of the month
  * @constructor
  */
-var DAY = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "DAY");
-  var dateNumber = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
-  if (dateNumber < 0) {
-    throw new NumError("Function DAY parameter 1 value is " + dateNumber + ". It should be greater than or equal to 0.");
+var DAY = function (date) : number {
+  ArgsChecker.checkLength(arguments, 1, "DAY");
+  date = TypeConverter.firstValueAsDateNumber(date, true); // tell firstValueAsDateNumber to coerce boolean
+  if (date < 0) {
+    throw new NumError("Function DAY parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
-  return TypeConverter.numberToMoment(dateNumber).date();
+  return TypeConverter.numberToMoment(date).date();
 };
 
 
 /**
  * Returns the number of days between two dates.
- * @param values[0] end_date most recently occurring
- * @param values[1] start_date not most recently occurring
+ * @param endDate most recently occurring
+ * @param startDate not most recently occurring
  * @returns {number} of days between start_date and end_date
  * @constructor
  */
-var DAYS = function (...values) : number {
-  ArgsChecker.checkLength(values, 2, "DAYS");
-  var end = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
-  var start = TypeConverter.firstValueAsDateNumber(values[1], true); // tell firstValueAsDateNumber to coerce boolean
-  return end - start;
+var DAYS = function (endDate, startDate) : number {
+  ArgsChecker.checkLength(arguments, 2, "DAYS");
+  endDate = TypeConverter.firstValueAsDateNumber(endDate, true); // tell firstValueAsDateNumber to coerce boolean
+  startDate = TypeConverter.firstValueAsDateNumber(startDate, true); // tell firstValueAsDateNumber to coerce boolean
+  return endDate - startDate;
 };
 
 
 /**
  * Returns the difference between two days based on the 360 day year used in some financial interest calculations.
- * @param values[0] start_date - The start date to consider in the calculation. Must be a reference to a cell containing
+ * @param startDate - The start date to consider in the calculation. Must be a reference to a cell containing
  * a date, a function returning a date type, or a number.
- * @param values[1] end_date - The end date to consider in the calculation. Must be a reference to a cell containing a
+ * @param endDate - The end date to consider in the calculation. Must be a reference to a cell containing a
  * date, a function returning a date type, or a number.
- * @param values[2] method - [ OPTIONAL - 0 by default ] - An indicator of what day count method to use.
+ * @param methodToUse - [ OPTIONAL - 0 by default ] - An indicator of what day count method to use.
  * 0 indicates the US method - Under the US method, if start_date is the last day of a month, the day of month of
  * start_date is changed to 30 for the purposes of the calculation. Furthermore if end_date is the last day of a month
  * and the day of the month of start_date is earlier than the 30th, end_date is changed to the first day of the month
@@ -153,48 +153,45 @@ var DAYS = function (...values) : number {
  * @returns {number} of days between two dates
  * @constructor
  */
-var DAYS360 = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 2, 3, "DAYS360");
-  var start = TypeConverter.numberToMoment(TypeConverter.firstValueAsDateNumber(values[0], true)); // tell firstValueAsDateNumber to coerce boolean
-  var end = TypeConverter.numberToMoment(TypeConverter.firstValueAsDateNumber(values[1], true)); // tell firstValueAsDateNumber to coerce boolean
-  var methodToUse = false;
-  if (values.length === 3) {
-    methodToUse = TypeConverter.firstValueAsBoolean(values[2]);
-  }
+var DAYS360 = function (startDate, endDate, methodToUse?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "DAYS360");
+  startDate = TypeConverter.numberToMoment(TypeConverter.firstValueAsDateNumber(startDate, true)); // tell firstValueAsDateNumber to coerce boolean
+  endDate = TypeConverter.numberToMoment(TypeConverter.firstValueAsDateNumber(endDate, true)); // tell firstValueAsDateNumber to coerce boolean
+  methodToUse = methodToUse ? TypeConverter.firstValueAsBoolean(methodToUse) : false;
   var smd = 31;
   var emd = 31;
-  var sd = start.date();
-  var ed = end.date();
+  var sd = startDate.date();
+  var ed = endDate.date();
   if (methodToUse) {
     sd = (sd === 31) ? 30 : sd;
     ed = (ed === 31) ? 30 : ed;
   }
   else {
-    if (start.month() === 1) {
-      smd = start.daysInMonth();
+    if (startDate.month() === 1) {
+      smd = startDate.daysInMonth();
     }
-    if (end.month() === 1) {
-      emd = end.daysInMonth();
+    if (endDate.month() === 1) {
+      emd = endDate.daysInMonth();
     }
     sd = (sd === smd) ? 30 : sd;
     if (sd === 30 || sd === smd) {
       ed = (ed === emd) ? 30 : ed;
     }
   }
-  return 360 * (end.year() - start.year()) + 30 * (end.month() - start.month()) + (ed - sd);
+  return 360 * (endDate.year() - startDate.year()) + 30 * (endDate.month() - startDate.month()) + (ed - sd);
 };
 
 
 /**
  * Returns the month of the year a specific date falls in, in numeric format.
- * @param values[0] date - The date from which to extract the month. Must be a reference to a cell containing a date, a
+ * @param date - The date from which to extract the month. Must be a reference to a cell containing a date, a
  * function returning a date type, or a number.
  * @returns {number} month of the year that the input date falls on.
  * @constructor
  */
-var MONTH = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "MONTH");
-  var date = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+var MONTH = function (date) : number {
+  ArgsChecker.checkLength(arguments, 1, "MONTH");
+  date = TypeConverter.firstValueAsDateNumber(date, true); // tell firstValueAsDateNumber to coerce boolean
   if (date < 0) {
     throw new NumError("Function MONTH parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
@@ -204,14 +201,14 @@ var MONTH = function (...values) : number {
 
 /**
  * Returns the year specified by a given date.
- * @param values[0] date - The date from which to calculate the year. Must be a cell reference to a cell containing a
+ * @param date - The date from which to calculate the year. Must be a cell reference to a cell containing a
  * date, a function returning a date type, or a number.
  * @returns {number} year of the input date
  * @constructor
  */
-var YEAR = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "YEAR");
-  var date = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
+var YEAR = function (date) : number {
+  ArgsChecker.checkLength(arguments, 1, "YEAR");
+  date = TypeConverter.firstValueAsDateNumber(date, true); // tell firstValueAsDateNumber to coerce boolean
   if (date < 0) {
     throw new NumError("Function YEAR parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
@@ -221,9 +218,9 @@ var YEAR = function (...values) : number {
 
 /**
  * Returns a number representing the day of the week of the date provided.
- * @param values[0] date - The date for which to determine the day of the week. Must be a reference to a cell containing
+ * @param date - The date for which to determine the day of the week. Must be a reference to a cell containing
  * a date, a function returning a date type, or a number.
- * @param values[1] type - [ OPTIONAL - 1 by default ] - A number indicating which numbering system to use to represent
+ * @param offsetType - [ OPTIONAL - 1 by default ] - A number indicating which numbering system to use to represent
  * weekdays. By default counts starting with Sunday = 1. If type is 1, days are counted from Sunday and the value of
  * Sunday is 1, therefore the value of Saturday is 7. If type is 2, days are counted from Monday and the value of Monday
  * is 1, therefore the value of Sunday is 7. If type is 3, days are counted from Monday and the value of Monday is 0,
@@ -231,10 +228,10 @@ var YEAR = function (...values) : number {
  * @returns {number} day of week
  * @constructor
  */
-var WEEKDAY = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "WEEKDAY");
-  var date = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
-  var offsetType = values.length === 2 ? TypeConverter.firstValueAsNumber(values[1]) : 1;
+var WEEKDAY = function (date, offsetType?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "WEEKDAY");
+  date = TypeConverter.firstValueAsDateNumber(date, true); // tell firstValueAsDateNumber to coerce boolean
+  offsetType = offsetType ? TypeConverter.firstValueAsNumber(offsetType) : 1;
   if (date < 0) {
     throw new NumError("Function WEEKDAY parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
@@ -283,17 +280,17 @@ function calculateWeekNum(dm : moment.Moment, shifterArray : Array<number>) : nu
  * year is considered to be the week containing the first Thursday of the year, which is numbered as week 1. System 2 is
  * the approach specified in ISO 8601, also known as the European system for numbering weeks.
  *
- * @param values[0] date - The date for which to determine the week number. Must be a reference to a cell containing a
+ * @param date - The date for which to determine the week number. Must be a reference to a cell containing a
  * date, a function returning a date type, or a number.
- * @param values[1] type - [ OPTIONAL - default is 1 ] - A number representing the day that a week starts on as well as
+ * @param shiftType - [ OPTIONAL - default is 1 ] - A number representing the day that a week starts on as well as
  * the system used for determining the first week of the year (1=Sunday, 2=Monday).
  * @returns {number} representing week number of year.
  * @constructor
  */
-var WEEKNUM = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "WEEKNUM");
-  var date = TypeConverter.firstValueAsDateNumber(values[0], true); // tell firstValueAsDateNumber to coerce boolean
-  var shiftType = values.length === 2 ? TypeConverter.firstValueAsNumber(values[1]) : 1;
+var WEEKNUM = function (date, shiftType?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "WEEKNUM");
+  date = TypeConverter.firstValueAsDateNumber(date, true); // tell firstValueAsDateNumber to coerce boolean
+  shiftType = shiftType ? TypeConverter.firstValueAsNumber(shiftType) : 1;
   if (date < 0) {
     throw new NumError("Function YEAR parameter 1 value is " + date + ". It should be greater than or equal to 0.");
   }
@@ -349,11 +346,11 @@ var WEEKNUM = function (...values) : number {
 
 /**
  * Calculates the number of days, months, or years between two dates.
- * @param values[0] start_date - The start date to consider in the calculation. Must be a reference to a cell containing
+ * @param startDate - The start date to consider in the calculation. Must be a reference to a cell containing
  * a DATE, a function returning a DATE type, or a number.
- * @param values[1] end_date - The end date to consider in the calculation. Must be a reference to a cell containing a
+ * @param endDate - The end date to consider in the calculation. Must be a reference to a cell containing a
  * DATE, a function returning a DATE type, or a number.
- * @param values[2] unit - A text abbreviation for unit of time. For example,"M" for month. Accepted values are "Y": the
+ * @param unit - A text abbreviation for unit of time. For example,"M" for month. Accepted values are "Y": the
  * number of whole years between start_date and end_date, "M": the number of whole months between start_date and
  * end_date, "D": the number of days between start_date and end_date, "MD": the number of days between start_date and
  * end_date after subtracting whole months, "YM": the number of whole months between start_date and end_date after
@@ -362,18 +359,18 @@ var WEEKNUM = function (...values) : number {
  * @returns {number} number of days, months, or years between two dates.
  * @constructor
  */
-var DATEDIF = function (...values) : number {
-  ArgsChecker.checkLength(values, 3, "DATEDIF");
-  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
-  var end = TypeConverter.firstValueAsDateNumber(values[1], true);
-  var unit = TypeConverter.firstValueAsString(values[2]);
+var DATEDIF = function (startDate, endDate, unit) : number {
+  ArgsChecker.checkLength(arguments, 3, "DATEDIF");
+  startDate = TypeConverter.firstValueAsDateNumber(startDate, true);
+  endDate = TypeConverter.firstValueAsDateNumber(endDate, true);
+  unit = TypeConverter.firstValueAsString(unit);
   var unitClean = unit.toUpperCase();
-  var startMoment = TypeConverter.numberToMoment(start);
-  var endMoment = TypeConverter.numberToMoment(end);
+  var startMoment = TypeConverter.numberToMoment(startDate);
+  var endMoment = TypeConverter.numberToMoment(endDate);
 
-  if (start > end) {
-    throw new NumError("Function DATEDIF parameter 1 (" + start.toString() +
-      ") should be on or before Function DATEDIF parameter 2 (" + end.toString() + ").");
+  if (startDate > endDate) {
+    throw new NumError("Function DATEDIF parameter 1 (" + startDate.toString() +
+      ") should be on or before Function DATEDIF parameter 2 (" + endDate.toString() + ").");
   }
 
   if (unitClean === "Y") {
@@ -381,7 +378,7 @@ var DATEDIF = function (...values) : number {
   } else if (unitClean === "M") {
     return Math.floor(endMoment.diff(startMoment, "months"));
   } else if (unitClean === "D") {
-    return end - start;
+    return endDate - startDate;
   } else if (unitClean === "MD") {
     var s = startMoment;
     while(s.isBefore(endMoment)) {
@@ -422,23 +419,23 @@ var DATEDIF = function (...values) : number {
  *
  * * http://finmath.net/finmath-lib/
  *
- * @param values[0] start_date - The start date to consider in the calculation. Must be a reference to a cell
+ * @param startDate - The start date to consider in the calculation. Must be a reference to a cell
  * containing a date, a function returning a date type, or a number.
- * @param values[1] end_date - The end date to consider in the calculation. Must be a reference to a cell containing
+ * @param endDate - The end date to consider in the calculation. Must be a reference to a cell containing
  * a date, a function returning a date type, or a number.
- * @param values[2] day_count_convention - [ OPTIONAL - 0 by default ] - An indicator of what day count method to
+ * @param dayCountConvention - [ OPTIONAL - 0 by default ] - An indicator of what day count method to
  * use.
  * @returns {number}the number of years, including fractional years, between two dates
  * @constructor
  */
-var YEARFRAC = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 2, 3, "YEARFRAC");
-  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
-  var end = TypeConverter.firstValueAsDateNumber(values[1], true);
-  var basis = values.length === 2 ? 0 : TypeConverter.firstValueAsNumber(values[2]);
+var YEARFRAC = function (startDate, endDate, dayCountConvention?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "YEARFRAC");
+  startDate = TypeConverter.firstValueAsDateNumber(startDate, true);
+  endDate = TypeConverter.firstValueAsDateNumber(endDate, true);
+  dayCountConvention = dayCountConvention ? TypeConverter.firstValueAsNumber(dayCountConvention) : 0;
 
-  var s = TypeConverter.numberToMoment(start);
-  var e = TypeConverter.numberToMoment(end);
+  var s = TypeConverter.numberToMoment(startDate);
+  var e = TypeConverter.numberToMoment(endDate);
   if (e.isBefore(s)) {
     var me = moment.utc(e);
     e = moment.utc(s);
@@ -468,7 +465,7 @@ var YEARFRAC = function (...values) : number {
     return false;
   };
 
-  switch (basis) {
+  switch (dayCountConvention) {
     // US (NASD) 30/360
     case 0:
       // Note: if eday == 31, it stays 31 if sday < 30
@@ -495,12 +492,12 @@ var YEARFRAC = function (...values) : number {
         } else if (feb29Between(s, e) || (emonth === 1 && eday === 29)) {
           ylength = 366;
         }
-        return Math.abs((end - start) / ylength);
+        return Math.abs((endDate - startDate) / ylength);
       } else {
         var years = (eyear - syear) + 1;
         var days = moment.utc([eyear+1]).startOf("year").diff(moment.utc([syear]).startOf("year"), 'days');
         var average = days / years;
-        return Math.abs((end - start) / average);
+        return Math.abs((endDate - startDate) / average);
       }
     // Actual/360
     case 2:
@@ -515,20 +512,20 @@ var YEARFRAC = function (...values) : number {
       // Remarkably, do NOT change February 28 or February 29 at ALL
       return Math.abs(((eday + emonth * 30 + eyear * 360) - (sday + smonth * 30 + syear * 360)) / 360);
   }
-  throw new NumError("Function YEARFRAC parameter 3 value is " + basis + ". Valid values are between 0 and 4 inclusive.");
+  throw new NumError("Function YEARFRAC parameter 3 value is " + dayCountConvention + ". Valid values are between 0 and 4 inclusive.");
 };
 
 
 /**
  * Returns the fraction of a 24-hour day the time represents.
- * @param values[1] time_string - The string that holds the time representation. Eg: "10am", "10:10", "10:10am",
- * "10:10:11", or "10:10:11am".
+ * @param timeString - The string that holds the time representation. Eg: "10am", "10:10", "10:10am", "10:10:11",
+ * or "10:10:11am".
  * @returns {number} representing the fraction of a 24-hour day
  * @constructor
  */
-var TIMEVALUE = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "TIMEVALUE");
-  var timeString = TypeConverter.firstValueAsString(values[0]);
+var TIMEVALUE = function (timeString) : number {
+  ArgsChecker.checkLength(arguments, 1, "TIMEVALUE");
+  timeString = TypeConverter.firstValueAsString(timeString);
   try {
     return TypeConverter.stringToTimeNumber(timeString);
   } catch (e) {
@@ -540,14 +537,14 @@ const MILLISECONDS_IN_DAY = 86400000;
 
 /**
  * Returns the hour component of a specific time, in numeric format.
- * @param values[0] time - The time from which to calculate the hour component. Must be a reference to a cell containing
+ * @param time - The time from which to calculate the hour component. Must be a reference to a cell containing
  * a date/time, a function returning a date/time type, or a number.
  * @returns {number}
  * @constructor
  */
-var HOUR = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "HOUR");
-  var time = TypeConverter.firstValueAsTimestampNumber(values[0]);
+var HOUR = function (time) : number {
+  ArgsChecker.checkLength(arguments, 1, "HOUR");
+  time = TypeConverter.firstValueAsTimestampNumber(time);
   if (time % 1 === 0) {
     return 0;
   }
@@ -558,14 +555,14 @@ var HOUR = function (...values) : number {
 
 /**
  * Returns the minute component of a specific time, in numeric format.
- * @param values[0] time - The time from which to calculate the minute component. Must be a reference to a cell
+ * @param time - The time from which to calculate the minute component. Must be a reference to a cell
  * containing a date/time, a function returning a date/time type, or a number.
  * @returns {number} minute of the time passed in.
  * @constructor
  */
-var MINUTE = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "MINUTE");
-  var time = TypeConverter.firstValueAsTimestampNumber(values[0]);
+var MINUTE = function (time) : number {
+  ArgsChecker.checkLength(arguments, 1, "MINUTE");
+  time = TypeConverter.firstValueAsTimestampNumber(time);
   if (time % 1 === 0) {
     return 0;
   }
@@ -575,14 +572,14 @@ var MINUTE = function (...values) : number {
 
 /**
  * Returns the second component of a specific time, in numeric format.
- * @param values[0] time - The time from which to calculate the second component. Must be a reference to a cell
+ * @param time - The time from which to calculate the second component. Must be a reference to a cell
  * containing a date/time, a function returning a date/time type, or a number.
  * @returns {number} second component of a specific time.
  * @constructor
  */
-var SECOND = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "SECOND");
-  var time = TypeConverter.firstValueAsTimestampNumber(values[0]);
+var SECOND = function (time) : number {
+  ArgsChecker.checkLength(arguments, 1, "SECOND");
+  time = TypeConverter.firstValueAsTimestampNumber(time);
   if (time % 1 === 0) {
     return 0;
   }
@@ -593,28 +590,29 @@ var SECOND = function (...values) : number {
 
 /**
  * Returns the number of net working days between two provided days.
- * @param values[0] start_date - The start date of the period from which to calculate the number of net working days.
- * @param values[1] end_date - The end date of the period from which to calculate the number of net working days.
- * @param values[1] holidays - [ OPTIONAL ] - A range or array constant containing the date serial numbers to consider
+ * @param startDate - The start date of the period from which to calculate the number of net working days.
+ * @param endDate - The end date of the period from which to calculate the number of net working days.
+ * @param holidays - [ OPTIONAL ] - A range or array constant containing the date serial numbers to consider
  * holidays. The values provided within an array for holidays must be date serial number values, as returned by N or
  * date values, as returned by DATE, DATEVALUE or TO_DATE. Values specified by a range should be standard date values or
  * date serial numbers.
  * @returns {number} the number of net working days between two provided dates.
  * @constructor
  */
-var NETWORKDAYS = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 2, 3, "NETWORKDAYS");
-  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
-  var end = TypeConverter.firstValueAsDateNumber(values[1], true);
-  var hasHolidays = values.length === 3;
-  var holidays = [];
+var NETWORKDAYS = function (startDate, endDate, holidays?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "NETWORKDAYS");
+  startDate = TypeConverter.firstValueAsDateNumber(startDate, true);
+  endDate = TypeConverter.firstValueAsDateNumber(endDate, true);
+  var hasHolidays = (holidays !== undefined);
+  var cleanHolidays = [];
   if (hasHolidays) {
-    if (values[2].length === 0) {
+    holidays = (holidays instanceof Array) ? holidays : [holidays];
+    if (holidays.length === 0) {
       throw new RefError("Reference does not exist.");
     }
-    for (var holidayDateValue of values[2]) {
+    for (var holidayDateValue of holidays) {
       if (typeof holidayDateValue === "number") {
-        holidays.push(holidayDateValue);
+        cleanHolidays.push(holidayDateValue);
       } else {
         throw new ValueError("NETWORKDAYS expects number values. But '" + holidayDateValue + "' is a " +
             (typeof holidayDateValue) + " and cannot be coerced to a number.")
@@ -622,22 +620,22 @@ var NETWORKDAYS = function (...values) : number {
     }
   }
   // Handle cases in which the start date is not before the end date.
-  var didSwap = start > end;
+  var didSwap = startDate > endDate;
   if (didSwap) {
-    var swap = end;
-    end = start;
-    start = swap;
+    var swap = endDate;
+    endDate = startDate;
+    startDate = swap;
   }
 
-  var countMoment = moment.utc(TypeConverter.numberToMoment(start));
+  var countMoment = moment.utc(TypeConverter.numberToMoment(startDate));
   var weekendDays = [6, 0]; // Default weekend_days.
-  var days = end - start + 1;
+  var days = endDate - startDate + 1;
   var networkDays = days;
   var j = 0;
   while (j < days) {
     if (weekendDays.indexOf(countMoment.day()) >= 0) {
       networkDays--;
-    } else if (hasHolidays && holidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) > -1) {
+    } else if (hasHolidays && cleanHolidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) > -1) {
       networkDays--;
     }
     countMoment.add(1, 'days');
@@ -652,29 +650,29 @@ var NETWORKDAYS = function (...values) : number {
 
 /**
  * Returns the number of networking days between two provided days excluding specified weekend days and holidays.
- * @param values[0] start_date - The start date of the period from which to calculate the number of net working days.
- * @param values[1] end_date - The end date of the period from which to calculate the number of net working days.
- * @param values[2] weekend - [ OPTIONAL - 1 by default ] - A number or string representing which days of the week are
+ * @param startDate - The start date of the period from which to calculate the number of net working days.
+ * @param endDate - The end date of the period from which to calculate the number of net working days.
+ * @param weekend - [ OPTIONAL - 1 by default ] - A number or string representing which days of the week are
  * considered weekends. String method: weekends can be specified using seven 0’s and 1’s, where the first number in the
  * set represents Monday and the last number is for Sunday. A zero means that the day is a work day, a 1 means that the
  * day is a weekend. For example, “0000011” would mean Saturday and Sunday are weekends. Number method: instead of using
  * the string method above, a single number can be used. 1 = Saturday/Sunday are weekends, 2 = Sunday/Monday, and this
  * pattern repeats until 7 = Friday/Saturday. 11 = Sunday is the only weekend, 12 = Monday is the only weekend, and this
  * pattern repeats until 17 = Saturday is the only weekend.
- * @param values[3] holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider as holidays.
+ * @param holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider as holidays.
  * The values provided within an array for holidays must be date serial number values, as returned by N or date values,
  * as returned by DATE, DATEVALUE or TO_DATE. Values specified by a range should be standard date values or date serial
  * numbers.
  * @returns {number} of networking days between two provided days
  * @constructor
  */
-var NETWORKDAYS$INTL = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 2, 4, "NETWORKDAYS$INTL");
-  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
-  var end = TypeConverter.firstValueAsDateNumber(values[1], true);
+var NETWORKDAYS$INTL = function (startDate, endDate, weekend?, holidays?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 2, 4, "NETWORKDAYS$INTL");
+  startDate = TypeConverter.firstValueAsDateNumber(startDate, true);
+  endDate = TypeConverter.firstValueAsDateNumber(endDate, true);
   var weekendDays = [];
-  if (values.length >= 3) {
-    var weekend = TypeConverter.firstValue(values[2]);
+  if (weekend !== undefined) {
+    weekend = TypeConverter.firstValue(weekend);
     if (typeof weekend === "string") {
       if (!/^[0-1]{6,}$/.test(weekend)) {
         throw new NumError("Function NETWORKDAYS.INTL parameter 3 requires a number in the format '0000011'. "
@@ -714,20 +712,20 @@ var NETWORKDAYS$INTL = function (...values) : number {
       }
     } else {
       throw new ValueError("Function NETWORKDAYS.INTL parameter 4 expects number values. But '" + weekend
-          + "' cannot be coerced to a number.")
+          + "' cannot be coerced to a number.");
     }
   } else {
     weekendDays = [0, 6];
   }
-  var hasHolidays = values.length === 4;
-  var holidays = [];
+  var hasHolidays = holidays !== undefined;
+  var cleanHolidays = [];
   if (hasHolidays) {
-    if (values[3].length === 0) {
+    if (holidays === 0) {
       throw new RefError("Reference does not exist.");
     }
-    for (var holidayDateValue of values[3]) {
+    for (var holidayDateValue of holidays) {
       if (typeof holidayDateValue === "number") {
-        holidays.push(holidayDateValue);
+        cleanHolidays.push(holidayDateValue);
       } else {
         throw new ValueError("NETWORKDAYS.INTL expects number values. But '" + holidayDateValue + "' is a " +
           (typeof holidayDateValue) + " and cannot be coerced to a number.")
@@ -735,21 +733,21 @@ var NETWORKDAYS$INTL = function (...values) : number {
     }
   }
   // Handle cases in which the start date is not before the end date.
-  var didSwap = start > end;
+  var didSwap = startDate > endDate;
   if (didSwap) {
-    var swap = end;
-    end = start;
-    start = swap;
+    var swap = endDate;
+    endDate = startDate;
+    startDate = swap;
   }
 
-  var countMoment = moment.utc(TypeConverter.numberToMoment(start));
-  var days = end - start + 1;
+  var countMoment = moment.utc(TypeConverter.numberToMoment(startDate));
+  var days = endDate - startDate + 1;
   var networkDays = days;
   var j = 0;
   while (j < days) {
     if (weekendDays.indexOf(countMoment.day()) >= 0) {
       networkDays--;
-    } else if (hasHolidays && holidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) > -1) {
+    } else if (hasHolidays && cleanHolidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) > -1) {
       networkDays--;
     }
     countMoment.add(1, 'days');
@@ -767,8 +765,8 @@ var NETWORKDAYS$INTL = function (...values) : number {
  * @returns {number} representing the current date and time.
  * @constructor
  */
-var NOW = function (...values) : number {
-  ArgsChecker.checkLength(values, 0, "NOW");
+var NOW = function () : number {
+  ArgsChecker.checkLength(arguments, 0, "NOW");
   return TypeConverter.momentToNumber(moment.utc());
 };
 
@@ -777,8 +775,8 @@ var NOW = function (...values) : number {
  * @returns {number} today
  * @constructor
  */
-var TODAY = function (...values) : number {
-  ArgsChecker.checkLength(values, 0, "TODAY");
+var TODAY = function () : number {
+  ArgsChecker.checkLength(arguments, 0, "TODAY");
   return TypeConverter.momentToNumber(moment.utc().startOf("day"));
 };
 
@@ -786,17 +784,17 @@ var TODAY = function (...values) : number {
 /**
  * Converts a provided hour, minute, and second into a time. Will silently recalculate numeric time values which fall
  * outside of valid ranges. Eg: TIME(24, 0, 0) is the same as TIME(0, 0, 0).
- * @param values[0] hour - The hour component of the time.
- * @param values[1] minute - The minute component of the time.
- * @param values[2] second - The second component of the time.
+ * @param hours - The hour component of the time.
+ * @param minutes - The minute component of the time.
+ * @param seconds - The second component of the time.
  * @returns {number} time of day
  * @constructor
  */
-var TIME = function (...values) : number {
-  ArgsChecker.checkLength(values, 3, "TIME");
-  var hours = Math.floor(TypeConverter.firstValueAsNumber(values[0]));
-  var minutes = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
-  var seconds = Math.floor(TypeConverter.firstValueAsNumber(values[2]));
+var TIME = function (hours, minutes, seconds) : number {
+  ArgsChecker.checkLength(arguments, 3, "TIME");
+  hours = Math.floor(TypeConverter.firstValueAsNumber(hours));
+  minutes = Math.floor(TypeConverter.firstValueAsNumber(minutes));
+  seconds = Math.floor(TypeConverter.firstValueAsNumber(seconds));
   var e = TypeConverter.unitsToTimeNumber(hours, minutes, seconds);
   if (e < 0) {
     throw new NumError("TIME evaluates to an out of range value " + e + ". It should be greater than or equal to 0.");
@@ -807,46 +805,46 @@ var TIME = function (...values) : number {
 
 /**
  * Calculates the end date after a specified number of working days.
- * @param values[0] start_date - The date from which to begin counting.
- * @param values[1] num_days - The number of working days to advance from start_date. If negative, counts backwards. If
+ * @param startDate - The date from which to begin counting.
+ * @param numberOfDays - The number of working days to advance from start_date. If negative, counts backwards. If
  * not an integer, truncate.
- * @param values[2] holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider holidays. The
+ * @param holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider holidays. The
  * values provided within an array for holidays must be date serial number values, as returned by N or date values, as
  * returned by DATE, DATEVALUE or TO_DATE. Values specified by a range should be standard date values or date serial
  * numbers.
  * @returns {number} end date after a specified number of working days.
  * @constructor
  */
-var WORKDAY = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 2, 3, "WORKDAY");
-  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
-  var days = TypeConverter.firstValueAsNumber(values[1]);
-  var hasHolidays = values.length === 3;
-  var holidays = [];
-  if (hasHolidays) {
-    if (values[2] instanceof Array) {
-      if (values[2].length === 0) {
+var WORKDAY = function (startDate, numberOfDays, holidays?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "WORKDAY");
+  startDate = TypeConverter.firstValueAsDateNumber(startDate, true);
+  numberOfDays = TypeConverter.firstValueAsNumber(numberOfDays);
+  var hasHolidays = (cleanHolidays !== undefined);
+  var cleanHolidays = [];
+  if (hasHolidays !== undefined) {
+    if (holidays instanceof Array) {
+      if (holidays.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      for (var holidayDateValue of values[2]) {
+      for (var holidayDateValue of holidays) {
         if (typeof holidayDateValue === "number") {
-          holidays.push(holidayDateValue);
+          cleanHolidays.push(holidayDateValue);
         } else {
           throw new ValueError("WORKDAY expects number values. But '" + holidayDateValue + "' is a " +
             (typeof holidayDateValue) + " and cannot be coerced to a number.")
         }
       }
     } else {
-      holidays.push(TypeConverter.valueToNumber(values[2]));
+      cleanHolidays.push(TypeConverter.valueToNumber(holidays));
     }
   }
 
   var weekendDays = [0, 6];
-  var countMoment = moment.utc(TypeConverter.numberToMoment(start));
+  var countMoment = moment.utc(TypeConverter.numberToMoment(startDate));
   var j = 0;
-  while (j < days) {
+  while (j < numberOfDays) {
     countMoment.add(1, 'days');
-    if (weekendDays.indexOf(countMoment.day()) < 0 && holidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) < 0) {
+    if (weekendDays.indexOf(countMoment.day()) < 0 && cleanHolidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) < 0) {
       j++;
     }
   }
@@ -856,26 +854,26 @@ var WORKDAY = function (...values) : number {
 
 /**
  * Calculates the date after a specified number of workdays excluding specified weekend days and holidays.
- * @param values[0] start_date - The date from which to begin counting.
- * @param values[1] num_days - The number of working days to advance from start_date. If negative, counts backwards.
- * @param values[2] weekend - [ OPTIONAL - 1 by default ] - A number or string representing which days of the week are
+ * @param startDate - The date from which to begin counting.
+ * @param numberOfDays - The number of working days to advance from start_date. If negative, counts backwards.
+ * @param weekend - [ OPTIONAL - 1 by default ] - A number or string representing which days of the week are
  * considered weekends. String method: weekends can be specified using seven 0’s and 1’s, where the first number in the
  * set represents Monday and the last number is for Sunday. A zero means that the day is a work day, a 1 means that the
  * day is a weekend. For example, “0000011” would mean Saturday and Sunday are weekends. Number method: instead of using
  * the string method above, a single number can be used. 1 = Saturday/Sunday are weekends, 2 = Sunday/Monday, and this
  * pattern repeats until 7 = Friday/Saturday. 11 = Sunday is the only weekend, 12 = Monday is the only weekend, and this
  * pattern repeats until 17 = Saturday is the only weekend.
- * @param values[3] holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider holidays.
+ * @param holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider holidays.
  * @returns {number}
  * @constructor
  */
-var WORKDAY$INTL = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 2, 3, "WORKDAY$INTL");
-  var start = TypeConverter.firstValueAsDateNumber(values[0], true);
-  var days = TypeConverter.firstValueAsNumber(values[1]);
+var WORKDAY$INTL = function (startDate, numberOfDays, weekend?, holidays?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "WORKDAY$INTL");
+  startDate = TypeConverter.firstValueAsDateNumber(startDate, true);
+  numberOfDays = TypeConverter.firstValueAsNumber(numberOfDays);
   var weekendDays = [];
-  if (values.length >= 3) {
-    var weekend = TypeConverter.firstValue(values[2]);
+  if (weekend !== undefined) {
+    weekend = TypeConverter.firstValue(weekend);
     if (typeof weekend === "string") {
       if (!/^[0-1]{6,}$/.test(weekend)) {
         throw new NumError("Function WORKDAY.INTL parameter 3 requires a number in the format '0000011'. "
@@ -915,35 +913,35 @@ var WORKDAY$INTL = function (...values) : number {
       }
     } else {
       throw new ValueError("Function WORKDAY.INTL parameter 4 expects number values. But '" + weekend
-        + "' cannot be coerced to a number.")
+        + "' cannot be coerced to a number.");
     }
   } else {
     weekendDays = [0, 6];
   }
-  var hasHolidays = values.length === 3;
-  var holidays = [];
+  var hasHolidays = (holidays !== undefined);
+  var cleanHolidays = [];
   if (hasHolidays) {
-    if (values[3] instanceof Array) {
-      if (values[3].length === 0) {
+    if (holidays instanceof Array) {
+      if (holidays.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      for (var holidayDateValue of values[3]) {
+      for (var holidayDateValue of holidays) {
         if (typeof holidayDateValue === "number") {
-          holidays.push(holidayDateValue);
+          cleanHolidays.push(holidayDateValue);
         } else {
           throw new ValueError("WORKDAY expects number values. But '" + holidayDateValue + "' is a " +
             (typeof holidayDateValue) + " and cannot be coerced to a number.")
         }
       }
     } else {
-      holidays.push(TypeConverter.valueToNumber(values[3]));
+      cleanHolidays.push(TypeConverter.valueToNumber(holidays));
     }
   }
-  var countMoment = moment.utc(TypeConverter.numberToMoment(start));
+  var countMoment = moment.utc(TypeConverter.numberToMoment(startDate));
   var j = 0;
-  while (j < days) {
+  while (j < numberOfDays) {
     countMoment.add(1, 'days');
-    if (weekendDays.indexOf(countMoment.day()) < 0 && holidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) < 0) {
+    if (weekendDays.indexOf(countMoment.day()) < 0 && cleanHolidays.indexOf(TypeConverter.momentToDayNumber(countMoment)) < 0) {
       j++;
     }
   }

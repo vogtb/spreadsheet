@@ -39,15 +39,15 @@ var AND = function (...values) {
 
 /**
  * Tests whether two strings are identical, returning true if they are.
- * @param values[0] The first string to compare
- * @param values[1] The second string to compare
+ * @param one - The first string to compare
+ * @param two - The second string to compare
  * @returns {boolean}
  * @constructor
  */
-var EXACT = function (...values) {
-  ArgsChecker.checkLength(values, 2, "EXACT");
-  var one = TypeConverter.firstValue(values[0]);
-  var two = TypeConverter.firstValue(values[1]);
+var EXACT = function (one, two) {
+  ArgsChecker.checkLength(arguments, 2, "EXACT");
+  one = TypeConverter.firstValue(one);
+  two = TypeConverter.firstValue(two);
   return one.toString() === two.toString();
 };
 
@@ -73,31 +73,30 @@ var FALSE = function () : boolean {
 
 /**
  * Returns the opposite of a logical value - NOT(TRUE) returns FALSE; NOT(FALSE) returns TRUE.
- * @param values[0] An expression or reference to a cell holding an expression that represents some logical value.
+ * @param value - An expression or reference to a cell holding an expression that represents some logical value.
  * @returns {boolean} opposite of a logical value input
  * @constructor
  */
-var NOT = function (...values) : boolean {
-  ArgsChecker.checkLength(values, 1, "NOT");
-  var X = values[0];
-  if (typeof(X) === "boolean") {
-    return !X;
+var NOT = function (value) : boolean {
+  ArgsChecker.checkLength(arguments, 1, "NOT");
+  if (typeof(value) === "boolean") {
+    return !value;
   }
-  if (typeof(X) === "string") {
-    if (X === "") {
+  if (typeof(value) === "string") {
+    if (value === "") {
       return true;
     }
-    throw new ValueError("Function NOT parameter 1 expects boolean values. But '" + X
+    throw new ValueError("Function NOT parameter 1 expects boolean values. But '" + value
         + "' is a text and cannot be coerced to a boolean.")
   }
-  if (typeof(X) === "number") {
-    return X === 0;
+  if (typeof(value) === "number") {
+    return value === 0;
   }
-  if (X instanceof Array) {
-    if (X.length === 0) {
+  if (value instanceof Array) {
+    if (value.length === 0) {
       throw new RefError("Reference does not exist.");
     }
-    return NOT(X[0]);
+    return NOT(value[0]);
   }
 };
 

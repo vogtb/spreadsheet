@@ -21,7 +21,7 @@ import {
 
 /**
  * Calculates the sum of squares of deviations based on a sample.
- * @param values The values or ranges of the sample.
+ * @param values - The values or ranges of the sample.
  * @returns {number} sum of squares of deviations
  * @constructor
  */
@@ -44,7 +44,7 @@ var DEVSQ = function (...values) : number {
 
 /**
  * Returns the median value in a numeric dataset.
- * @param values The value(s) or range(s) to consider when calculating the median value.
+ * @param values - The value(s) or range(s) to consider when calculating the median value.
  * @returns {number} the median value of the dataset
  * @constructor
  */
@@ -89,7 +89,7 @@ var MEDIAN = function (...values) : number {
 
 /**
  * Returns the numerical average value in a dataset, ignoring text.
- * @param values The values or ranges to consider when calculating the average value.
+ * @param values - The values or ranges to consider when calculating the average value.
  * @returns {number} the average value of this dataset.
  * @constructor
  */
@@ -115,7 +115,7 @@ var AVERAGE = function (...values) : number {
 
 /**
  * Calculates the average of the magnitudes of deviations of data from a dataset's mean.
- * @param values The value(s) or range(s)
+ * @param values - The value(s) or range(s)
  * @returns {number} average of the magnitudes of deviations of data from a dataset's mean
  * @constructor
  */
@@ -162,7 +162,7 @@ var AVEDEV = function (...values) {
 
 /**
  * Returns the numerical average value in a dataset, coercing text values in ranges to 0 values.
- * @param values value(s) or range(s) to consider when calculating the average value.
+ * @param values - value(s) or range(s) to consider when calculating the average value.
  * @returns {number} the numerical average value in a dataset
  * @constructor
  */
@@ -192,12 +192,12 @@ var AVERAGEA = function (...values) {
 /**
  * Calculates r, the Pearson product-moment correlation coefficient of a dataset. Any text encountered in the arguments
  * will be ignored. CORREL is synonymous with PEARSON.
- * @param values[0] data_y - The range representing the array or matrix of dependent data.
- * @param values[1] data_x - The range representing the array or matrix of independent data.
+ * @param dataY - The range representing the array or matrix of dependent data.
+ * @param dataX - The range representing the array or matrix of independent data.
  * @returns {number} the Pearson product-moment correlation coefficient.
  * @constructor
  */
-var CORREL = function (...values) : number {
+var CORREL = function (dataY, dataX) : number {
   /**
    * Return the standard deviation of a vector. By defaut, the population standard deviation is returned. Passing true
    * for the flag parameter returns the sample standard deviation. See http://jstat.github.io/vector.html#stdev for
@@ -272,18 +272,18 @@ var CORREL = function (...values) : number {
     }
     return sum(sq_dev) / (arr1Len - 1);
   }
-  ArgsChecker.checkLength(values, 2, "CORREL");
-  if (!Array.isArray(values[0])) {
-    values[0] = [values[0]];
+  ArgsChecker.checkLength(arguments, 2, "CORREL");
+  if (!Array.isArray(dataY)) {
+    dataY = [dataY];
   }
-  if (!Array.isArray(values[1])) {
-    values[1] = [values[1]];
+  if (!Array.isArray(dataX)) {
+    dataX = [dataX];
   }
-  if (values[0].length !== values[1].length) {
-    throw new NAError("CORREL has mismatched argument count " + values[0] + " vs " + values[1] + ".");
+  if (dataY.length !== dataX.length) {
+    throw new NAError("CORREL has mismatched argument count " + dataY + " vs " + dataX + ".");
   }
-  var arr1 = Filter.filterOutNonNumberValues(Filter.flattenAndThrow(values[0]));
-  var arr2 = Filter.filterOutNonNumberValues(Filter.flattenAndThrow(values[1]));
+  var arr1 = Filter.filterOutNonNumberValues(Filter.flattenAndThrow(dataY));
+  var arr2 = Filter.filterOutNonNumberValues(Filter.flattenAndThrow(dataX));
   var stdevArr1 = stdev(arr1, 1);
   var stdevArr2 = stdev(arr2, 1);
   if (stdevArr1 === 0 || stdevArr2 === 0) {
@@ -295,54 +295,54 @@ var CORREL = function (...values) : number {
 /**
  * Calculates r, the Pearson product-moment correlation coefficient of a dataset. Any text encountered in the arguments
  * will be ignored. PEARSON is synonymous with CORREL.
- * @param values[0] data_y - The range representing the array or matrix of dependent data.
- * @param values[1] data_x - The range representing the array or matrix of independent data.
+ * @param dataY - The range representing the array or matrix of dependent data.
+ * @param dataX - The range representing the array or matrix of independent data.
  * @returns {number} the Pearson product-moment correlation coefficient.
  * @constructor
  */
-var PEARSON = function (...values) {
-  ArgsChecker.checkLength(values, 2, "PEARSON");
-  return CORREL.apply(this, values);
+var PEARSON = function (dataY, dataX) {
+  ArgsChecker.checkLength(arguments, 2, "PEARSON");
+  return CORREL.apply(this, [dataY, dataX]);
 };
 
 /**
  * Returns the value of the exponential distribution function with a specified lambda at a specified value.
- * @param values[0] x - The input to the exponential distribution function. If cumulative is TRUE then EXPONDIST returns
+ * @param x - The input to the exponential distribution function. If cumulative is TRUE then EXPONDIST returns
  * the cumulative probability of all values up to x.
- * @param values[1] lambda - The lambda to specify the exponential distribution function.
- * @param values[2] cumulative - Whether to use the exponential cumulative distribution.
+ * @param lambda - The lambda to specify the exponential distribution function.
+ * @param cumulative - Whether to use the exponential cumulative distribution.
  * @returns {number} value of the exponential distribution function.
  * @constructor
  */
-var EXPONDIST = function (...values) : number {
-  ArgsChecker.checkLength(values, 3, "EXPONDIST");
+var EXPONDIST = function (x, lambda, cumulative) : number {
+  ArgsChecker.checkLength(arguments, 3, "EXPONDIST");
   function cdf(x, rate) {
     return x < 0 ? 0 : 1 - Math.exp(-rate * x);
   }
   function pdf(x, rate) {
     return x < 0 ? 0 : rate * Math.exp(-rate * x);
   }
-  var x = TypeConverter.firstValueAsNumber(values[0]);
-  var lambda = TypeConverter.firstValueAsNumber(values[1]);
-  var cumulative = TypeConverter.firstValueAsBoolean(values[2]);
+  x = TypeConverter.firstValueAsNumber(x);
+  lambda = TypeConverter.firstValueAsNumber(lambda);
+  cumulative = TypeConverter.firstValueAsBoolean(cumulative);
   return (cumulative) ? cdf(x, lambda) : pdf(x, lambda);
 };
 
 /**
  * Calculates the left-tailed F probability distribution (degree of diversity) for two data sets with given input x.
  * Alternately called Fisher-Snedecor distribution or Snecdor's F distribution.
- * @param values[0] x - The input to the F probability distribution function. The value at which to evaluate the function.
+ * @param x - The input to the F probability distribution function. The value at which to evaluate the function.
  * Must be a positive number.
- * @param values[1] degrees_freedom1 - The numerator degrees of freedom.
- * @param values[2] degrees_freedom2 - The denominator degrees of freedom.
- * @param values[3] cumulative - Logical value that determines the form of the function. If true returns the cumulative
+ * @param degreesFreedom1 - The numerator degrees of freedom.
+ * @param degreesFreedom2 - The denominator degrees of freedom.
+ * @param cumulative - Logical value that determines the form of the function. If true returns the cumulative
  * distribution function. If false returns the probability density function.
- * @returns {number|undefined|boolean} left-tailed F probability distribution
+ * @returns {number|boolean} left-tailed F probability distribution
  * @constructor
  * TODO: This function should be stricter in its return type.
  */
-var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
-  ArgsChecker.checkLength(values, 4, "FDIST$LEFTTAILED");
+var FDIST$LEFTTAILED = function (x, degreesFreedom1, degreesFreedom2, cumulative) : number|undefined|boolean {
+  ArgsChecker.checkLength(arguments, 4, "FDIST$LEFTTAILED");
   /**
    * Returns the Log-Gamma function evaluated at x. See http://jstat.github.io/special-functions.html#gammaln for more
    * information.
@@ -515,27 +515,27 @@ var FDIST$LEFTTAILED = function (...values) : number|undefined|boolean {
     // make sure x + y doesn't exceed the upper limit of usable values
     return (x + y > 170) ? Math.exp(betaln(x, y)) : gammafn(x) * gammafn(y) / gammafn(x + y);
   }
-  var x = TypeConverter.firstValueAsNumber(values[0]);
+  x = TypeConverter.firstValueAsNumber(x);
   if (x < 0) {
     throw new NumError("Function F.DIST parameter 1 value is " + x + ". It should be greater than or equal to 0.");
   }
-  var d1 = TypeConverter.firstValueAsNumber(values[1]);
-  var d2 = TypeConverter.firstValueAsNumber(values[2]);
-  var cumulative = TypeConverter.firstValueAsBoolean(values[3]);
-  return (cumulative) ? cdf(x, d1, d2) : pdf(x, d1, d2);
+  var d1 = TypeConverter.firstValueAsNumber(degreesFreedom1);
+  var d2 = TypeConverter.firstValueAsNumber(degreesFreedom2);
+  var cum = TypeConverter.firstValueAsBoolean(cumulative);
+  return (cum) ? cdf(x, d1, d2) : pdf(x, d1, d2);
 };
 
 /**
  * Returns the inverse of the (right-tailed) F probability distribution. If p = FDIST(x,...), then FINV(p,...) = x. The
  * F distribution can be used in an F-test that compares the degree of variability in two data sets.
- * @param values[0] probability - A probability associated with the F cumulative distribution.
- * @param values[1] deg_freedom1 - Required. The numerator degrees of freedom.
- * @param values[2] deg_freedom2 - Required. The denominator degrees of freedom.
+ * @param probability - A probability associated with the F cumulative distribution.
+ * @param degFreedom1 - Required. The numerator degrees of freedom.
+ * @param degFreedom2 - Required. The denominator degrees of freedom.
  * @returns {number} inverse of the (right-tailed) F probability distribution
  * @constructor
  */
-var FINV = function (...values) : number {
-  ArgsChecker.checkLength(values, 3, "FINV");
+var FINV = function (probability, degFreedom1, degFreedom2) : number {
+  ArgsChecker.checkLength(arguments, 3, "FINV");
   /**
    * Returns the continued fraction for the incomplete Beta function with parameters a and b modified by Lentz's method
    * evaluated at x. For more information see http://jstat.github.io/special-functions.html#betacf
@@ -686,25 +686,25 @@ var FINV = function (...values) : number {
   function inv(x, df1, df2) {
     return df2 / (df1 * (1 / ibetainv(x, df1 / 2, df2 / 2) - 1));
   }
-  var probability = TypeConverter.firstValueAsNumber(values[0]);
+  probability = TypeConverter.firstValueAsNumber(probability);
   if (probability <= 0.0 || probability > 1.0) {
     throw new NumError("Function FINV parameter 1 value is " + probability
       + ". It should be greater than or equal to 0, and less than 1.")
   }
-  var d1 = TypeConverter.firstValueAsNumber(values[1]);
-  var d2 = TypeConverter.firstValueAsNumber(values[2]);
+  var d1 = TypeConverter.firstValueAsNumber(degFreedom1);
+  var d2 = TypeConverter.firstValueAsNumber(degFreedom2);
   return inv(1.0 - probability, d1, d2);
 };
 
 /**
  * Returns the Fisher transformation of a specified value.
- * @param values[0] value - The value for which to calculate the Fisher transformation.
+ * @param value - The value for which to calculate the Fisher transformation.
  * @returns {number} Fisher transformation
  * @constructor
  */
-var FISHER = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "FISHER");
-  var x = TypeConverter.firstValueAsNumber(values[0]);
+var FISHER = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "FISHER");
+  var x = TypeConverter.firstValueAsNumber(value);
   if (x <= -1 || x >= 1) {
     throw new NumError("Function FISHER parameter 1 value is " + x + ". Valid values are between -1 and 1 exclusive.");
   }
@@ -713,20 +713,20 @@ var FISHER = function (...values) : number {
 
 /**
  * Returns the inverse Fisher transformation of a specified value.
- * @param values[0] value - The value for which to calculate the inverse Fisher transformation.
+ * @param value - The value for which to calculate the inverse Fisher transformation.
  * @returns {number} inverse Fisher transformation
  * @constructor
  */
-var FISHERINV = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "FISHERINV");
-  var y = TypeConverter.firstValueAsNumber(values[0]);
+var FISHERINV = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "FISHERINV");
+  var y = TypeConverter.firstValueAsNumber(value);
   var e2y = Math.exp(2 * y);
   return (e2y - 1) / (e2y + 1);
 };
 
 /**
  * Returns the maximum value in a numeric dataset.
- * @param values The values or range(s) to consider when calculating the maximum value.
+ * @param values - The values or range(s) to consider when calculating the maximum value.
  * @returns {number} the maximum value of the dataset
  * @constructor
  */
@@ -751,7 +751,7 @@ var MAX = function (...values) {
 
 /**
  * Returns the maximum numeric value in a dataset.
- * @param values The value(s) or range(s) to consider when calculating the maximum value.
+ * @param values - The value(s) or range(s) to consider when calculating the maximum value.
  * @returns {number} maximum value of the dataset
  * @constructor
  */
@@ -763,7 +763,7 @@ var MAXA = function (...values) : number {
 
 /**
  * Returns the minimum value in a numeric dataset.
- * @param values The value(s) or range(s) to consider when calculating the minimum value.
+ * @param values - The value(s) or range(s) to consider when calculating the minimum value.
  * @returns {number} the minimum value of the dataset
  * @constructor
  */
@@ -789,7 +789,7 @@ var MIN = function (...values) {
 
 /**
  * Returns the minimum numeric value in a dataset.
- * @param values The value(s) or range(s) to consider when calculating the minimum value.
+ * @param values - The value(s) or range(s) to consider when calculating the minimum value.
  * @returns {number} the minimum value in the dataset
  * @constructor
  */
@@ -801,18 +801,18 @@ var MINA = function (...values) : number {
 
 /**
  * Returns the average of a range depending on criteria.
- * @param values[0] criteria_range - The range to check against criterion.
- * @param values[1] criterion - The pattern or test to apply to criteria_range.
- * @param values[2] average_range - [optional] The range to average. If not included, criteria_range is used for the
+ * @param criteriaRange - The range to check against criterion.
+ * @param criterion - The pattern or test to apply to criteria_range.
+ * @param averageRange - [optional] The range to average. If not included, criteria_range is used for the
  * average instead.
  * @returns {number}
  * @constructor
  * TODO: This needs to also accept a third parameter "average_range"
  */
-var AVERAGEIF = function (...values) {
-  ArgsChecker.checkLength(values, 2, "AVERAGEIF");
-  var range = Filter.flatten(values[0]);
-  var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(values[1]);
+var AVERAGEIF = function (criteriaRange, criterion, averageRange?) {
+  ArgsChecker.checkLength(arguments, 2, "AVERAGEIF");
+  var range = Filter.flatten(criteriaRange);
+  var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criterion);
 
   var result = 0;
   var count = 0;
@@ -832,7 +832,7 @@ var AVERAGEIF = function (...values) {
 
 /**
  * Returns the a count of the number of numeric values in a dataset.
- * @param values The values or ranges to consider when counting.
+ * @param values - The values or ranges to consider when counting.
  * @returns {number} number of numeric values in a dataset.
  * @constructor
  */
@@ -853,7 +853,7 @@ var COUNT = function (...values) : number {
 
 /**
  * Returns the a count of the number of values in a dataset.
- * @param values The values or ranges to consider when counting.
+ * @param values - The values or ranges to consider when counting.
  * @returns {number} number of values in a dataset.
  * @constructor
  */

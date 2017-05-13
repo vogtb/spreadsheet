@@ -145,13 +145,13 @@ test("CORREL", function(){
     CORREL([9], [5]);
   }, ERRORS.DIV_ZERO_ERROR);
   catchAndAssertEquals(function() {
-    CORREL();
+    CORREL.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    CORREL([9, 5]);
+    CORREL.apply(this, [[9, 5]]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    CORREL([9, 5],[10]);
+    CORREL.apply(this, [[9, 5],[10]]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -228,13 +228,13 @@ test("EXPONDIST", function(){
     EXPONDIST(4, 0.5, "1");
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    EXPONDIST();
+    EXPONDIST.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    EXPONDIST(4, 0.5);
+    EXPONDIST.apply(this, [4, 0.5]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    EXPONDIST(4, 0.5, true, 1);
+    EXPONDIST.apply(this, [4, 0.5, true, 1]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -246,10 +246,10 @@ test("FINV", function(){
   assertEquals(FINV(["0.42"], [33, []], [5]), 1.303222112500911);
   assertEquals(FINV("0.42", 2, 3), 1.174597274485816);
   catchAndAssertEquals(function() {
-    FINV();
+    FINV.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    FINV(0.42, 2, 4, 4);
+    FINV.apply(this, [0.42, 2, 4, 4]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     FINV(0.42, 2, []);
@@ -277,10 +277,10 @@ test("FISHER", function(){
     FISHER(-1);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    FISHER();
+    FISHER.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    FISHER(0.55, 0.1);
+    FISHER.apply(this, [0.55, 0.1]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -298,10 +298,10 @@ test("FISHERINV", function(){
     FISHER("str");
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    FISHER();
+    FISHER.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    FISHER(0.55, 0.1);
+    FISHER.apply(this, [0.55, 0.1]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -408,9 +408,9 @@ test("F.DIST", function(){
     FDIST$LEFTTAILED(-15.35, 7, 6, 1);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    FDIST$LEFTTAILED(15.35, 7, 6);
+    FDIST$LEFTTAILED.apply(this, [15.35, 7, 6]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    FDIST$LEFTTAILED();
+    FDIST$LEFTTAILED.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

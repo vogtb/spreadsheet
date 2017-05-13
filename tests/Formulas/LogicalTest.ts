@@ -25,7 +25,7 @@ test("AND", function(){
     AND(1, "");
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    AND();
+    AND.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     AND(1, "str");
@@ -49,21 +49,20 @@ test("EXACT", function(){
   assertEquals(EXACT([10], [10]), true);
   assertEquals(EXACT(["str"], [10, 22]), false);
   catchAndAssertEquals(function() {
-    EXACT([], []);
+    EXACT.apply(this, [[], []]);
   }, ERRORS.REF_ERROR);
   catchAndAssertEquals(function() {
-    EXACT([]);
+    EXACT.apply(this, [[]]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    EXACT("m");
+    EXACT.apply(this, ["m"]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    EXACT(10, 10, 10);
+    EXACT.apply(this, [10, 10, 10]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    EXACT(false);
+    EXACT.apply(this, [false]);
   }, ERRORS.NA_ERROR);
-
 });
 
 
@@ -115,10 +114,10 @@ test("NOT", function(){
     NOT("1.2");
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    NOT();
+    NOT.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    NOT(false, false);
+    NOT.apply(this, [false, false]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -144,7 +143,7 @@ test("OR", function(){
     OR(false, "1.1");
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    OR();
+    OR.apply(this, []);
   }, ERRORS.NA_ERROR);
 });
 

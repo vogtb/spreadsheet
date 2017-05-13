@@ -23,13 +23,13 @@ import {
 
 /**
  * Returns the absolute value of a number.
- * @param values[0] to get the absolute value of.
+ * @param value to get the absolute value of.
  * @returns {number} absolute value
  * @constructor
  */
-var ABS = function (...values) {
-  ArgsChecker.checkLength(values, 1, "ABS");
-  var v = TypeConverter.valueToNumber(values[0]);
+var ABS = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ABS");
+  var v = TypeConverter.valueToNumber(value);
   return Math.abs(v);
 };
 
@@ -39,7 +39,7 @@ var ABS = function (...values) {
  * @returns {number} inverse cosine of value
  * @constructor
  */
-var ACOS = function (value?) {
+var ACOS = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ACOS");
   value = TypeConverter.valueToNumber(value);
   if (value === -1) {
@@ -56,7 +56,7 @@ var ACOS = function (value?) {
  * @returns {number} to find the inverse hyperbolic cosine for.
  * @constructor
  */
-var ACOSH = function (value?) {
+var ACOSH = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ACOSH");
   value = TypeConverter.valueToNumber(value);
   if (value < 1) {
@@ -71,7 +71,7 @@ var ACOSH = function (value?) {
  * @returns {number} hyperbolic arc-cotangent
  * @constructor
  */
-var ACOTH = function (value?) {
+var ACOTH = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ACOTH");
   value = TypeConverter.valueToNumber(value);
   if (value <= 1 && value >= -1) {
@@ -86,7 +86,7 @@ var ACOTH = function (value?) {
  * @returns {number} inverse sine of input value
  * @constructor
  */
-var ASIN = function (value?) {
+var ASIN = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ASIN");
   value = TypeConverter.valueToNumber(value);
   if (value === -1) {
@@ -103,7 +103,7 @@ var ASIN = function (value?) {
  * @returns {number} inverse hyperbolic sine of input
  * @constructor
  */
-var ASINH = function (value?) {
+var ASINH = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ASINH");
   value = TypeConverter.valueToNumber(value);
   return Math.log(value + Math.sqrt(value * value + 1));
@@ -116,7 +116,7 @@ var ASINH = function (value?) {
  * @returns {number} inverse tangent of input value
  * @constructor
  */
-var ATAN = function (value?) {
+var ATAN = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ATAN");
   value = TypeConverter.valueToNumber(value);
   if (value === -1) {
@@ -152,7 +152,7 @@ var ATAN2 = function (x, y) {
  * @returns {number} inverse hyperbolic tangent of input
  * @constructor
  */
-var ATANH = function (value?) : number {
+var ATANH = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "ATANH");
   value = TypeConverter.valueToNumber(value);
   if (value >= 1 || value <= -1) {
@@ -166,33 +166,27 @@ var ATANH = function (value?) : number {
 
 /**
  * Rounds a number up to the nearest even integer.
- * @param values[0] The value to round to the next greatest even number.
+ * @param value The value to round to the next greatest even number.
  * @returns {number} next greatest even number
  * @constructor
  */
-var EVEN = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "EVEN");
-  if (values[0] instanceof Array) {
-    if (values[0].length === 0) {
-      throw new RefError("Reference does not exist.");
-    }
-    return EVEN(values[0][0]);
-  }
-  var X = TypeConverter.valueToNumber(values[0]);
+var EVEN = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "EVEN");
+  var X = TypeConverter.firstValueAsNumber(value);
   return X % 2 === 1 ? X + 1 : X;
 };
 
 /**
  * Returns the result of the modulo operator, the remainder after a division operation.
- * @param values[0] The number to be divided to find the remainder.
- * @param values[1] The number to divide by.
+ * @param dividend The number to be divided to find the remainder.
+ * @param divisor The number to divide by.
  * @returns {number}
  * @constructor
  */
-var MOD = function (...values) : number {
-  ArgsChecker.checkLength(values, 2, "MOD");
-  var oneN = TypeConverter.valueToNumber(values[0]);
-  var twoN =  TypeConverter.valueToNumber(values[1]);
+var MOD = function (dividend, divisor) : number {
+  ArgsChecker.checkLength(arguments, 2, "MOD");
+  var oneN = TypeConverter.valueToNumber(dividend);
+  var twoN =  TypeConverter.valueToNumber(divisor);
   if (twoN === 0) {
     throw new DivZeroError("Function MOD parameter 2 cannot be zero.");
   }
@@ -202,33 +196,27 @@ var MOD = function (...values) : number {
 
 /**
  * Rounds a number up to the nearest odd integer.
- * @param values[0] The value to round to the next greatest odd number.
+ * @param value The value to round to the next greatest odd number.
  * @returns {number} value to round up to next greatest odd number.
  * @constructor
  */
-var ODD = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "ODD");
-  if (values[0] instanceof Array) {
-    if (values[0].length === 0) {
-      throw new RefError("Reference does not exist.");
-    }
-    return ODD(values[0][0]);
-  }
-  var X = TypeConverter.valueToNumber(values[0]);
+var ODD = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "ODD");
+  var X = TypeConverter.firstValueAsNumber(value);
   return X % 2 === 1 ? X : X + 1;
 };
 
 /**
  * Returns a number raised to a power.
- * @param values[0] The number to raise to the exponent power.
- * @param values[1] The exponent to raise base to.
+ * @param base - The number to raise to the exponent power.
+ * @param exponent - The exponent to raise base to.
  * @returns {number} resulting number
  * @constructor
  */
-var POWER = function (...values) : number {
-  ArgsChecker.checkLength(values, 2, "POWER");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
-  var p = TypeConverter.firstValueAsNumber(values[1]);
+var POWER = function (base, exponent) : number {
+  ArgsChecker.checkLength(arguments, 2, "POWER");
+  var n = TypeConverter.firstValueAsNumber(base);
+  var p = TypeConverter.firstValueAsNumber(exponent);
   return Math.pow(n, p);
 };
 
@@ -256,28 +244,28 @@ var SUM = function (...values) : number {
 
 /**
  * Returns the positive square root of a positive number.
- * @param values[0] The number for which to calculate the positive square root.
+ * @param value - The number for which to calculate the positive square root.
  * @returns {number} square root
  * @constructor
  */
-var SQRT = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "SQRT");
-  var x = TypeConverter.firstValueAsNumber(values[0]);
+var SQRT = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "SQRT");
+  var x = TypeConverter.firstValueAsNumber(value);
   if (x < 0) {
-    throw new ValueError("Function SQRT parameter 1 expects number values. But '" + values[0] + "' is a text and cannot be coerced to a number.");
+    throw new ValueError("Function SQRT parameter 1 value is " + x + ". It should be greater than or equal to 0.");
   }
   return Math.sqrt(x);
 };
 
 /**
  * Returns the positive square root of the product of Pi and the given positive number.
- * @param values[0] value - The number which will be multiplied by Pi and have the product's square root returned
+ * @param value - The number which will be multiplied by Pi and have the product's square root returned
  * @returns {number} the positive square root of the product of Pi and the given positive number.
  * @constructor
  */
-var SQRTPI = function (...values) : number{
-  ArgsChecker.checkLength(values, 1, "SQRTPI");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
+var SQRTPI = function (value) : number{
+  ArgsChecker.checkLength(arguments, 1, "SQRTPI");
+  var n = TypeConverter.firstValueAsNumber(value);
   if (n < 0) {
     throw new NumError("Function SQRTPI parameter 1 value is " + n + ". It should be greater than or equal to 0.");
   }
@@ -286,37 +274,37 @@ var SQRTPI = function (...values) : number{
 
 /**
  * Returns the cosine of an angle provided in radians.
- * @param values[0] The angle to find the cosine of, in radians.
+ * @param value - The angle to find the cosine of, in radians.
  * @returns {number} cosine of angle
  * @constructor
  */
-var COS = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "COS");
-  var r = TypeConverter.firstValueAsNumber(values[0]);
+var COS = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "COS");
+  var r = TypeConverter.firstValueAsNumber(value);
   return Math.cos(r);
 };
 
 /**
  * Returns the hyperbolic cosine of any real number.
- * @param values[0] Any real value to calculate the hyperbolic cosine of.
+ * @param value - Any real value to calculate the hyperbolic cosine of.
  * @returns {number} the hyperbolic cosine of the input
  * @constructor
  */
-var COSH = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "COSH");
-  var r = TypeConverter.firstValueAsNumber(values[0]);
+var COSH = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "COSH");
+  var r = TypeConverter.firstValueAsNumber(value);
   return Math["cosh"](r);
 };
 
 /**
  * Returns the cotangent of any real number. Defined as cot(x) = 1 / tan(x).
- * @param values[0] number to calculate the cotangent for
+ * @param value - number to calculate the cotangent for
  * @returns {number} cotangent
  * @constructor
  */
-var COT = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "COT");
-  var x = TypeConverter.firstValueAsNumber(values[0]);
+var COT = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "COT");
+  var x = TypeConverter.firstValueAsNumber(value);
   if (x === 0) {
     throw new DivZeroError("Evaluation of function COT caused a divide by zero error.");
   }
@@ -325,13 +313,13 @@ var COT = function (...values) : number {
 
 /**
  * Return the hyperbolic cotangent of a value, defined as coth(x) = 1 / tanh(x).
- * @param values[0] value to calculate the hyperbolic cotangent value of
+ * @param value - value to calculate the hyperbolic cotangent value of
  * @returns {number} hyperbolic cotangent
  * @constructor
  */
-var COTH = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "COTH");
-  var x = TypeConverter.firstValueAsNumber(values[0]);
+var COTH = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "COTH");
+  var x = TypeConverter.firstValueAsNumber(value);
   if (x === 0) {
     throw new DivZeroError("Evaluation of function COTH caused a divide by zero error.");
   }
@@ -340,69 +328,69 @@ var COTH = function (...values) : number {
 
 /**
  * Rounds a number down to the nearest integer that is less than or equal to it.
- * @param values[0] The value to round down to the nearest integer.
+ * @param value -  The value to round down to the nearest integer.
  * @returns {number} Rounded number
  * @constructor
  */
-var INT = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "INT");
-  var x = TypeConverter.firstValueAsNumber(values[0]);
+var INT = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "INT");
+  var x = TypeConverter.firstValueAsNumber(value);
   return Math.floor(x);
 };
 
 
 /**
  * Checks whether the provided value is even.
- * @param values[0] The value to be verified as even.
+ * @param value - The value to be verified as even.
  * @returns {boolean} whether this value is even or not
  * @constructor
  */
-var ISEVEN = function (...values) : boolean {
-  ArgsChecker.checkLength(values, 1, "ISEVEN");
-  if (values[0] === "") {
-    throw new ValueError("Function ISEVEN parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
+var ISEVEN = function (value) : boolean {
+  ArgsChecker.checkLength(arguments, 1, "ISEVEN");
+  if (value === "") {
+    throw new ValueError("Function ISEVEN parameter 1 expects boolean values. But '" + value + "' is a text and cannot be coerced to a boolean.");
   }
-  var x = TypeConverter.firstValueAsNumber(values[0]);
+  var x = TypeConverter.firstValueAsNumber(value);
   return Math.floor(x) % 2 === 0;
 };
 
 
 /**
  * Checks whether the provided value is odd.
- * @param values[0] The value to be verified as odd.
+ * @param value - The value to be verified as odd.
  * @returns {boolean} whether this value is odd or not
  * @constructor
  */
-var ISODD = function (...values) : boolean {
-  ArgsChecker.checkLength(values, 1, "ISODD");
-  if (values[0] === "") {
-    throw new ValueError("Function ISODD parameter 1 expects boolean values. But '" + values[0] + "' is a text and cannot be coerced to a boolean.");
+var ISODD = function (value) : boolean {
+  ArgsChecker.checkLength(arguments, 1, "ISODD");
+  if (value === "") {
+    throw new ValueError("Function ISODD parameter 1 expects boolean values. But '" + value + "' is a text and cannot be coerced to a boolean.");
   }
-  var x = TypeConverter.firstValueAsNumber(values[0]);
+  var x = TypeConverter.firstValueAsNumber(value);
   return Math.floor(x) % 2 === 1;
 };
 
 /**
  * Returns the sine of an angle provided in radians.
- * @param values[0] The angle to find the sine of, in radians.
+ * @param value - The angle to find the sine of, in radians.
  * @returns {number} Sine of angle.
  * @constructor
  */
-var SIN = function (...values) {
-  ArgsChecker.checkLength(values, 1, "SIN");
-  var rad = TypeConverter.firstValueAsNumber(values[0]);
+var SIN = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "SIN");
+  var rad = TypeConverter.firstValueAsNumber(value);
   return rad === Math.PI ? 0 : Math.sin(rad);
 };
 
 /**
  * Returns the hyperbolic sine of any real number.
- * @param values[0] real number to find the hyperbolic sine of
+ * @param value - real number to find the hyperbolic sine of
  * @returns {number} hyperbolic sine
  * @constructor
  */
-var SINH = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "SINH");
-  var rad = TypeConverter.firstValueAsNumber(values[0]);
+var SINH = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "SINH");
+  var rad = TypeConverter.firstValueAsNumber(value);
   return Math["sinh"](rad);
 };
 
@@ -418,13 +406,13 @@ var PI = function () {
 
 /**
  * Returns the the logarithm of a number, base 10.
- * @param values[0] The value for which to calculate the logarithm, base 10.
+ * @param value - The value for which to calculate the logarithm, base 10.
  * @returns {number} logarithm of the number, in base 10.
  * @constructor
  */
-var LOG10 = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "LOG10");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
+var LOG10 = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "LOG10");
+  var n = TypeConverter.firstValueAsNumber(value);
   if (n < 1) {
     throw new NumError("Function LOG10 parameter 1 value is " + n + ". It should be greater than 0.");
   }
@@ -435,20 +423,17 @@ var LOG10 = function (...values) : number {
 
 /**
  * Returns the the logarithm of a number given a base.
- * @param values[0] The value for which to calculate the logarithm given base.
- * @param values[1] The base to use for calculation of the logarithm. Defaults to 10.
+ * @param value - The value for which to calculate the logarithm given base.
+ * @param base - The base to use for calculation of the logarithm. Defaults to 10.
  * @returns {number}
  * @constructor
  */
-var LOG = function (...values) : number {
-  ArgsChecker.checkAtLeastLength(values, 1, "LOG");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
-  var b = 10;
-  if (values.length > 1) {
-    b = TypeConverter.firstValueAsNumber(values[1]);
-    if (b < 1) {
-      throw new NumError("Function LOG parameter 2 value is " + b + ". It should be greater than 0.");
-    }
+var LOG = function (value, base) : number {
+  ArgsChecker.checkAtLeastLength(arguments, 2, "LOG");
+  var n = TypeConverter.firstValueAsNumber(value);
+  var b = TypeConverter.firstValueAsNumber(base);
+  if (b < 1) {
+    throw new NumError("Function LOG parameter 2 value is " + b + ". It should be greater than 0.");
   }
   if (b < 2) {
     throw new DivZeroError("Evaluation of function LOG caused a divide by zero error.");
@@ -463,13 +448,13 @@ var LOG = function (...values) : number {
 
 /**
  * Returns the logarithm of a number, base e (Euler's number).
- * @param values[0] The value for which to calculate the logarithm, base e.
+ * @param value - The value for which to calculate the logarithm, base e.
  * @returns {number} logarithm calculated
  * @constructor
  */
-var LN = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "LN");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
+var LN = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "LN");
+  var n = TypeConverter.firstValueAsNumber(value);
   if (n < 1) {
     throw new NumError("Function LN parameter 1 value is " + n + ". It should be greater than 0.");
   }
@@ -478,42 +463,42 @@ var LN = function (...values) : number {
 
 /**
  * Returns the tangent of an angle provided in radians.
- * @param values The angle to find the tangent of, in radians.
+ * @param value - The angle to find the tangent of, in radians.
  * @returns {number} tangent in radians
  * @constructor
  */
-var TAN = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "TAN");
-  var rad = TypeConverter.firstValueAsNumber(values[0]);
+var TAN = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "TAN");
+  var rad = TypeConverter.firstValueAsNumber(value);
   return rad === Math.PI ? 0 : Math.tan(rad);
 };
 
 /**
  * Returns the hyperbolic tangent of any real number.
- * @param values[0] Any real value to calculate the hyperbolic tangent of.
+ * @param value - Any real value to calculate the hyperbolic tangent of.
  * @returns {number} hyperbolic tangent
  * @constructor
  */
-var TANH = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "TANH");
-  var rad = TypeConverter.firstValueAsNumber(values[0]);
+var TANH = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "TANH");
+  var rad = TypeConverter.firstValueAsNumber(value);
   return Math["tanh"](rad);
 };
 
 /**
  * Rounds a number up to the nearest integer multiple of specified significance.
- * @param values[0] The value to round up to the nearest integer multiple of factor.
- * @param values[1] The number to whose multiples value will be rounded.
+ * @param value The value to round up to the nearest integer multiple of factor.
+ * @param factor - [ OPTIONAL ] The number to whose multiples value will be rounded.
  * @returns {number}
  * @constructor
  */
-var CEILING = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "CEILING");
-  var num = TypeConverter.firstValueAsNumber(values[0]);
-  if (values.length === 1) {
+var CEILING = function (value, factor?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "CEILING");
+  var num = TypeConverter.firstValueAsNumber(value);
+  if (factor === undefined) {
     return Math.ceil(num);
   }
-  var significance = TypeConverter.firstValueAsNumber(values[1]);
+  var significance = TypeConverter.firstValueAsNumber(factor);
   if (significance === 0) {
     throw new DivZeroError("Function CEILING parameter 2 cannot be zero.");
   }
@@ -527,18 +512,18 @@ var CEILING = function (...values) : number {
 
 /**
  * Rounds a number down to the nearest integer multiple of specified significance.
- * @param values[0] The value to round down to the nearest integer multiple of factor.
- * @param values[1] The number to whose multiples value will be rounded.
+ * @param value - The value to round down to the nearest integer multiple of factor.
+ * @param factor - The number to whose multiples value will be rounded.
  * @returns {number}
  * @constructor
  */
-var FLOOR = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "FLOOR");
-  var num = TypeConverter.firstValueAsNumber(values[0]);
-  if (values.length === 1) {
+var FLOOR = function (value, factor?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "FLOOR");
+  var num = TypeConverter.firstValueAsNumber(value);
+  if (factor === undefined) {
     return Math.floor(num);
   }
-  var significance = TypeConverter.firstValueAsNumber(values[1]);
+  var significance = TypeConverter.firstValueAsNumber(factor);
   if (significance === 0) {
     throw new DivZeroError("Function FLOOR parameter 2 cannot be zero.");
   }
@@ -552,43 +537,41 @@ var FLOOR = function (...values) : number {
 
 /**
  * Returns one value if a logical expression is TRUE and another if it is FALSE.
- * @param values[0] An expression or reference to a cell containing an expression that represents some logical value, i.e. TRUE or FALSE.
- * @param values[1] The value the function returns if logical_expression is TRUE
- * @param values[2] The value the function returns if logical_expression is FALSE.
+ * @param logicalExpression - An expression or reference to a cell containing an expression that represents some logical value, i.e. TRUE or FALSE.
+ * @param valueIfTrue - The value the function returns if logical_expression is TRUE
+ * @param valueIfFalse - The value the function returns if logical_expression is FALSE.
  * @returns one value if a logical expression is TRUE and another if it is FALSE.
  * @constructor
  */
-var IF = function (...values) : any {
-  ArgsChecker.checkLength(values, 3, "IF");
-  if (values[0] instanceof Array) {
-    if (values[0].length === 0) {
+var IF = function (logicalExpression, valueIfTrue, valueIfFalse) : any {
+  ArgsChecker.checkLength(arguments, 3, "IF");
+  if (logicalExpression instanceof Array) {
+    if (logicalExpression.length === 0) {
       throw new RefError("Reference does not exist.");
     }
-    return IF(values[0][0], values[1], values[2]);
-  } else if (values[0] === "") {
-    return values[2];
+    return IF(logicalExpression[0], valueIfTrue, valueIfFalse);
+  } else if (logicalExpression === "") {
+    return valueIfFalse;
   }
-  return (TypeConverter.valueToBoolean(values[0])) ? values[1] : values[2];
+  return (TypeConverter.valueToBoolean(logicalExpression)) ? valueIfTrue : valueIfFalse;
 };
 
 
 /**
  * Returns a conditional count across a range.
- * @param values[0] range - The range that is tested against criterion., value[1];
- * @param values[1] criterion - The pattern or test to apply to range. If the range to check against contains text,
+ * @param range - The range that is tested against criterion., value[1];
+ * @param criteria - The pattern or test to apply to range. If the range to check against contains text,
  * this must be a string. It can be a comparison based string (e.g. "=1", "<1", ">=1") or it can be a wild-card string,
  * in which * matches any number of characters, and ? matches the next character. Both ? and * can be escaped by placing
  * a ~ in front of them. If it is neither, it will compared with values in the range using equality comparison.
  * @returns {number}
  * @constructor
  */
-var COUNTIF = function (...values) {
-  ArgsChecker.checkLength(values, 2, "COUNTIF");
-  var range = values[0];
+var COUNTIF = function (range, criteria) {
+  ArgsChecker.checkLength(arguments, 2, "COUNTIF");
   if (!(range instanceof Array)) {
     range = [range];
   }
-  var criteria = values[1];
   var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criteria);
 
   var count = 0;
@@ -656,74 +639,65 @@ var COUNTIFS = function (...values) {
 
 /**
  * Rounds a number to a certain number of decimal places according to standard rules.
- * @param values[0] The value to round to places number of places.
- * @param values[1] The number of decimal places to which to round.
+ * @param value - The value to round to places number of places.
+ * @param places - The number of decimal places to which to round.
  * @returns {number}
  * @constructor
  */
-var ROUND = function (...values) {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "ROUND");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
-  if (values.length === 1) {
-    return Math.round(n);
-  }
-  var d = TypeConverter.firstValueAsNumber(values[1]);
+var ROUND = function (value, places) {
+  ArgsChecker.checkLength(arguments, 2, "ROUND");
+  var n = TypeConverter.firstValueAsNumber(value);
+  var d = TypeConverter.firstValueAsNumber(places);
   return Math.round(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
 /**
  * Rounds a number to a certain number of decimal places, always rounding down to the next valid increment.
- * @param values[0] The value to round to places number of places, always rounding down.
- * @param values[1] (optional) The number of decimal places to which to round.
+ * @param value - The value to round to places number of places, always rounding down.
+ * @param places - (optional) The number of decimal places to which to round.
  * @returns {number}
  * @constructor
  */
-var ROUNDDOWN = function (...values) {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "ROUNDDOWN");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
-  if (values.length === 1) {
+var ROUNDDOWN = function (value, places?) {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "ROUNDDOWN");
+  var n = TypeConverter.firstValueAsNumber(value);
+  if (places === undefined) {
     return Math.floor(n);
   }
-  var d = TypeConverter.firstValueAsNumber(values[1]);
+  var d = TypeConverter.firstValueAsNumber(places);
   return Math.floor(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
 /**
  * Rounds a number to a certain number of decimal places, always rounding up to the next valid increment.
- * @param values[0] The value to round to places number of places, always rounding up.
- * @param values[1] (optional) The number of decimal places to which to round.
+ * @param value - The value to round to places number of places, always rounding up.
+ * @param places - (optional) The number of decimal places to which to round.
  * @returns {number}
  * @constructor
  */
-var ROUNDUP = function (...values) {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "ROUNDUP");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
-  if (values.length === 1) {
+var ROUNDUP = function (value, places?) {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "ROUNDUP");
+  var n = TypeConverter.firstValueAsNumber(value);
+  if (places === undefined) {
     return Math.ceil(n);
   }
-  var d = TypeConverter.firstValueAsNumber(values[1]);
+  var d = TypeConverter.firstValueAsNumber(places);
   return Math.ceil(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
 /**
  * Returns a conditional sum across a range.
- * @param values[0] The range which is tested against criterion.
- * @param values[1] The pattern or test to apply to range. If the range to check against contains text, this must be a
+ * @param range -  The range which is tested against criterion.
+ * @param criteria - The pattern or test to apply to range. If the range to check against contains text, this must be a
  * string. It can be a comparison based string (e.g. "=1", "<1", ">=1") or it can be a wild-card string, in which *
  * matches any number of characters, and ? matches the next character. Both ? and * can be escaped by placing a ~ in
  * front of them.
- * @param values[2] (optional) The range to be summed, if different from range.
+ * @param sumRange - (optional) The range to be summed, if different from range.
  * @returns {number}
  * @constructor
  */
-var SUMIF = function (...values) {
-  ArgsChecker.checkLengthWithin(values, 2, 3, "SUMIF");
-  var range = values[0];
-  var criteria = values[1];
-  var sumRange = null;
-  if (values.length === 3) {
-    sumRange = values[2];
-  }
+var SUMIF = function (range, criteria, sumRange?) {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "SUMIF");
 
   var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criteria);
 
@@ -736,9 +710,9 @@ var SUMIF = function (...values) {
       if (sumRange && i > sumRange.length-1) {
         continue;
       }
-      if (values.length === 2 && TypeConverter.canCoerceToNumber(x) && criteriaEvaluation(x)) {
+      if (arguments.length === 2 && TypeConverter.canCoerceToNumber(x) && criteriaEvaluation(x)) {
         sum = sum + TypeConverter.valueToNumber(x);
-      } else if (values.length === 3 && TypeConverter.canCoerceToNumber(sumRange[i]) && criteriaEvaluation(x)) {
+      } else if (arguments.length === 3 && TypeConverter.canCoerceToNumber(sumRange[i]) && criteriaEvaluation(x)) {
         sum = sum + TypeConverter.valueToNumber(sumRange[i]);
       }
     }
@@ -772,8 +746,8 @@ var SUMSQ = function (...values) {
 
 /**
  * Truncates a number to a certain number of significant digits by omitting less significant digits.
- * @param values[0] The value to be truncated.
- * @param values[1]  [ OPTIONAL - 0 by default ] - The number of significant digits to the right of the decimal point to
+ * @param value - The value to be truncated.
+ * @param places - [ OPTIONAL - 0 by default ] - The number of significant digits to the right of the decimal point to
  * retain. If places is greater than the number of significant digits in value, value is returned without modification.
  * places may be negative, in which case the specified number of digits to the left of the decimal place are changed to
  * zero. All digits to the right of the decimal place are discarded. If all digits of value are changed to zero, TRUNC
@@ -781,12 +755,12 @@ var SUMSQ = function (...values) {
  * @returns {number} after truncation
  * @constructor
  */
-var TRUNC = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "TRUNC");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
+var TRUNC = function (value, places?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "TRUNC");
+  var n = TypeConverter.firstValueAsNumber(value);
   var digits = 0;
-  if (values.length === 2) {
-    digits = TypeConverter.firstValueAsNumber(values[1]);
+  if (places !== undefined) {
+    digits = TypeConverter.firstValueAsNumber(places);
   }
   var sign = (n > 0) ? 1 : -1;
   return sign * (Math.floor(Math.abs(n) * Math.pow(10, digits))) / Math.pow(10, digits);
@@ -795,55 +769,55 @@ var TRUNC = function (...values) : number {
 
 /**
  * Converts an angle value in degrees to radians.
- * @param values[0] angle - The angle to convert from degrees to radians.
+ * @param angle - The angle to convert from degrees to radians.
  * @returns {number} radians
  * @constructor
  */
-var RADIANS = function (...values) {
-  ArgsChecker.checkLength(values, 1, "RADIANS");
-  var d = TypeConverter.firstValueAsNumber(values[0]);
+var RADIANS = function (angle) {
+  ArgsChecker.checkLength(arguments, 1, "RADIANS");
+  var d = TypeConverter.firstValueAsNumber(angle);
   return d * Math.PI / 180;
 };
 
 /**
  * Converts an angle value in radians to degrees.
- * @param values[0] angle - The angle to convert from radians to degrees.
+ * @param angle - The angle to convert from radians to degrees.
  * @returns {number} degrees
  * @constructor
  */
-var DEGREES = function (...values) {
-  ArgsChecker.checkLength(values, 1, "DEGREES");
-  var r = TypeConverter.firstValueAsNumber(values[0]);
+var DEGREES = function (angle) {
+  ArgsChecker.checkLength(arguments, 1, "DEGREES");
+  var r = TypeConverter.firstValueAsNumber(angle);
   return r * 180 / Math.PI;
 };
 
 
 /**
  * Returns the complementary Gauss error function of a value.
- * @param values[0] The number for which to calculate the complementary Gauss error function.
+ * @param value - The number for which to calculate the complementary Gauss error function.
  * @returns {number} complementary Gauss error function of a value
  * @constructor
  */
-var ERFC = function (...values) {
-  ArgsChecker.checkLength(values, 1, "ERFC");
-  var v = TypeConverter.firstValueAsNumber(values[0]);
+var ERFC = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ERFC");
+  var v = TypeConverter.firstValueAsNumber(value);
   return v === 0 ? 1 : 1 - erf(v);
 };
 
 
 /**
  * Returns the error function integrated between lower_limit and upper_limit.
- * @param values[0] lower_limit - The lower bound for integrating ERF.
- * @param values[1] upper_limit - [Optional]. The upper bound for integrating ERF. If omitted, ERF integrates between
+ * @param lowerLimit - The lower bound for integrating ERF.
+ * @param upperLimit - [Optional]. The upper bound for integrating ERF. If omitted, ERF integrates between
  * zero and lower_limit.
  * @returns {number} error function integrated between lower_limit and upper_limit
  * @constructor
  */
-var ERF = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "ERF");
-  var lower = TypeConverter.firstValueAsNumber(values[0]);
-  var upper = values.length === 2 ? TypeConverter.firstValueAsNumber(values[1]) : 0;
-  return values.length === 1 ? erf(lower) : erf(upper) - erf(lower);
+var ERF = function (lowerLimit, upperLimit?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "ERF");
+  var lower = TypeConverter.firstValueAsNumber(lowerLimit);
+  var upper = upperLimit !== undefined ? TypeConverter.firstValueAsNumber(upperLimit) : 0;
+  return upperLimit === undefined ? erf(lower) : erf(upper) - erf(lower);
 };
 
 
@@ -895,17 +869,17 @@ function erf(x) {
 
 /**
  * Calculates the sum of the sums of the squares of values in two arrays.
- * @param values[0] array_x - The array or range of values whose squares will be added to the squares of corresponding
- * entries in array_y and added together.
- * @param values[1] array_y - The array or range of values whose squares will be added to the squares of corresponding
- * entries in array_x and added together.
+ * @param arrayX - The array or range of values whose squares will be added to the squares of corresponding
+ * entries in arrayY and added together.
+ * @param arrayY - The array or range of values whose squares will be added to the squares of corresponding
+ * entries in arrayX and added together.
  * @returns {number} sum of the sums of the squares
  * @constructor
  */
-var SUMX2PY2 = function (...values) : number {
-  ArgsChecker.checkLength(values, 2, "SUMX2PY2");
-  var arrOne = Filter.flattenAndThrow(values[0]);
-  var arrTwo = Filter.flattenAndThrow(values[1]);
+var SUMX2PY2 = function (arrayX, arrayY) : number {
+  ArgsChecker.checkLength(arguments, 2, "SUMX2PY2");
+  var arrOne = Filter.flattenAndThrow(arrayX);
+  var arrTwo = Filter.flattenAndThrow(arrayY);
   if (arrOne.length !== arrTwo.length) {
     throw new NAError("Array arguments to SUMX2PY2 are of different size.");
   }
@@ -921,17 +895,17 @@ var SUMX2PY2 = function (...values) : number {
 
 /**
  * Calculates the sum of the differences of the squares of values in two arrays.
- * @param values[0] array_x - The array or range of values whose squares will be reduced by the squares of corresponding
+ * @param arrayX - The array or range of values whose squares will be reduced by the squares of corresponding
  * entries in array_y and added together.
- * @param values[1] array_y - The array or range of values whose squares will be subtracted from the squares of
+ * @param arrayY - The array or range of values whose squares will be subtracted from the squares of
  * corresponding entries in array_x and added together.
  * @returns {number} sum of the differences of the squares
  * @constructor
  */
-var SUMX2MY2 = function (...values) : number {
-  ArgsChecker.checkLength(values, 2, "SUMX2MY2");
-  var arrOne = Filter.flattenAndThrow(values[0]);
-  var arrTwo = Filter.flattenAndThrow(values[1]);
+var SUMX2MY2 = function (arrayX, arrayY) : number {
+  ArgsChecker.checkLength(arguments, 2, "SUMX2MY2");
+  var arrOne = Filter.flattenAndThrow(arrayX);
+  var arrTwo = Filter.flattenAndThrow(arrayY);
   if (arrOne.length !== arrTwo.length) {
     throw new NAError("Array arguments to SUMX2MY2 are of different size.");
   }
@@ -1022,13 +996,13 @@ var SUMPRODUCT = function (...values) : number {
 
 /**
  * Returns the number of ways to choose some number of objects from a pool of a given size of objects.
- * @param values[0] n - The size of the pool of objects to choose from.
- * @param values[1] k - The number of objects to choose.
+ * @param m - The size of the pool of objects to choose from.
+ * @param k - The number of objects to choose.
  * @returns {number} number of ways
  * @constructor
  */
-var COMBIN = function (...values) : number {
-  ArgsChecker.checkLength(values, 2, "COMBIN");
+var COMBIN = function (m, k) : number {
+  ArgsChecker.checkLength(arguments, 2, "COMBIN");
 
   var MEMOIZED_FACT = [];
   function fact(number) {
@@ -1042,8 +1016,8 @@ var COMBIN = function (...values) : number {
       return MEMOIZED_FACT[n];
     }
   }
-  var n = TypeConverter.firstValueAsNumber(values[0]);
-  var c = TypeConverter.firstValueAsNumber(values[1]);
+  var n = TypeConverter.firstValueAsNumber(m);
+  var c = TypeConverter.firstValueAsNumber(k);
   if (n < c) {
     throw new NumError("Function COMBIN parameter 2 value is "
       + c + ". It should be less than or equal to value of Function COMBIN parameter 1 with " + n + ".");

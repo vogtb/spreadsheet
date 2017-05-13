@@ -26,7 +26,7 @@ test("SPLIT", function(){
     SPLIT([], "er");
   }, ERRORS.REF_ERROR);
   catchAndAssertEquals(function() {
-    SPLIT("er", "er", true, 10);
+    SPLIT.apply(this, ["er", "er", true, 10]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -49,7 +49,7 @@ test("CHAR", function(){
     CHAR(0);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    CHAR();
+    CHAR.apply(this, []);
   }, ERRORS.NA_ERROR);
 });
 
@@ -61,17 +61,18 @@ test("CODE", function(){
   assertEquals(CODE('#'), 35);
   assertEquals(CODE(false), 70);
   assertEquals(CODE(true), 84);
+  assertEquals(CODE(['a']), 97);
+  assertEquals(CODE([['a'], 'p']), 97);
   catchAndAssertEquals(function() {
-    CODE();
+    CODE.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    CODE("a", "m");
+    CODE.apply(this, ["a", "m"]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     CODE("");
   }, ERRORS.VALUE_ERROR);
-  assertEquals(CODE(['a']), 97);
-  assertEquals(CODE([['a'], 'p']), 97);
+
 });
 
 
@@ -84,7 +85,7 @@ test("CONCATENATE", function(){
   assertEquals(CONCATENATE([22, 14, "m", false]), "2214mFALSE");
   assertEquals(CONCATENATE([22, 14, ["m", false]]), "2214mFALSE");
   catchAndAssertEquals(function() {
-    CONCATENATE();
+    CONCATENATE.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     CONCATENATE("10", 4, false, []);
@@ -110,6 +111,12 @@ test("CONVERT", function(){
   assertEquals(CONVERT(10, "ton", "stone"), 1428.5714285714287);
   assertEquals(CONVERT(10, "tspm", "bushel"), 0.0014188796696394089);
   assertEquals(CONVERT(10, "c", "Wh"), 0.011622222222222223);
+  catchAndAssertEquals(function() {
+    CONVERT.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    CONVERT.apply(this, [5.1, "mm", "m", 10]);
+  }, ERRORS.NA_ERROR);
 });
 
 

@@ -13,7 +13,7 @@ import {
 
 /**
  * Computes the value of a Roman numeral.
- * @param text The Roman numeral to format, whose value must be between 1 and 3999, inclusive.
+ * @param text - The Roman numeral to format, whose value must be between 1 and 3999, inclusive.
  * @returns {number} value in integer format
  * @constructor
  */
@@ -43,13 +43,13 @@ var ARABIC = function (text?) {
 
 /**
  * Convert a number into a character according to the current Unicode table.
- * @param values[0] The number of the character to look up from the current Unicode table in decimal format.
+ * @param value - The number of the character to look up from the current Unicode table in decimal format.
  * @returns {string} character corresponding to Unicode number
  * @constructor
  */
-var CHAR = function (...values) : string {
-  ArgsChecker.checkLength(values, 1, "CHAR");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
+var CHAR = function (value) : string {
+  ArgsChecker.checkLength(arguments, 1, "CHAR");
+  var n = TypeConverter.firstValueAsNumber(value);
   if (n < 1 || n > 1114112) { //limit
     throw new NumError("Function CHAR parameter 1 value " + n + " is out of range.");
   }
@@ -58,13 +58,13 @@ var CHAR = function (...values) : string {
 
 /**
  * Returns the numeric Unicode map value of the first character in the string provided.
- * @param values[0] The string whose first character's Unicode map value will be returned.
+ * @param value - The string whose first character's Unicode map value will be returned.
  * @returns {number} number of the first character's Unicode value
  * @constructor
  */
-var CODE = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "CODE");
-  var text = TypeConverter.firstValueAsString(values[0]);
+var CODE = function (value) : number {
+  ArgsChecker.checkLength(arguments, 1, "CODE");
+  var text = TypeConverter.firstValueAsString(value);
   if (text === "") {
     throw new ValueError("Function CODE parameter 1 value should be non-empty.");
   }
@@ -73,22 +73,19 @@ var CODE = function (...values) : number {
 
 /**
  * Divides text around a specified character or string, and puts each fragment into a separate cell in the row.
- * @param values[0] text - The text to divide.
- * @param values[1] delimiter - The character or characters to use to split text.
- * @param values[2] split_by_each - [optional] Whether or not to divide text around each character contained in
+ * @param text - The text to divide.
+ * @param delimiter - The character or characters to use to split text.
+ * @param splitByEach - [optional] Whether or not to divide text around each character contained in
  * delimiter.
  * @returns {Array<string>} containing the split
  * @constructor
  * TODO: At some point this needs to return a more complex type than Array. Needs to return a type that has a dimension.
  */
-var SPLIT = function (...values) : Array<string> {
-  ArgsChecker.checkLengthWithin(values, 2, 3, "SPLIT");
-  var text = TypeConverter.firstValueAsString(values[0]);
-  var delimiter = TypeConverter.firstValueAsString(values[1]);
-  var splitByEach = false;
-  if (values.length === 3) {
-    splitByEach = TypeConverter.firstValueAsBoolean(values[2]);
-  }
+var SPLIT = function (text, delimiter, splitByEach?) : Array<string> {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "SPLIT");
+  text = TypeConverter.firstValueAsString(text);
+  delimiter = TypeConverter.firstValueAsString(delimiter);
+  splitByEach = splitByEach === undefined ? false : TypeConverter.firstValueAsBoolean(splitByEach);
   if (splitByEach) {
     var result = [text];
     for (var i = 0; i < delimiter.length; i++) {
@@ -109,7 +106,7 @@ var SPLIT = function (...values) : Array<string> {
 
 /**
  * Appends strings to one another.
- * @param values to append to one another. Must contain at least one value
+ * @param values - to append to one another. Must contain at least one value
  * @returns {string} concatenated string
  * @constructor
  */
@@ -131,18 +128,18 @@ var CONCATENATE = function (...values) : string {
 
 /**
  * Converts a numeric value to a different unit of measure.
- * @param values[0] value - the numeric value in start_unit to convert to end_unit.
- * @param values[1] start_unit - The starting unit, the unit currently assigned to value.
- * @param values[2] end_unit - The unit of measure into which to convert value.
+ * @param value - the numeric value in start_unit to convert to end_unit.
+ * @param startUnit - The starting unit, the unit currently assigned to value.
+ * @param endUnit - The unit of measure into which to convert value.
  * @returns {number}
  * @constructor
  * TODO: Looking up units is not efficient at all. We should use an object instead of iterating through an array.
  */
-var CONVERT = function (...values) {
-  ArgsChecker.checkLength(values, 3, "CONVERT");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
-  var fromUnit = TypeConverter.firstValueAsString(values[1]);
-  var toUnit = TypeConverter.firstValueAsString(values[2]);
+var CONVERT = function (value, startUnit, endUnit) {
+  ArgsChecker.checkLength(arguments, 3, "CONVERT");
+  var n = TypeConverter.firstValueAsNumber(value);
+  var fromUnit = TypeConverter.firstValueAsString(startUnit);
+  var toUnit = TypeConverter.firstValueAsString(endUnit);
 
   // NOTE: A lot of the code for this method is from https://github.com/sutoiku/formula.js. I'm relying on them to have
   // gotten it right, but I'm spot checking some of their work against GS, MSE, LibreOffice, OpenOffice.

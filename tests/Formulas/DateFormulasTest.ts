@@ -43,10 +43,10 @@ test("WORKDAY.INTL", function () {
   assertEquals(WORKDAY$INTL(DATE(1945, 1, 14), 6000, "1110001"), DATE(1983, 5, 14));
   assertEquals(WORKDAY$INTL(DATE(1945, 1, 14), 6000, 6), DATE(1968, 1, 14));
   catchAndAssertEquals(function() {
-    WORKDAY$INTL(12, 12, [12], false, 1);
+    WORKDAY$INTL.apply(this, [12, 12, [12], false, 1]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    WORKDAY$INTL(12);
+    WORKDAY$INTL.apply(this, [12]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     WORKDAY$INTL("1992-1-1", "str");
@@ -77,10 +77,10 @@ test("WORKDAY", function () {
   assertEquals(WORKDAY(DATE(2012, 5, 29), 1000, [41058, 41059, 41060, 41061, 41062]), DATE(2016, 4, 1));
   assertEquals(WORKDAY([DATE(1999, 2, 2)], [10]), DATE(1999, 2, 16));
   catchAndAssertEquals(function() {
-    WORKDAY();
+    WORKDAY.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    WORKDAY(DATE(2012, 5, 29), 1000, [10], 11);
+    WORKDAY.apply(this, [DATE(2012, 5, 29), 1000, [10], 11]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -101,13 +101,13 @@ test("TIME", function () {
   assertEquals(TIME(3, 0, 0), 0.125);
   assertEquals(TIME("3", ["0"], false), 0.125);
   catchAndAssertEquals(function() {
-    TIME();
+    TIME.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    TIME(1, 1);
+    TIME.apply(this, [1, 1]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    TIME(1, 1, 1, 1);
+    TIME.apply(this, [1, 1, 1, 1]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     TIME(-29, 10, 10);
@@ -160,10 +160,10 @@ test("NETWORKDAYS$INTL", function () {
   assertEquals(NETWORKDAYS$INTL(900, 12004), 7933);
   assertEquals(NETWORKDAYS$INTL(900, 12005), 7933);
   catchAndAssertEquals(function() {
-    NETWORKDAYS$INTL(12, 12, [12], false, 1);
+    NETWORKDAYS$INTL.apply(this, [12, 12, [12], false, 1]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    NETWORKDAYS$INTL(12);
+    NETWORKDAYS$INTL.apply(this, [12]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     NETWORKDAYS$INTL("1992-1-1", "str");
@@ -219,10 +219,10 @@ test("NETWORKDAYS", function(){
   assertEquals(NETWORKDAYS(12, 12, [12]), 0);
   assertEquals(NETWORKDAYS(DATE(1998, 1, 1), DATE(1999, 1, 22), [DATE(1999, 1, 20)]), 276);
   catchAndAssertEquals(function() {
-    NETWORKDAYS(12, 12, [12], false);
+    NETWORKDAYS.apply(this, [12, 12, [12], false]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    NETWORKDAYS(12);
+    NETWORKDAYS.apply(this, [12]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     NETWORKDAYS("1992-1-1", "str");
@@ -251,10 +251,10 @@ test("SECOND", function() {
   assertEquals(SECOND("1992-1-1 8:120:104"), 44);
   assertEquals(SECOND(0.511111111111), 0);
   catchAndAssertEquals(function() {
-    SECOND("8:10", 5);
+    SECOND.apply(this, ["8:10", 5]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    SECOND();
+    SECOND.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     SECOND("str");
@@ -294,10 +294,10 @@ test("MINUTE", function() {
   assertEquals(MINUTE(99.5), 0);
   assertEquals(MINUTE("1969-7-6 5:05am"), 5);
   catchAndAssertEquals(function() {
-    MINUTE("8:10", 5);
+    MINUTE.apply(this, ["8:10", 5]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    MINUTE();
+    MINUTE.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     MINUTE("str");
@@ -340,10 +340,10 @@ test("HOUR", function() {
   assertEquals(HOUR("0.0625"), 1);
   assertEquals(HOUR("1969-7-6 5am"), 5);
   catchAndAssertEquals(function() {
-    HOUR("8:10", 5);
+    HOUR.apply(this, ["8:10", 5]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    HOUR();
+    HOUR.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     HOUR("str");
@@ -378,10 +378,10 @@ test("TIMEVALUE", function() {
   assertEquals(TIMEVALUE("11:21222:2111pm"), 0.7202662037037038);
   assertEquals(TIMEVALUE("11:21222:2111am"), 0.2202662037037037);
   catchAndAssertEquals(function() {
-    TIMEVALUE("8:10", 5);
+    TIMEVALUE.apply(this, ["8:10", 5]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    TIMEVALUE();
+    TIMEVALUE.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     TIMEVALUE("str");
@@ -463,10 +463,10 @@ test("YEARFRAC", function(){
     YEARFRAC("1996-6-19", "1992-6-19", 5);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    YEARFRAC();
+    YEARFRAC.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    YEARFRAC("1992-6-19", "1995-6-19", 1, 0);
+    YEARFRAC.apply(this, ["1992-6-19", "1995-6-19", 1, 0]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     YEARFRAC("str", "1995-6-19", 1);
@@ -542,10 +542,10 @@ test("DATEDIF", function(){
     DATEDIF("1992-6-19", "1995-6-19", "mm");
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    DATEDIF();
+    DATEDIF.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DATEDIF("1992-6-19", "1995-6-19", "mm", 0);
+    DATEDIF.apply(this, ["1992-6-19", "1995-6-19", "mm", 0]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     DATEDIF("str", "1995-6-19", "mm");
@@ -1077,10 +1077,10 @@ test("WEEKNUM", function(){
   assertEquals(WEEKNUM(745, 21), 3);
   assertEquals(WEEKNUM(746, 21), 3);
   catchAndAssertEquals(function() {
-    WEEKNUM();
+    WEEKNUM.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    WEEKNUM(213123, 1, 1);
+    WEEKNUM.apply(this, [213123, 1, 1]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     WEEKNUM("str");
@@ -1143,10 +1143,10 @@ test("WEEKDAY", function(){
   assertEquals(WEEKDAY(40915, 3), 5);
   assertEquals(WEEKDAY(40916, 3), 6);
   catchAndAssertEquals(function() {
-    WEEKDAY();
+    WEEKDAY.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    WEEKDAY(213123, 1, 1);
+    WEEKDAY.apply(this, [213123, 1, 1]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     WEEKDAY("str");
@@ -1176,10 +1176,10 @@ test("YEAR", function(){
   assertEquals(YEAR(true), 1899);
   assertEquals(YEAR([1, "str"]), 1899);
   catchAndAssertEquals(function() {
-    YEAR();
+    YEAR.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    YEAR(213123, 123123);
+    YEAR.apply(this, [213123, 123123]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     YEAR("str");
@@ -1198,10 +1198,10 @@ test("MONTH", function(){
   assertEquals(MONTH(1312212), 9);
   assertEquals(MONTH(13122121), 2);
   catchAndAssertEquals(function() {
-    MONTH();
+    MONTH.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    MONTH(213123, 123123);
+    MONTH.apply(this, [213123, 123123]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     MONTH("str");
@@ -1232,13 +1232,13 @@ test("DAYS360", function(){
   assertEquals(DAYS360(33779, 33780), 1);
   assertEquals(DAYS360([1, "str"], [390, "str"]), 384);
   catchAndAssertEquals(function() {
-    DAYS360();
+    DAYS360.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DAYS360(100);
+    DAYS360.apply(this, [100]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DAYS360(100, 200, true, "str");
+    DAYS360.apply(this, [100, 200, true, "str"]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     DAYS360("str", 100);
@@ -1268,13 +1268,13 @@ test("DAYS", function(){
   assertEquals(DAYS([0, "str"], [100, "str"]), -100);
   assertEquals(DAYS("1992, 6, 25", "1992, 6, 24"), 1);
   catchAndAssertEquals(function() {
-    DAYS();
+    DAYS.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DAYS(100);
+    DAYS.apply(this, [100]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DAYS(100, 200, 300);
+    DAYS.apply(this, [100, 200, 300]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     DAYS([[], 100], 22);
@@ -1307,10 +1307,10 @@ test("DAY", function(){
     DAY("str");
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    DAY();
+    DAY.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DAY(DATE(1992, 6, 24), 4);
+    DAY.apply(this, [DATE(1992, 6, 24), 4]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     DAY(-1);
@@ -1333,10 +1333,10 @@ test("EDATE", function(){
     EDATE("str", 2);
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    EDATE(DATE(1992, 6, 24));
+    EDATE.apply(this, [DATE(1992, 6, 24)]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    EDATE(DATE(1992, 6, 24), 4, 4);
+    EDATE.apply(this, [DATE(1992, 6, 24), 4, 4]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     EDATE(-1, 1);
@@ -1366,6 +1366,12 @@ test("EOMONTH", function(){
   assertEquals(EOMONTH(1, 1), DATE(1900, 1, 31));
   assertEquals(EOMONTH(true, 1), DATE(1900, 1, 31));
   catchAndAssertEquals(function() {
+    EOMONTH.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    EOMONTH.apply(this, [true, 1, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
     EOMONTH("str", 2);
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
@@ -1382,10 +1388,10 @@ test("DATE", function(){
     DATE(1900, 0, 5);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    DATE(1900, 0, 5, 22);
+    DATE.apply(this, [1900, 0, 5, 22]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DATE(1900, 0);
+    DATE.apply(this, [1900, 0]);
   }, ERRORS.NA_ERROR);
   assertEquals(DATE(1992, 6, 24), 33779);
   assertEquals(DATE(2017, 2, 26), 42792);
@@ -1451,10 +1457,10 @@ test("DATEVALUE", function(){
   assertEquals(DATEVALUE("January-2017 10:10:10"), 42736);
   assertEquals(DATEVALUE("January-2017 10:10:10am"), 42736);
   catchAndAssertEquals(function() {
-    DATEVALUE("6/24/92", 10);
+    DATEVALUE.apply(this, ["6/24/92", 10]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DATEVALUE();
+    DATEVALUE.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     DATEVALUE(false);

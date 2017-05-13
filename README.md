@@ -68,10 +68,6 @@ TypeConverter.
 ### Test CriteriaFunctionFactory
 
 
-### Use `arguments` instead of `...values` for performance reasons.
-And use `.call()` when testing with weird param numbers.
-
-
 ### Pull static functions outside of formulas, declare once.
 
 

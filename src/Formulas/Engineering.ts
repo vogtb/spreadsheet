@@ -7,22 +7,22 @@ import {
 import {
   ValueError,
   NumError
-} from "../Errors"
+} from "../Errors";
 
 /**
  * Converts a signed binary number to decimal format.
- * @param values[0] signed_binary_number - The signed 10-bit binary value to be converted to decimal, provided as a
+ * @param signedBinaryNumber - The signed 10-bit binary value to be converted to decimal, provided as a
  * string. The most significant bit of signed_binary_number is the sign bit; that is, negative numbers are represented
  * in two's complement format.
  * @returns {number}
  * @constructor
  */
-var BIN2DEC = function (...values) : number {
-  ArgsChecker.checkLength(values, 1, "BIN2DEC");
-  if (typeof TypeConverter.firstValue(values[0]) === "boolean") {
-    throw new ValueError("Function BIN2DEC parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
+var BIN2DEC = function (signedBinaryNumber) : number {
+  ArgsChecker.checkLength(arguments, 1, "BIN2DEC");
+  if (typeof TypeConverter.firstValue(signedBinaryNumber) === "boolean") {
+    throw new ValueError("Function BIN2DEC parameter 1 expects text values. But '" + signedBinaryNumber + "' is a boolean and cannot be coerced to a text.");
   }
-  var n = TypeConverter.firstValueAsString(values[0]);
+  var n = TypeConverter.firstValueAsString(signedBinaryNumber);
   if (!(/^[01]{1,10}$/).test(n)) {
     throw new NumError("Input for BIN2DEC ('" + n + "') is not a valid binary representation.");
   }
@@ -36,22 +36,22 @@ var BIN2DEC = function (...values) : number {
 
 /**
  * Converts a signed binary number to signed hexadecimal format.
- * @param values[0] signed_binary_number - The signed 10-bit binary value to be converted to signed hexadecimal,
+ * @param signedBinaryNumber - The signed 10-bit binary value to be converted to signed hexadecimal,
  * provided as a string. The most significant bit of signed_binary_number is the sign bit; that is, negative numbers are
  * represented in two's complement format.
- * @param values[1] significant_digits - [ OPTIONAL ] - The number of significant digits to ensure in the result.
+ * @param significantDigits - [ OPTIONAL ] - The number of significant digits to ensure in the result.
  * @returns {string} string representation of a signed hexadecimal
  * @constructor
  */
-var BIN2HEX = function (...values) : string {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "BIN2HEX");
-  if (typeof TypeConverter.firstValue(values[0]) === "boolean") {
-    throw new ValueError("Function BIN2HEX parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
+var BIN2HEX = function (signedBinaryNumber, significantDigits?) : string {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "BIN2HEX");
+  if (typeof TypeConverter.firstValue(signedBinaryNumber) === "boolean") {
+    throw new ValueError("Function BIN2HEX parameter 1 expects text values. But '" + signedBinaryNumber + "' is a boolean and cannot be coerced to a text.");
   }
-  var n = TypeConverter.firstValueAsString(values[0]);
+  var n = TypeConverter.firstValueAsString(signedBinaryNumber);
   var p = 10;
-  if (values.length === 2) {
-    p = TypeConverter.firstValueAsNumber(values[1]);
+  if (significantDigits !== undefined) {
+    p = TypeConverter.firstValueAsNumber(significantDigits);
   }
   if (!(/^[01]{1,10}$/).test(n)) {
     throw new NumError("Input for BIN2HEX ('"+n+"') is not a valid binary representation.");
@@ -80,24 +80,24 @@ var BIN2HEX = function (...values) : string {
 
 /**
  * Converts a signed binary number to signed octal format.
- * @param values[0] signed_binary_number - The signed 10-bit binary value to be converted to signed octal, provided as a
+ * @param signedBinaryNumber - The signed 10-bit binary value to be converted to signed octal, provided as a
  * string. The most significant bit of signed_binary_number is the sign bit; that is, negative numbers are represented
  * in two's complement format.
- * @param values[1] significant_digits - [ OPTIONAL ] - The number of significant digits to ensure in the result. If
+ * @param significantDigits - [ OPTIONAL ] - The number of significant digits to ensure in the result. If
  * this is greater than the number of significant digits in the result, the result is left-padded with zeros until the
  * total number of digits reaches significant_digits.
  * @returns {string} number in octal format
  * @constructor
  */
-var BIN2OCT = function (...values) : string {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "BIN2OCT");
-  if (typeof TypeConverter.firstValue(values[0]) === "boolean") {
-    throw new ValueError("Function BIN2OCT parameter 1 expects text values. But '" + values[0] + "' is a boolean and cannot be coerced to a text.");
+var BIN2OCT = function (signedBinaryNumber, significantDigits?) : string {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "BIN2OCT");
+  if (typeof TypeConverter.firstValue(signedBinaryNumber) === "boolean") {
+    throw new ValueError("Function BIN2OCT parameter 1 expects text values. But '" + signedBinaryNumber + "' is a boolean and cannot be coerced to a text.");
   }
-  var n = TypeConverter.firstValueAsString(values[0]);
+  var n = TypeConverter.firstValueAsString(signedBinaryNumber);
   var p = 10;
-  if (values.length === 2) {
-    p = TypeConverter.firstValueAsNumber(values[1]);
+  if (significantDigits !== undefined) {
+    p = TypeConverter.firstValueAsNumber(significantDigits);
   }
   if (!(/^[01]{1,10}$/).test(n)) {
     throw new NumError("Input for BIN2OCT ('"+n+"') is not a valid binary representation.");
@@ -126,17 +126,17 @@ var BIN2OCT = function (...values) : string {
 
 /**
  * Converts a decimal number to signed octal format.
- * @param values[0] decimal_number - The decimal value to be converted to signed octal,provided as a string. For this
+ * @param decimalDumber - The decimal value to be converted to signed octal,provided as a string. For this
  * function, this value has a maximum of 536870911 if positive, and a minimum of -53687092 if negative.
- * @param values[1] significant_digits - [ OPTIONAL ] The number of significant digits to ensure in the result. If this
+ * @param significantDigits - [ OPTIONAL ] The number of significant digits to ensure in the result. If this
  * is greater than the number of significant digits in the result, the result is left-padded with zeros until the total
  * number of digits reaches significant_digits.
  * @returns {string} octal string representation of the decimal number
  * @constructor
  */
-var DEC2OCT = function (...values) : string {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "DEC2OCT");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
+var DEC2OCT = function (decimalDumber, significantDigits?) : string {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "DEC2OCT");
+  var n = TypeConverter.firstValueAsNumber(decimalDumber);
   if (n < 0) {
     n = Math.ceil(n);
   }
@@ -145,8 +145,8 @@ var DEC2OCT = function (...values) : string {
   }
   var p = 10;
   var placesPresent = false;
-  if (values.length === 2) {
-    p = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
+  if (significantDigits !== undefined) {
+    p = Math.floor(TypeConverter.firstValueAsNumber(significantDigits));
     placesPresent = true;
   }
   if (n < -53687092 || n > 536870911) {
@@ -174,17 +174,17 @@ var DEC2OCT = function (...values) : string {
 
 /**
  * Converts a decimal number to signed hexadecimal format.
- * @param values[0] decimal_number - The decimal value to be converted to signed hexadecimal, provided as a string. This
+ * @param decimalDumber - The decimal value to be converted to signed hexadecimal, provided as a string. This
  * value has a maximum of 549755813887 if positive, and a minimum of -549755814888 if negative.
- * @param values[1] significant_digits - [ OPTIONAL ] - The number of significant digits to ensure in the result. If
+ * @param significantDigits - [ OPTIONAL ] - The number of significant digits to ensure in the result. If
  * this is greater than the number of significant digits in the result, the result is left-padded with zeros until the
  * total number of digits reaches significant_digits. This value is ignored if decimal_number is negative.
  * @returns {string} hexadecimal string representation of the decimal number
  * @constructor
  */
-var DEC2HEX = function (...values) : string {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "DEC2HEX");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
+var DEC2HEX = function (decimalDumber, significantDigits?) : string {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "DEC2HEX");
+  var n = TypeConverter.firstValueAsNumber(decimalDumber);
   if (n < 0) {
     n = Math.ceil(n);
   }
@@ -193,8 +193,8 @@ var DEC2HEX = function (...values) : string {
   }
   var p = 10;
   var placesPresent = false;
-  if (values.length === 2) {
-    p = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
+  if (significantDigits !== undefined) {
+    p = Math.floor(TypeConverter.firstValueAsNumber(significantDigits));
     placesPresent = true;
   }
   if (n < -549755813888 || n > 549755813887) {
@@ -222,17 +222,17 @@ var DEC2HEX = function (...values) : string {
 
 /**
  * Converts a decimal number to signed binary format.
- * @param values[0] decimal_number - The decimal value to be converted to signed binary, provided as a string. For this
+ * @param decimalDumber - The decimal value to be converted to signed binary, provided as a string. For this
  * function, this value has a maximum of 511 if positive, and a minimum of -512 if negative.
- * @param values[1] significant_digits - [ OPTIONAL ] The number of significant digits to ensure in the result. If this
+ * @param significantDigits - [ OPTIONAL ] The number of significant digits to ensure in the result. If this
  * is greater than the number of significant digits in the result, the result is left-padded with zeros until the total
  * number of digits reaches significant_digits.
  * @returns {string} signed binary string representation of the input decimal number.
  * @constructor
  */
-var DEC2BIN = function (...values) : string {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "DEC2BIN");
-  var n = TypeConverter.firstValueAsNumber(values[0]);
+var DEC2BIN = function (decimalDumber, significantDigits?) : string {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "DEC2BIN");
+  var n = TypeConverter.firstValueAsNumber(decimalDumber);
   if (n < 0) {
     n = Math.ceil(n);
   }
@@ -244,8 +244,8 @@ var DEC2BIN = function (...values) : string {
   }
   var p = 10;
   var placesPresent = false;
-  if (values.length === 2) {
-    p = Math.floor(TypeConverter.firstValueAsNumber(values[1]));
+  if (significantDigits !== undefined) {
+    p = Math.floor(TypeConverter.firstValueAsNumber(significantDigits));
     placesPresent = true;
   }
 
@@ -293,17 +293,17 @@ var DEC2BIN = function (...values) : string {
 
 /**
  * Compare two numeric values, returning 1 if they're equal.
- * @param values[0] The first number to compare.
- * @param values[1] The second number to compare.
+ * @param one - The first number to compare.
+ * @param two - The second number to compare.
  * @returns {number} 1 if they're equal, 0 if they're not equal.
  * @constructor
  */
-var DELTA = function (...values) : number {
-  ArgsChecker.checkLengthWithin(values, 1, 2, "DELTA");
-  if (values.length === 1) {
-    return TypeConverter.valueToNumber(values[0]) === 0 ? 1 : 0;
+var DELTA = function (one, two?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "DELTA");
+  if (two === undefined) {
+    return TypeConverter.valueToNumber(one) === 0 ? 1 : 0;
   }
-  return TypeConverter.valueToNumber(values[0]) === TypeConverter.valueToNumber(values[1]) ? 1 : 0;
+  return TypeConverter.valueToNumber(one) === TypeConverter.valueToNumber(two) ? 1 : 0;
 };
 
 export {

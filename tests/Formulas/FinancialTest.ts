@@ -48,10 +48,10 @@ test("ACCRINT", function(){
     ACCRINT(100, 2, 1, 0.1, 1000, 1, 4);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    ACCRINT(100, 2, 1, 0.1, 1000);
+    ACCRINT.apply(this, [100, 2, 1, 0.1, 1000]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    ACCRINT(1, 2, 1461, 0.1, 1000, 1, 1, 1);
+    ACCRINT.apply(this, [1, 2, 1461, 0.1, 1000, 1, 1, 1]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -71,13 +71,13 @@ test("CUMPRINC", function(){
     CUMPRINC(0.12, 12, 100, 3, 1, false);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    CUMPRINC();
+    CUMPRINC.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    CUMPRINC(0.12, 12, 100, 1, 5, true, 55);
+    CUMPRINC.apply(this, [0.12, 12, 100, 1, 5, true, 55]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    CUMPRINC(0.12, 12, 100, 1, 5);
+    CUMPRINC.apply(this, [0.12, 12, 100, 1, 5]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -100,13 +100,13 @@ test("CUMIPMT", function(){
     CUMIPMT(0.12, 12, 100, 3, 1, false);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    CUMIPMT();
+    CUMIPMT.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    CUMIPMT(0.12, 12, 100, 1, 5, true, 55);
+    CUMIPMT.apply(this, [0.12, 12, 100, 1, 5, true, 55]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    CUMIPMT(0.12, 12, 100, 1, 5);
+    CUMIPMT.apply(this, [0.12, 12, 100, 1, 5]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -131,10 +131,10 @@ test("DDB", function(){
   assertEquals(DDB(100, 50, 10, 2, 2.25), 17.4375);
   assertEquals(DDB(100, [50], 10, 2, "2.25"), 17.4375);
   catchAndAssertEquals(function() {
-    DDB(100, 50, 10, 12, 2.25);
+    DDB.apply(this, [100, 50, 10, 12, 2.25]);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    DDB(100, -50, 10, 2, 12);
+    DDB.apply(this, [100, -50, 10, 2, 12]);
   }, ERRORS.NUM_ERROR);
 });
 
@@ -154,10 +154,10 @@ test("DOLLAR", function(){
   assertEquals(DOLLAR(31111.41592653589793, -4), 30000);
   assertEquals(DOLLAR(31111.41592653589793, -2), 31100);
   catchAndAssertEquals(function() {
-    DOLLAR();
+    DOLLAR.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DOLLAR(3.1, 1, 1);
+    DOLLAR.apply(this, [3.1, 1, 1]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -180,13 +180,13 @@ test("DOLLARDE", function(){
     DOLLARDE(100, 0.99);
   }, ERRORS.DIV_ZERO_ERROR);
   catchAndAssertEquals(function() {
-    DOLLARDE();
+    DOLLARDE.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DOLLARDE(3.1);
+    DOLLARDE.apply(this, [3.1]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DOLLARDE(3.1, 32, 22);
+    DOLLARDE.apply(this, [3.1, 32, 22]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -209,13 +209,13 @@ test("DOLLARFR", function(){
     DOLLARFR(100, 0.99);
   }, ERRORS.DIV_ZERO_ERROR);
   catchAndAssertEquals(function() {
-    DOLLARFR();
+    DOLLARFR.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DOLLARFR(3.1);
+    DOLLARFR.apply(this, [3.1]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DOLLARFR(3.1, 32, 22);
+    DOLLARFR.apply(this, [3.1, 32, 22]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -227,10 +227,10 @@ test("EFFECT", function(){
   assertEquals(EFFECT("100000", 12.999), 1.123182670038387e+47);
   assertEquals(EFFECT([100000], [12.999]), 1.123182670038387e+47);
   catchAndAssertEquals(function() {
-    EFFECT();
+    EFFECT.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    EFFECT(0.99);
+    EFFECT.apply(this, [0.99]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     EFFECT(-0.99, 12);

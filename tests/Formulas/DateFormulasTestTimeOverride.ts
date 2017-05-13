@@ -32,7 +32,7 @@ test("NOW", function(){
   lockDate(1944, 1, 2, 1, 11, 55);
   assertEquals(NOW(), 16104.29994212963);
   catchAndAssertEquals(function() {
-    NOW(12);
+    NOW.apply(this, [12]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -47,6 +47,6 @@ test("TODAY", function(){
   lockDate(1944, 1, 2, 1, 11, 55);
   assertEquals(TODAY(), DATEVALUE("Feb 2 1944"));
   catchAndAssertEquals(function() {
-    TODAY(12);
+    TODAY.apply(this, [12]);
   }, ERRORS.NA_ERROR);
 });

@@ -26,10 +26,10 @@ test("BIN2DEC", function(){
     BIN2DEC("str");
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    BIN2DEC();
+    BIN2DEC.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    BIN2DEC("10", "10");
+    BIN2DEC.apply(this, ["10", "10"]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -53,10 +53,10 @@ test("BIN2HEX", function(){
     BIN2DEC("str");
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    BIN2DEC();
+    BIN2DEC.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    BIN2DEC("10", 4, 4);
+    BIN2DEC.apply(this, ["10", 4, 4]);
   }, ERRORS.NA_ERROR);
 
 });
@@ -82,10 +82,10 @@ test("BIN2OCT", function(){
     BIN2OCT("str");
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    BIN2OCT();
+    BIN2OCT.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    BIN2OCT("10", 4, 4);
+    BIN2OCT.apply(this, ["10", 4, 4]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -114,10 +114,10 @@ test("DEC2BIN", function(){
     DEC2BIN(513, 10);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    DEC2BIN(100, 100, 10);
+    DEC2BIN.apply(this, [100, 100, 10]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DEC2BIN();
+    DEC2BIN.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     DEC2BIN("str");
@@ -152,10 +152,10 @@ test("DEC2HEX", function(){
     DEC2HEX(54975581, -10);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    DEC2HEX(100, 100, 10);
+    DEC2HEX.apply(this, [100, 100, 10]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DEC2HEX();
+    DEC2HEX.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     DEC2HEX("str");
@@ -190,10 +190,10 @@ test("DEC2OCT", function(){
     DEC2OCT(536870910, -10);
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
-    DEC2OCT(100, 100, 10);
+    DEC2OCT.apply(this, [100, 100, 10]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DEC2OCT();
+    DEC2OCT.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     DEC2OCT("str");
@@ -219,9 +219,9 @@ test("DELTA", function(){
     DELTA("n", "n");
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    DELTA();
+    DELTA.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    DELTA(1, 2, 3);
+    DELTA.apply(this, [1, 2, 3]);
   }, ERRORS.NA_ERROR);
 });

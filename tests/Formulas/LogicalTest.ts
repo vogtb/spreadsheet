@@ -69,11 +69,17 @@ test("EXACT", function(){
 
 test("TRUE", function(){
   assertEquals(TRUE(), true);
+  catchAndAssertEquals(function() {
+    TRUE.apply(this, [0]);
+  }, ERRORS.NA_ERROR);
 });
 
 
 test("FALSE", function(){
   assertEquals(FALSE(), false);
+  catchAndAssertEquals(function() {
+    FALSE.apply(this, [0]);
+  }, ERRORS.NA_ERROR);
 });
 
 

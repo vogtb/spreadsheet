@@ -445,7 +445,7 @@ var Sheet = (function () {
 
     callVariable: function (args) {
       args = args || [];
-      var str = args[0];
+      var str = args.shift(); // the first in args is the name of the function to call.
 
       if (str) {
         str = str.toUpperCase();

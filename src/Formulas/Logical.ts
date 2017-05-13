@@ -55,9 +55,9 @@ var EXACT = function (...values) {
  * Returns true.
  * @returns {boolean} true boolean
  * @constructor
- * TODO: Should throw NA error if param passed in.
  */
 var TRUE = function () : boolean {
+  ArgsChecker.checkLength(arguments, 0, "TRUE");
   return true;
 };
 
@@ -65,9 +65,9 @@ var TRUE = function () : boolean {
  * Returns false.
  * @returns {boolean} false boolean
  * @constructor
- * TODO: Should throw NA error if param passed in.
  */
 var FALSE = function () : boolean {
+  ArgsChecker.checkLength(arguments, 0, "FALSE");
   return false;
 };
 

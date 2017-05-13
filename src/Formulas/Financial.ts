@@ -219,21 +219,39 @@ var EFFECT = function (...values) : number {
   return Math.pow(1 + rate / periods, periods) - 1;
 };
 
-// TODO: Convert to real formula PMT.
-function pmt(rate, periods, present, future, type) {
+
+/**
+ * Calculates the periodic payment for an annuity investment based on constant-amount periodic payments and a constant
+ * interest rate.
+ * @param rate - The interest rate.
+ * @param periods - The number of payments to be made.
+ * @param presentValue - The current value of the annuity.
+ * @param futureValue [ OPTIONAL ] - The future value remaining after the final payment has been made.
+ * @param endOrBeginning [ OPTIONAL - 0 by default ] - Whether payments are due at the end (0) or beginning (1) of each
+ * period.
+ * @returns {number}
+ * @constructor
+ */
+var PMT = function (rate, periods, presentValue, futureValue?, endOrBeginning?) : number {
+  ArgsChecker.checkLengthWithin(arguments, 3, 5, "PMT");
+  rate = TypeConverter.firstValueAsNumber(rate);
+  periods = TypeConverter.firstValueAsNumber(periods);
+  presentValue = TypeConverter.firstValueAsNumber(presentValue);
+  futureValue = futureValue ? TypeConverter.firstValueAsNumber(futureValue) : 0;
+  endOrBeginning = endOrBeginning ? TypeConverter.firstValueAsNumber(endOrBeginning) : 0;
   var result;
   if (rate === 0) {
-    result = (present + future) / periods;
+    result = (presentValue + futureValue) / periods;
   } else {
     var term = Math.pow(1 + rate, periods);
-    if (type) {
-      result = (future * rate / (term - 1) + present * rate / (1 - 1 / term)) / (1 + rate);
+    if (endOrBeginning) {
+      result = (futureValue * rate / (term - 1) + presentValue * rate / (1 - 1 / term)) / (1 + rate);
     } else {
-      result = future * rate / (term - 1) + present * rate / (1 - 1 / term);
+      result = futureValue * rate / (term - 1) + presentValue * rate / (1 - 1 / term);
     }
   }
   return -result;
-}
+};
 
 // TODO: Convert to real formula FV
 function fv(rate, periods, payment, value, type) {
@@ -283,7 +301,7 @@ var CUMPRINC = function (...values) : number {
   }
   var type = TypeConverter.firstValueAsBoolean(values[5]);
 
-  var payment = pmt(rate, periods, value, 0, type);
+  var payment = PMT(rate, periods, value, 0, type);
   var principal = 0;
   if (start === 1) {
     if (type) {
@@ -335,7 +353,7 @@ var CUMIPMT = function (...values) : number {
   }
   var type = TypeConverter.firstValueAsBoolean(values[5]);
 
-  var payment = pmt(rate, periods, value, 0, type);
+  var payment = PMT(rate, periods, value, 0, type);
   var interest = 0;
   if (start === 1) {
     if (!type) {
@@ -422,5 +440,6 @@ export {
   DOLLAR,
   DOLLARDE,
   DOLLARFR,
-  EFFECT
+  EFFECT,
+  PMT
 }

@@ -44,8 +44,8 @@ class ArgsChecker {
   static checkLengthWithin(args: any, low: number, high: number, caller?: string) {
     if (args.length > high || args.length < low) {
       var functionName = caller !== undefined ? " to " + caller : "";
-      throw new NAError("Wrong number of arguments" + functionName + ". Expected between" + low
-        + "and " + high + " arguments, but got " + args.length + " arguments.");
+      throw new NAError("Wrong number of arguments" + functionName + ". Expected between " + low
+        + " and " + high + " arguments, but got " + args.length + " arguments.");
     }
   }
 }

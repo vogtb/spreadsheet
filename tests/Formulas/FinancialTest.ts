@@ -7,7 +7,8 @@ import {
   DOLLAR,
   DOLLARDE,
   DOLLARFR,
-  EFFECT
+  EFFECT,
+  PMT
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -243,4 +244,28 @@ test("EFFECT", function(){
   catchAndAssertEquals(function() {
     EFFECT(0.99, []);
   }, ERRORS.REF_ERROR);
+});
+
+
+test("PMT", function() {
+  assertEquals(PMT(0.05/12, 30*12, 100000), -536.8216230121382);
+  assertEquals(PMT(0.05/12, 30*12, 100000, 10000), -548.8371186466853);
+  assertEquals(PMT(0.05/12, 30*12, 100000, 10000, 0), -548.8371186466853);
+  assertEquals(PMT(0.05/12, 30*12, 100000, 10000, false), -548.8371186466853);
+  assertEquals(PMT(0.05/12, 30*12, 100000, 10000, 1), -546.559786204168);
+  assertEquals(PMT(0.05/12, 30*12, 100000, 10000, 100), -546.559786204168);
+  assertEquals(PMT([0.05/12, []], [30*12], ["100000"]), -536.8216230121382);
+  assertEquals(PMT(-0.0001, 30*12, 100000, 10000, 1), -301.1033887993179);
+  assertEquals(PMT(-0.0001, 1, 100000, 10000, 1), -110001.000100094);
+  assertEquals(PMT(-0.0001, 1, 0, 10000, 1), -10001.0001000111);
+  assertEquals(PMT(-0.0001, 1, 0, 0, 1), 0);
+  catchAndAssertEquals(function() {
+    PMT.apply(this, [[[0.05/12]], [], ["100000"]]);
+  }, ERRORS.REF_ERROR);
+  catchAndAssertEquals(function() {
+    PMT.apply(this);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PMT.apply(this, [0.05/12, 30*12, 100000, 10000, 1, "nope"]);
+  }, ERRORS.NA_ERROR);
 });

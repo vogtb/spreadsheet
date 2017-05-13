@@ -40,12 +40,7 @@ helpers to convert, display, and do normal operations with them.
 Contingent upon cells having formats or types for primitives.
 
 
-### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big.
-
-
-### Percentage inputs should be parsed to numbers
-Input like `10%` should be parsed and stored as a number. It should be X*0.01, not X/100. For example `=2 * 1 * 10%` is
-0.2, while `=2 * 1 * 10/1` is 20.
+### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big inside Date formulas.
 
 
 ### Sheet.ts and Helpers.ts should be check conversion capabilities in same way as TypeConverter
@@ -56,7 +51,15 @@ TypeConverter.
 ### Scrape jsdocs for functions, put in simple index.html, doc.md files to serve up simple documentation
 
 
-### Numbers with commas in them should still parse to numbers.
+### Number parsing: `isNumber` or `canCoerceToNumber`, and `valueToNumber` should use a RegEx to determine numbers.
+* Numbers that are integers. "10" === 10
+* Numbers that are decimals. "10.10" === 10.10
+* Numbers with commas in them should still parse to numbers. Eg: "1,000,000" === 1000000
+* Numbers with percentages. Eg: "10%" === 0.1, 2 * 1 * 10% === 0.2
+* Numbers with scientific notation. Eg: "10e1" === 100
+* Numbers with positive or negative notation. Eg: "-10" === -10, "+10" === "10"
+* Numbers that are dollar amounts. Eg: "$10.00" === 10
+* Numbers that are positive or negative dollar amounts. Eg: "+$10" === 10, "-$10" === 10, "$+10" === 10, "$-10" === 10
 
 
 ### Ensure all formulas are tested inside of SheetFormulaTest.ts

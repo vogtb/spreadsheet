@@ -195,27 +195,15 @@ var Sheet = (function () {
 
   var utils = {
     isArray: function (value) {
-      return Object.prototype.toString.call(value) === '[object Array]';
-    },
-
-    isNumber: function (value) {
-      return Object.prototype.toString.call(value) === '[object Number]';
-    },
-
-    isString: function (value) {
-      return Object.prototype.toString.call(value) === '[object String]';
+      return value instanceof Array;
     },
 
     isFunction: function (value) {
-      return Object.prototype.toString.call(value) === '[object Function]';
-    },
-
-    isUndefined: function (value) {
-      return Object.prototype.toString.call(value) === '[object Undefined]';
+      return value instanceof Function;
     },
 
     isNull: function (value) {
-      return Object.prototype.toString.call(value) === '[object Null]';
+      return value === null;
     },
 
     isSet: function (value) {
@@ -450,7 +438,7 @@ var Sheet = (function () {
       if (str) {
         str = str.toUpperCase();
         if (Formulas.exists(str)) {
-          return ((typeof Formulas.get(str) === 'function') ? Formulas.get(str).apply(this, args) : Formulas.get(str));
+          return Formulas.get(str).apply(this, args);
         }
       }
 

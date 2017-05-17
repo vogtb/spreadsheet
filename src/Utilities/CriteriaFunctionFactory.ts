@@ -1,6 +1,8 @@
 /**
  * Converts wild-card style expressions (in which * matches zero or more characters, and ? matches exactly one character)
- * to regular expressions. * and ? can be escaped by prefixing ~
+ * to regular expressions. * and ? can be escaped by prefixing with ~.
+ * For future reference, something like this might be better
+ * http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex.
  * @param c input
  * @returns {RegExp} resulting regex
  */

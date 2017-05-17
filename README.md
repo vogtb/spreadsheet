@@ -17,10 +17,6 @@ Things I should do.
 ### All formulas should used TypeConverter to pull parameters from `values`
 
 
-### Criteria evaluations should escape reg-ex characters
-http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
-
-
 ### Cells should have `formatAs` fields.
 Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the
 highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might

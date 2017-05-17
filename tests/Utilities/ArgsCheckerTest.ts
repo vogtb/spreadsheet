@@ -1,6 +1,5 @@
 import {
   assertEquals,
-  catchAndAssertEquals,
   test
 } from "../Utils/Asserts";
 import {

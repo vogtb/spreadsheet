@@ -21,10 +21,6 @@ Things I should do.
 http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 
 
-### functions that throw errors should usually be able to include their caller in the error
-e.g. "SUM expects number values...", or "This function expects number values..."
-
-
 ### Cells should have `formatAs` fields.
 Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the
 highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might
@@ -63,9 +59,6 @@ TypeConverter.
 
 
 ### Ensure all formulas are tested inside of SheetFormulaTest.ts
-
-
-### Test CriteriaFunctionFactory
 
 
 ### Pull static functions outside of formulas, declare once.

@@ -20,7 +20,7 @@ Things I should do.
 ### Cells should have `formatAs` fields.
 Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the
 highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might
-return a number, but the cell that called `DATE` would be aware of it calling a formula that returns an non-primative
+return a number, but the cell that called `DATE` would be aware of it calling a formula that returns an non-primitive
 type, and would display the returned number as a Date. If you're using `DATE` in conjunction with `DOLLAR` it would
 still display the returned value as a Date. The heirarhchy would look like: [Date, DateTime, Time, Dollar, number,
 boolean, string]. Advantages to this would include not having to cast down when using primitive operators,
@@ -41,17 +41,6 @@ TypeConverter.
 
 
 ### Scrape jsdocs for functions, put in simple index.html, doc.md files to serve up simple documentation
-
-
-### Number parsing: `isNumber` or `canCoerceToNumber`, and `valueToNumber` should use a RegEx to determine numbers.
-* Numbers that are integers. "10" === 10
-* Numbers that are decimals. "10.10" === 10.10
-* Numbers with commas in them should still parse to numbers. Eg: "1,000,000" === 1000000
-* Numbers with percentages. Eg: "10%" === 0.1, 2 * 1 * 10% === 0.2
-* Numbers with scientific notation. Eg: "10e1" === 100
-* Numbers with positive or negative notation. Eg: "-10" === -10, "+10" === "10"
-* Numbers that are dollar amounts. Eg: "$10.00" === 10
-* Numbers that are positive or negative dollar amounts. Eg: "+$10" === 10, "-$10" === 10, "$+10" === 10, "$-10" === 10
 
 
 ### Ensure all formulas are tested inside of SheetFormulaTest.ts

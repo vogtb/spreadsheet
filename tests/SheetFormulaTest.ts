@@ -453,11 +453,18 @@ test("Sheet ^", function(){
   assertFormulaEquals('= 2 ^ 10', 1024);
 });
 
-test("Sheet mathMathc", function(){
+test("Sheet numbers/math", function(){
   assertFormulaEquals('= "10" + 10', 20);
-  // TODO: throws parse error, should clean up
-  // assertFormulaEqualsError('= 10e / 1', VALUE_ERROR);
-  // TODO: Should fail, but doesn't because 10e parses to a string
-  // assertFormulaEqualsError('= "10e" + 10', VALUE_ERROR);
-  assertFormulaEqualsError('= "MR" + 10', VALUE_ERROR);
+  assertFormulaEquals('="10.111111" + 0', 10.111111);
+  assertFormulaEquals('= 10%', 0.1);
+  assertFormulaEquals('= 10% + 1', 1.1);
+  // TODO: These fail
+  // assertFormulaEquals('="10e1" + 0', 100);
+  // assertFormulaEquals('="1,000,000" + 0', 1000000);
+  // assertFormulaEqualsError('= "10e" + 10', VALUE_ERROR); // TODO: Should fail, but doesn't because 10e parses to a string
+  // assertFormulaEquals('="+$10.00" + 0', 10);
+  // assertFormulaEquals('="-$10.00" + 0', -10);
+  // assertFormulaEquals('="$+10.00" + 0', 10);
+  // assertFormulaEquals('="$-10.00" + 0', -10);
 });
+

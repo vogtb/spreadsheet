@@ -174,6 +174,72 @@ test("TypeConverter.valueToNumber", function () {
 });
 
 
+test("TypeConverter.stringToNumber", function () {
+  assertEquals(TypeConverter.stringToNumber("10"), 10);
+  assertEquals(TypeConverter.stringToNumber("-10"), -10);
+  assertEquals(TypeConverter.stringToNumber("1.4832749823"), 1.4832749823);
+  assertEquals(TypeConverter.stringToNumber("   1.4832749823   "), 1.4832749823);
+  assertEquals(TypeConverter.stringToNumber("$10"), 10);
+  assertEquals(TypeConverter.stringToNumber("$10.217983172"), 10.217983172);
+  assertEquals(TypeConverter.stringToNumber("-$10.217983172"), -10.217983172);
+  assertEquals(TypeConverter.stringToNumber("100"), 100);
+  assertEquals(TypeConverter.stringToNumber("10%"), 0.1);
+  assertEquals(TypeConverter.stringToNumber("33.213131"), 33.213131);
+  assertEquals(TypeConverter.stringToNumber("41.1231"), 41.1231);
+  assertEquals(TypeConverter.stringToNumber("10e1"), 100);
+  assertEquals(TypeConverter.stringToNumber("10E1"), 100);
+  assertEquals(TypeConverter.stringToNumber("10.44E1"), 104.39999999999999);
+  assertEquals(TypeConverter.stringToNumber("10.44E10"), 104400000000);
+  assertEquals(TypeConverter.stringToNumber("$10"), 10);
+  assertEquals(TypeConverter.stringToNumber("$0.1"), 0.1);
+  assertEquals(TypeConverter.stringToNumber("$10.1"), 10.1);
+  assertEquals(TypeConverter.stringToNumber("$9.2222"), 9.2222);
+  assertEquals(TypeConverter.stringToNumber("+$9.2345"), 9.2345);
+  assertEquals(TypeConverter.stringToNumber("+$  9.29"), 9.29);
+  assertEquals(TypeConverter.stringToNumber("+$ 9.29"), 9.29);
+  assertEquals(TypeConverter.stringToNumber("+$9.2345"), 9.2345);
+  assertEquals(TypeConverter.stringToNumber("+$  9.29"), 9.29);
+  assertEquals(TypeConverter.stringToNumber("+$ 9.29"), 9.29);
+  assertEquals(TypeConverter.stringToNumber("$.1"), 0.1);
+  assertEquals(TypeConverter.stringToNumber("+$.111"), 0.111);
+  assertEquals(TypeConverter.stringToNumber("$+.111"), 0.111);
+  assertEquals(TypeConverter.stringToNumber("-$.1"), -0.1);
+  assertEquals(TypeConverter.stringToNumber("$-9.2345"), -9.2345);
+  assertEquals(TypeConverter.stringToNumber("$ - 9.29"), -9.29);
+  assertEquals(TypeConverter.stringToNumber("$- 9.29"), -9.29);
+  assertEquals(TypeConverter.stringToNumber("-$9.2345"), -9.2345);
+  assertEquals(TypeConverter.stringToNumber("-$  9.29"), -9.29);
+  assertEquals(TypeConverter.stringToNumber("-$ 9.29"), -9.29);
+  assertEquals(TypeConverter.stringToNumber("-$9"), -9);
+  assertEquals(TypeConverter.stringToNumber("+$9"), 9);
+  assertEquals(TypeConverter.stringToNumber("$-9"), -9);
+  assertEquals(TypeConverter.stringToNumber("$+9"), 9);
+  assertEquals(TypeConverter.stringToNumber("-$9."), -9);
+  assertEquals(TypeConverter.stringToNumber("+$9."), 9);
+  assertEquals(TypeConverter.stringToNumber("$-9."), -9);
+  assertEquals(TypeConverter.stringToNumber("$+9."), 9);
+  assertEquals(TypeConverter.stringToNumber("1,000"), 1000);
+  assertEquals(TypeConverter.stringToNumber("1,000,000"), 1000000);
+  assertEquals(TypeConverter.stringToNumber("1000,000"), 1000000);
+  assertEquals(TypeConverter.stringToNumber("2222,000,000"), 2222000000);
+  assertEquals(TypeConverter.stringToNumber("1,000.1"), 1000.1);
+  assertEquals(TypeConverter.stringToNumber("1,000,000.11"), 1000000.11);
+  assertEquals(TypeConverter.stringToNumber("2222,000,000.1"), 2222000000.1);
+  assertEquals(TypeConverter.stringToNumber(" $ 1,000"), 1000);
+  assertEquals(TypeConverter.stringToNumber("$ 1,000"), 1000);
+  assertEquals(TypeConverter.stringToNumber("100.1e2"), 10010);
+  assertEquals(TypeConverter.stringToNumber("10e2%"), 10);
+  assertEquals(TypeConverter.stringToNumber("$ 1,000."), 1000);
+  assertEquals(TypeConverter.stringToNumber("$10e1"), undefined);
+  assertEquals(TypeConverter.stringToNumber("$+-10.00"), undefined);
+  assertEquals(TypeConverter.stringToNumber("+$+10.00"), undefined);
+  assertEquals(TypeConverter.stringToNumber("+$-10.00"), undefined);
+  assertEquals(TypeConverter.stringToNumber("10e"), undefined);
+  assertEquals(TypeConverter.stringToNumber("10,00"), undefined);
+  assertEquals(TypeConverter.stringToNumber("10,000,"), undefined);
+});
+
+
 test("TypeConverter.valueToNumberGracefully", function () {
   assertEquals(TypeConverter.valueToNumberGracefully(10), 10);
   assertEquals(TypeConverter.valueToNumberGracefully(-10), -10);

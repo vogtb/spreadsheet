@@ -343,10 +343,81 @@ class TypeConverter {
   }
 
   /**
+   * Converts strings to numbers, returning undefined if string cannot be parsed to number. Examples: "100", "342424",
+   * "10%", "33.213131", "41.1231", "10e1", "10E1", "10.44E1", "-$9.29", "+$9.29", "1,000.1", "2000,000,000".
+   * For reference see: https://regex101.com/r/PwghnF/9/
+   * @param value to parse.
+   * @returns {number} or undefined
+   */
+  public static stringToNumber(value: string) : number {
+    function isUndefined(x) {
+      return x === undefined;
+    }
+    function isDefined(x) {
+      return x !== undefined;
+    }
+
+    var NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\d*)? *(%)? *$/;
+    var matches = value.match(NUMBER_REGEX);
+    if (matches !== null) {
+      var firstSign = matches[1];
+      var currency = matches[2];
+      var secondSign = matches[3];
+      var wholeNumberWithCommas = matches[4];
+      var decimalPoint = matches[10];
+      var decimalNumber = matches[11];
+      var sciNotation = matches[12];
+      var sciNotationFactor = matches[13];
+      var percentageSign = matches[14];
+
+      // Number is not valid if it is a currency and in scientific notation.
+      if (isDefined(currency) && isDefined(sciNotation)) {
+        return undefined;
+      }
+      // Number is not valid if there are two signs.
+      if (isDefined(firstSign) && isDefined(secondSign)) {
+        return undefined;
+      }
+      // Number is not valid if we have 'sciNotation' but no 'sciNotationFactor'
+      if (isDefined(sciNotation) && isUndefined(sciNotationFactor)) {
+        return undefined
+      }
+      var activeSign;
+      if (isUndefined(firstSign) && isUndefined(secondSign)) {
+        activeSign = "+";
+      } else if (!isUndefined(firstSign)) {
+        activeSign = firstSign;
+      } else {
+        activeSign = secondSign;
+      }
+      var x;
+      if (isDefined(wholeNumberWithCommas)) {
+        if (isDefined(decimalNumber) && isDefined(decimalNumber)) {
+          // console.log("parsing:", value, activeSign + wholeNumberWithCommas.split(",").join("") + decimalPoint + decimalNumber);
+          x = parseFloat(activeSign + wholeNumberWithCommas.split(",").join("") + decimalPoint + decimalNumber);
+        } else {
+          // console.log("parsing:", value, activeSign + wholeNumberWithCommas.split(",").join(""))
+          x = parseFloat(activeSign + wholeNumberWithCommas.split(",").join(""));
+        }
+      } else {
+        // console.log("parsing:", value, activeSign + "0" + decimalPoint + decimalNumber);
+        x = parseFloat(activeSign + "0" + decimalPoint + decimalNumber);
+      }
+
+      if (isDefined(sciNotation) && isDefined(sciNotationFactor)) {
+        x = x * Math.pow(10, parseInt(sciNotationFactor));
+      }
+      if (!isUndefined(percentageSign)) {
+        x = x * 0.01;
+      }
+      return x;
+    }
+  }
+
+  /**
    * Converts any value to a number or throws an error if it cannot coerce it to the number type
    * @param value to convert
    * @returns {number} to return. Will always return a number or throw an error. Never returns undefined.
-   * TODO: This function is far to loosely defined. JS lets anything starting with a digit parse to a number. Not good.
    */
   public static valueToNumber(value : any) {
     if (typeof value === "number") {
@@ -355,18 +426,11 @@ class TypeConverter {
       if (value === "") {
         return 0;
       }
-      if (value.indexOf(".") > -1) {
-        var fl = parseFloat(value.replace("$", ""));
-        if (isNaN(fl)) {
-          throw new ValueError("Function ____ expects number values, but is text and cannot be coerced to a number.");
-        }
-        return fl;
-      }
-      var fl = parseInt(value.replace("$", ""));
-      if (isNaN(fl)) {
+      var n = TypeConverter.stringToNumber(value);
+      if (n === undefined) {
         throw new ValueError("Function ____ expects number values, but is text and cannot be coerced to a number.");
       }
-      return fl;
+      return n;
     } else if (typeof value === "boolean") {
       return value ? 1 : 0;
     }
@@ -442,22 +506,24 @@ class TypeConverter {
   }
 
   /**
+   * Returns true if string is number format.
+   * @param str to check
+   * @returns {boolean}
+   */
+  public static isNumber(str : string) {
+    return str.match("\s*(\d+\.?\d*$)|(\.\d+$)|([0-9]{2}%$)|([0-9]{1,}$)") !== null;
+  }
+
+  /**
    * Returns true if we can coerce it to the number type.
    * @param value to coerce
    * @returns {boolean} if could be coerced to a number
-   TODO: Similar to valueToNumber, JS lets anything starting with a digit parse to a number.
    */
   public static canCoerceToNumber(value: any) : boolean {
     if (typeof value === "number" || typeof value === "boolean") {
       return true;
     } else if (typeof value === "string") {
-      if (value === "") {
-        return false;
-      }
-      if (value.indexOf(".") > -1) {
-        return !isNaN(parseFloat(value));
-      }
-      return !isNaN(parseInt(value));
+      return TypeConverter.isNumber(value);
     }
     return false;
   }

@@ -879,6 +879,15 @@ test("TypeConverter.stringToDateNumber", function () {
   assertEquals(TypeConverter.stringToDateNumber("January-2017 10: 10 pm"), 42736);
   assertEquals(TypeConverter.stringToDateNumber("January-2017 10: 10: 10"), 42736);
   assertEquals(TypeConverter.stringToDateNumber("January-2017  10: 10: 10    am  "), 42736);
+  assertEquals(TypeConverter.stringToDateNumber("January-2000 100000000:100000000:100000000"), 4273794);
+  assertEquals(TypeConverter.stringToDateNumber("1999/1/01 00200000000:00000999999999:00000923231312"), 9074624);
+  assertEquals(TypeConverter.stringToDateNumber("1992/1/13 12:00001989198298am"), 1415003);
+  catchAndAssertEquals(function() {
+    TypeConverter.stringToDateNumber("1992/1/13 12:000019891982980am");
+  }, VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    TypeConverter.stringToDateNumber("January-2000 100000000:100000000:1001000000");
+  }, VALUE_ERROR);
 });
 
 

@@ -29,9 +29,6 @@ helpers to convert, display, and do normal operations with them.
 Contingent upon cells having formats or types for primitives.
 
 
-### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big inside Date formulas.
-
-
 ### Scrape jsdocs for functions, put in simple index.html, doc.md files to serve up simple documentation
 
 

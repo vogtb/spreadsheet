@@ -1,7 +1,7 @@
 {
   "name": "spreadsheet",
   "version": "1.0.0",
-  "description": "TypeScript implementation of a spreadsheet.",
+  "description": "TypeScript/javascript implementation of a spreadsheet.",
   "scripts": {
     "clean": "rm -rf output/* && rm -rf test_output/*",
     "build": "tsc && cp lib/parser.js output/",

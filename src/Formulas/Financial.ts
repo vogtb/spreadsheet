@@ -378,16 +378,7 @@ var CUMIPMT = function (rate, numberOfPeriods, presentValue, firstPeriod, lastPe
  * Calculates the accrued interest of a security that has periodic payments.
  * WARNING: This function has been implemented to specifications as outlined in Google Spreadsheets, LibreOffice, and
  * OpenOffice. It functions much the same as MSExcel's ACCRINT, but there are several key differences. Below are links
- * to illustrate the differences. Please see the source code for more information on differences.
- *
- * Links:
- * * https://quant.stackexchange.com/questions/7040/whats-the-algorithm-behind-excels-accrint
- *
- * * https://support.office.com/en-us/article/ACCRINT-function-fe45d089-6722-4fb3-9379-e1f911d8dc74
- *
- * * https://quant.stackexchange.com/questions/7040/whats-the-algorithm-behind-excels-accrint
- *
- * * https://support.google.com/docs/answer/3093200
+ * to illustrate the differences. Please see the source code for more information on differences. Links: https://quant.stackexchange.com/questions/7040/whats-the-algorithm-behind-excels-accrint, https://support.office.com/en-us/article/ACCRINT-function-fe45d089-6722-4fb3-9379-e1f911d8dc74, https://quant.stackexchange.com/questions/7040/whats-the-algorithm-behind-excels-accrint, https://support.google.com/docs/answer/3093200 .
  * @param issue - The date the security was initially issued.
  * @param firstPayment - The first date interest will be paid.
  * @param settlement - The settlement date of the security, the date after issuance when the security is

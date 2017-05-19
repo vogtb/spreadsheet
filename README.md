@@ -21,7 +21,7 @@ In MS Excel, and Google Spreadsheets, literal ranges are denoted with opening an
 
 
 ## Docs
-[Docs here](DOCUMENTATION.md)
+[Docs here](DOCS.md)
 
 
 ## Contributing
@@ -33,6 +33,9 @@ If you're adding a new formula, before you submit a pull request or push ensure 
 1) The formula is tested inside the proper category file in `tests/Formulas`.
 2) The formula tests for reference errors, N/A errors, value errors for each input.
 3) That the formula is tested for parsing inside `SheetFormulaTest.ts`.
+4) Run tests with `npm run test`.
+5) Build with `npm run build`.
+6) Build DOCS.md with `npm run docs`.
 
 
 ### Why?

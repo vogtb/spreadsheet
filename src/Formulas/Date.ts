@@ -255,23 +255,6 @@ var WEEKDAY = function (date, offsetType?) : number {
 
 
 /**
- * Given a moment, an array of days of the week for shifting, will calculate the week number.
- * @param dm moment to iterate towards
- * @param shifterArray array of numbers for mapping week days to shifted weekdays
- * @returns {number} of weeks in year
- */
-function calculateWeekNum(dm : moment.Moment, shifterArray : Array<number>) : number {
-  var startOfYear = moment.utc(dm).startOf("year");
-  var weeksCount = 1;
-  var d = moment.utc(dm).startOf("year").add(6 - shifterArray[startOfYear.day()], "days");
-  while (d.isBefore(dm)) {
-    d.add(7, "days");
-    weeksCount++;
-  }
-  return weeksCount;
-}
-
-/**
  * Returns a number representing the week of the year where the provided date falls. When inputting the date, it is best
  * to use the DATE function, as text values may return errors.
  *
@@ -288,6 +271,18 @@ function calculateWeekNum(dm : moment.Moment, shifterArray : Array<number>) : nu
  * @constructor
  */
 var WEEKNUM = function (date, shiftType?) : number {
+  // Given a moment, an array of days of the week for shifting, will calculate the week number.
+  function calculateWeekNum(dm : moment.Moment, shifterArray : Array<number>) : number {
+    var startOfYear = moment.utc(dm).startOf("year");
+    var weeksCount = 1;
+    var d = moment.utc(dm).startOf("year").add(6 - shifterArray[startOfYear.day()], "days");
+    while (d.isBefore(dm)) {
+      d.add(7, "days");
+      weeksCount++;
+    }
+    return weeksCount;
+  }
+
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "WEEKNUM");
   date = TypeConverter.firstValueAsDateNumber(date, true); // tell firstValueAsDateNumber to coerce boolean
   shiftType = shiftType ? TypeConverter.firstValueAsNumber(shiftType) : 1;

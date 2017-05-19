@@ -5,6 +5,7 @@
   "scripts": {
     "clean": "rm -rf output/* && rm -rf test_output/*",
     "build": "tsc && cp lib/parser.js output/",
+    "docs": "./docs.sh src/Formulas",
     "test": "./tests.sh",
     "test:quiet": "./tests.sh | grep -v Test:"
   },

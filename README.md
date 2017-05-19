@@ -1,36 +1,52 @@
 # Spreadsheet
-TypeScript/javascript implementation of a spreadsheet.
+TypeScript/javascript spreadsheet.
 
-## TODO
-Things I should do.
+## Usage
 
+### Example
 
-### SUM and SUMA should be different.
+```javascript
+var sheet = new Sheet();
+sheet.setCell("A1", "10");
+sheet.setCell("A2", "14");
+sheet.setCell("A4", "10e2");
+sheet.setCell("A5", "99.1");
+sheet.setCell("B1", "=SUM(A1:A5)");
+console.log(sheet.getCell("B1").getValue()); // output: 1124
+```
 
+### Ranges
 
-### MAX and MAXA should be different.
-
-
-### COUNT and COUNTA should be different.
-
-
-### Cells should have `formatAs` fields.
-Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the
-highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might
-return a number, but the cell that called `DATE` would be aware of it calling a formula that returns an non-primitive
-type, and would display the returned number as a Date. If you're using `DATE` in conjunction with `DOLLAR` it would
-still display the returned value as a Date. The heirarhchy would look like: [Date, DateTime, Time, Dollar, number,
-boolean, string]. Advantages to this would include not having to cast down when using primitive operators,
-and flexibility in display. It would also simplify the types themselves, by having types be constants and just having
-helpers to convert, display, and do normal operations with them.
+In MS Excel, and Google Spreadsheets, literal ranges are denoted with opening and closing curly-brackets. E.g. "{1, 2, 3}". In this implementation however, literal ranges are denoted with opening and closing brackets. E.g. "[1, 2, 3]".
 
 
-### Implement TO_DATE, TO_NUMBER, TO_DOLLARS, TO_TEXT
-Contingent upon cells having formats or types for primitives.
+## Docs
+[Docs here](DOCUMENTATION.md)
 
 
-### Scrape jsdocs for functions, put in simple index.html, doc.md files to serve up simple documentation
+## Contributing
+When adding a formula, or fixing a bug please follow the commit message format:
+```
+[BUG_FEATURE_FILE_OR_COMPONENT] short description here of issue and fix
+```
+If you're adding a new formula, before you submit a pull request or push ensure that:
+1) The formula is tested inside the proper category file in `tests/Formulas`.
+2) The formula tests for reference errors, N/A errors, value errors for each input.
+3) That the formula is tested for parsing inside `SheetFormulaTest.ts`.
 
 
-### CONVERT could offer more accurate conversions for units in the same system
-For example 64 tbs to a qt.
+### Why?
+Near the end of 2016 I began to ask myself why I didn't know more about MS Excel and Google Spreadsheets. Why didn't I know more about the most popular programing language in the world? I began to reverse engineer Google Spreadsheets in particular, gaining a better understanding along the way.
+
+I chose TypeScript because, coming from Java, it is really nice to be able to see type errors, and catch them. I also just enjoy getting specific with my return types, even if the specifications for a spreadsheet treat type flexibly.
+
+For the formula documentation, I tried to be at least -- if not more -- thorough as Google Spreadsheets.
+
+
+### License
+
+For this repository's code license, and related licenses, see LICENSES directory.
+
+
+### Acknowledgements
+This is largely a re-write of [Handsontable](https://github.com/handsontable)'s [https://github.com/handsontable/ruleJS](https://github.com/handsontable/ruleJS), and [https://github.com/sutoiku/formula.js/](https://github.com/sutoiku/formula.js/). The parser was derived from Handsontable's, and many of the formulas were created with FormulaJS's formulas as a reference point.

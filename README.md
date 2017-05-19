@@ -14,9 +14,6 @@ Things I should do.
 ### COUNT and COUNTA should be different.
 
 
-### All formulas should used TypeConverter to pull parameters from `values`
-
-
 ### Cells should have `formatAs` fields.
 Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the
 highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might
@@ -35,15 +32,7 @@ Contingent upon cells having formats or types for primitives.
 ### Verify that all N-times ({2,9}) are correct, and we're not parsing numbers too big inside Date formulas.
 
 
-### Sheet.ts and Helpers.ts should be check conversion capabilities in same way as TypeConverter
-When we check to see if a value taken from a cell is of a certain type, we should check in the same way as the
-TypeConverter.
-
-
 ### Scrape jsdocs for functions, put in simple index.html, doc.md files to serve up simple documentation
-
-
-### Ensure all formulas are tested inside of SheetFormulaTest.ts
 
 
 ### Pull static functions outside of formulas, declare once.

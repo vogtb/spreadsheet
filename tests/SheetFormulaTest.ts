@@ -43,6 +43,12 @@ test("Sheet ACOS", function(){
   assertFormulaEquals("=ACOS(0)", 1.5707963267948966);
 });
 
+test("Sheet ACCRINT", function(){
+  assertFormulaEquals("=ACCRINT(DATE(2000, 1, 1), DATE(2000, 2, 1), DATE(2002, 12, 31), 0.05, 100, 4)",
+    14.98631386861314);
+});
+
+
 test("Sheet ACOSH", function(){
   assertFormulaEquals("=ACOSH(22)", 3.783672704329451);
 });
@@ -180,6 +186,26 @@ test("Sheet COMPRINC", function(){
   assertFormulaEquals("=CUMPRINC(0.12, 12, 100, 1, 5, 0)", -26.324171373034403);
 });
 
+test("Sheet DATE", function(){
+  assertFormulaEquals("=DATE(2017, 6, 24)", 42910);
+});
+
+test("Sheet DATEVALUE", function(){
+  assertFormulaEquals("=DATEVALUE('2017/6/24')", 42910);
+});
+
+test("Sheet DAY", function(){
+  assertFormulaEquals("=DAY(DATE(1992, 6, 24))", 24);
+});
+
+test("Sheet DAYS", function(){
+  assertFormulaEquals("=DAYS(DATE(1992, 6, 24), DATE(1991, 6, 24))", 366);
+});
+
+test("Sheet DAYS360", function(){
+  assertFormulaEquals("=DAYS360(DATE(1992, 6, 24), DATE(1991, 6, 24))", -360);
+});
+
 test("Sheet DB", function(){
   assertFormulaEquals("=DB(100, 50, 10, 2, 12)", 6.2482428240683285);
 });
@@ -226,6 +252,14 @@ test("Sheet DOLLARFR", function(){
 
 test("Sheet AND", function(){
   assertFormulaEquals('=AND(10)', true);
+});
+
+test("Sheet EDATE", function(){
+  assertFormulaEquals('=EDATE(DATE(1992, 6, 24), 1)', 33809);
+});
+
+test("Sheet EOMONTH", function(){
+  assertFormulaEquals('=EOMONTH(DATE(1992, 6, 24), 0)', 33785);
 });
 
 test("Sheet EFFECT", function(){
@@ -287,7 +321,6 @@ test("Sheet ISEVEN", function(){
 
 test("Sheet ISODD", function(){
   assertFormulaEquals('=ISODD(3)', true);
-
 });
 
 test("Sheet LN", function(){
@@ -324,6 +357,10 @@ test("Sheet MINA", function(){
 
 test("Sheet MOD", function(){
   assertFormulaEquals('=MOD(10, 3)', 1);
+});
+
+test("Sheet TRUE", function(){
+  assertFormulaEquals('=TRUE()', true);
 });
 
 test("Sheet NOT", function(){
@@ -426,6 +463,70 @@ test("Sheet TRUNC", function(){
 
 test("Sheet XOR", function(){
   assertFormulaEquals('=XOR(1, 1)', false);
+});
+
+test("Sheet YEARFRAC", function(){
+  assertFormulaEquals('=YEARFRAC(1, 1461, 2)', 4.055555555555555);
+});
+
+test("Sheet RADIANS", function(){
+  assertFormulaEquals('=RADIANS(180)', 3.141592653589793);
+});
+
+test("Sheet MONTH", function(){
+  assertFormulaEquals('=MONTH(DATE(1992, 6, 24))', 6);
+});
+
+test("Sheet YEAR", function(){
+  assertFormulaEquals('=YEAR(DATE(1992, 6, 24))', 1992);
+});
+
+test("Sheet WEEKDAY", function(){
+  assertFormulaEquals('=WEEKDAY(DATE(1992, 6, 20))', 7);
+});
+
+test("Sheet WEEKNUM", function(){
+  assertFormulaEquals('=WEEKNUM(DATE(1992, 6, 19))', 25);
+});
+
+test("Sheet DATEDIF", function(){
+  assertFormulaEquals('=DATEDIF("1992-6-19", "1996-6-19", "Y")', 4);
+});
+
+test("Sheet TIMEVALUE", function(){
+  assertFormulaEquals('=TIMEVALUE("8:10")', 0.3402777777777778);
+});
+
+test("Sheet HOUR", function(){
+  assertFormulaEquals('=HOUR("8:10")', 8);
+});
+
+test("Sheet MINUTE", function(){
+  assertFormulaEquals('=MINUTE("8:10:29")', 10);
+});
+
+test("Sheet SECOND", function(){
+  assertFormulaEquals('=SECOND("8:10:29")', 29);
+});
+
+test("Sheet NETWORKDAYS", function(){
+  assertFormulaEquals('=NETWORKDAYS("1992-1-1", "1992-1-30")', 22);
+});
+
+test("Sheet NETWORKDAYS.INTL", function(){
+  assertFormulaEquals('=NETWORKDAYS.INTL("1992-1-1", "1992-1-30")', 22);
+});
+
+test("Sheet TIME", function(){
+  assertFormulaEquals('=TIME(10, 10, 10)', 0.4237268518518518);
+});
+
+test("Sheet WORKDAY", function(){
+  assertFormulaEquals('=WORKDAY(DATE(1999, 2, 2), 10)', 36207);
+});
+
+test("Sheet WORKDAY.INTL", function(){
+  assertFormulaEquals('=WORKDAY.INTL(DATE(1999, 2, 2), 10)', 36207);
 });
 
 test("Sheet *", function(){

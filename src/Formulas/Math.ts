@@ -920,6 +920,26 @@ var SUMX2MY2 = function (arrayX, arrayY) : number {
 };
 
 
+// Private function that will recursively generate an array of the unique primitives
+var _countUnique = function (values: Array<any>) : Object {
+  var uniques = {};
+  for (var i = 0; i < values.length; i++) {
+    if (Array.isArray(values[i])) {
+      // For some reasons an empty range is converted to a range with a single empty string in it.
+      if (values[i].length === 0) {
+        values[i] = [""];
+      }
+      var uniquesOfArray = _countUnique(values[i]);
+      for (var key in uniquesOfArray) {
+        uniques[key] = true;
+      }
+    } else {
+      uniques[Serializer.serialize(values[i])] = true;
+    }
+  }
+  return uniques;
+};
+
 /**
  * Counts the number of unique values in a list of specified values and ranges.
  * @param values The values or ranges to consider for uniqueness. Supports an arbitrary number of arguments for this
@@ -930,27 +950,7 @@ var SUMX2MY2 = function (arrayX, arrayY) : number {
 var COUNTUNIQUE = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "COUNTUNIQUE");
 
-  // Private function that will recursively generate an array of the unique primitives
-  var countUniquePrivate = function (values: Array<any>) : Object {
-    var uniques = {};
-    for (var i = 0; i < values.length; i++) {
-      if (Array.isArray(values[i])) {
-        // For some reasons an empty range is converted to a range with a single empty string in it.
-        if (values[i].length === 0) {
-          values[i] = [""];
-        }
-        var uniquesOfArray = countUniquePrivate(values[i]);
-        for (var key in uniquesOfArray) {
-          uniques[key] = true;
-        }
-      } else {
-        uniques[Serializer.serialize(values[i])] = true;
-      }
-    }
-    return uniques;
-  };
-
-  var uniques = countUniquePrivate(values);
+  var uniques = _countUnique(values);
   return Object.keys(uniques).length;
 };
 
@@ -1069,11 +1069,11 @@ export {
   ROUND,
   ROUNDDOWN,
   ROUNDUP,
-  SUMPRODUCT, // Array?
+  SUMPRODUCT,
   SUMIF,
   SUMSQ,
-  SUMX2MY2, // Array?
-  SUMX2PY2, // Array?
+  SUMX2MY2,
+  SUMX2PY2,
   FLOOR,
   IF,
   COUNTIF,

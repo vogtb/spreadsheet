@@ -17,6 +17,13 @@ import {
   SUM,
   ABS
 } from "./Math";
+import {
+  cdf,
+  covariance,
+  inv,
+  pdf,
+  stdev,
+} from "../Utilities/MathHelpers";
 
 
 /**
@@ -189,6 +196,7 @@ var AVERAGEA = function (...values) {
   return result / count;
 };
 
+
 /**
  * Calculates r, the Pearson product-moment correlation coefficient of a dataset. Any text encountered in the arguments
  * will be ignored. CORREL is synonymous with PEARSON.
@@ -198,80 +206,6 @@ var AVERAGEA = function (...values) {
  * @constructor
  */
 var CORREL = function (dataY, dataX) : number {
-  /**
-   * Return the standard deviation of a vector. By defaut, the population standard deviation is returned. Passing true
-   * for the flag parameter returns the sample standard deviation. See http://jstat.github.io/vector.html#stdev for
-   * more information.
-   */
-  function stdev(arr, flag) {
-    return Math.sqrt(variance(arr, flag));
-  }
-
-  /**
-   * Return the variance of a vector. By default, the population variance is calculated. Passing true as the flag
-   * indicates computes the sample variance instead. See http://jstat.github.io/vector.html#variance for more
-   * information.
-   */
-  function variance(arr, flag) {
-    if ((arr.length - (flag ? 1 : 0)) === 0) {
-      throw new DivZeroError("Evaluation of function CORREL caused a divide by zero error.");
-    }
-    return sumsqerr(arr) / (arr.length - (flag ? 1 : 0));
-  }
-
-  /**
-   * Return the sum of a vector. See http://jstat.github.io/vector.html#sum for more information.
-   */
-  function sum(arr) {
-    var sum = 0;
-    var i = arr.length;
-    while (--i >= 0) {
-      sum += arr[i];
-    }
-    return sum;
-  }
-  /**
-   * Return the mean of a vector. See http://jstat.github.io/vector.html#mean for more information.
-   */
-  function mean(arr) {
-    if (arr.length === 0) {
-      throw new DivZeroError("Evaluation of function CORREL caused a divide by zero error.");
-    }
-    return sum(arr) / arr.length;
-  }
-
-  /**
-   * Return the sum of squared errors of prediction of a vector. See http://jstat.github.io/vector.html#sumsqerr for
-   * more information.
-   */
-  function sumsqerr(arr) {
-    var m = mean(arr);
-    var sum = 0;
-    var i = arr.length;
-    var tmp;
-    while (--i >= 0) {
-      tmp = arr[i] - m;
-      sum += tmp * tmp;
-    }
-    return sum;
-  }
-
-  /**
-   * Return the covariance of two vectors. See http://jstat.github.io/vector.html#covariance for more information.
-   */
-  function covariance(arr1, arr2) {
-    var u = mean(arr1);
-    var v = mean(arr2);
-    var arr1Len = arr1.length;
-    var sq_dev = new Array(arr1Len);
-    for (var i = 0; i < arr1Len; i++) {
-      sq_dev[i] = (arr1[i] - u) * (arr2[i] - v);
-    }
-    if ((arr1Len - 1) === 0) {
-      throw new DivZeroError("Evaluation of function CORREL caused a divide by zero error.");
-    }
-    return sum(sq_dev) / (arr1Len - 1);
-  }
   ArgsChecker.checkLength(arguments, 2, "CORREL");
   if (!Array.isArray(dataY)) {
     dataY = [dataY];
@@ -328,6 +262,8 @@ var EXPONDIST = function (x, lambda, cumulative) : number {
   return (cumulative) ? cdf(x, lambda) : pdf(x, lambda);
 };
 
+
+
 /**
  * Calculates the left-tailed F probability distribution (degree of diversity) for two data sets with given input x.
  * Alternately called Fisher-Snedecor distribution or Snecdor's F distribution.
@@ -343,178 +279,7 @@ var EXPONDIST = function (x, lambda, cumulative) : number {
  */
 var FDIST$LEFTTAILED = function (x, degreesFreedom1, degreesFreedom2, cumulative) : number|undefined|boolean {
   ArgsChecker.checkLength(arguments, 4, "FDIST$LEFTTAILED");
-  /**
-   * Returns the Log-Gamma function evaluated at x. See http://jstat.github.io/special-functions.html#gammaln for more
-   * information.
-   */
-  function gammaln(x) {
-    var j = 0;
-    var cof = [
-      76.18009172947146, -86.50532032941677, 24.01409824083091,
-      -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5
-    ];
-    var ser = 1.000000000190015;
-    var xx, y, tmp;
-    tmp = (y = xx = x) + 5.5;
-    tmp -= (xx + 0.5) * Math.log(tmp);
-    for (; j < 6; j++)
-      ser += cof[j] / ++y;
-    return Math.log(2.5066282746310005 * ser / xx) - tmp;
-  }
 
-  /**
-   * Returns the Gamma function evaluated at x. This is sometimes called the 'complete' gamma function. See
-   * http://jstat.github.io/special-functions.html#gammafn for more information.
-   */
-  function gammafn(x) {
-    var p = [-1.716185138865495, 24.76565080557592, -379.80425647094563,
-      629.3311553128184, 866.9662027904133, -31451.272968848367,
-      -36144.413418691176, 66456.14382024054
-    ];
-    var q = [-30.8402300119739, 315.35062697960416, -1015.1563674902192,
-      -3107.771671572311, 22538.118420980151, 4755.8462775278811,
-      -134659.9598649693, -115132.2596755535];
-    var fact;
-    var n = 0;
-    var xden = 0;
-    var xnum = 0;
-    var y = x;
-    var i, z, yi, res;
-    if (y <= 0) {
-      res = y % 1 + 3.6e-16;
-      if (res) {
-        fact = (!(y & 1) ? 1 : -1) * Math.PI / Math.sin(Math.PI * res);
-        y = 1 - y;
-      } else {
-        return Infinity;
-      }
-    }
-    yi = y;
-    if (y < 1) {
-      z = y++;
-    } else {
-      z = (y -= n = (y | 0) - 1) - 1;
-    }
-    for (i = 0; i < 8; ++i) {
-      xnum = (xnum + p[i]) * z;
-      xden = xden * z + q[i];
-    }
-    res = xnum / xden + 1;
-    if (yi < y) {
-      res /= yi;
-    } else if (yi > y) {
-      for (i = 0; i < n; ++i) {
-        res *= y;
-        y++;
-      }
-    }
-    if (fact) {
-      res = fact / res;
-    }
-    return res;
-  }
-
-  /**
-   * Returns the continued fraction for the incomplete Beta function with parameters a and b modified by Lentz's method
-   * evaluated at x. For more information see http://jstat.github.io/special-functions.html#betacf.
-   */
-  function betacf(x, a, b) {
-    var fpmin = 1e-30;
-    var m = 1;
-    var qab = a + b;
-    var qap = a + 1;
-    var qam = a - 1;
-    var c = 1;
-    var d = 1 - qab * x / qap;
-    var m2, aa, del, h;
-
-    // These q's will be used in factors that occur in the coefficients
-    if (Math.abs(d) < fpmin)
-      d = fpmin;
-    d = 1 / d;
-    h = d;
-
-    for (; m <= 100; m++) {
-      m2 = 2 * m;
-      aa = m * (b - m) * x / ((qam + m2) * (a + m2));
-      // One step (the even one) of the recurrence
-      d = 1 + aa * d;
-      if (Math.abs(d) < fpmin)
-        d = fpmin;
-      c = 1 + aa / c;
-      if (Math.abs(c) < fpmin)
-        c = fpmin;
-      d = 1 / d;
-      h *= d * c;
-      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
-      // Next step of the recurrence (the odd one)
-      d = 1 + aa * d;
-      if (Math.abs(d) < fpmin)
-        d = fpmin;
-      c = 1 + aa / c;
-      if (Math.abs(c) < fpmin)
-        c = fpmin;
-      d = 1 / d;
-      del = d * c;
-      h *= del;
-      if (Math.abs(del - 1.0) < 3e-7)
-        break;
-    }
-
-    return h;
-  }
-
-  /**
-   * Returns the incomplete Beta function evaluated at (x,a,b). See http://jstat.github.io/special-functions.html#ibeta
-   * for more information.
-   */
-  function ibeta(x, a, b) {
-    // Factors in front of the continued fraction.
-    var bt = (x === 0 || x === 1) ?  0 :
-      Math.exp(gammaln(a + b) - gammaln(a) -
-        gammaln(b) + a * Math.log(x) + b *
-        Math.log(1 - x));
-    if (x < 0 || x > 1)
-      return false;
-    if (x < (a + 1) / (a + b + 2))
-    // Use continued fraction directly.
-      return bt * betacf(x, a, b) / a;
-    // else use continued fraction after making the symmetry transformation.
-    return 1 - bt * betacf(1 - x, b, a) / b;
-  }
-
-  /**
-   * Returns the value of x in the cdf of the Gamma distribution with the parameters shape (k) and scale (theta). Notice
-   * that if using the alpha beta convention, scale = 1/beta. For more information see
-   * http://jstat.github.io/distributions.html#jStat.gamma.cdf
-   */
-  function cdf(x, df1, df2) {
-    return ibeta((df1 * x) / (df1 * x + df2), df1 / 2, df2 / 2);
-  }
-
-  /**
-   * Returns the value of x in the pdf of the Gamma distribution with the parameters shape (k) and scale (theta). Notice
-   * that if using the alpha beta convention, scale = 1/beta. For more information see
-   * http://jstat.github.io/distributions.html#jStat.gamma.pdf
-   */
-  function pdf(x, df1, df2) {
-    if (x < 0) {
-      return undefined;
-    }
-    return Math.sqrt((Math.pow(df1 * x, df1) * Math.pow(df2, df2)) /
-        (Math.pow(df1 * x + df2, df1 + df2))) /
-      (x * betafn(df1/2, df2/2));
-  }
-  function betaln(x, y) {
-    return gammaln(x) + gammaln(y) - gammaln(x + y);
-  }
-  function betafn(x, y) {
-    // ensure arguments are positive
-    if (x <= 0 || y <= 0)
-      return undefined;
-    // make sure x + y doesn't exceed the upper limit of usable values
-    return (x + y > 170) ? Math.exp(betaln(x, y)) : gammafn(x) * gammafn(y) / gammafn(x + y);
-  }
   x = TypeConverter.firstValueAsNumber(x);
   if (x < 0) {
     throw new NumError("Function F.DIST parameter 1 value is " + x + ". It should be greater than or equal to 0.");
@@ -524,6 +289,7 @@ var FDIST$LEFTTAILED = function (x, degreesFreedom1, degreesFreedom2, cumulative
   var cum = TypeConverter.firstValueAsBoolean(cumulative);
   return (cum) ? cdf(x, d1, d2) : pdf(x, d1, d2);
 };
+
 
 /**
  * Returns the inverse of the (right-tailed) F probability distribution. If p = FDIST(x,...), then FINV(p,...) = x. The
@@ -536,156 +302,7 @@ var FDIST$LEFTTAILED = function (x, degreesFreedom1, degreesFreedom2, cumulative
  */
 var FINV = function (probability, degFreedom1, degFreedom2) : number {
   ArgsChecker.checkLength(arguments, 3, "FINV");
-  /**
-   * Returns the continued fraction for the incomplete Beta function with parameters a and b modified by Lentz's method
-   * evaluated at x. For more information see http://jstat.github.io/special-functions.html#betacf
-   */
-  function betacf(x, a, b) {
-    var fpmin = 1e-30;
-    var m = 1;
-    var qab = a + b;
-    var qap = a + 1;
-    var qam = a - 1;
-    var c = 1;
-    var d = 1 - qab * x / qap;
-    var m2, aa, del, h;
 
-    // These q's will be used in factors that occur in the coefficients
-    if (Math.abs(d) < fpmin)
-      d = fpmin;
-    d = 1 / d;
-    h = d;
-
-    for (; m <= 100; m++) {
-      m2 = 2 * m;
-      aa = m * (b - m) * x / ((qam + m2) * (a + m2));
-      // One step (the even one) of the recurrence
-      d = 1 + aa * d;
-      if (Math.abs(d) < fpmin)
-        d = fpmin;
-      c = 1 + aa / c;
-      if (Math.abs(c) < fpmin)
-        c = fpmin;
-      d = 1 / d;
-      h *= d * c;
-      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
-      // Next step of the recurrence (the odd one)
-      d = 1 + aa * d;
-      if (Math.abs(d) < fpmin)
-        d = fpmin;
-      c = 1 + aa / c;
-      if (Math.abs(c) < fpmin)
-        c = fpmin;
-      d = 1 / d;
-      del = d * c;
-      h *= del;
-      if (Math.abs(del - 1.0) < 3e-7)
-        break;
-    }
-
-    return h;
-  }
-
-  /**
-   * Returns the incomplete Beta function evaluated at (x,a,b). See http://jstat.github.io/special-functions.html#ibeta
-   * for more information.
-   */
-  function ibeta(x, a, b) : number {
-    // Factors in front of the continued fraction.
-    var bt = (x === 0 || x === 1) ?  0 :
-      Math.exp(gammaln(a + b) - gammaln(a) -
-        gammaln(b) + a * Math.log(x) + b *
-        Math.log(1 - x));
-    if (x < 0 || x > 1)
-    // WARNING: I changed this to 0, because TS complains about doing numerical operations on boolean values.
-    // Still safe in javascript, but not TS.
-      return 0;
-    if (x < (a + 1) / (a + b + 2))
-    // Use continued fraction directly.
-      return bt * betacf(x, a, b) / a;
-    // else use continued fraction after making the symmetry transformation.
-    return 1 - bt * betacf(1 - x, b, a) / b;
-  }
-
-  /**
-   * Returns the Log-Gamma function evaluated at x. For more information see
-   * http://jstat.github.io/special-functions.html#gammaln
-   */
-  function gammaln(x) {
-    var j = 0;
-    var cof = [
-      76.18009172947146, -86.50532032941677, 24.01409824083091,
-      -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5
-    ];
-    var ser = 1.000000000190015;
-    var xx, y, tmp;
-    tmp = (y = xx = x) + 5.5;
-    tmp -= (xx + 0.5) * Math.log(tmp);
-    for (; j < 6; j++)
-      ser += cof[j] / ++y;
-    return Math.log(2.5066282746310005 * ser / xx) - tmp;
-  }
-
-  /**
-   * Returns the inverse of the incomplete Beta function evaluated at (p,a,b). For more information see
-   * http://jstat.github.io/special-functions.html#ibetainv
-   */
-  function ibetainv(p, a, b) {
-    var EPS = 1e-8;
-    var a1 = a - 1;
-    var b1 = b - 1;
-    var j = 0;
-    var lna, lnb, pp, t, u, err, x, al, h, w, afac;
-    if (p <= 0)
-      return 0;
-    if (p >= 1)
-      return 1;
-    if (a >= 1 && b >= 1) {
-      pp = (p < 0.5) ? p : 1 - p;
-      t = Math.sqrt(-2 * Math.log(pp));
-      x = (2.30753 + t * 0.27061) / (1 + t* (0.99229 + t * 0.04481)) - t;
-      if (p < 0.5)
-        x = -x;
-      al = (x * x - 3) / 6;
-      h = 2 / (1 / (2 * a - 1)  + 1 / (2 * b - 1));
-      w = (x * Math.sqrt(al + h) / h) - (1 / (2 * b - 1) - 1 / (2 * a - 1)) *
-        (al + 5 / 6 - 2 / (3 * h));
-      x = a / (a + b * Math.exp(2 * w));
-    } else {
-      lna = Math.log(a / (a + b));
-      lnb = Math.log(b / (a + b));
-      t = Math.exp(a * lna) / a;
-      u = Math.exp(b * lnb) / b;
-      w = t + u;
-      if (p < t / w)
-        x = Math.pow(a * w * p, 1 / a);
-      else
-        x = 1 - Math.pow(b * w * (1 - p), 1 / b);
-    }
-    afac = -gammaln(a) - gammaln(b) + gammaln(a + b);
-    for(; j < 10; j++) {
-      if (x === 0 || x === 1)
-        return x;
-      err = ibeta(x, a, b) - p;
-      t = Math.exp(a1 * Math.log(x) + b1 * Math.log(1 - x) + afac);
-      u = err / t;
-      x -= (t = u / (1 - 0.5 * Math.min(1, u * (a1 / x - b1 / (1 - x)))));
-      if (x <= 0)
-        x = 0.5 * (x + t);
-      if (x >= 1)
-        x = 0.5 * (x + t + 1);
-      if (Math.abs(t) < EPS * x && j > 0)
-        break;
-    }
-    return x;
-  }
-
-  /**
-   * http://jstat.github.io/distributions.html
-   */
-  function inv(x, df1, df2) {
-    return df2 / (df1 * (1 / ibetainv(x, df1 / 2, df2 / 2) - 1));
-  }
   probability = TypeConverter.firstValueAsNumber(probability);
   if (probability <= 0.0 || probability > 1.0) {
     throw new NumError("Function FINV parameter 1 value is " + probability

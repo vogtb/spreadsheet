@@ -35,12 +35,5 @@ Contingent upon cells having formats or types for primitives.
 ### Scrape jsdocs for functions, put in simple index.html, doc.md files to serve up simple documentation
 
 
-### Pull static functions outside of formulas, declare once.
-
-
 ### CONVERT could offer more accurate conversions for units in the same system
 For example 64 tbs to a qt.
-
-
-### Sheet.ts and parser.js should be able to concatenate criteria and values
-E.g. `=COUNTIFS(A7:A24, ">6", B7:B24, "<"&DATE(1969,7,20))`

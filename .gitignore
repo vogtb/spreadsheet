@@ -7,7 +7,6 @@
 *.profi
 *.module-cache
 node_modules/
-dist/
 build/
 npm-debug.log
 output/

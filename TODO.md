@@ -1,5 +1,4 @@
 # TODO
-Things I should do.
 
 
 ### Cells should have `formatAs` fields.

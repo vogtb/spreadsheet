@@ -3,9 +3,9 @@
     "allowJs": true,
     "allowUnreachableCode": true,
     "allowUnusedLabels": true,
-    "outDir": "output"
+    "outDir": "dist"
   },
   "files": [
-    "src/Main.ts"
+    "src/Sheet.ts"
   ]
 }

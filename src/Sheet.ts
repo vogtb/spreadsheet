@@ -1,9 +1,22 @@
 /// <reference path="parser.d.ts"/>
-import { Parser } from "./Parser";
-import { Cell } from "./Cell"
-import { DivZeroError, RefError, NameError } from "./Errors"
-import { Formulas } from "./Formulas";
-import { TypeConverter } from "./Utilities/TypeConverter";
+import {
+  Parser
+} from "./Parser";
+import {
+  Cell
+} from "./Cell";
+import {
+  DivZeroError,
+  RefError,
+  NameError
+} from "./Errors";
+import {
+  Formulas
+} from "./Formulas";
+import * as AllFormulas from "./Formulas/AllFormulas";
+import {
+  TypeConverter
+} from "./Utilities/TypeConverter";
 
 
 /**
@@ -596,5 +609,6 @@ var Sheet = (function () {
 });
 
 export {
-  Sheet
+  Sheet,
+  AllFormulas
 }

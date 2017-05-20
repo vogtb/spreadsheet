@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "description": "TypeScript/javascript implementation of a spreadsheet.",
   "scripts": {
-    "clean": "rm -rf output/* && rm -rf test_output/*",
-    "build": "tsc && cp lib/parser.js output/",
+    "clean": "rm -rf dist/* && rm -rf test_output/*",
+    "build": "tsc && cp lib/parser.js dist/",
     "docs": "./docs.sh src/Formulas",
     "test": "./tests.sh",
     "test:quiet": "./tests.sh | grep -v Test:"
   },
   "author": "vogtb <bvogt at gmail.com>",
   "license": "MIT",
+  "main": "dist/Sheet.js",
   "dependencies": {
     "moment": "^2.17.1"
+  },
+  "devDependencies": {
+    "typescript": "^2.3.2"
   }
 }

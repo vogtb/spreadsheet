@@ -559,13 +559,12 @@ test("Sheet numbers/math", function(){
   assertFormulaEquals('="10.111111" + 0', 10.111111);
   assertFormulaEquals('= 10%', 0.1);
   assertFormulaEquals('= 10% + 1', 1.1);
-  // TODO: These fail
-  // assertFormulaEquals('="10e1" + 0', 100);
-  // assertFormulaEquals('="1,000,000" + 0', 1000000);
-  // assertFormulaEqualsError('= "10e" + 10', VALUE_ERROR); // TODO: Should fail, but doesn't because 10e parses to a string
-  // assertFormulaEquals('="+$10.00" + 0', 10);
-  // assertFormulaEquals('="-$10.00" + 0', -10);
-  // assertFormulaEquals('="$+10.00" + 0', 10);
-  // assertFormulaEquals('="$-10.00" + 0', -10);
+  assertFormulaEquals('="10e1" + 0', 100);
+  assertFormulaEquals('="1,000,000" + 0', 1000000);
+  assertFormulaEqualsError('= "10e" + 10', VALUE_ERROR); // TODO: Should fail, but doesn't because 10e parses to a string
+  assertFormulaEquals('="+$10.00" + 0', 10);
+  assertFormulaEquals('="-$10.00" + 0', -10);
+  assertFormulaEquals('="$+10.00" + 0', 10);
+  assertFormulaEquals('="$-10.00" + 0', -10);
 });
 

@@ -14,10 +14,10 @@ class Filter {
   static stringValuesToZeros(arr: Array<any>) : Array<any> {
     var toReturn = [];
     for (var i = 0; i < arr.length; i++) {
-      if (typeof arr[i] !== "string") {
-        toReturn.push(arr[i]);
-      } else {
+      if (typeof arr[i] === "string") {
         toReturn.push(0);
+      } else {
+        toReturn.push(arr[i]);
       }
     }
     return toReturn;

@@ -329,9 +329,19 @@ test("MAX", function(){
 });
 
 
-// TODO: More tests here.
 test("MAXA", function(){
   assertEquals(MAXA(100, 22, 44), 100);
+  assertEquals(MAXA("100", 22, 44), 44);
+  assertEquals(MAXA(-1, -10, "stuff"), 0);
+  catchAndAssertEquals(function() {
+    MAX(100, []);
+  }, ERRORS.REF_ERROR);
+  catchAndAssertEquals(function() {
+    MAX([]);
+  }, ERRORS.REF_ERROR);
+  catchAndAssertEquals(function() {
+    MAX.apply(this, []);
+  }, ERRORS.NA_ERROR);
 });
 
 

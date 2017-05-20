@@ -374,7 +374,22 @@ var MAX = function (...values) {
  */
 var MAXA = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "MAXA");
-  return MAX.apply(this, values);
+  var maxSoFar = -Infinity;
+  var filteredValues = Filter.stringValuesToZeros(values);
+  for (var i = 0; i < filteredValues.length; i++) {
+    if (filteredValues[i] instanceof Array) {
+      if (values[i].length === 0) {
+        throw new RefError("Reference does not exist.");
+      }
+      var filtered = Filter.stringValuesToZeros(filteredValues[i]);
+      if (filtered.length !== 0) {
+        maxSoFar = Math.max(MAXA.apply(this, filtered), maxSoFar);
+      }
+    } else {
+      maxSoFar = Math.max(TypeConverter.valueToNumber(filteredValues[i]), maxSoFar);
+    }
+  }
+  return maxSoFar;
 };
 
 

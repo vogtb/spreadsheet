@@ -56,7 +56,6 @@ For example 64 tbs to a qt.
 * QUOTIENT
 * SERIESSUM
 * SUBTOTAL
-* EQ
 * GT
 * GTE
 * LT

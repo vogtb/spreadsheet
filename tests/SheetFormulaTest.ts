@@ -262,6 +262,10 @@ test("Sheet DIVIDE", function(){
   assertFormulaEquals('=DIVIDE(22, 11)', 2);
 });
 
+test("Sheet EQ", function(){
+  assertFormulaEquals('=EQ(22, 11)', false);
+});
+
 test("Sheet SIGN", function(){
   assertFormulaEquals('=SIGN(100)', 1);
 });

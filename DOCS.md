@@ -908,6 +908,16 @@
 @constructor
 ```
 
+### EQ 
+
+```
+  Returns true if two specified values are equal and true otherwise. Equivalent to the "=" operator. 
+@param one - First value to check. 
+@param two - Second value to check. 
+@returns {boolean} true if values are equal, false if they are not equal. 
+@constructor
+```
+
 ### DIVIDE 
 
 ```

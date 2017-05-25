@@ -777,6 +777,21 @@ var MINUS = function (one, two) {
 
 
 /**
+ * Returns true if two specified values are equal and true otherwise. Equivalent to the "=" operator.
+ * @param one - First value to check.
+ * @param two - Second value to check.
+ * @returns {boolean} true if values are equal, false if they are not equal.
+ * @constructor
+ */
+var EQ = function (one, two) {
+  ArgsChecker.checkLength(arguments, 2, "EQ");
+  var x = TypeConverter.firstValue(one);
+  var y = TypeConverter.firstValue(two);
+  return x === y;
+};
+
+
+/**
  * Returns one number divided by another. Equivalent to the `/` operator.
  * @param dividend - The number to be divided.
  * @param divisor - The number to divide by, cannot be 0.
@@ -1141,5 +1156,6 @@ export {
   RAND,
   RANDBETWEEN,
   SIGN,
-  DIVIDE
+  DIVIDE,
+  EQ
 }

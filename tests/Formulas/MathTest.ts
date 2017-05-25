@@ -54,7 +54,7 @@ import {
   MINUS,
   RAND,
   RANDBETWEEN,
-  SIGN, DIVIDE
+  SIGN, DIVIDE, EQ
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1199,6 +1199,24 @@ test("DIVIDE", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     DIVIDE.apply(this, [1, 1, 1]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("EQ", function(){
+  assertEquals(EQ(2, 2), true);
+  assertEquals(EQ("2", 2), false);
+  assertEquals(EQ("2", "2"), true);
+  assertEquals(EQ("abc", "abc"), true);
+  assertEquals(EQ(true, true), true);
+  assertEquals(EQ(false, true), false);
+  assertEquals(EQ(false, false), true);
+  assertEquals(EQ(0, 0), true);
+  catchAndAssertEquals(function() {
+    EQ.apply(this, [3.1, 1, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    EQ.apply(this, [1]);
   }, ERRORS.NA_ERROR);
 });
 

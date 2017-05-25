@@ -52,7 +52,8 @@ import {
   COMBIN,
   MULTIPLY,
   MINUS,
-  RAND
+  RAND,
+  RANDBETWEEN
 } from "./Math";
 import {
   AND,
@@ -273,5 +274,6 @@ export {
   WORKDAY$INTL,
   MULTIPLY,
   MINUS,
-  RAND
+  RAND,
+  RANDBETWEEN
 }

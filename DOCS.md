@@ -916,6 +916,16 @@
 @constructor
 ```
 
+### NDBETWEEN 
+
+```
+  Returns a uniformly random integer between two values, inclusive on high and low. Values with decimal parts may be used for low andor high; this will cause the least and greatest possible values to be the next integer greater than low andor the next integer less than high, respectively. 
+@param low - lowest value 
+@param high - highest value 
+@returns {number} between low and high. 
+@constructor
+```
+
 ### TRUNC 
 
 ```

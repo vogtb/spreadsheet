@@ -55,6 +55,7 @@ exports.COMBIN = Math_1.COMBIN;
 exports.MULTIPLY = Math_1.MULTIPLY;
 exports.MINUS = Math_1.MINUS;
 exports.RAND = Math_1.RAND;
+exports.RANDBETWEEN = Math_1.RANDBETWEEN;
 var Logical_1 = require("./Logical");
 exports.AND = Logical_1.AND;
 exports.EXACT = Logical_1.EXACT;

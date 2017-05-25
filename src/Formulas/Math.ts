@@ -785,6 +785,29 @@ var RAND = function () {
   return Math.random();
 };
 
+
+/**
+ * Returns a uniformly random integer between two values, inclusive on high and low. Values with decimal parts may be
+ * used for low and/or high; this will cause the least and greatest possible values to be the next integer greater than
+ * low and/or the next integer less than high, respectively.
+ * @param low - lowest value
+ * @param high - highest value
+ * @returns {number} between low and high.
+ * @constructor
+ */
+var RANDBETWEEN = function (low, high) {
+  ArgsChecker.checkLength(arguments, 2, "RAND");
+  low = Math.floor(TypeConverter.firstValueAsNumber(low));
+  high = Math.ceil(TypeConverter.firstValueAsNumber(high));
+  if (low > high) {
+    throw new NumError("Function RANDBETWEEN parameter 2 value is " + low + ". It should be greater than or equal to "
+      + high + ".");
+  }
+  var diff = Math.abs(low - high);
+  return Math.round(low + (Math.random() * diff));
+};
+
+
 /**
  * Truncates a number to a certain number of significant digits by omitting less significant digits.
  * @param value - The value to be truncated.
@@ -1080,5 +1103,6 @@ export {
   RADIANS,
   DEGREES,
   COMBIN,
-  RAND
+  RAND,
+  RANDBETWEEN
 }

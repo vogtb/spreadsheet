@@ -800,6 +800,21 @@ var RANDBETWEEN = function (low, high) {
 };
 exports.RANDBETWEEN = RANDBETWEEN;
 /**
+ * Given an input number, returns `-1` if it is negative, `1` if positive, and `0` if it is zero.
+ * @param value - The value to check the sign for
+ * @returns {number} `-1` if it is negative, `1` if positive, and `0` if it is zero.
+ * @constructor
+ */
+var SIGN = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "SIGN");
+    var x = TypeConverter_1.TypeConverter.firstValueAsNumber(value);
+    if (x === 0) {
+        return 0;
+    }
+    return x > 0 ? 1 : -1;
+};
+exports.SIGN = SIGN;
+/**
  * Truncates a number to a certain number of significant digits by omitting less significant digits.
  * @param value - The value to be truncated.
  * @param places - [ OPTIONAL - 0 by default ] - The number of significant digits to the right of the decimal point to

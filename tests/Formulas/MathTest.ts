@@ -52,7 +52,9 @@ import {
   DEGREES,
   COMBIN,
   MINUS,
-  RAND, RANDBETWEEN
+  RAND,
+  RANDBETWEEN,
+  SIGN
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1205,5 +1207,19 @@ test("RANDBETWEEN", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     RANDBETWEEN.apply(this, [3, 4, 5]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("SIGN", function(){
+  assertEquals(SIGN(2), 1);
+  assertEquals(SIGN(0), 0);
+  assertEquals(SIGN(-100), -1);
+  assertEquals(SIGN([0]), 0);
+  assertEquals(SIGN("0"), 0);
+  assertEquals(SIGN(false), 0);
+  assertEquals(SIGN(true), 1);
+  catchAndAssertEquals(function() {
+    SIGN.apply(this, [3, 2]);
   }, ERRORS.NA_ERROR);
 });

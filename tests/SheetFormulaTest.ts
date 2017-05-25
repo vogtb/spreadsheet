@@ -246,12 +246,20 @@ test("Sheet RAND", function(){
   assertFormulaResultsInType('=RAND()', "number");
 });
 
+test("Sheet RANDBETWEEN", function(){
+  assertFormulaResultsInType('=RANDBETWEEN(1, 2)', "number");
+});
+
 test("Sheet MULTIPLY", function(){
   assertFormulaEquals('=MULTIPLY(10, 10)', 100);
 });
 
 test("Sheet MULTIPLY", function(){
   assertFormulaEquals('=MINUS(22, 1)', 21);
+});
+
+test("Sheet SIGN", function(){
+  assertFormulaEquals('=SIGN(100)', 1);
 });
 
 test("Sheet DELTA", function(){

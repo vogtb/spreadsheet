@@ -55,7 +55,6 @@ For example 64 tbs to a qt.
 * PRODUCT
 * QUOTIENT
 * SERIESSUM
-* SIGN
 * SUBTOTAL
 * DIVIDE
 * EQ

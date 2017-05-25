@@ -53,7 +53,8 @@ import {
   MULTIPLY,
   MINUS,
   RAND,
-  RANDBETWEEN
+  RANDBETWEEN,
+  SIGN
 } from "./Math";
 import {
   AND,
@@ -275,5 +276,6 @@ export {
   MULTIPLY,
   MINUS,
   RAND,
-  RANDBETWEEN
+  RANDBETWEEN,
+  SIGN
 }

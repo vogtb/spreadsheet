@@ -926,6 +926,15 @@
 @constructor
 ```
 
+### SIGN 
+
+```
+  Given an input number, returns `-1` if it is negative, `1` if positive, and `0` if it is zero. 
+@param value - The value to check the sign for 
+@returns {number} `-1` if it is negative, `1` if positive, and `0` if it is zero. 
+@constructor
+```
+
 ### TRUNC 
 
 ```

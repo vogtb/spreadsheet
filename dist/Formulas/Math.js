@@ -742,6 +742,43 @@ var SUMSQ = function () {
 };
 exports.SUMSQ = SUMSQ;
 /**
+ * Returns the product of two numbers. Equivalent to the `*` operator.
+ * @param factor1 - The first multiplicand.
+ * @param factor2 - The second multiplicand.
+ * @constructor
+ */
+var MULTIPLY = function (factor1, factor2) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "MULTIPLY");
+    var x = TypeConverter_1.TypeConverter.firstValueAsNumber(factor1);
+    var y = TypeConverter_1.TypeConverter.firstValueAsNumber(factor1);
+    return x * y;
+};
+exports.MULTIPLY = MULTIPLY;
+/**
+ * Returns the result of the first number minus the second number. Equivalent to the `-` operator.
+ * @param one - The first number.
+ * @param two - the second number.
+ * @returns {number}
+ * @constructor
+ */
+var MINUS = function (one, two) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "MINUS");
+    var x = TypeConverter_1.TypeConverter.firstValueAsNumber(one);
+    var y = TypeConverter_1.TypeConverter.firstValueAsNumber(two);
+    return x - y;
+};
+exports.MINUS = MINUS;
+/**
+ * Returns a random number between 0 inclusive and 1 exclusive.
+ * @returns {number}
+ * @constructor
+ */
+var RAND = function () {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 0, "RAND");
+    return Math.random();
+};
+exports.RAND = RAND;
+/**
  * Truncates a number to a certain number of significant digits by omitting less significant digits.
  * @param value - The value to be truncated.
  * @param places - [ OPTIONAL - 0 by default ] - The number of significant digits to the right of the decimal point to

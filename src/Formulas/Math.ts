@@ -748,6 +748,44 @@ var SUMSQ = function (...values) {
 
 
 /**
+ * Returns the product of two numbers. Equivalent to the `*` operator.
+ * @param factor1 - The first multiplicand.
+ * @param factor2 - The second multiplicand.
+ * @constructor
+ */
+var MULTIPLY = function (factor1, factor2) {
+  ArgsChecker.checkLength(arguments, 2, "MULTIPLY");
+  var x = TypeConverter.firstValueAsNumber(factor1);
+  var y = TypeConverter.firstValueAsNumber(factor1);
+  return x * y;
+};
+
+
+/**
+ * Returns the result of the first number minus the second number. Equivalent to the `-` operator.
+ * @param one - The first number.
+ * @param two - the second number.
+ * @returns {number}
+ * @constructor
+ */
+var MINUS = function (one, two) {
+  ArgsChecker.checkLength(arguments, 2, "MINUS");
+  var x = TypeConverter.firstValueAsNumber(one);
+  var y = TypeConverter.firstValueAsNumber(two);
+  return x - y;
+};
+
+/**
+ * Returns a random number between 0 inclusive and 1 exclusive.
+ * @returns {number}
+ * @constructor
+ */
+var RAND = function () {
+  ArgsChecker.checkLength(arguments, 0, "RAND");
+  return Math.random();
+};
+
+/**
  * Truncates a number to a certain number of significant digits by omitting less significant digits.
  * @param value - The value to be truncated.
  * @param places - [ OPTIONAL - 0 by default ] - The number of significant digits to the right of the decimal point to
@@ -1021,6 +1059,8 @@ export {
   LOG,
   LOG10,
   LN,
+  MULTIPLY,
+  MINUS,
   TAN,
   TANH,
   ROUND,
@@ -1039,5 +1079,6 @@ export {
   TRUNC,
   RADIANS,
   DEGREES,
-  COMBIN
+  COMBIN,
+  RAND
 }

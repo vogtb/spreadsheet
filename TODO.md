@@ -54,7 +54,6 @@ For example 64 tbs to a qt.
 * MULTINOMIAL
 * PRODUCT
 * QUOTIENT
-* RAND
 * RANDBETWEEN
 * SERIESSUM
 * SIGN
@@ -151,8 +150,6 @@ For example 64 tbs to a qt.
 * TRIM
 * UPPER
 * VALUE
-* MINUS
-* MULTIPLY
 * FREQUENCY
 * GROWTH
 * LINEST

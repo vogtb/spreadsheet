@@ -49,7 +49,10 @@ import {
   TRUNC,
   RADIANS,
   DEGREES,
-  COMBIN
+  COMBIN,
+  MULTIPLY,
+  MINUS,
+  RAND
 } from "./Math";
 import {
   AND,
@@ -267,5 +270,8 @@ export {
   TODAY,
   TIME,
   WORKDAY,
-  WORKDAY$INTL
+  WORKDAY$INTL,
+  MULTIPLY,
+  MINUS,
+  RAND
 }

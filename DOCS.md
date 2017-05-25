@@ -889,6 +889,33 @@
 @constructor
 ```
 
+### MULTIPLY 
+
+```
+  Returns the product of two numbers. Equivalent to the `` operator. 
+@param factor1 - The first multiplicand. 
+@param factor2 - The second multiplicand. 
+@constructor
+```
+
+### MINUS 
+
+```
+  Returns the result of the first number minus the second number. Equivalent to the `-` operator. 
+@param one - The first number. 
+@param two - the second number. 
+@returns {number} 
+@constructor
+```
+
+### RAND 
+
+```
+  Returns a random number between 0 inclusive and 1 exclusive. 
+@returns {number} 
+@constructor
+```
+
 ### TRUNC 
 
 ```

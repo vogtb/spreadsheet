@@ -23,6 +23,14 @@ function assertFormulaEquals(formula: string, expectation: any) {
   assertEquals(cell.getValue(), expectation);
 }
 
+function assertFormulaResultsInType(formula: string, type: string) {
+  var sheet  = new Sheet();
+  sheet.setCell("A1", formula);
+  var cell = sheet.getCell("A1");
+  assertEquals(cell.getError(), null);
+  assertEquals(typeof cell.getValue(), type);
+}
+
 function testFormulaToArray(formula: string, expectation: any) {
   var sheet  = new Sheet();
   sheet.setCell("A1", formula);
@@ -228,6 +236,22 @@ test("Sheet DEC2OCT", function(){
 
 test("Sheet DEGREES", function(){
   assertFormulaEquals('=DEGREES(PI())', 180);
+});
+
+test("Sheet DELTA", function(){
+  assertFormulaEquals('=DELTA(2, 2)', 1);
+});
+
+test("Sheet RAND", function(){
+  assertFormulaResultsInType('=RAND()', "number");
+});
+
+test("Sheet MULTIPLY", function(){
+  assertFormulaEquals('=MULTIPLY(10, 10)', 100);
+});
+
+test("Sheet MULTIPLY", function(){
+  assertFormulaEquals('=MINUS(22, 1)', 21);
 });
 
 test("Sheet DELTA", function(){

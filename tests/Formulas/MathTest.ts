@@ -19,6 +19,7 @@ import {
   INT,
   ISEVEN,
   ISODD,
+  MULTIPLY,
   MOD,
   ODD,
   SIN,
@@ -49,7 +50,9 @@ import {
   TRUNC,
   RADIANS,
   DEGREES,
-  COMBIN
+  COMBIN,
+  MINUS,
+  RAND
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1150,5 +1153,38 @@ test("TRUNC", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     TRUNC.apply(this, [3.1, 1, 1]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("MULTIPLY", function(){
+  assertEquals(MULTIPLY(2, 2), 4);
+  assertEquals(MULTIPLY(2, "2"), 4);
+  assertEquals(MULTIPLY([2, []], ["2"]), 4);
+  catchAndAssertEquals(function() {
+    MULTIPLY.apply(this, [3.1, 1, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    MULTIPLY.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("MINUS", function(){
+  assertEquals(MINUS(2, 2), 0);
+  assertEquals(MINUS(2, 10), -8);
+  assertEquals(MINUS(2, "12"), -10);
+  assertEquals(MINUS([4, []], ["2"]), 2);
+  catchAndAssertEquals(function() {
+    MINUS.apply(this, [3.1, 1, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    MINUS.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("RAND", function(){
+  catchAndAssertEquals(function() {
+    RAND.apply(this, [3]);
   }, ERRORS.NA_ERROR);
 });

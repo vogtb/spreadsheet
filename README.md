@@ -80,11 +80,12 @@ When adding a formula, or fixing a bug please follow the commit message format:
 ```
 If you're adding a new formula, before you submit a pull request or push ensure that:
 1) The formula is tested inside the proper category file in `tests/Formulas`.
-2) The formula tests for reference errors, N/A errors, value errors for each input.
-3) That the formula is tested for parsing inside `SheetFormulaTest.ts`.
-4) Run tests with `npm run test`.
-5) Build with `npm run build`.
-6) Build DOCS.md with `npm run docs`.
+2) Make sure the formula is exported, and imported/exported in `AllFormulas.ts`.
+3) The formula tests for reference errors, N/A errors, value errors for each input.
+4) That the formula is tested for parsing inside `SheetFormulaTest.ts`.
+5) Run tests with `npm run test`.
+6) Build with `npm run build`.
+7) Build DOCS.md with `npm run docs`.
 
 
 ## Why?

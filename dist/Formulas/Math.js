@@ -769,6 +769,23 @@ var MINUS = function (one, two) {
 };
 exports.MINUS = MINUS;
 /**
+ * Returns one number divided by another. Equivalent to the `/` operator.
+ * @param dividend - The number to be divided.
+ * @param divisor - The number to divide by, cannot be 0.
+ * @returns {number} result of dividend / divisor.
+ * @constructor
+ */
+var DIVIDE = function (dividend, divisor) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "DIVIDE");
+    var x = TypeConverter_1.TypeConverter.firstValueAsNumber(dividend);
+    var y = TypeConverter_1.TypeConverter.firstValueAsNumber(divisor);
+    if (y < 0) {
+        throw new Errors_1.DivZeroError("Function DIVIDE parameter 2 cannot be zero.");
+    }
+    return x / y;
+};
+exports.DIVIDE = DIVIDE;
+/**
  * Returns a random number between 0 inclusive and 1 exclusive.
  * @returns {number}
  * @constructor

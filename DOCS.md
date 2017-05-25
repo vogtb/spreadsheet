@@ -908,6 +908,16 @@
 @constructor
 ```
 
+### DIVIDE 
+
+```
+  Returns one number divided by another. Equivalent to the `` operator. 
+@param dividend - The number to be divided. 
+@param divisor - The number to divide by, cannot be 0. 
+@returns {number} result of dividend  divisor. 
+@constructor
+```
+
 ### RAND 
 
 ```

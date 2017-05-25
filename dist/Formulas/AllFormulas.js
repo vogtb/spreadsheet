@@ -57,6 +57,7 @@ exports.MINUS = Math_1.MINUS;
 exports.RAND = Math_1.RAND;
 exports.RANDBETWEEN = Math_1.RANDBETWEEN;
 exports.SIGN = Math_1.SIGN;
+exports.DIVIDE = Math_1.DIVIDE;
 var Logical_1 = require("./Logical");
 exports.AND = Logical_1.AND;
 exports.EXACT = Logical_1.EXACT;

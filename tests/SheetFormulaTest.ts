@@ -255,7 +255,11 @@ test("Sheet MULTIPLY", function(){
 });
 
 test("Sheet MULTIPLY", function(){
-  assertFormulaEquals('=MINUS(22, 1)', 21);
+  assertFormulaEquals('=MULTIPLY(2, 2)', 4);
+});
+
+test("Sheet DIVIDE", function(){
+  assertFormulaEquals('=DIVIDE(22, 11)', 2);
 });
 
 test("Sheet SIGN", function(){

@@ -54,7 +54,7 @@ import {
   MINUS,
   RAND,
   RANDBETWEEN,
-  SIGN
+  SIGN, DIVIDE
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1182,6 +1182,23 @@ test("MINUS", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     MINUS.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("DIVIDE", function(){
+  assertEquals(DIVIDE(2, 2), 1);
+  assertEquals(DIVIDE(10, 2), 5);
+  assertEquals(DIVIDE(2, "12"), 0.16666666666666666);
+  assertEquals(DIVIDE([4, []], ["2"]), 2);
+  catchAndAssertEquals(function() {
+    DIVIDE.apply(this, [3.1, 1, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    DIVIDE.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    DIVIDE.apply(this, [1, 1, 1]);
   }, ERRORS.NA_ERROR);
 });
 

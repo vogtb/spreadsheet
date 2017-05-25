@@ -2,7 +2,7 @@ import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
 import {
-  TypeConverter
+  TypeConverter, checkForDevideByZero
 } from "../Utilities/TypeConverter";
 import {
   Filter
@@ -775,6 +775,25 @@ var MINUS = function (one, two) {
   return x - y;
 };
 
+
+/**
+ * Returns one number divided by another. Equivalent to the `/` operator.
+ * @param dividend - The number to be divided.
+ * @param divisor - The number to divide by, cannot be 0.
+ * @returns {number} result of dividend / divisor.
+ * @constructor
+ */
+var DIVIDE = function (dividend, divisor) {
+  ArgsChecker.checkLength(arguments, 2, "DIVIDE");
+  var x = TypeConverter.firstValueAsNumber(dividend);
+  var y = TypeConverter.firstValueAsNumber(divisor);
+  if (y < 0) {
+    throw new DivZeroError("Function DIVIDE parameter 2 cannot be zero.");
+  }
+  return x / y;
+};
+
+
 /**
  * Returns a random number between 0 inclusive and 1 exclusive.
  * @returns {number}
@@ -1121,5 +1140,6 @@ export {
   COMBIN,
   RAND,
   RANDBETWEEN,
-  SIGN
+  SIGN,
+  DIVIDE
 }

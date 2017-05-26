@@ -56,11 +56,6 @@ For example 64 tbs to a qt.
 * QUOTIENT
 * SERIESSUM
 * SUBTOTAL
-* GT
-* GTE
-* LT
-* LTE
-* NE
 * UMINUS
 * UNARY_PERCENT
 * UPLUS

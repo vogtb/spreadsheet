@@ -54,7 +54,14 @@ import {
   MINUS,
   RAND,
   RANDBETWEEN,
-  SIGN, DIVIDE, EQ
+  SIGN,
+  DIVIDE,
+  EQ,
+  GT,
+  GTE,
+  LT,
+  LTE,
+  NE
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1217,6 +1224,99 @@ test("EQ", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     EQ.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("GT", function(){
+  assertEquals(GT(2, 2), false);
+  assertEquals(GT(2, 3), false);
+  assertEquals(GT(2, 1), true);
+  assertEquals(GT("abc", "a"), true);
+  assertEquals(GT("abc", "abcd"), false);
+  assertEquals(GT(false, false), false);
+  assertEquals(GT(true, false), true);
+  catchAndAssertEquals(function() {
+    GT.apply(this, [3]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    GT.apply(this, [3, 3, 3]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("GTE", function(){
+  assertEquals(GTE(2, 2), true);
+  assertEquals(GTE(2, 3), false);
+  assertEquals(GTE(2, 1), true);
+  assertEquals(GTE("abc", "a"), true);
+  assertEquals(GTE("abc", "abc"), true);
+  assertEquals(GTE("abc", "abcd"), false);
+  assertEquals(GTE(false, false), true);
+  assertEquals(GTE(true, false), true);
+  catchAndAssertEquals(function() {
+    GTE.apply(this, [3]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    GTE.apply(this, [3, 3, 3]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("LT", function(){
+  assertEquals(LT(2, 2), false);
+  assertEquals(LT(2, 3), true);
+  assertEquals(LT(2, 1), false);
+  assertEquals(LT("abc", "a"), false);
+  assertEquals(LT("abc", "abc"), false);
+  assertEquals(LT("abc", "abcd"), true);
+  assertEquals(LT(false, false), false);
+  assertEquals(LT(true, false), false);
+  assertEquals(LT(false, true), true);
+  catchAndAssertEquals(function() {
+    LT.apply(this, [3]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    LT.apply(this, [3, 3, 3]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("NE", function(){
+  assertEquals(NE(2, 2), false);
+  assertEquals(NE(2, 3), true);
+  assertEquals(NE(2, 1), true);
+  assertEquals(NE("abc", "a"), true);
+  assertEquals(NE("abc", "abc"), false);
+  assertEquals(NE("abc", "abcd"), true);
+  assertEquals(NE(false, false), false);
+  assertEquals(NE(true, false), true);
+  assertEquals(NE(false, true), true);
+  catchAndAssertEquals(function() {
+    NE.apply(this, [3]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    NE.apply(this, [3, 3, 3]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("LTE", function(){
+  assertEquals(LTE(2, 2), true);
+  assertEquals(LTE(2, 3), true);
+  assertEquals(LTE(2, 1), false);
+  assertEquals(LTE("abc", "a"), false);
+  assertEquals(LTE("abc", "abc"), true);
+  assertEquals(LTE("abc", "abcd"), true);
+  assertEquals(LTE(false, false), true);
+  assertEquals(LTE(true, false), false);
+  assertEquals(LTE(false, true), true);
+  assertEquals(LTE(true, true), true);
+  catchAndAssertEquals(function() {
+    LTE.apply(this, [3]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    LTE.apply(this, [3, 3, 3]);
   }, ERRORS.NA_ERROR);
 });
 

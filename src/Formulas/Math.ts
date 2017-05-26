@@ -792,6 +792,84 @@ var EQ = function (one, two) {
 
 
 /**
+ * Returns true if the first argument is strictly greater than the second, and false otherwise. Equivalent to the `>`
+ * operator.
+ * @param one - The value to test as being greater than `two`.
+ * @param two - The second value.
+ * @returns {boolean}
+ * @constructor
+ */
+var GT = function (one, two) {
+  ArgsChecker.checkLength(arguments, 2, "GT");
+  var x = TypeConverter.firstValue(one);
+  var y = TypeConverter.firstValue(two);
+  return x > y;
+};
+
+
+/**
+ * Returns true if the first argument is greater than or equal to the second, and false otherwise. Equivalent to the
+ * `>=` operator.
+ * @param one - The value to test as being greater than or equal to `two`.
+ * @param two -The second value.
+ * @returns {boolean}
+ * @constructor
+ */
+var GTE = function (one, two) {
+  ArgsChecker.checkLength(arguments, 2, "GTE");
+  var x = TypeConverter.firstValue(one);
+  var y = TypeConverter.firstValue(two);
+  return x >= y;
+};
+
+
+/**
+ * Returns true if the first argument is strictly less than the second, and false otherwise. Equivalent to the `<`
+ * operator.
+ * @param one - The value to test as being less than `two`.
+ * @param two - The second value.
+ * @returns {boolean}
+ * @constructor
+ */
+var LT = function (one, two) {
+  ArgsChecker.checkLength(arguments, 2, "LT");
+  var x = TypeConverter.firstValue(one);
+  var y = TypeConverter.firstValue(two);
+  return x < y;
+};
+
+
+/**
+ * Returns true if the first argument is less than or equal to the second, and true otherwise. Equivalent to the
+ * `<=` operator.
+ * @param one - The value to test as being less than or equal to `two`.
+ * @param two - The second value.
+ * @constructor
+ */
+var LTE = function (one, two) {
+  ArgsChecker.checkLength(arguments, 2, "LTE");
+  var x = TypeConverter.firstValue(one);
+  var y = TypeConverter.firstValue(two);
+  return x <= y;
+};
+
+
+/**
+ * Returns "TRUE" if two specified values are not equal and "FALSE" otherwise. Equivalent to the "<>" operator.
+ * @param one - The value to test as being not equal to `two`.
+ * @param two - The second valud.
+ * @returns {boolean}
+ * @constructor
+ */
+var NE =  function (one, two) {
+  ArgsChecker.checkLength(arguments, 2, "NE");
+  var x = TypeConverter.firstValue(one);
+  var y = TypeConverter.firstValue(two);
+  return x !== y;
+};
+
+
+/**
  * Returns one number divided by another. Equivalent to the `/` operator.
  * @param dividend - The number to be divided.
  * @param divisor - The number to divide by, cannot be 0.
@@ -1157,5 +1235,10 @@ export {
   RANDBETWEEN,
   SIGN,
   DIVIDE,
-  EQ
+  EQ,
+  GT,
+  GTE,
+  LT,
+  LTE,
+  NE
 }

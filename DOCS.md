@@ -918,6 +918,55 @@
 @constructor
 ```
 
+### GT 
+
+```
+  Returns true if the first argument is strictly greater than the second, and false otherwise. Equivalent to the `>` operator. 
+@param one - The value to test as being greater than `two`. 
+@param two - The second value. 
+@returns {boolean} 
+@constructor
+```
+
+### GTE 
+
+```
+  Returns true if the first argument is greater than or equal to the second, and false otherwise. Equivalent to the `>=` operator. 
+@param one - The value to test as being greater than or equal to `two`. 
+@param two -The second value. 
+@returns {boolean} 
+@constructor
+```
+
+### LT 
+
+```
+  Returns true if the first argument is strictly less than the second, and false otherwise. Equivalent to the `<` operator. 
+@param one - The value to test as being less than `two`. 
+@param two - The second value. 
+@returns {boolean} 
+@constructor
+```
+
+### LTE 
+
+```
+  Returns true if the first argument is less than or equal to the second, and true otherwise. Equivalent to the `<=` operator. 
+@param one - The value to test as being less than or equal to `two`. 
+@param two - The second value. 
+@constructor
+```
+
+### NE 
+
+```
+  Returns "TRUE" if two specified values are not equal and "FALSE" otherwise. Equivalent to the "<>" operator. 
+@param one - The value to test as being not equal to `two`. 
+@param two - The second valud. 
+@returns {boolean} 
+@constructor
+```
+
 ### DIVIDE 
 
 ```

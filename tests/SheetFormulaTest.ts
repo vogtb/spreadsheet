@@ -266,6 +266,27 @@ test("Sheet EQ", function(){
   assertFormulaEquals('=EQ(22, 11)', false);
 });
 
+test("Sheet GT", function(){
+  assertFormulaEquals('=GT(1, 0)', true);
+});
+
+test("Sheet GTE", function(){
+  assertFormulaEquals('=GTE(1, 1)', true);
+});
+
+test("Sheet LT", function(){
+  assertFormulaEquals('=LT(0, 1)', true);
+});
+
+test("Sheet NE", function(){
+  assertFormulaEquals('=NE(0, 1)', true);
+});
+
+test("Sheet LTE", function(){
+  assertFormulaEquals('=LTE(0, 0)', true);
+});
+
+
 test("Sheet SIGN", function(){
   assertFormulaEquals('=SIGN(100)', 1);
 });

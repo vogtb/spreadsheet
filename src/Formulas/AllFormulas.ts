@@ -56,7 +56,12 @@ import {
   RANDBETWEEN,
   SIGN,
   DIVIDE,
-  EQ
+  EQ,
+  GT,
+  GTE,
+  LT,
+  LTE,
+  NE
 } from "./Math";
 import {
   AND,
@@ -281,5 +286,10 @@ export {
   RANDBETWEEN,
   SIGN,
   DIVIDE,
-  EQ
+  EQ,
+  GT,
+  GTE,
+  LT,
+  LTE,
+  NE
 }

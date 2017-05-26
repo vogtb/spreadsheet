@@ -783,6 +783,79 @@ var EQ = function (one, two) {
 };
 exports.EQ = EQ;
 /**
+ * Returns true if the first argument is strictly greater than the second, and false otherwise. Equivalent to the `>`
+ * operator.
+ * @param one - The value to test as being greater than `two`.
+ * @param two - The second value.
+ * @returns {boolean}
+ * @constructor
+ */
+var GT = function (one, two) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "GT");
+    var x = TypeConverter_1.TypeConverter.firstValue(one);
+    var y = TypeConverter_1.TypeConverter.firstValue(two);
+    return x > y;
+};
+exports.GT = GT;
+/**
+ * Returns true if the first argument is greater than or equal to the second, and false otherwise. Equivalent to the
+ * `>=` operator.
+ * @param one - The value to test as being greater than or equal to `two`.
+ * @param two -The second value.
+ * @returns {boolean}
+ * @constructor
+ */
+var GTE = function (one, two) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "GTE");
+    var x = TypeConverter_1.TypeConverter.firstValue(one);
+    var y = TypeConverter_1.TypeConverter.firstValue(two);
+    return x >= y;
+};
+exports.GTE = GTE;
+/**
+ * Returns true if the first argument is strictly less than the second, and false otherwise. Equivalent to the `<`
+ * operator.
+ * @param one - The value to test as being less than `two`.
+ * @param two - The second value.
+ * @returns {boolean}
+ * @constructor
+ */
+var LT = function (one, two) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "LT");
+    var x = TypeConverter_1.TypeConverter.firstValue(one);
+    var y = TypeConverter_1.TypeConverter.firstValue(two);
+    return x < y;
+};
+exports.LT = LT;
+/**
+ * Returns true if the first argument is less than or equal to the second, and true otherwise. Equivalent to the
+ * `<=` operator.
+ * @param one - The value to test as being less than or equal to `two`.
+ * @param two - The second value.
+ * @constructor
+ */
+var LTE = function (one, two) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "LTE");
+    var x = TypeConverter_1.TypeConverter.firstValue(one);
+    var y = TypeConverter_1.TypeConverter.firstValue(two);
+    return x <= y;
+};
+exports.LTE = LTE;
+/**
+ * Returns "TRUE" if two specified values are not equal and "FALSE" otherwise. Equivalent to the "<>" operator.
+ * @param one - The value to test as being not equal to `two`.
+ * @param two - The second valud.
+ * @returns {boolean}
+ * @constructor
+ */
+var NE = function (one, two) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "NE");
+    var x = TypeConverter_1.TypeConverter.firstValue(one);
+    var y = TypeConverter_1.TypeConverter.firstValue(two);
+    return x !== y;
+};
+exports.NE = NE;
+/**
  * Returns one number divided by another. Equivalent to the `/` operator.
  * @param dividend - The number to be divided.
  * @param divisor - The number to divide by, cannot be 0.

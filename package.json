@@ -1,5 +1,5 @@
 {
-  "name": "spreadsheet",
+  "name": "js-spreadsheet",
   "version": "1.0.0",
   "description": "TypeScript/javascript implementation of a spreadsheet.",
   "scripts": {

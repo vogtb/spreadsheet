@@ -3,11 +3,16 @@ TypeScript/javascript spreadsheet.
 
 ## Usage
 
+### Install
+```
+npm install js-spreadsheet
+```
+
 ### Examples
 
 **Using a Sheet**
 ```javascript
-var Sheet = require("./dist/Sheet.js").Sheet;
+var Sheet = require("js-spreadsheet").Sheet;
 var sheet = new Sheet();
 sheet.setCell("A1", "10");
 sheet.setCell("A2", "14");
@@ -19,7 +24,7 @@ sheet.getCell("B1").getValue(); // returns: 1123.1
 
 **Using Formulas Directly**
 ```javascript
-var Formulas = require("./dist/Sheet.js").AllFormulas;
+var Formulas = require("js-spreadsheet").AllFormulas;
 Formulas.SUM(1, 2, 3, [4, 5, 6], "7"); // returns: 28
 ```
 

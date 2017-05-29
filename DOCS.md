@@ -438,6 +438,15 @@
 @returns {number} 
 @constructor TODO: This function is based off of the open-source versions I was able to dig up online. We should implement a TODO:     second version that is closer to what MSExcel does and is named something like `ACCRINT.MS`.
 ```
+## Info
+
+
+### NA 
+
+```
+  Returns the "value not available" error, "#NA". 
+@constructor
+```
 ## Logical
 
 

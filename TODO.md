@@ -28,7 +28,6 @@ For example 64 tbs to a qt.
 * ISTEXT
 * ISURL
 * N
-* NA
 * TYPE
 * CELL
 * IFERROR

@@ -5,7 +5,11 @@ import {
   assertEquals,
   test
 } from "./Utils/Asserts";
-import {DIV_ZERO_ERROR, VALUE_ERROR} from "../src/Errors";
+import {
+  DIV_ZERO_ERROR,
+  VALUE_ERROR,
+  NA_ERROR
+} from "../src/Errors";
 
 function assertFormulaEqualsError(formula: string, errorString: string) {
   var sheet  = new Sheet();
@@ -588,6 +592,10 @@ test("Sheet WORKDAY", function(){
 
 test("Sheet WORKDAY.INTL", function(){
   assertFormulaEquals('=WORKDAY.INTL(DATE(1999, 2, 2), 10)', 36207);
+});
+
+test("Sheet NA", function(){
+  assertFormulaEqualsError('=NA()', NA_ERROR);
 });
 
 test("Sheet *", function(){

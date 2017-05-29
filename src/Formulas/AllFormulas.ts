@@ -64,6 +64,9 @@ import {
   NE
 } from "./Math";
 import {
+  NA
+} from "./Info";
+import {
   AND,
   EXACT,
   TRUE,
@@ -291,5 +294,6 @@ export {
   GTE,
   LT,
   LTE,
-  NE
+  NE,
+  NA
 }

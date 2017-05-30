@@ -84,7 +84,7 @@ function parse_file() {
 # Write the header of the documentation
 printf "# Documentation\n\n" > $DOCUMENTATION_FILE
 
-for f in $(ls $SRC_DIRECTORY/*ts)
+for f in $(ls $SRC_DIRECTORY/*.ts | grep -v AllFormulas)
 do
 	parse_file "$f"
 done

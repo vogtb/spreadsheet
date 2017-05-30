@@ -8,6 +8,27 @@ var CriteriaFunctionFactory_1 = require("../Utilities/CriteriaFunctionFactory");
 var Errors_1 = require("../Errors");
 var MathHelpers_1 = require("../Utilities/MathHelpers");
 /**
+ * Returns the greatest common divisor of one or more integers.
+ * @param values - The values or ranges whose factors to consider in a calculation to find the greatest common divisor.
+ * @returns {number} greatest common divisor.
+ * @constructor
+ */
+var GCD = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 1, "ABS");
+    // Credits: Andrew Pociu
+    for (var r, a, i = values.length - 1, result = values[i]; i;) {
+        for (a = values[--i]; (r = a % result); a = result, result = r) {
+            //empty
+        }
+    }
+    return result;
+};
+exports.GCD = GCD;
+/**
  * Returns the absolute value of a number.
  * @param value to get the absolute value of.
  * @returns {number} absolute value

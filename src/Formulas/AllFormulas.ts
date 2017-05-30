@@ -61,7 +61,8 @@ import {
   GTE,
   LT,
   LTE,
-  NE
+  NE,
+  GCD
 } from "./Math";
 import {
   NA
@@ -299,5 +300,6 @@ export {
   LTE,
   NE,
   NA,
-  CHOOSE
+  CHOOSE,
+  GCD
 }

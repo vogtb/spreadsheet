@@ -54,7 +54,6 @@ For example 64 tbs to a qt.
 * COUNTBLANK
 * FACTDOUBLE
 * GAMMALN
-* GCD
 * LCM
 * MROUND
 * MULTINOMIAL
@@ -185,5 +184,3 @@ For example 64 tbs to a qt.
 * SLN
 * SYD
 * YIELD
-
-

@@ -2,7 +2,7 @@ import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
 import {
-  TypeConverter, checkForDevideByZero
+  TypeConverter
 } from "../Utilities/TypeConverter";
 import {
   Filter
@@ -23,6 +23,25 @@ import {
 import {
   erf
 } from "../Utilities/MathHelpers";
+
+
+/**
+ * Returns the greatest common divisor of one or more integers.
+ * @param values - The values or ranges whose factors to consider in a calculation to find the greatest common divisor.
+ * @returns {number} greatest common divisor.
+ * @constructor
+ */
+var GCD = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "ABS");
+  // Credits: Andrew Pociu
+  for (var r, a, i = values.length - 1, result = values[i]; i;) {
+    for (a = values[--i]; (r = a % result); a = result, result = r) {
+      //empty
+    }
+  }
+  return result;
+};
+
 
 /**
  * Returns the absolute value of a number.
@@ -1240,5 +1259,6 @@ export {
   GTE,
   LT,
   LTE,
-  NE
+  NE,
+  GCD
 }

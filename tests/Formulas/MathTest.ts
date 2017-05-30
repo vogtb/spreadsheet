@@ -61,7 +61,8 @@ import {
   GTE,
   LT,
   LTE,
-  NE
+  NE,
+  GCD
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -69,6 +70,18 @@ import {
   catchAndAssertEquals,
   test
 } from "../Utils/Asserts";
+
+
+test("GCD", function(){
+  assertEquals(GCD(10, 100), 10);
+  assertEquals(GCD(22, 44), 22);
+  assertEquals(GCD(18, 24), 6);
+  assertEquals(GCD(7, 9), 1);
+  assertEquals(GCD(14, 21, 42), 7);
+  catchAndAssertEquals(function() {
+    GCD.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
 
 
 test("ABS", function(){

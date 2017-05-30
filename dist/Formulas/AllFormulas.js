@@ -64,6 +64,7 @@ exports.GTE = Math_1.GTE;
 exports.LT = Math_1.LT;
 exports.LTE = Math_1.LTE;
 exports.NE = Math_1.NE;
+exports.GCD = Math_1.GCD;
 var Info_1 = require("./Info");
 exports.NA = Info_1.NA;
 var Lookup_1 = require("./Lookup");

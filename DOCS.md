@@ -1,7 +1,5 @@
 # Documentation
 
-## AllFormulas
-
 ## Date
 
 
@@ -524,6 +522,15 @@
 ```
 ## Math
 
+
+### GCD 
+
+```
+  Returns the greatest common divisor of one or more integers. 
+@param values - The values or ranges whose factors to consider in a calculation to find the greatest common divisor. 
+@returns {number} greatest common divisor. 
+@constructor
+```
 
 ### ABS 
 

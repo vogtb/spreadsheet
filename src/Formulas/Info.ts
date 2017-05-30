@@ -2,10 +2,6 @@ import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
 import {
-  NumError,
-  DivZeroError,
-  RefError,
-  ValueError,
   NAError
 } from "../Errors";
 

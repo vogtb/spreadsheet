@@ -5,6 +5,14 @@
 Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might return a number, but the cell that called `DATE` would be aware of it calling a formula that returns an non-primitive type, and would display the returned number as a Date. If you're using `DATE` in conjunction with `DOLLAR` it would still display the returned value as a Date. The hierarchy would look like: [Date, DateTime, Time, Dollar, number, boolean, string]. Advantages to this would include not having to cast down when using primitive operators, and flexibility in display. It would also simplify the types themselves, by having types be constants and just having helpers to convert, display, and do normal operations with them.
 
 
+### Sheet should automatically parse some values, unless told otherwises.
+When entering raw values into cells, if the value is a string, the Sheet should automatically attempt to convert to a number. For example, `= 10e2` should be be evaluated with a RegEx and converted to a number. See `Sheet.helper.number`.
+
+
+### Parser should be able to detect arrays following numbers when passing in arguments.
+For example the CHOOSE formula can't be parsed: `=CHOOSE(2, [1, 2, 3])`.
+
+
 ### Cell.rawFormulaText does not get reset when updating a cell for the second time.
 
 
@@ -32,7 +40,6 @@ For example 64 tbs to a qt.
 * CELL
 * IFERROR
 * ADDRESS
-* CHOOSE
 * COLUMN
 * COLUMNS
 * HLOOKUP

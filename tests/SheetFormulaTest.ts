@@ -154,6 +154,11 @@ test("Sheet CORREL", function(){
   assertFormulaEquals('=CORREL([9, 5],[10, 4])', 1);
 });
 
+// TODO: Formula will not parse because lexer does not expect array values to occur after a comma
+// test("Sheet CHOOSE", function(){
+//   assertFormulaEquals('=CHOOSE(2, [1, 2, 3])', 2);
+// });
+
 test("Sheet COS", function(){
   assertFormulaEquals("=COS(PI())", -1);
 });

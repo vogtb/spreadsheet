@@ -67,6 +67,9 @@ import {
   NA
 } from "./Info";
 import {
+  CHOOSE
+} from "./Lookup";
+import {
   AND,
   EXACT,
   TRUE,
@@ -295,5 +298,6 @@ export {
   LT,
   LTE,
   NE,
-  NA
+  NA,
+  CHOOSE
 }

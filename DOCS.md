@@ -511,6 +511,17 @@
 @returns {boolean} returns true if only one input is considered logically true. 
 @constructor
 ```
+## Lookup
+
+
+### CHOOSE 
+
+```
+  Returns an element from a list of choices based on index. 
+@param index - Which choice to return. 
+@param values -  Array of potential value to return. Required. May be a reference to a cell or an individual value. 
+@constructor TODO: This does not currently work with the parser. See TODO.md for more information.
+```
 ## Math
 
 

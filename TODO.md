@@ -20,6 +20,9 @@ For example the CHOOSE formula can't be parsed: `=CHOOSE(2, [1, 2, 3])`.
 For example 64 tbs to a qt.
 
 
+### Fix documentation regular expression, it is butchering URLs.
+
+
 ### Formulas to write
 
 * ERROR.TYPE
@@ -143,7 +146,6 @@ For example 64 tbs to a qt.
 * SUBSTITUTE
 * T
 * TEXT
-* TRIM
 * UPPER
 * VALUE
 * FREQUENCY

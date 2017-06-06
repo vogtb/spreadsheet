@@ -4,7 +4,8 @@ import {
   CODE,
   CONCATENATE,
   SPLIT,
-  CONVERT
+  CONVERT,
+  TRIM
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -133,4 +134,17 @@ test("ARABIC", function(){
   catchAndAssertEquals(function() {
     ARABIC(10);
   }, ERRORS.VALUE_ERROR);
+});
+
+
+test("TRIM", function(){
+  assertEquals(TRIM(" test  "), "test");
+  assertEquals(TRIM(5), "5");
+  assertEquals(TRIM(false), "FALSE");
+  catchAndAssertEquals(function() {
+    TRIM.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    TRIM.apply(this, ["test", 5]);
+  }, ERRORS.NA_ERROR);
 });

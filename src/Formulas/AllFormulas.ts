@@ -126,7 +126,8 @@ import {
   CODE,
   SPLIT,
   CONCATENATE,
-  CONVERT
+  CONVERT,
+  TRIM
 } from "./Text"
 import {
   DATE,
@@ -301,5 +302,6 @@ export {
   NE,
   NA,
   CHOOSE,
-  GCD
+  GCD,
+  TRIM
 }

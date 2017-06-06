@@ -163,6 +163,10 @@ test("Sheet COS", function(){
   assertFormulaEquals("=COS(PI())", -1);
 });
 
+test("Sheet TRIM", function(){
+  assertFormulaEquals("=TRIM(' trim ')", "trim");
+});
+
 test("Sheet COSH", function(){
   assertFormulaEquals("=COSH(PI())", 11.591953275521522);
 });

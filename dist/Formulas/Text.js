@@ -408,3 +408,15 @@ var CONVERT = function (value, startUnit, endUnit) {
     return n * from[6] * from_multiplier / (to[6] * to_multiplier);
 };
 exports.CONVERT = CONVERT;
+/**
+ * Removes leading and trailing spaces in a specified string.
+ * @param value - The string or reference to a cell containing a string to be trimmed.
+ * @returns {string}
+ * @constructor
+ */
+var TRIM = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "TRIM");
+    var text = TypeConverter_1.TypeConverter.valueToString(value);
+    return text.trim();
+};
+exports.TRIM = TRIM;

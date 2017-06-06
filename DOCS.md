@@ -1369,3 +1369,12 @@
 @returns {number} 
 @constructor TODO: Looking up units is not efficient at all. We should use an object instead of iterating through an array.
 ```
+
+### TRIM 
+
+```
+  Removes leading and trailing spaces in a specified string. 
+@param value - The string or reference to a cell containing a string to be trimmed. 
+@returns {string} 
+@constructor
+```

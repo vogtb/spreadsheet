@@ -58,6 +58,21 @@ var LCM = function () {
 };
 exports.LCM = LCM;
 /**
+ *
+ * @param value
+ * @returns {number}
+ * @constructor
+ */
+var GAMMALN = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "GAMMALN");
+    var x = TypeConverter_1.TypeConverter.firstValueAsNumber(value);
+    if (x <= 0) {
+        throw new Errors_1.NumError("Function GAMMALN parameter 1 value is " + x + ". It should be greater than 0.");
+    }
+    return MathHelpers_1.gammaln(x);
+};
+exports.GAMMALN = GAMMALN;
+/**
  * Returns the absolute value of a number.
  * @param value to get the absolute value of.
  * @returns {number} absolute value

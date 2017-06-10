@@ -541,6 +541,15 @@
 @constructor
 ```
 
+### GAMMALN 
+
+```
+  Returns the the logarithm of a specified Gamma function, base e (Euler's number). 
+@param value - The input number. The natural logarithm of Gamma (value) will be returned. Must be positive. 
+@returns {number} 
+@constructor
+```
+
 ### ABS 
 
 ```

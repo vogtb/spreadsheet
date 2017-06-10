@@ -63,7 +63,8 @@ import {
   LTE,
   NE,
   GCD,
-  LCM
+  LCM,
+  GAMMALN
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -71,6 +72,21 @@ import {
   catchAndAssertEquals,
   test
 } from "../Utils/Asserts";
+
+
+test("GAMMALN", function(){
+  assertEquals(GAMMALN(4.5), 2.453736570842444);
+  assertEquals(GAMMALN(3), 0.6931471805599443);
+  catchAndAssertEquals(function() {
+    GAMMALN(0)
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    GAMMALN.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    GAMMALN.apply(this, [10, 10]);
+  }, ERRORS.NA_ERROR);
+});
 
 
 test("LCM", function(){
@@ -82,6 +98,7 @@ test("LCM", function(){
     LCM.apply(this, []);
   }, ERRORS.NA_ERROR);
 });
+
 
 test("GCD", function(){
   assertEquals(GCD(10, 100), 10);

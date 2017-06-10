@@ -255,6 +255,10 @@ test("Sheet LCM", function(){
   assertFormulaEquals('=LCM(2, 5)', 10);
 });
 
+test("Sheet GAMMALN", function(){
+  assertFormulaEquals('=GAMMALN(4.5)', 2.453736570842444);
+});
+
 test("Sheet DELTA", function(){
   assertFormulaEquals('=DELTA(2, 2)', 1);
 });

@@ -21,7 +21,7 @@ import {
   NAError
 } from "../Errors";
 import {
-  erf
+  erf, gammaln
 } from "../Utilities/MathHelpers";
 
 
@@ -65,6 +65,22 @@ var LCM =  function (...values) {
     }
   }
   return r;
+};
+
+
+/**
+ * Returns the the logarithm of a specified Gamma function, base e (Euler's number).
+ * @param value - The input number. The natural logarithm of Gamma (value) will be returned. Must be positive.
+ * @returns {number}
+ * @constructor
+ */
+var GAMMALN = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "GAMMALN");
+  var x =  TypeConverter.firstValueAsNumber(value);
+  if (x <= 0) {
+    throw new NumError("Function GAMMALN parameter 1 value is " + x + ". It should be greater than 0.");
+  }
+  return gammaln(x);
 };
 
 
@@ -1286,5 +1302,6 @@ export {
   LTE,
   NE,
   GCD,
-  LCM
+  LCM,
+  GAMMALN
 }

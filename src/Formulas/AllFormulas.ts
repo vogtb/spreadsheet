@@ -62,7 +62,8 @@ import {
   LT,
   LTE,
   NE,
-  GCD
+  GCD,
+  LCM
 } from "./Math";
 import {
   NA
@@ -303,5 +304,6 @@ export {
   NA,
   CHOOSE,
   GCD,
-  TRIM
+  TRIM,
+  LCM
 }

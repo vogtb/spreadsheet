@@ -62,7 +62,8 @@ import {
   LT,
   LTE,
   NE,
-  GCD
+  GCD,
+  LCM
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -71,6 +72,16 @@ import {
   test
 } from "../Utils/Asserts";
 
+
+test("LCM", function(){
+  assertEquals(LCM(2, 5), 10);
+  assertEquals(LCM(10, 100), 100);
+  assertEquals(LCM(12, 18), 36);
+  assertEquals(LCM(12, 18, 24), 72);
+  catchAndAssertEquals(function() {
+    LCM.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
 
 test("GCD", function(){
   assertEquals(GCD(10, 100), 10);

@@ -57,7 +57,6 @@ For example 64 tbs to a qt.
 * COUNTBLANK
 * FACTDOUBLE
 * GAMMALN
-* LCM
 * MROUND
 * MULTINOMIAL
 * PRODUCT

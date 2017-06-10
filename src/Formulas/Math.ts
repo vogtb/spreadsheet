@@ -44,6 +44,31 @@ var GCD = function (...values) {
 
 
 /**
+ * Returns the least common multiple of one or more integers.
+ * @param values - The values or range whose factors to consider in a calculation to find the least common multiple.
+ * @returns {number}
+ * @constructor
+ */
+var LCM =  function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "LCM");
+  // Credits: Jonas Raoni Soares Silva
+  var o = Filter.flatten(values);
+  for (var i, j, n, d, r = 1; (n = o.pop()) !== undefined;) {
+    while (n > 1) {
+      if (n % 2) {
+        for (i = 3, j = Math.floor(Math.sqrt(n)); i <= j && n % i; i += 2) {}
+        d = (i <= j) ? i : n;
+      } else {
+        d = 2;
+      }
+      for (n /= d, r *= d, i = o.length; i; (o[--i] % d) === 0 && (o[i] /= d) === 1 && o.splice(i, 1)) {}
+    }
+  }
+  return r;
+};
+
+
+/**
  * Returns the absolute value of a number.
  * @param value to get the absolute value of.
  * @returns {number} absolute value
@@ -1260,5 +1285,6 @@ export {
   LT,
   LTE,
   NE,
-  GCD
+  GCD,
+  LCM
 }

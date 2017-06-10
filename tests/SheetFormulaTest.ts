@@ -251,6 +251,10 @@ test("Sheet DEGREES", function(){
   assertFormulaEquals('=DEGREES(PI())', 180);
 });
 
+test("Sheet LCM", function(){
+  assertFormulaEquals('=LCM(2, 5)', 10);
+});
+
 test("Sheet DELTA", function(){
   assertFormulaEquals('=DELTA(2, 2)', 1);
 });

@@ -532,6 +532,15 @@
 @constructor
 ```
 
+### LCM 
+
+```
+  Returns the least common multiple of one or more integers. 
+@param values - The values or range whose factors to consider in a calculation to find the least common multiple. 
+@returns {number} 
+@constructor
+```
+
 ### ABS 
 
 ```

@@ -40,6 +40,9 @@ var Filter = (function () {
      * @returns {Array} flattened array
      */
     Filter.flattenAndThrow = function (values) {
+        if (values.length === 0) {
+            throw new Errors_1.RefError("Reference does not exist.");
+        }
         return values.reduce(function (flat, toFlatten) {
             if (Array.isArray(toFlatten) && toFlatten.length === 0) {
                 throw new Errors_1.RefError("Reference does not exist.");

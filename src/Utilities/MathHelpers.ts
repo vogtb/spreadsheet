@@ -361,6 +361,16 @@ function betafn(x, y) {
   return (x + y > 170) ? Math.exp(betaln(x, y)) : gammafn(x) * gammafn(y) / gammafn(x + y);
 }
 
+/**
+ * Cleans a float number.
+ * @param n - number to clean
+ * @returns {number} -  clean number
+ */
+function cleanFloat(n) {
+  var power = Math.pow(10, 14);
+  return Math.round(n * power) / power;
+}
+
 export {
   betacf,
   betafn,
@@ -378,5 +388,6 @@ export {
   stdev,
   sum,
   sumsqerr,
-  variance
+  variance,
+  cleanFloat
 }

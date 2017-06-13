@@ -17,7 +17,9 @@ import {
   MAX,
   MAXA,
   MIN,
-  MINA
+  MINA,
+  QUARTILE,
+  PERCENTILE
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -422,5 +424,53 @@ test("F.DIST", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     FDIST$LEFTTAILED.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("PERCENTILE", function () {
+  assertEquals(PERCENTILE([72, 57, 66, 92, 32, 17, 146], 0.5), 66);
+  assertEquals(PERCENTILE([72, 57, 66, 92, 32, 17, 146], 0.2), 37.00000000000001);
+  assertEquals(PERCENTILE([72, 57, 66, 92, 32, 17, 146], 0.1), 26);
+  assertEquals(PERCENTILE([72, 57, 66, 92, 32, 17, 146], 0), 17);
+  assertEquals(PERCENTILE([72], 0.2), 72);
+  assertEquals(PERCENTILE([72], 0), 72);
+  assertEquals(PERCENTILE([72], 1), 72);
+  assertEquals(PERCENTILE([72], 0.1111), 72);
+  catchAndAssertEquals(function() {
+    PERCENTILE.apply(this, [[], 0]);
+  }, ERRORS.REF_ERROR);
+  catchAndAssertEquals(function() {
+    PERCENTILE.apply(this, [[10], 0, 10]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PERCENTILE.apply(this, [[10]]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PERCENTILE.apply(this, [[10], -0.1]);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    PERCENTILE.apply(this, [[10], 1.1]);
+  }, ERRORS.NUM_ERROR);
+});
+
+
+test("QUARTILE", function(){
+  assertEquals(QUARTILE([1, 2, 3, 4], 0), 1);
+  assertEquals(QUARTILE([1, 2, 3, 4], 1), 1.75);
+  assertEquals(QUARTILE([1, 2, 3, 4], 2), 2.5);
+  assertEquals(QUARTILE([1, 2, 3, 4], 3), 3.25);
+  assertEquals(QUARTILE([1, 2, 3, 4], 4), 4);
+  catchAndAssertEquals(function() {
+    QUARTILE.apply(this, [[1, 2, 3, 4], 5]);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    QUARTILE.apply(this, [[1, 2, 3, 4], -1]);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    QUARTILE.apply(this, [[1, 2, 3, 4]]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    QUARTILE.apply(this, [[1, 2, 3, 4], 5, 7]);
   }, ERRORS.NA_ERROR);
 });

@@ -23,6 +23,7 @@ import {
   inv,
   pdf,
   stdev,
+  cleanFloat
 } from "../Utilities/MathHelpers";
 
 
@@ -506,6 +507,68 @@ var COUNTA = function (...values) : number {
   return count;
 };
 
+
+/**
+ * Returns the value at a given percentile of a set of data.
+ * @param data -  The array or range containing the dataset to consider.
+ * @param percent - percentile to be calculated and returned.
+ * @returns {number}
+ * @constructor
+ */
+var PERCENTILE =  function (data, percent) {
+  ArgsChecker.checkLength(arguments, 2, "PERCENTILE");
+  var p = TypeConverter.firstValueAsNumber(percent);
+  if (p < 0 || p > 1) {
+    throw new NumError("Function PERCENTILE parameter 2 value " + p + " is out of range.");
+  }
+  var range = Filter.flattenAndThrow(data).sort(function (a, b) {
+    return a - b;
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+
+  var n = range.length;
+  var l = p * (n - 1);
+  var fl = Math.floor(l);
+  return cleanFloat((l === fl) ? range[l] : range[fl] + (l - fl) * (range[fl + 1] - range[fl]));
+};
+
+
+/**
+ * Returns a value nearest to a specified quartile of a set of data.
+ * @param data -  The array or range containing the set of data to consider.
+ * @param quartile - Which quartile value to return. 0 returns 0% mark, 1 returns 25% mark, 2 returns 50% mark, 3
+ * returns 75% mark, 4 returns 100% mark.
+ * @constructor
+ */
+var QUARTILE = function (data, quartile) {
+  ArgsChecker.checkLength(arguments, 2, "QUARTILE");
+  var q = TypeConverter.firstValueAsNumber(quartile);
+  if (q < 0 || q > 4) {
+    throw new NumError("Function QUARTILE parameter 2 value " + q + " is out of range.");
+  }
+
+
+  var range = Filter.flattenAndThrow(data).sort(function (a, b) {
+    return a - b;
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+
+  switch (q) {
+    case 0:
+      return PERCENTILE(range, 0);
+    case 1:
+      return PERCENTILE(range, 0.25);
+    case 2:
+      return PERCENTILE(range, 0.5);
+    case 3:
+      return PERCENTILE(range, 0.75);
+    case 4:
+      return PERCENTILE(range, 1);
+  }
+};
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -525,5 +588,7 @@ export {
   MAX,
   MAXA,
   MIN,
-  MINA
+  MINA,
+  QUARTILE,
+  PERCENTILE
 }

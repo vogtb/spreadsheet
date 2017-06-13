@@ -1327,6 +1327,24 @@
 @returns {number} number of values in a dataset. 
 @constructor
 ```
+
+### ERCENTILE 
+
+```
+  Returns the value at a given percentile of a set of data. 
+@param data -  The array or range containing the dataset to consider. 
+@param percent - percentile to be calculated and returned. 
+@returns {number} 
+@constructor
+```
+
+### QUARTILE 
+
+```
+  Returns a value nearest to a specified quartile of a set of data. 
+@param data -  The array or range containing the set of data to consider. 
+@param quartile - Which quartile value to return. 0 returns 0
+```
 ## Text
 
 

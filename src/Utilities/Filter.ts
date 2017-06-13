@@ -40,6 +40,9 @@ class Filter {
    * @returns {Array} flattened array
    */
   static flattenAndThrow(values: Array<any>) : Array<any> {
+    if (values.length === 0) {
+      throw new RefError("Reference does not exist.");
+    }
     return values.reduce(function (flat, toFlatten) {
       if (Array.isArray(toFlatten) && toFlatten.length === 0) {
         throw new RefError("Reference does not exist.");

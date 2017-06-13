@@ -120,7 +120,9 @@ import {
   MAX,
   MAXA,
   MIN,
-  MINA
+  MINA,
+  QUARTILE,
+  PERCENTILE
 } from "./Statistical";
 import {
   ARABIC,
@@ -307,5 +309,7 @@ export {
   GCD,
   TRIM,
   LCM,
-  GAMMALN
+  GAMMALN,
+  QUARTILE,
+  PERCENTILE
 }

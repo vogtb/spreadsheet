@@ -259,6 +259,14 @@ test("Sheet GAMMALN", function(){
   assertFormulaEquals('=GAMMALN(4.5)', 2.453736570842444);
 });
 
+test("Sheet PERCENTILE", function(){
+  assertFormulaEquals('=PERCENTILE([10], 0)', 10);
+});
+
+test("Sheet QUARTILE", function(){
+  assertFormulaEquals('=QUARTILE([1, 2, 3, 4], 0)', 1);
+});
+
 test("Sheet DELTA", function(){
   assertFormulaEquals('=DELTA(2, 2)', 1);
 });

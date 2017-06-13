@@ -271,6 +271,10 @@ test("Sheet UPLUS", function(){
   assertFormulaEquals('=UPLUS(8)', 8);
 });
 
+test("Sheet UMINUS", function(){
+  assertFormulaEquals('=UMINUS(8)', -8);
+});
+
 test("Sheet PERCENTILE", function(){
   assertFormulaEquals('=PERCENTILE([10], 0)', 10);
 });

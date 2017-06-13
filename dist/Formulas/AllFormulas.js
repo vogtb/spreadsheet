@@ -70,6 +70,7 @@ exports.GAMMALN = Math_1.GAMMALN;
 exports.PRODUCT = Math_1.PRODUCT;
 exports.QUOTIENT = Math_1.QUOTIENT;
 exports.UPLUS = Math_1.UPLUS;
+exports.UMINUS = Math_1.UMINUS;
 var Info_1 = require("./Info");
 exports.NA = Info_1.NA;
 var Lookup_1 = require("./Lookup");

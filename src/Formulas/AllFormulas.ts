@@ -67,7 +67,8 @@ import {
   GAMMALN,
   PRODUCT,
   QUOTIENT,
-  UPLUS
+  UPLUS,
+  UMINUS
 } from "./Math";
 import {
   NA
@@ -317,5 +318,6 @@ export {
   PERCENTILE,
   PRODUCT,
   QUOTIENT,
-  UPLUS
+  UPLUS,
+  UMINUS
 }

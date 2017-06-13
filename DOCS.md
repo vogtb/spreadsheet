@@ -1170,6 +1170,15 @@
 @returns any value 
 @constructor
 ```
+
+### UMINUS 
+
+```
+  Returns the same number, but with the sign reversed. 
+@param value to reverse the sign on 
+@returns {number} 
+@constructor
+```
 ## Statistical
 
 

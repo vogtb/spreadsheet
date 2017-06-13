@@ -1270,3 +1270,15 @@ var UPLUS = function (value) {
     return TypeConverter_1.TypeConverter.firstValue(value);
 };
 exports.UPLUS = UPLUS;
+/**
+ * Returns the same number, but with the sign reversed.
+ * @param value to reverse the sign on
+ * @returns {number}
+ * @constructor
+ */
+var UMINUS = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "UMINUS");
+    var n = TypeConverter_1.TypeConverter.firstValueAsNumber(value);
+    return n * -1;
+};
+exports.UMINUS = UMINUS;

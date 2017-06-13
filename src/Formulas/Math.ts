@@ -1281,6 +1281,19 @@ var UPLUS = function (value) : any {
 };
 
 
+/**
+ * Returns the same number, but with the sign reversed.
+ * @param value to reverse the sign on
+ * @returns {number}
+ * @constructor
+ */
+var UMINUS = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "UMINUS");
+  var n = TypeConverter.firstValueAsNumber(value);
+  return n * -1;
+};
+
+
 export {
   ABS,
   ACOS,
@@ -1350,5 +1363,6 @@ export {
   GAMMALN,
   PRODUCT,
   QUOTIENT,
-  UPLUS
+  UPLUS,
+  UMINUS
 }

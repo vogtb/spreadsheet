@@ -67,7 +67,8 @@ import {
   GAMMALN,
   PRODUCT,
   QUOTIENT,
-  UPLUS
+  UPLUS,
+  UMINUS
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -110,6 +111,18 @@ test("UPLUS", function(){
   assertEquals(UPLUS("hello"), "hello");
   catchAndAssertEquals(function() {
     UPLUS.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("UMINUS", function(){
+  assertEquals(UMINUS(2), -2);
+  assertEquals(UMINUS(-1), 1);
+  assertEquals(UMINUS(false), 0);
+  assertEquals(UMINUS(0), 0);
+  assertEquals(UMINUS([1, 2, 3]), -1);
+  catchAndAssertEquals(function() {
+    UMINUS.apply(this, []);
   }, ERRORS.NA_ERROR);
 });
 

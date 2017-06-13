@@ -411,6 +411,12 @@ class TypeConverter {
         x = x * 0.01;
       }
       return x;
+    } else {
+      try {
+        return TypeConverter.stringToDateNumber(value);
+      } catch (_) {
+        return undefined;
+      }
     }
   }
 

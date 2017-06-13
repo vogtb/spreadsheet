@@ -403,6 +403,14 @@ var TypeConverter = (function () {
             }
             return x;
         }
+        else {
+            try {
+                return TypeConverter.stringToDateNumber(value);
+            }
+            catch (_) {
+                return undefined;
+            }
+        }
     };
     /**
      * Converts any value to a number or throws an error if it cannot coerce it to the number type

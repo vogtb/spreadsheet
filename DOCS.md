@@ -1143,6 +1143,14 @@
 @returns {number} number of ways 
 @constructor
 ```
+
+### PRODUCT 
+
+```
+  Multiply a series of numbers together. 
+@param values - values or range of values to multiply by each other. 
+@constructor
+```
 ## Statistical
 
 

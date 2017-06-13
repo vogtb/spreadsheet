@@ -1223,3 +1223,22 @@ var COMBIN = function (m, k) {
     return fact(n) / div;
 };
 exports.COMBIN = COMBIN;
+/**
+ * Multiply a series of numbers together.
+ * @param values - values or range of values to multiply by each other.
+ * @constructor
+ */
+var PRODUCT = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(values, 2, "PRODUCT");
+    var value = 1;
+    var numbers = Filter_1.Filter.flattenAndThrow(values);
+    for (var i = 0; i < numbers.length; i++) {
+        value *= TypeConverter_1.TypeConverter.valueToNumber(numbers[i]);
+    }
+    return value;
+};
+exports.PRODUCT = PRODUCT;

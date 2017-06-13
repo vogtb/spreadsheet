@@ -64,7 +64,8 @@ import {
   NE,
   GCD,
   LCM,
-  GAMMALN
+  GAMMALN,
+  PRODUCT
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -96,6 +97,24 @@ test("LCM", function(){
   assertEquals(LCM(12, 18, 24), 72);
   catchAndAssertEquals(function() {
     LCM.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("PRODUCT", function(){
+  assertEquals(PRODUCT(2, 5), 10);
+  assertEquals(PRODUCT(2, 5, 4, 2, 8, 1, 77, 2, 3, 1), 295680);
+  assertEquals(PRODUCT(2, 5, 4, 2, 8, [1, 77, 2], 3, 1), 295680);
+  assertEquals(PRODUCT(0, 1), 0);
+  assertEquals(PRODUCT(8, "1992/2/2"), 269088);
+  catchAndAssertEquals(function() {
+    PRODUCT.apply(this, [1, [], 1]);
+  }, ERRORS.REF_ERROR);
+  catchAndAssertEquals(function() {
+    PRODUCT.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PRODUCT.apply(this, []);
   }, ERRORS.NA_ERROR);
 });
 

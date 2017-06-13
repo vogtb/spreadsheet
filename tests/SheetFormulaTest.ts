@@ -259,6 +259,10 @@ test("Sheet GAMMALN", function(){
   assertFormulaEquals('=GAMMALN(4.5)', 2.453736570842444);
 });
 
+test("Sheet PRODUCT", function(){
+  assertFormulaEquals('=PRODUCT(2, 2)', 4);
+});
+
 test("Sheet PERCENTILE", function(){
   assertFormulaEquals('=PERCENTILE([10], 0)', 10);
 });

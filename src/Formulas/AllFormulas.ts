@@ -64,7 +64,8 @@ import {
   NE,
   GCD,
   LCM,
-  GAMMALN
+  GAMMALN,
+  PRODUCT
 } from "./Math";
 import {
   NA
@@ -311,5 +312,6 @@ export {
   LCM,
   GAMMALN,
   QUARTILE,
-  PERCENTILE
+  PERCENTILE,
+  PRODUCT
 }

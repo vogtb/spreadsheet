@@ -67,7 +67,6 @@ var LCM =  function (...values) {
   return r;
 };
 
-
 /**
  * Returns the the logarithm of a specified Gamma function, base e (Euler's number).
  * @param value - The input number. The natural logarithm of Gamma (value) will be returned. Must be positive.
@@ -82,7 +81,6 @@ var GAMMALN = function (value) {
   }
   return gammaln(x);
 };
-
 
 /**
  * Returns the absolute value of a number.
@@ -1237,6 +1235,21 @@ var COMBIN = function (m, k) : number {
   return fact(n) / div;
 };
 
+/**
+ * Multiply a series of numbers together.
+ * @param values - values or range of values to multiply by each other.
+ * @constructor
+ */
+var PRODUCT =  function (...values) {
+  ArgsChecker.checkAtLeastLength(values, 2, "PRODUCT");
+  var value = 1;
+  var numbers = Filter.flattenAndThrow(values);
+  for (var i = 0; i < numbers.length; i++) {
+    value *= TypeConverter.valueToNumber(numbers[i]);
+  }
+  return value;
+};
+
 export {
   ABS,
   ACOS,
@@ -1303,5 +1316,6 @@ export {
   NE,
   GCD,
   LCM,
-  GAMMALN
+  GAMMALN,
+  PRODUCT
 }

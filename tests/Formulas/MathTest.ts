@@ -65,7 +65,8 @@ import {
   GCD,
   LCM,
   GAMMALN,
-  PRODUCT
+  PRODUCT,
+  QUOTIENT
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -115,6 +116,21 @@ test("PRODUCT", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     PRODUCT.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("QUOTIENT", function(){
+  assertEquals(QUOTIENT(2, 2), 1);
+  assertEquals(QUOTIENT(4, 2), 2);
+  catchAndAssertEquals(function() {
+    QUOTIENT(1, 0);
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    QUOTIENT.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    QUOTIENT.apply(this, [1, 2, 3]);
   }, ERRORS.NA_ERROR);
 });
 

@@ -1250,6 +1250,25 @@ var PRODUCT =  function (...values) {
   return value;
 };
 
+
+/**
+ * Divide one number by another
+ * @param dividend - number to be divided by the divisor.
+ * @param divisor - number to divide the dividend.
+ * @returns {number}
+ * @constructor
+ */
+var QUOTIENT = function (dividend, divisor) {
+  ArgsChecker.checkLength(arguments, 2, "QUOTIENT");
+  var dv = TypeConverter.firstValueAsNumber(dividend);
+  var ds = TypeConverter.firstValueAsNumber(divisor);
+  if (ds === 0) {
+    throw new DivZeroError("Function QUOTIENT parameter 2 cannot be zero.");
+  }
+  return dv / ds;
+};
+
+
 export {
   ABS,
   ACOS,
@@ -1317,5 +1336,6 @@ export {
   GCD,
   LCM,
   GAMMALN,
-  PRODUCT
+  PRODUCT,
+  QUOTIENT
 }

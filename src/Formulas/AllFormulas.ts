@@ -65,7 +65,8 @@ import {
   GCD,
   LCM,
   GAMMALN,
-  PRODUCT
+  PRODUCT,
+  QUOTIENT
 } from "./Math";
 import {
   NA
@@ -313,5 +314,6 @@ export {
   GAMMALN,
   QUARTILE,
   PERCENTILE,
-  PRODUCT
+  PRODUCT,
+  QUOTIENT
 }

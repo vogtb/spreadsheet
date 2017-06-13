@@ -554,8 +554,8 @@ exports.PERCENTILE = PERCENTILE;
 /**
  * Returns a value nearest to a specified quartile of a set of data.
  * @param data -  The array or range containing the set of data to consider.
- * @param quartile - Which quartile value to return. 0 returns 0% mark, 1 returns 25% mark, 2 returns 50% mark, 3
- * returns 75% mark, 4 returns 100% mark.
+ * @param quartile - Which quartile value to return. 0 returns 0 percent mark, 1 returns 25 percent mark, 2 returns 50
+ * percent mark, 3 returns 75 percent mark, 4 returns 100 percent mark.
  * @constructor
  */
 var QUARTILE = function (data, quartile) {

@@ -263,6 +263,10 @@ test("Sheet PRODUCT", function(){
   assertFormulaEquals('=PRODUCT(2, 2)', 4);
 });
 
+test("Sheet QUOTIENT", function(){
+  assertFormulaEquals('=QUOTIENT(8, 2)', 4);
+});
+
 test("Sheet PERCENTILE", function(){
   assertFormulaEquals('=PERCENTILE([10], 0)', 10);
 });

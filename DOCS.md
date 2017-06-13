@@ -1151,6 +1151,16 @@
 @param values - values or range of values to multiply by each other. 
 @constructor
 ```
+
+### QUOTIENT 
+
+```
+  Divide one number by another 
+@param dividend - number to be divided by the divisor. 
+@param divisor - number to divide the dividend. 
+@returns {number} 
+@constructor
+```
 ## Statistical
 
 
@@ -1351,7 +1361,8 @@
 ```
   Returns a value nearest to a specified quartile of a set of data. 
 @param data -  The array or range containing the set of data to consider. 
-@param quartile - Which quartile value to return. 0 returns 0
+@param quartile - Which quartile value to return. 0 returns 0 percent mark, 1 returns 25 percent mark, 2 returns 50 percent mark, 3 returns 75 percent mark, 4 returns 100 percent mark. 
+@constructor
 ```
 ## Text
 

@@ -1242,3 +1242,20 @@ var PRODUCT = function () {
     return value;
 };
 exports.PRODUCT = PRODUCT;
+/**
+ * Divide one number by another
+ * @param dividend - number to be divided by the divisor.
+ * @param divisor - number to divide the dividend.
+ * @returns {number}
+ * @constructor
+ */
+var QUOTIENT = function (dividend, divisor) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "QUOTIENT");
+    var dv = TypeConverter_1.TypeConverter.firstValueAsNumber(dividend);
+    var ds = TypeConverter_1.TypeConverter.firstValueAsNumber(divisor);
+    if (ds === 0) {
+        throw new Errors_1.DivZeroError("Function QUOTIENT parameter 2 cannot be zero.");
+    }
+    return dv / ds;
+};
+exports.QUOTIENT = QUOTIENT;

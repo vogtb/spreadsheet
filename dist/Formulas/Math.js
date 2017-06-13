@@ -1259,3 +1259,14 @@ var QUOTIENT = function (dividend, divisor) {
     return dv / ds;
 };
 exports.QUOTIENT = QUOTIENT;
+/**
+ * Returns a value, but does nothing to it. If given a range, will return first value.
+ * @param value to return
+ * @returns any value
+ * @constructor
+ */
+var UPLUS = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "UPLUS");
+    return TypeConverter_1.TypeConverter.firstValue(value);
+};
+exports.UPLUS = UPLUS;

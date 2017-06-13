@@ -1269,6 +1269,18 @@ var QUOTIENT = function (dividend, divisor) {
 };
 
 
+/**
+ * Returns a value, but does nothing to it. If given a range, will return first value.
+ * @param value to return
+ * @returns any value
+ * @constructor
+ */
+var UPLUS = function (value) : any {
+  ArgsChecker.checkLength(arguments, 1, "UPLUS");
+  return TypeConverter.firstValue(value);
+};
+
+
 export {
   ABS,
   ACOS,
@@ -1337,5 +1349,6 @@ export {
   LCM,
   GAMMALN,
   PRODUCT,
-  QUOTIENT
+  QUOTIENT,
+  UPLUS
 }

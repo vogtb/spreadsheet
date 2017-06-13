@@ -1161,6 +1161,15 @@
 @returns {number} 
 @constructor
 ```
+
+### UPLUS 
+
+```
+  Returns a value, but does nothing to it. If given a range, will return first value. 
+@param value to return 
+@returns any value 
+@constructor
+```
 ## Statistical
 
 

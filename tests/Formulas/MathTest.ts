@@ -66,7 +66,8 @@ import {
   LCM,
   GAMMALN,
   PRODUCT,
-  QUOTIENT
+  QUOTIENT,
+  UPLUS
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -98,6 +99,17 @@ test("LCM", function(){
   assertEquals(LCM(12, 18, 24), 72);
   catchAndAssertEquals(function() {
     LCM.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("UPLUS", function(){
+  assertEquals(UPLUS(2), 2);
+  assertEquals(UPLUS(false), false);
+  assertEquals(UPLUS([1, 2, 3]), 1);
+  assertEquals(UPLUS("hello"), "hello");
+  catchAndAssertEquals(function() {
+    UPLUS.apply(this, []);
   }, ERRORS.NA_ERROR);
 });
 

@@ -126,7 +126,9 @@ import {
   MIN,
   MINA,
   QUARTILE,
-  PERCENTILE
+  PERCENTILE,
+  STDEV,
+  STDEVA
 } from "./Statistical";
 import {
   ARABIC,
@@ -319,5 +321,7 @@ export {
   PRODUCT,
   QUOTIENT,
   UPLUS,
-  UMINUS
+  UMINUS,
+  STDEV,
+  STDEVA
 }

@@ -1382,6 +1382,24 @@
 @param quartile - Which quartile value to return. 0 returns 0 percent mark, 1 returns 25 percent mark, 2 returns 50 percent mark, 3 returns 75 percent mark, 4 returns 100 percent mark. 
 @constructor
 ```
+
+### STDEV 
+
+```
+  Calculates the standard deviation of a range, ignoring string values, regardless of whether they can be converted to numbers. 
+@param values - Range of sample 
+@returns {number} 
+@constructor
+```
+
+### STDEVA 
+
+```
+  Calculcates the standard deviation of a range, converting string values to numbers, if possible. If a value cannot be converted to a number, formula will throw a value error. 
+@param values - Range of sample. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

@@ -25,7 +25,7 @@ For example 64 tbs to a qt.
 
 ### Formulas to write
 
-* ERROR.TYPE
+* ERROR.TYPE - Requires changes to parser.js
 * ISBLANK - May require changes to parser.js
 * ISEMAIL
 * ISERR
@@ -99,8 +99,6 @@ For example 64 tbs to a qt.
 * SLOPE
 * SMALL
 * STANDARDIZE
-* STDEV
-* STDEVA
 * STDEVP
 * STDEVPA
 * STEYX

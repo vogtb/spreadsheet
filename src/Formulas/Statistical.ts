@@ -23,7 +23,8 @@ import {
   inv,
   pdf,
   stdev,
-  cleanFloat
+  cleanFloat,
+  mean
 } from "../Utilities/MathHelpers";
 
 
@@ -569,6 +570,53 @@ var QUARTILE = function (data, quartile) {
   }
 };
 
+
+/**
+ * Calculates the standard deviation of a range, ignoring string values, regardless of whether they can be converted to
+ * numbers.
+ * @param values - Range of sample
+ * @returns {number}
+ * @constructor
+ */
+var STDEV = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "STDEV");
+  var range = Filter.flattenAndThrow(values);
+  var n = range.length;
+  var sigma = 0;
+  var count = 0;
+  var mean = AVERAGE(range);
+  for (var i = 0; i < n; i++) {
+    var value = TypeConverter.firstValue(range[i]);
+    if (typeof value !== "string") {
+      sigma += Math.pow(TypeConverter.valueToNumber(value) - mean, 2);
+      count++;
+    }
+  }
+  return Math.sqrt(sigma / (count - 1));
+};
+
+
+/**
+ * Calculcates the standard deviation of a range, converting string values to numbers, if possible. If a value cannot
+ * be converted to a number, formula will throw a value error.
+ * @param values - Range of sample.
+ * @returns {number}
+ * @constructor
+ */
+var STDEVA = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "STDEVA");
+  var range = Filter.flattenAndThrow(values).map(function (value) {
+    return TypeConverter.firstValueAsNumber(value);
+  });
+  var n = range.length;
+  var sigma = 0;
+  var m = mean(range);
+  for (var i = 0; i < n; i++) {
+    sigma += Math.pow(range[i] - m, 2);
+  }
+  return Math.sqrt(sigma / (n - 1));
+};
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -590,5 +638,7 @@ export {
   MIN,
   MINA,
   QUARTILE,
-  PERCENTILE
+  PERCENTILE,
+  STDEV,
+  STDEVA
 }

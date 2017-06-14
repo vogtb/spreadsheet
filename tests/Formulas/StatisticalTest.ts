@@ -19,7 +19,9 @@ import {
   MIN,
   MINA,
   QUARTILE,
-  PERCENTILE
+  PERCENTILE,
+  STDEV,
+  STDEVA
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -473,4 +475,42 @@ test("QUARTILE", function(){
   catchAndAssertEquals(function() {
     QUARTILE.apply(this, [[1, 2, 3, 4], 5, 7]);
   }, ERRORS.NA_ERROR);
+});
+
+
+test("STDEV", function(){
+  assertEquals(STDEV(1, 2, 3, 4, 5, 6, 7, "18281821"), 2.160246899469287);
+  assertEquals(STDEV(1, 2, 3, 4, 5, 6, 7), 2.160246899469287);
+  assertEquals(STDEV([1, 2, 3, 4, 5, 6, 7]), 2.160246899469287);
+  assertEquals(STDEV(1, 2, 3, [4, 5], 6, 7), 2.160246899469287);
+  assertEquals(STDEV(33, 44), 7.7781745930520225);
+  assertEquals(STDEV(33, 44, 0, 1, 0, 1), 19.934057957843574);
+  assertEquals(STDEV(33, 44, false, true, false, true), 19.934057957843574);
+  catchAndAssertEquals(function() {
+    STDEV();
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    STDEV([10, 10, [], 10]);
+  }, ERRORS.REF_ERROR);
+});
+
+
+test("STDEVA", function(){
+  assertEquals(STDEVA(1, 2, 3, 4, 5, 6, 7, "123"), 42.12036324629692);
+  assertEquals(STDEVA(1, 2, 3, 4, 5, 6, 7, 123), 42.12036324629692);
+  assertEquals(STDEVA(1, 2, 3, 4, 5, 6, 7), 2.160246899469287);
+  assertEquals(STDEVA([1, 2, 3, 4, 5, 6, 7]), 2.160246899469287);
+  assertEquals(STDEVA(1, 2, 3, [4, 5], 6, 7), 2.160246899469287);
+  assertEquals(STDEVA(33, 44), 7.7781745930520225);
+  assertEquals(STDEVA(33, 44, 0, 1, 0, 1), 19.934057957843574);
+  assertEquals(STDEVA(33, 44, false, true, false, true), 19.934057957843574);
+  catchAndAssertEquals(function() {
+    STDEVA(1, 2, 3, 4, 5, 6, 7, "string");
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    STDEVA();
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    STDEVA([10, 10, [], 10]);
+  }, ERRORS.REF_ERROR);
 });

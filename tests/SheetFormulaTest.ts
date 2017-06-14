@@ -275,6 +275,14 @@ test("Sheet UMINUS", function(){
   assertFormulaEquals('=UMINUS(8)', -8);
 });
 
+test("Sheet STDEV", function(){
+  assertFormulaEquals('=STDEV([33, 44])', 7.7781745930520225);
+});
+
+test("Sheet STDEVA", function(){
+  assertFormulaEquals('=STDEVA(33, 44)', 7.7781745930520225);
+});
+
 test("Sheet PERCENTILE", function(){
   assertFormulaEquals('=PERCENTILE([10], 0)', 10);
 });

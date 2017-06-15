@@ -99,7 +99,6 @@ For example 64 tbs to a qt.
 * SLOPE
 * SMALL
 * STANDARDIZE
-* STDEVP
 * STDEVPA
 * STEYX
 * T.INV

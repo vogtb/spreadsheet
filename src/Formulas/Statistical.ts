@@ -574,7 +574,7 @@ var QUARTILE = function (data, quartile) {
 /**
  * Calculates the standard deviation of a range, ignoring string values, regardless of whether they can be converted to
  * numbers.
- * @param values - Range of sample
+ * @param values - Range of sample.
  * @returns {number}
  * @constructor
  */
@@ -597,7 +597,7 @@ var STDEV = function (...values) {
 
 
 /**
- * Calculcates the standard deviation of a range, converting string values to numbers, if possible. If a value cannot
+ * Calculates the standard deviation of a range, converting string values to numbers, if possible. If a value cannot
  * be converted to a number, formula will throw a value error.
  * @param values - Range of sample.
  * @returns {number}
@@ -616,6 +616,32 @@ var STDEVA = function (...values) {
   }
   return Math.sqrt(sigma / (n - 1));
 };
+
+
+/**
+ * Calculates the standard deviation of an entire population, ignoring string values, regardless of whether they can be
+ * converted to numbers.
+ * @param values - Entire sample.
+ * @returns {number}
+ * @constructor
+ */
+var STDEVP = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "STDEVP");
+  var range = Filter.flattenAndThrow(values);
+  var n = range.length;
+  var sigma = 0;
+  var count = 0;
+  var mean = AVERAGE(range);
+  for (var i = 0; i < n; i++) {
+    var value = TypeConverter.firstValue(range[i]);
+    if (typeof value !== "string") {
+      sigma += Math.pow(value - mean, 2);
+      count++;
+    }
+  }
+  return Math.sqrt(sigma / count);
+};
+
 
 export {
   AVERAGE,
@@ -640,5 +666,6 @@ export {
   QUARTILE,
   PERCENTILE,
   STDEV,
-  STDEVA
+  STDEVA,
+  STDEVP
 }

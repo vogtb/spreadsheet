@@ -1387,7 +1387,7 @@
 
 ```
   Calculates the standard deviation of a range, ignoring string values, regardless of whether they can be converted to numbers. 
-@param values - Range of sample 
+@param values - Range of sample. 
 @returns {number} 
 @constructor
 ```
@@ -1395,8 +1395,17 @@
 ### STDEVA 
 
 ```
-  Calculcates the standard deviation of a range, converting string values to numbers, if possible. If a value cannot be converted to a number, formula will throw a value error. 
+  Calculates the standard deviation of a range, converting string values to numbers, if possible. If a value cannot be converted to a number, formula will throw a value error. 
 @param values - Range of sample. 
+@returns {number} 
+@constructor
+```
+
+### STDEVP 
+
+```
+  Calculates the standard deviation of an entire population, ignoring string values, regardless of whether they can be converted to numbers. 
+@param values - Entire sample. 
 @returns {number} 
 @constructor
 ```

@@ -21,7 +21,8 @@ import {
   QUARTILE,
   PERCENTILE,
   STDEV,
-  STDEVA
+  STDEVA,
+  STDEVP
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -512,5 +513,22 @@ test("STDEVA", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     STDEVA([10, 10, [], 10]);
+  }, ERRORS.REF_ERROR);
+});
+
+test("STDEVP", function(){
+  assertEquals(STDEVP(1, 2, 3, 4, 5, 6, 7, 123), 39.39999206852712);
+  assertEquals(STDEVP(1, 2, 3, 4, 5, 6, 7, "132321"), 2);
+  assertEquals(STDEVP(1, 2, 3, 4, 5, 6, 7), 2);
+  assertEquals(STDEVP([1, 2, 3, 4, 5, 6, 7]), 2);
+  assertEquals(STDEVP(1, 2, 3, [4, 5], 6, 7), 2);
+  assertEquals(STDEVP(33, 44), 5.5);
+  assertEquals(STDEVP(33, 44, 0, 1, 0, 1), 18.197222010210485);
+  assertEquals(STDEVP(33, 44, false, true, false, true), 18.197222010210485);
+  catchAndAssertEquals(function() {
+    STDEVP();
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    STDEVP([10, 10, [], 10]);
   }, ERRORS.REF_ERROR);
 });

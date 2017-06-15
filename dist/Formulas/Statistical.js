@@ -586,7 +586,7 @@ exports.QUARTILE = QUARTILE;
 /**
  * Calculates the standard deviation of a range, ignoring string values, regardless of whether they can be converted to
  * numbers.
- * @param values - Range of sample
+ * @param values - Range of sample.
  * @returns {number}
  * @constructor
  */
@@ -612,7 +612,7 @@ var STDEV = function () {
 };
 exports.STDEV = STDEV;
 /**
- * Calculcates the standard deviation of a range, converting string values to numbers, if possible. If a value cannot
+ * Calculates the standard deviation of a range, converting string values to numbers, if possible. If a value cannot
  * be converted to a number, formula will throw a value error.
  * @param values - Range of sample.
  * @returns {number}
@@ -636,3 +636,31 @@ var STDEVA = function () {
     return Math.sqrt(sigma / (n - 1));
 };
 exports.STDEVA = STDEVA;
+/**
+ * Calculates the standard deviation of an entire population, ignoring string values, regardless of whether they can be
+ * converted to numbers.
+ * @param values - Entire sample.
+ * @returns {number}
+ * @constructor
+ */
+var STDEVP = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 1, "STDEVP");
+    var range = Filter_1.Filter.flattenAndThrow(values);
+    var n = range.length;
+    var sigma = 0;
+    var count = 0;
+    var mean = AVERAGE(range);
+    for (var i = 0; i < n; i++) {
+        var value = TypeConverter_1.TypeConverter.firstValue(range[i]);
+        if (typeof value !== "string") {
+            sigma += Math.pow(value - mean, 2);
+            count++;
+        }
+    }
+    return Math.sqrt(sigma / count);
+};
+exports.STDEVP = STDEVP;

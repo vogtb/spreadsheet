@@ -287,6 +287,10 @@ test("Sheet STDEVP", function(){
   assertFormulaEquals('=STDEVP(33, 44)', 5.5);
 });
 
+test("Sheet STDEVPA", function(){
+  assertFormulaEquals('=STDEVPA(33, 44)', 5.5);
+});
+
 test("Sheet PERCENTILE", function(){
   assertFormulaEquals('=PERCENTILE([10], 0)', 10);
 });

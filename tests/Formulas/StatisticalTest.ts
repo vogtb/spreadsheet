@@ -22,7 +22,8 @@ import {
   PERCENTILE,
   STDEV,
   STDEVA,
-  STDEVP
+  STDEVP,
+  STDEVPA
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -530,5 +531,25 @@ test("STDEVP", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     STDEVP([10, 10, [], 10]);
+  }, ERRORS.REF_ERROR);
+});
+
+test("STDEVPA", function() {
+  assertEquals(STDEVPA(1, 2, 3, 4, 5, 6, 7, 123), 39.39999206852712);
+  assertEquals(STDEVPA(1, 2, 3, 4, 5, 6, 7, "123"), 39.39999206852712);
+  assertEquals(STDEVPA(1, 2, 3, 4, 5, 6, 7), 2);
+  assertEquals(STDEVPA([1, 2, 3, 4, 5, 6, 7]), 2);
+  assertEquals(STDEVPA(1, 2, 3, [4, 5], 6, 7), 2);
+  assertEquals(STDEVPA(33, 44), 5.5);
+  assertEquals(STDEVPA(33, 44, 0, 1, 0, 1), 18.197222010210485);
+  assertEquals(STDEVPA(33, 44, false, true, false, true), 18.197222010210485);
+  catchAndAssertEquals(function() {
+    STDEVPA(1, 2, 3, 4, 5, 6, 7, "string");
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    STDEVPA();
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    STDEVPA([10, 10, [], 10]);
   }, ERRORS.REF_ERROR);
 });

@@ -129,7 +129,8 @@ import {
   PERCENTILE,
   STDEV,
   STDEVA,
-  STDEVP
+  STDEVP,
+  STDEVPA
 } from "./Statistical";
 import {
   ARABIC,
@@ -325,5 +326,6 @@ export {
   UMINUS,
   STDEV,
   STDEVA,
-  STDEVP
+  STDEVP,
+  STDEVPA
 }

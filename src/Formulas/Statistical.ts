@@ -631,11 +631,38 @@ var STDEVP = function (...values) {
   var n = range.length;
   var sigma = 0;
   var count = 0;
-  var mean = AVERAGE(range);
+  var m = AVERAGE(range);
   for (var i = 0; i < n; i++) {
     var value = TypeConverter.firstValue(range[i]);
     if (typeof value !== "string") {
-      sigma += Math.pow(value - mean, 2);
+      sigma += Math.pow(value - m, 2);
+      count++;
+    }
+  }
+  return Math.sqrt(sigma / count);
+};
+
+
+/**
+ * Calculates the standard deviation of an entire population, including text and boolean values, if possible. If a value
+ * cannot be converted to a number, formula will throw a value error.
+ * @param values - Entire sample.
+ * @returns {number}
+ * @constructor
+ */
+var STDEVPA = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "STDEVPA");
+  var range = Filter.flattenAndThrow(values).map(function (value) {
+    return TypeConverter.firstValueAsNumber(value);
+  });
+  var n = range.length;
+  var sigma = 0;
+  var count = 0;
+  var m = AVERAGE(range);
+  for (var i = 0; i < n; i++) {
+    var value = TypeConverter.firstValue(range[i]);
+    if (typeof value !== "string") {
+      sigma += Math.pow(value - m, 2);
       count++;
     }
   }
@@ -667,5 +694,6 @@ export {
   PERCENTILE,
   STDEV,
   STDEVA,
-  STDEVP
+  STDEVP,
+  STDEVPA
 }

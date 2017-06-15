@@ -1409,6 +1409,15 @@
 @returns {number} 
 @constructor
 ```
+
+### STDEVPA 
+
+```
+  Calculates the standard deviation of an entire population, including text and boolean values, if possible. If a value cannot be converted to a number, formula will throw a value error. 
+@param values - Entire sample. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

@@ -653,14 +653,44 @@ var STDEVP = function () {
     var n = range.length;
     var sigma = 0;
     var count = 0;
-    var mean = AVERAGE(range);
+    var m = AVERAGE(range);
     for (var i = 0; i < n; i++) {
         var value = TypeConverter_1.TypeConverter.firstValue(range[i]);
         if (typeof value !== "string") {
-            sigma += Math.pow(value - mean, 2);
+            sigma += Math.pow(value - m, 2);
             count++;
         }
     }
     return Math.sqrt(sigma / count);
 };
 exports.STDEVP = STDEVP;
+/**
+ * Calculates the standard deviation of an entire population, including text and boolean values, if possible. If a value
+ * cannot be converted to a number, formula will throw a value error.
+ * @param values - Entire sample.
+ * @returns {number}
+ * @constructor
+ */
+var STDEVPA = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 1, "STDEVPA");
+    var range = Filter_1.Filter.flattenAndThrow(values).map(function (value) {
+        return TypeConverter_1.TypeConverter.firstValueAsNumber(value);
+    });
+    var n = range.length;
+    var sigma = 0;
+    var count = 0;
+    var m = AVERAGE(range);
+    for (var i = 0; i < n; i++) {
+        var value = TypeConverter_1.TypeConverter.firstValue(range[i]);
+        if (typeof value !== "string") {
+            sigma += Math.pow(value - m, 2);
+            count++;
+        }
+    }
+    return Math.sqrt(sigma / count);
+};
+exports.STDEVPA = STDEVPA;

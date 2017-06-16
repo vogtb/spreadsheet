@@ -36,7 +36,6 @@ For example 64 tbs to a qt.
 * ISNONTEXT
 * ISNUMBER
 * ISREF
-* ISTEXT
 * ISURL
 * N
 * TYPE

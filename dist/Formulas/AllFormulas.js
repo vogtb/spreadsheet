@@ -73,6 +73,7 @@ exports.UPLUS = Math_1.UPLUS;
 exports.UMINUS = Math_1.UMINUS;
 var Info_1 = require("./Info");
 exports.NA = Info_1.NA;
+exports.ISTEXT = Info_1.ISTEXT;
 var Lookup_1 = require("./Lookup");
 exports.CHOOSE = Lookup_1.CHOOSE;
 var Logical_1 = require("./Logical");

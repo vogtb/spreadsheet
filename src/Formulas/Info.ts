@@ -16,6 +16,19 @@ var NA = function () {
 };
 
 
+/**
+ * Returns true if a value is text.
+ * @param value - value or reference to check.
+ * @returns {boolean}.
+ * @constructor
+ */
+var ISTEXT =  function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ISTEXT");
+  return typeof value === "string";
+};
+
+
 export {
-  NA
+  NA,
+  ISTEXT
 }

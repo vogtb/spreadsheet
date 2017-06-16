@@ -445,6 +445,15 @@
   Returns the "value not available" error, "#NA". 
 @constructor
 ```
+
+### ISTEXT 
+
+```
+  Returns true if a value is text. 
+@param value - value or reference to check. 
+@returns {boolean}. 
+@constructor
+```
 ## Logical
 
 

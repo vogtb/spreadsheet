@@ -11,3 +11,14 @@ var NA = function () {
     throw new Errors_1.NAError("NA Error thrown.");
 };
 exports.NA = NA;
+/**
+ * Returns true if a value is text.
+ * @param value - value or reference to check.
+ * @returns {boolean}.
+ * @constructor
+ */
+var ISTEXT = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ISTEXT");
+    return typeof value === "string";
+};
+exports.ISTEXT = ISTEXT;

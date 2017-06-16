@@ -71,7 +71,8 @@ import {
   UMINUS
 } from "./Math";
 import {
-  NA
+  NA,
+  ISTEXT
 } from "./Info";
 import {
   CHOOSE
@@ -327,5 +328,6 @@ export {
   STDEV,
   STDEVA,
   STDEVP,
-  STDEVPA
+  STDEVPA,
+  ISTEXT
 }

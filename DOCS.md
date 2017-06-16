@@ -454,6 +454,15 @@
 @returns {boolean}. 
 @constructor
 ```
+
+### ISLOGICAL 
+
+```
+  Returns true if value is a boolean (FALSE, or TRUE). Numerical and text values return false. 
+@param value - value or reference to check. 
+@returns {boolean} 
+@constructor
+```
 ## Logical
 
 

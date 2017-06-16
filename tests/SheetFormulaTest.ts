@@ -659,6 +659,10 @@ test("Sheet ISTEXT", function(){
   assertFormulaEquals('=ISTEXT("str")', true);
 });
 
+test("Sheet ISLOGICAL", function(){
+  assertFormulaEquals('=ISLOGICAL(true)', true);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

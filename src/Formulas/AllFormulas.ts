@@ -72,7 +72,8 @@ import {
 } from "./Math";
 import {
   NA,
-  ISTEXT
+  ISTEXT,
+  ISLOGICAL
 } from "./Info";
 import {
   CHOOSE
@@ -329,5 +330,6 @@ export {
   STDEVA,
   STDEVP,
   STDEVPA,
-  ISTEXT
+  ISTEXT,
+  ISLOGICAL
 }

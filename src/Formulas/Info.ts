@@ -4,6 +4,9 @@ import {
 import {
   NAError
 } from "../Errors";
+import {
+  TypeConverter
+} from "../Utilities/TypeConverter";
 
 
 /**
@@ -24,11 +27,24 @@ var NA = function () {
  */
 var ISTEXT =  function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISTEXT");
-  return typeof value === "string";
+  return typeof TypeConverter.firstValue(value) === "string";
+};
+
+
+/**
+ * Returns true if value is a boolean (FALSE, or TRUE). Numerical and text values return false.
+ * @param value - value or reference to check.
+ * @returns {boolean}
+ * @constructor
+ */
+var ISLOGICAL = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ISLOGICAL");
+  return typeof TypeConverter.firstValue(value) === "boolean";
 };
 
 
 export {
   NA,
-  ISTEXT
+  ISTEXT,
+  ISLOGICAL
 }

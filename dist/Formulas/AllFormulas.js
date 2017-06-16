@@ -75,6 +75,7 @@ var Info_1 = require("./Info");
 exports.NA = Info_1.NA;
 exports.ISTEXT = Info_1.ISTEXT;
 exports.ISLOGICAL = Info_1.ISLOGICAL;
+exports.ISNUMBER = Info_1.ISNUMBER;
 var Lookup_1 = require("./Lookup");
 exports.CHOOSE = Lookup_1.CHOOSE;
 var Logical_1 = require("./Logical");

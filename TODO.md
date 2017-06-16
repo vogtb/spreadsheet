@@ -33,7 +33,6 @@ For example 64 tbs to a qt.
 * ISFORMULA
 * ISNA
 * ISNONTEXT
-* ISNUMBER
 * ISREF
 * ISURL
 * N

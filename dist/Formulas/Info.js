@@ -34,3 +34,14 @@ var ISLOGICAL = function (value) {
     return typeof TypeConverter_1.TypeConverter.firstValue(value) === "boolean";
 };
 exports.ISLOGICAL = ISLOGICAL;
+/**
+ * Returns true if value or reference is a number.
+ * @param value - value or reference to check.
+ * @returns {boolean}
+ * @constructor
+ */
+var ISNUMBER = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ISNUMBER");
+    return typeof TypeConverter_1.TypeConverter.firstValue(value) === "number";
+};
+exports.ISNUMBER = ISNUMBER;

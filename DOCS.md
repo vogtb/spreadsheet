@@ -463,6 +463,15 @@
 @returns {boolean} 
 @constructor
 ```
+
+### ISNUMBER 
+
+```
+  Returns true if value or reference is a number. 
+@param value - value or reference to check. 
+@returns {boolean} 
+@constructor
+```
 ## Logical
 
 

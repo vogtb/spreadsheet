@@ -43,8 +43,21 @@ var ISLOGICAL = function (value) {
 };
 
 
+/**
+ * Returns true if value or reference is a number.
+ * @param value - value or reference to check.
+ * @returns {boolean}
+ * @constructor
+ */
+var ISNUMBER = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ISNUMBER");
+  return typeof TypeConverter.firstValue(value) === "number";
+};
+
+
 export {
   NA,
   ISTEXT,
-  ISLOGICAL
+  ISLOGICAL,
+  ISNUMBER
 }

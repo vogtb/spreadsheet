@@ -1,7 +1,8 @@
 import {
   NA,
   ISTEXT,
-  ISLOGICAL
+  ISLOGICAL,
+  ISNUMBER
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -34,5 +35,15 @@ test("ISLOGICAL", function(){
   assertEquals(ISLOGICAL(true), true);
   catchAndAssertEquals(function() {
     ISLOGICAL.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("ISNUMBER", function(){
+  assertEquals(ISNUMBER("str"), false);
+  assertEquals(ISNUMBER(9), true);
+  assertEquals(ISNUMBER(false), false);
+  assertEquals(ISNUMBER(true), false);
+  catchAndAssertEquals(function() {
+    ISNUMBER.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

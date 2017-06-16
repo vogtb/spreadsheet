@@ -455,6 +455,15 @@
 @constructor
 ```
 
+### ISNONTEXT 
+
+```
+  Returns true if a value is not text. 
+@param value - value or reference to check. 
+@returns {boolean}. 
+@constructor
+```
+
 ### ISLOGICAL 
 
 ```

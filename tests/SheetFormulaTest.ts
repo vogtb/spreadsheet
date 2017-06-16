@@ -659,6 +659,10 @@ test("Sheet ISTEXT", function(){
   assertFormulaEquals('=ISTEXT("str")', true);
 });
 
+test("Sheet ISNONTEXT", function(){
+  assertFormulaEquals('=ISNONTEXT("str")', false);
+});
+
 test("Sheet ISLOGICAL", function(){
   assertFormulaEquals('=ISLOGICAL(true)', true);
 });

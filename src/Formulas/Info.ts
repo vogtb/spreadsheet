@@ -32,6 +32,18 @@ var ISTEXT =  function (value) {
 
 
 /**
+ * Returns true if a value is not text.
+ * @param value - value or reference to check.
+ * @returns {boolean}.
+ * @constructor
+ */
+var ISNONTEXT = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ISNONTEXT");
+  return typeof TypeConverter.firstValue(value) !== "string";
+};
+
+
+/**
  * Returns true if value is a boolean (FALSE, or TRUE). Numerical and text values return false.
  * @param value - value or reference to check.
  * @returns {boolean}
@@ -59,5 +71,6 @@ export {
   NA,
   ISTEXT,
   ISLOGICAL,
-  ISNUMBER
+  ISNUMBER,
+  ISNONTEXT
 }

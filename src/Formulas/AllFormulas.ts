@@ -74,7 +74,8 @@ import {
   NA,
   ISTEXT,
   ISLOGICAL,
-  ISNUMBER
+  ISNUMBER,
+  ISNONTEXT
 } from "./Info";
 import {
   CHOOSE
@@ -333,5 +334,6 @@ export {
   STDEVPA,
   ISTEXT,
   ISLOGICAL,
-  ISNUMBER
+  ISNUMBER,
+  ISNONTEXT
 }

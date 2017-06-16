@@ -1225,6 +1225,15 @@
 @returns {number} 
 @constructor
 ```
+
+### ACTDOUBLE 
+
+```
+  Calculates the double-factorial of a number. 
+@param value - value or reference to calculate. 
+@returns {number} 
+@constructor
+```
 ## Statistical
 
 

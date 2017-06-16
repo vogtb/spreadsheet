@@ -69,7 +69,8 @@ import {
   QUOTIENT,
   UPLUS,
   UMINUS,
-  MROUND
+  MROUND,
+  FACTDOUBLE
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -91,6 +92,23 @@ test("MROUND", function(){
     MROUND.apply(this, [10, 1, 1]);
   }, ERRORS.NA_ERROR);
 });
+
+
+test("FACTDOUBLE", function(){
+  assertEquals(FACTDOUBLE(7), 105);
+  assertEquals(FACTDOUBLE(6), 48);
+  assertEquals(FACTDOUBLE(3), 3);
+  catchAndAssertEquals(function() {
+    FACTDOUBLE(-1);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    FACTDOUBLE.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    FACTDOUBLE.apply(this, [10, 10]);
+  }, ERRORS.NA_ERROR);
+});
+
 
 test("GAMMALN", function(){
   assertEquals(GAMMALN(4.5), 2.453736570842444);

@@ -1314,6 +1314,33 @@ var MROUND = function (value, factor) {
   return Math.round(v / f) * f;
 };
 
+
+/**
+ * Calculates the double-factorial of a number.
+ * @param value - value or reference to calculate.
+ * @returns {number}
+ * @constructor
+ */
+var FACTDOUBLE = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "FACTDOUBLE");
+  var n = Math.floor(TypeConverter.firstValueAsNumber(value));
+  function factDoublePrivate(n) {
+    if (n <= 0) {
+      return 1;
+    } else {
+      return n * factDoublePrivate(n - 2);
+    }
+  }
+  if (n === 0) {
+    return 0;
+  } else if (n < 0) {
+    throw new NumError("Function FACTDOUBLE parameter 1 value is '" + n
+        + "'. It should be greater than or equal to 0.");
+  } else {
+    return factDoublePrivate(n);
+  }
+};
+
 export {
   ABS,
   ACOS,
@@ -1385,5 +1412,6 @@ export {
   QUOTIENT,
   UPLUS,
   UMINUS,
-  MROUND
+  MROUND,
+  FACTDOUBLE
 }

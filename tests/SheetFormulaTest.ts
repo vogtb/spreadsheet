@@ -675,6 +675,10 @@ test("Sheet MROUND", function(){
   assertFormulaEquals('=MROUND(21, 14)', 28);
 });
 
+test("Sheet FACTDOUBLE", function(){
+  assertFormulaEquals('=FACTDOUBLE(7)', 105);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

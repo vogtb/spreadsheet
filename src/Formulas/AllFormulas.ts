@@ -69,7 +69,8 @@ import {
   QUOTIENT,
   UPLUS,
   UMINUS,
-  MROUND
+  MROUND,
+  FACTDOUBLE
 } from "./Math";
 import {
   NA,
@@ -337,5 +338,6 @@ export {
   ISLOGICAL,
   ISNUMBER,
   ISNONTEXT,
-  MROUND
+  MROUND,
+  FACTDOUBLE
 }

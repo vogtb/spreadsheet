@@ -29,10 +29,10 @@ For example 64 tbs to a qt.
 * ISBLANK - May require changes to parser.js
 * ISEMAIL
 * ISERR
-* ISERROR
-* ISFORMULA
-* ISNA
-* ISREF
+* ISERROR - Requires changes to parser.js
+* ISFORMULA - Requires changes to parser.js
+* ISNA - Requires changes to parser.js
+* ISREF - Requires changes to parser.js
 * ISURL
 * N
 * TYPE
@@ -52,7 +52,6 @@ For example 64 tbs to a qt.
 * VLOOKUP
 * COUNTBLANK
 * FACTDOUBLE
-* MROUND
 * MULTINOMIAL
 * SERIESSUM
 * SUBTOTAL

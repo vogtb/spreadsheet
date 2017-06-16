@@ -1215,6 +1215,16 @@
 @returns {number} 
 @constructor
 ```
+
+### MROUND 
+
+```
+  Rounds a number to the nearest integer multiple of another. 
+@param value - value to round. 
+@param factor - multiple. 
+@returns {number} 
+@constructor
+```
 ## Statistical
 
 

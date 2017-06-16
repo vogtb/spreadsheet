@@ -71,6 +71,7 @@ exports.PRODUCT = Math_1.PRODUCT;
 exports.QUOTIENT = Math_1.QUOTIENT;
 exports.UPLUS = Math_1.UPLUS;
 exports.UMINUS = Math_1.UMINUS;
+exports.MROUND = Math_1.MROUND;
 var Info_1 = require("./Info");
 exports.NA = Info_1.NA;
 exports.ISTEXT = Info_1.ISTEXT;

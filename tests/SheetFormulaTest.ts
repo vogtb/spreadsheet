@@ -671,6 +671,10 @@ test("Sheet ISNUMBER", function(){
   assertFormulaEquals('=ISNUMBER(5)', true);
 });
 
+test("Sheet MROUND", function(){
+  assertFormulaEquals('=MROUND(21, 14)', 28);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

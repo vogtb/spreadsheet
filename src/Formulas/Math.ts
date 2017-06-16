@@ -1294,6 +1294,26 @@ var UMINUS = function (value) {
 };
 
 
+/**
+ * Rounds a number to the nearest integer multiple of another.
+ * @param value - value to round.
+ * @param factor - multiple.
+ * @returns {number}
+ * @constructor
+ */
+var MROUND = function (value, factor) {
+  ArgsChecker.checkLength(arguments, 2, "MROUND");
+  var v = TypeConverter.firstValueAsNumber(value);
+  var f = TypeConverter.firstValueAsNumber(factor);
+  if (v * f < 0) {
+    throw new NumError("Parameters of MROUND must have same signs (both positive or both negative).");
+  }
+  if (f === 0) {
+    return 0;
+  }
+  return Math.round(v / f) * f;
+};
+
 export {
   ABS,
   ACOS,
@@ -1364,5 +1384,6 @@ export {
   PRODUCT,
   QUOTIENT,
   UPLUS,
-  UMINUS
+  UMINUS,
+  MROUND
 }

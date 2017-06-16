@@ -68,7 +68,8 @@ import {
   PRODUCT,
   QUOTIENT,
   UPLUS,
-  UMINUS
+  UMINUS,
+  MROUND
 } from "./Math";
 import {
   NA,
@@ -335,5 +336,6 @@ export {
   ISTEXT,
   ISLOGICAL,
   ISNUMBER,
-  ISNONTEXT
+  ISNONTEXT,
+  MROUND
 }

@@ -1282,3 +1282,23 @@ var UMINUS = function (value) {
     return n * -1;
 };
 exports.UMINUS = UMINUS;
+/**
+ * Rounds a number to the nearest integer multiple of another.
+ * @param value - value to round.
+ * @param factor - multiple.
+ * @returns {number}
+ * @constructor
+ */
+var MROUND = function (value, factor) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "MROUND");
+    var v = TypeConverter_1.TypeConverter.firstValueAsNumber(value);
+    var f = TypeConverter_1.TypeConverter.firstValueAsNumber(factor);
+    if (v * f < 0) {
+        throw new Errors_1.NumError("Parameters of MROUND must have same signs (both positive or both negative).");
+    }
+    if (f === 0) {
+        return 0;
+    }
+    return Math.round(v / f) * f;
+};
+exports.MROUND = MROUND;

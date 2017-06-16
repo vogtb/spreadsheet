@@ -68,7 +68,8 @@ import {
   PRODUCT,
   QUOTIENT,
   UPLUS,
-  UMINUS
+  UMINUS,
+  MROUND
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -77,6 +78,19 @@ import {
   test
 } from "../Utils/Asserts";
 
+
+test("MROUND", function(){
+  assertEquals(MROUND(4.12121, 22), 0);
+  assertEquals(MROUND(10, 0), 0);
+  assertEquals(MROUND(10, 2), 10);
+  assertEquals(MROUND(21, 14), 28);
+  catchAndAssertEquals(function() {
+    MROUND.apply(this, [10]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    MROUND.apply(this, [10, 1, 1]);
+  }, ERRORS.NA_ERROR);
+});
 
 test("GAMMALN", function(){
   assertEquals(GAMMALN(4.5), 2.453736570842444);

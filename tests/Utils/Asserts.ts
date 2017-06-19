@@ -19,6 +19,7 @@ function assertArrayEquals(actual: Array<any>, expected: Array<any>, ) {
   if (expected.length != actual.length) {
     console.log("expected: ", expected, " actual:", actual);
     console.trace();
+    return;
   }
   for (var index in expected) {
     if (expected[index] != actual[index]) {

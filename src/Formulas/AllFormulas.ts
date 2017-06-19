@@ -73,6 +73,9 @@ import {
   FACTDOUBLE
 } from "./Math";
 import {
+  FREQUENCY
+} from "./Range";
+import {
   NA,
   ISTEXT,
   ISLOGICAL,
@@ -339,5 +342,6 @@ export {
   ISNUMBER,
   ISNONTEXT,
   MROUND,
-  FACTDOUBLE
+  FACTDOUBLE,
+  FREQUENCY
 }

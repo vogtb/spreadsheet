@@ -35,7 +35,7 @@ function assertFormulaResultsInType(formula: string, type: string) {
   assertEquals(typeof cell.getValue(), type);
 }
 
-function testFormulaToArray(formula: string, expectation: any) {
+function assertFormulaEqualsArray(formula: string, expectation: any) {
   var sheet  = new Sheet();
   sheet.setCell("A1", formula);
   var cell = sheet.getCell("A1");
@@ -529,7 +529,7 @@ test("Sheet SINH", function(){
 });
 
 test("Sheet SPLIT", function(){
-  testFormulaToArray('=SPLIT("1,2,3", ",", TRUE)', [ '1', '2', '3' ]);
+  assertFormulaEqualsArray('=SPLIT("1,2,3", ",", TRUE)', [ '1', '2', '3' ]);
 });
 
 test("Sheet SQRT", function(){
@@ -678,6 +678,12 @@ test("Sheet MROUND", function(){
 test("Sheet FACTDOUBLE", function(){
   assertFormulaEquals('=FACTDOUBLE(7)', 105);
 });
+
+
+test("Sheet FREQUENCY", function(){
+  assertFormulaEqualsArray('=FREQUENCY([10, 2, 3, 44, 1, 2], 22)', [5, 1]);
+});
+
 
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);

@@ -1234,6 +1234,18 @@
 @returns {number} 
 @constructor
 ```
+## Range
+
+
+### FREQUENCY 
+
+```
+  Calculates the frequency distribution of a range into specified classes or "bins". 
+@param range - to get frequency for. 
+@param bins - or classes. 
+@returns {Array<number>} 
+@constructor
+```
 ## Statistical
 
 

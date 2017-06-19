@@ -3,12 +3,14 @@ exports.__esModule = true;
 var ArgsChecker_1 = require("../Utilities/ArgsChecker");
 var Filter_1 = require("../Utilities/Filter");
 var TypeConverter_1 = require("../Utilities/TypeConverter");
+var Errors_1 = require("../Errors");
 /**
  * Calculates the frequency distribution of a range into specified classes or "bins".
  * @param range - to get frequency for.
  * @param bins - or classes.
  * @returns {Array<number>}
  * @constructor
+ * TODO: Returns ColumnArray (values stacked in Y-direction)
  */
 var FREQUENCY = function (range, bins) {
     ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "FREQUENCY");
@@ -54,3 +56,78 @@ var FREQUENCY = function (range, bins) {
     return r;
 };
 exports.FREQUENCY = FREQUENCY;
+/**
+ * Given partial data with exponential growth, fits and ideal exponential growth trend, and predicts future values. For
+ * more information see: https://xkcd.com/1102/
+ * @param knownY - The range or array containing the dependent, y, values that are known, and will be used to fit an
+ * ideal exponential growth curve.
+ * @param knownX - OPTIONAL - The range or values of the independent variables that correspond to knownY.
+ * @param newX - OPTIONAL - The range, values, or data-points to return the y-values on the ideal curve fit.
+ * @param shouldUseConstant - OPTIONAL - True by default. Given an exponential function y = b*m^x, should this function
+ * calculate b?
+ * @returns {Array}
+ * @constructor
+ * TODO: Returns RowArray (values stacked in X-direction)
+ */
+var GROWTH = function (knownY, knownX, newX, shouldUseConstant) {
+    // Credits: Ilmari Karonen, FormulaJs (https://github.com/sutoiku/formula.js/)
+    knownY = Filter_1.Filter.flattenAndThrow(knownY).map(function (value) {
+        if (typeof value !== "number") {
+            throw new Errors_1.ValueError("Function GROWTH parameter 1 expects number values. But '" + value + "' is " + (typeof value)
+                + " and cannot be coerced to a number.");
+        }
+        return value;
+    });
+    // Default values for optional parameters:
+    if (arguments.length < 2) {
+        knownX = [];
+        for (var i = 1; i <= knownY.length; i++) {
+            knownX.push(i);
+        }
+    }
+    if (arguments.length < 3) {
+        newX = [];
+        for (var i = 1; i <= knownY.length; i++) {
+            newX.push(i);
+        }
+    }
+    if (arguments.length < 4) {
+        shouldUseConstant = true || shouldUseConstant;
+    }
+    // Calculate sums over the data:
+    var n = knownY.length;
+    var avg_x = 0;
+    var avg_y = 0;
+    var avg_xy = 0;
+    var avg_xx = 0;
+    for (i = 0; i < n; i++) {
+        var x = knownX[i];
+        var y = Math.log(knownY[i]);
+        avg_x += x;
+        avg_y += y;
+        avg_xy += x * y;
+        avg_xx += x * x;
+    }
+    avg_x /= n;
+    avg_y /= n;
+    avg_xy /= n;
+    avg_xx /= n;
+    // Compute linear regression coefficients:
+    var beta;
+    var alpha;
+    if (shouldUseConstant) {
+        beta = (avg_xy - avg_x * avg_y) / (avg_xx - avg_x * avg_x);
+        alpha = avg_y - beta * avg_x;
+    }
+    else {
+        beta = avg_xy / avg_xx;
+        alpha = 0;
+    }
+    // Compute and return result array:
+    var new_y = [];
+    for (i = 0; i < newX.length; i++) {
+        new_y.push(Math.exp(alpha + beta * newX[i]));
+    }
+    return new_y;
+};
+exports.GROWTH = GROWTH;

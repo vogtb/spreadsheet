@@ -1,5 +1,6 @@
 import {
-  FREQUENCY
+  FREQUENCY,
+  GROWTH
 } from "../../src/Formulas/Range";
 import {
   assertArrayEquals,
@@ -7,7 +8,6 @@ import {
   test
 } from "../Utils/Asserts";
 import * as ERRORS from "../../src/Errors";
-
 
 
 test("FREQUENCY", function(){
@@ -24,5 +24,33 @@ test("FREQUENCY", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     FREQUENCY([10, 2, 3, 44, 1, [], 2], 22);
+  }, ERRORS.REF_ERROR);
+});
+
+
+test("GROWTH", function(){
+  assertArrayEquals(GROWTH(
+    [15.53, 19.99, 20.43, 21.18, 25.93, 30.00, 30.00, 34.01, 36.47],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [10, 11, 12]
+  ), [41.740521723275876, 46.22712349335047, 51.19598074591973]);
+  assertArrayEquals(GROWTH(
+    [15.53, 19.99, 20.43, 21.18, 25.93, [30.00, 30.00, 34.01], 36.47],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [10, 11, 12]
+  ), [41.740521723275876, 46.22712349335047, 51.19598074591973]);
+  catchAndAssertEquals(function() {
+    GROWTH(
+      [15.53, 19.99, 20.43, 21.18, "25.93", 30.00, 30.00, 34.01, 36.47],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [10, 11, 12]
+    );
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    GROWTH(
+      [15.53, 19.99, 20.43, 21.18, [25.93, 30.00], [], 30.00, 34.01, 36.47],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [10, 11, 12]
+    );
   }, ERRORS.REF_ERROR);
 });

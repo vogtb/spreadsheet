@@ -130,7 +130,6 @@ For example 64 tbs to a qt.
 * TEXT
 * UPPER
 * VALUE
-* GROWTH
 * LINEST
 * LOGEST
 * MDETERM

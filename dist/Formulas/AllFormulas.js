@@ -75,6 +75,7 @@ exports.MROUND = Math_1.MROUND;
 exports.FACTDOUBLE = Math_1.FACTDOUBLE;
 var Range_1 = require("./Range");
 exports.FREQUENCY = Range_1.FREQUENCY;
+exports.GROWTH = Range_1.GROWTH;
 var Info_1 = require("./Info");
 exports.NA = Info_1.NA;
 exports.ISTEXT = Info_1.ISTEXT;

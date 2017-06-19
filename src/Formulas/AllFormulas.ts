@@ -73,7 +73,8 @@ import {
   FACTDOUBLE
 } from "./Math";
 import {
-  FREQUENCY
+  FREQUENCY,
+  GROWTH
 } from "./Range";
 import {
   NA,
@@ -343,5 +344,6 @@ export {
   ISNONTEXT,
   MROUND,
   FACTDOUBLE,
-  FREQUENCY
+  FREQUENCY,
+  GROWTH
 }

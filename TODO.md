@@ -98,7 +98,6 @@ For example 64 tbs to a qt.
 * T.INV.2T
 * TDIST
 * TINV
-* TRIMMEAN
 * TTEST
 * VAR
 * VARA

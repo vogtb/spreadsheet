@@ -687,6 +687,10 @@ test("Sheet GROWTH", function(){
   assertFormulaEqualsArray('=GROWTH([15.53, 19.99, 20.43, 21.18, 25.93, 30.00, 30.00, 34.01, 36.47],[1, 2, 3, 4, 5, 6, 7, 8, 9],[10, 11, 12])', [41.740521723275876, 46.22712349335047, 51.19598074591973]);
 });
 
+test("Sheet TRIMMEAN", function(){
+  assertFormulaEquals('=TRIMMEAN([1], 0.1)', 1);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

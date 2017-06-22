@@ -23,7 +23,8 @@ import {
   STDEV,
   STDEVA,
   STDEVP,
-  STDEVPA
+  STDEVPA,
+  TRIMMEAN
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -552,4 +553,19 @@ test("STDEVPA", function() {
   catchAndAssertEquals(function() {
     STDEVPA([10, 10, [], 10]);
   }, ERRORS.REF_ERROR);
+});
+
+test("TRIMMEAN", function() {
+  assertEquals(TRIMMEAN([1.1, 2, 3, 44, 20, 21, 7], 0.05), 14.014285714285714);
+  assertEquals(TRIMMEAN([1.1, 2, 3, 44, 20, 21, 7, 1, 22], 0.1), 13.455555555555556);
+  assertEquals(TRIMMEAN([1], 0.1), 1);
+  catchAndAssertEquals(function() {
+    TRIMMEAN([], 0.1);
+  }, ERRORS.REF_ERROR);
+  catchAndAssertEquals(function() {
+    TRIMMEAN([10], 1);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    TRIMMEAN([10], -1);
+  }, ERRORS.NUM_ERROR);
 });

@@ -694,3 +694,32 @@ var STDEVPA = function () {
     return Math.sqrt(sigma / count);
 };
 exports.STDEVPA = STDEVPA;
+/**
+ * Returns the mean value of a range excluding some percentage of the range on the high and low ends of the range.
+ * @param range - Array or range to consider.
+ * @param percent - The portion of the data to exclude on both ends of the range.
+ * @returns {number}
+ * @constructor
+ */
+var TRIMMEAN = function (range, percent) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "TRIMMEAN");
+    var p = TypeConverter_1.TypeConverter.firstValueAsNumber(percent);
+    if (p < 0) {
+        throw new Errors_1.NumError("Function TRIMMEAN parameter 2 value is " + p + ". It should be greater than or equal to 0.");
+    }
+    if (p >= 1) {
+        throw new Errors_1.NumError("Function TRIMMEAN parameter 2 value is " + p + ". It should be less than 1.");
+    }
+    var data = Filter_1.Filter.flattenAndThrow(range).sort(function (a, b) {
+        return a - b;
+    }).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    if (data.length === 0) {
+        throw new Errors_1.RefError("TRIMMEAN has no valid input data.");
+    }
+    var trim = Math_1.FLOOR(data.length * p, 2) / 2;
+    var tmp = data.slice(trim, data.length);
+    return MathHelpers_1.mean(tmp.slice(0, tmp.length - trim));
+};
+exports.TRIMMEAN = TRIMMEAN;

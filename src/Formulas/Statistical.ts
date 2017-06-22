@@ -15,7 +15,8 @@ import {
 } from "../Errors";
 import {
   SUM,
-  ABS
+  ABS,
+  FLOOR
 } from "./Math";
 import {
   cdf,
@@ -670,6 +671,38 @@ var STDEVPA = function (...values) {
 };
 
 
+/**
+ * Returns the mean value of a range excluding some percentage of the range on the high and low ends of the range.
+ * @param range - Array or range to consider.
+ * @param percent - The portion of the data to exclude on both ends of the range.
+ * @returns {number}
+ * @constructor
+ */
+var TRIMMEAN = function (range, percent) {
+  ArgsChecker.checkLength(arguments, 2, "TRIMMEAN");
+  var p = TypeConverter.firstValueAsNumber(percent);
+  if (p < 0) {
+    throw new NumError("Function TRIMMEAN parameter 2 value is " + p + ". It should be greater than or equal to 0.");
+  }
+  if (p >= 1) {
+    throw new NumError("Function TRIMMEAN parameter 2 value is " + p + ". It should be less than 1.");
+  }
+  var data = Filter.flattenAndThrow(range).sort(function (a, b) {
+    return a - b;
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+
+  if (data.length === 0) {
+    throw new RefError("TRIMMEAN has no valid input data.");
+  }
+
+  var trim = FLOOR(data.length * p, 2) / 2;
+  var tmp = data.slice(trim, data.length);
+  return mean(tmp.slice(0, tmp.length - trim));
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -695,5 +728,6 @@ export {
   STDEV,
   STDEVA,
   STDEVP,
-  STDEVPA
+  STDEVPA,
+  TRIMMEAN
 }

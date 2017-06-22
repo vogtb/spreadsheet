@@ -1497,6 +1497,16 @@
 @returns {number} 
 @constructor
 ```
+
+### TRIMMEAN 
+
+```
+  Returns the mean value of a range excluding some percentage of the range on the high and low ends of the range. 
+@param range - Array or range to consider. 
+@param percent - The portion of the data to exclude on both ends of the range. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

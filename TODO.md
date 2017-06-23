@@ -110,7 +110,6 @@ For example 64 tbs to a qt.
 * JOIN
 * LEFT
 * LEN
-* LOWER
 * MID
 * PROPER
 * REGEXEXTRACT - May be difficult considering language differences.

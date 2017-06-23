@@ -1585,3 +1585,11 @@
 @returns {string} 
 @constructor
 ```
+
+### LOWER 
+
+```
+  Converts text to lowercase. 
+@param value - Text to convert. 
+@constructor
+```

@@ -145,6 +145,7 @@ exports.SPLIT = Text_1.SPLIT;
 exports.CONCATENATE = Text_1.CONCATENATE;
 exports.CONVERT = Text_1.CONVERT;
 exports.TRIM = Text_1.TRIM;
+exports.LOWER = Text_1.LOWER;
 var Date_1 = require("./Date");
 exports.DATE = Date_1.DATE;
 exports.DATEVALUE = Date_1.DATEVALUE;

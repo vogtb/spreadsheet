@@ -434,8 +434,20 @@ var CONVERT = function (value, startUnit, endUnit) {
  */
 var TRIM = function (value) {
   ArgsChecker.checkLength(arguments, 1, "TRIM");
-  var text = TypeConverter.valueToString(value);
+  var text = TypeConverter.firstValueAsString(value);
   return text.trim();
+};
+
+
+/**
+ * Converts text to lowercase.
+ * @param value - Text to convert.
+ * @constructor
+ */
+var LOWER =  function (value) {
+  ArgsChecker.checkLength(arguments, 1, "LOWER");
+  var text = TypeConverter.firstValueAsString(value);
+  return text.toLowerCase();
 };
 
 
@@ -446,5 +458,6 @@ export {
   SPLIT,
   CONCATENATE,
   CONVERT,
-  TRIM
+  TRIM,
+  LOWER
 }

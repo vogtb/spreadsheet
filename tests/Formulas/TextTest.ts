@@ -5,7 +5,8 @@ import {
   CONCATENATE,
   SPLIT,
   CONVERT,
-  TRIM
+  TRIM,
+  LOWER
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -146,5 +147,18 @@ test("TRIM", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     TRIM.apply(this, ["test", 5]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("LOWER", function(){
+  assertEquals(LOWER("TEST"), "test");
+  assertEquals(LOWER(5), "5");
+  assertEquals(LOWER(false), "false");
+  catchAndAssertEquals(function() {
+    LOWER.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    LOWER.apply(this, ["test", 5]);
   }, ERRORS.NA_ERROR);
 });

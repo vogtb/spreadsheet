@@ -141,7 +141,8 @@ import {
   STDEVA,
   STDEVP,
   STDEVPA,
-  TRIMMEAN
+  TRIMMEAN,
+  SLOPE
 } from "./Statistical";
 import {
   ARABIC,
@@ -347,5 +348,6 @@ export {
   FACTDOUBLE,
   FREQUENCY,
   GROWTH,
-  TRIMMEAN
+  TRIMMEAN,
+  SLOPE
 }

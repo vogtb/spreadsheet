@@ -1507,6 +1507,15 @@
 @returns {number} 
 @constructor
 ```
+
+### SLOPE 
+
+```
+  Returns the slope of the line calculated from linear regression of a range. Any text values passed in will be ignored 
+@param rangeY - The range or array representing the dependent data. 
+@param rangeX - The range or array representing the independent data. 
+@constructor
+```
 ## Text
 
 

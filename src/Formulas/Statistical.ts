@@ -703,6 +703,43 @@ var TRIMMEAN = function (range, percent) {
 };
 
 
+/**
+ * Returns the slope of the line calculated from linear regression of a range. Any text values passed in will be ignored
+ * @param rangeY - The range or array representing the dependent data.
+ * @param rangeX - The range or array representing the independent data.
+ * @constructor
+ */
+var SLOPE = function (rangeY, rangeX) {
+  ArgsChecker.checkLength(arguments, 2, "SLOPE");
+  var dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
+    return typeof value !== "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+  var dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
+    return typeof value !== "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+  if (dataX.length !== dataY.length) {
+    throw new NAError("SLOPE has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
+  }
+  var xmean = mean(dataX);
+  var ymean = mean(dataY);
+  var n = dataX.length;
+  var num = 0;
+  var den = 0;
+  for (var i = 0; i < n; i++) {
+    num += (dataX[i] - xmean) * (dataY[i] - ymean);
+    den += Math.pow(dataX[i] - xmean, 2);
+  }
+  if (den === 0) {
+    throw new DivZeroError("Evaluation of function SLOPE caused a divide by zero error.");
+  }
+  return num / den;
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -729,5 +766,6 @@ export {
   STDEVA,
   STDEVP,
   STDEVPA,
-  TRIMMEAN
+  TRIMMEAN,
+  SLOPE
 }

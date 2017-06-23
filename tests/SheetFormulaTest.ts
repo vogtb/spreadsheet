@@ -691,6 +691,10 @@ test("Sheet TRIMMEAN", function(){
   assertFormulaEquals('=TRIMMEAN([1], 0.1)', 1);
 });
 
+test("Sheet SLOPE", function(){
+  assertFormulaEquals('=SLOPE([600, 800], [44, 4.1])', -5.012531328320802);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

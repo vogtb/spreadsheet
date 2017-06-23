@@ -24,7 +24,8 @@ import {
   STDEVA,
   STDEVP,
   STDEVPA,
-  TRIMMEAN
+  TRIMMEAN,
+  SLOPE
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -568,4 +569,21 @@ test("TRIMMEAN", function() {
   catchAndAssertEquals(function() {
     TRIMMEAN([10], -1);
   }, ERRORS.NUM_ERROR);
+});
+
+test("SLOPE", function() {
+  assertEquals(SLOPE([1, 2.2, 4, 5.5, 6, 8], [1.9, 22.2, 44, 55.5, 88, 99.1]), 0.06727907586278936);
+  assertEquals(SLOPE([1.1, 2.44, 5, 10.5, 600, 800], [1.9, 22.2, 44, 55.5, 88, 99.1]), 8.50783378332324);
+  assertEquals(SLOPE([1.1, 2.44, 5, 10.5, 600, "ignore", 800], [1.9, 22.2, 44, 55.5, 88, 99.1]), 8.50783378332324);
+  assertEquals(SLOPE([600, 800], [44, 4.1]), -5.012531328320802);
+  assertEquals(SLOPE([1, 2.2, 4, 5.5, 6, 8, true], [1.9, 22.2, 44, 55.5, 88,  99.1, true]), 0.06743685772979165);
+  catchAndAssertEquals(function() {
+    SLOPE([1], [0]);
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    SLOPE([1], [1]);
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    SLOPE([1, 3], [1]);
+  }, ERRORS.NA_ERROR);
 });

@@ -723,3 +723,39 @@ var TRIMMEAN = function (range, percent) {
     return MathHelpers_1.mean(tmp.slice(0, tmp.length - trim));
 };
 exports.TRIMMEAN = TRIMMEAN;
+/**
+ * Returns the slope of the line calculated from linear regression of a range. Any text values passed in will be ignored
+ * @param rangeY - The range or array representing the dependent data.
+ * @param rangeX - The range or array representing the independent data.
+ * @constructor
+ */
+var SLOPE = function (rangeY, rangeX) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "SLOPE");
+    var dataX = Filter_1.Filter.flattenAndThrow(rangeX).filter(function (value) {
+        return typeof value !== "string";
+    }).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    var dataY = Filter_1.Filter.flattenAndThrow(rangeY).filter(function (value) {
+        return typeof value !== "string";
+    }).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    if (dataX.length !== dataY.length) {
+        throw new Errors_1.NAError("SLOPE has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
+    }
+    var xmean = MathHelpers_1.mean(dataX);
+    var ymean = MathHelpers_1.mean(dataY);
+    var n = dataX.length;
+    var num = 0;
+    var den = 0;
+    for (var i = 0; i < n; i++) {
+        num += (dataX[i] - xmean) * (dataY[i] - ymean);
+        den += Math.pow(dataX[i] - xmean, 2);
+    }
+    if (den === 0) {
+        throw new Errors_1.DivZeroError("Evaluation of function SLOPE caused a divide by zero error.");
+    }
+    return num / den;
+};
+exports.SLOPE = SLOPE;

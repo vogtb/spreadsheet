@@ -1593,3 +1593,11 @@
 @param value - Text to convert. 
 @constructor
 ```
+
+### UPPER 
+
+```
+  Converts text to uppercase. 
+@param value - Text to convert. 
+@constructor
+```

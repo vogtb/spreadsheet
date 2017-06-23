@@ -125,7 +125,6 @@ For example 64 tbs to a qt.
 * SUBSTITUTE
 * T
 * TEXT
-* UPPER
 * VALUE
 * LINEST
 * LOGEST

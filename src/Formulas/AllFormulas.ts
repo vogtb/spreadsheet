@@ -152,7 +152,8 @@ import {
   CONCATENATE,
   CONVERT,
   TRIM,
-  LOWER
+  LOWER,
+  UPPER
 } from "./Text"
 import {
   DATE,
@@ -351,5 +352,6 @@ export {
   GROWTH,
   TRIMMEAN,
   SLOPE,
-  LOWER
+  LOWER,
+  UPPER
 }

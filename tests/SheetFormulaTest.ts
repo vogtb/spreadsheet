@@ -696,7 +696,11 @@ test("Sheet SLOPE", function(){
 });
 
 test("Sheet LOWER", function(){
-  assertFormulaEquals('=LOWER("str")', "str");
+  assertFormulaEquals('=LOWER("STR")', "str");
+});
+
+test("Sheet UPPER", function(){
+  assertFormulaEquals('=UPPER("str")', "STR");
 });
 
 test("Sheet *", function(){

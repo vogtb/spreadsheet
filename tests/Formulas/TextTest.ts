@@ -6,7 +6,8 @@ import {
   SPLIT,
   CONVERT,
   TRIM,
-  LOWER
+  LOWER,
+  UPPER
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -160,5 +161,18 @@ test("LOWER", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     LOWER.apply(this, ["test", 5]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("UPPER", function(){
+  assertEquals(UPPER("test"), "TEST");
+  assertEquals(UPPER(5), "5");
+  assertEquals(UPPER(false), "FALSE");
+  catchAndAssertEquals(function() {
+    UPPER.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    UPPER.apply(this, ["test", 5]);
   }, ERRORS.NA_ERROR);
 });

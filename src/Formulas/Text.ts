@@ -451,6 +451,17 @@ var LOWER =  function (value) {
 };
 
 
+/**
+ * Converts text to uppercase.
+ * @param value - Text to convert.
+ * @constructor
+ */
+var UPPER = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "UPPER");
+  var text = TypeConverter.firstValueAsString(value);
+  return text.toUpperCase();
+};
+
 export {
   ARABIC,
   CHAR,
@@ -459,5 +470,6 @@ export {
   CONCATENATE,
   CONVERT,
   TRIM,
-  LOWER
+  LOWER,
+  UPPER
 }

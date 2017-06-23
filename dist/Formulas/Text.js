@@ -431,3 +431,14 @@ var LOWER = function (value) {
     return text.toLowerCase();
 };
 exports.LOWER = LOWER;
+/**
+ * Converts text to uppercase.
+ * @param value - Text to convert.
+ * @constructor
+ */
+var UPPER = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "UPPER");
+    var text = TypeConverter_1.TypeConverter.firstValueAsString(value);
+    return text.toUpperCase();
+};
+exports.UPPER = UPPER;

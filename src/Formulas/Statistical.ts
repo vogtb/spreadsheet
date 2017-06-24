@@ -740,6 +740,25 @@ var SLOPE = function (rangeY, rangeX) {
 };
 
 
+/**
+ * Returns the normalized equivalent of a random variable given mean and standard deviation of the distribution.
+ * @param value - Value to be standardized.
+ * @param meanValue - Arithmetic mean of the distribution
+ * @param std - The standard deviation of the distribution or range.
+ * @returns {number}
+ * @constructor
+ */
+var STANDARDIZE = function (value, meanValue, std) {
+  value = TypeConverter.firstValueAsNumber(value);
+  meanValue = TypeConverter.firstValueAsNumber(meanValue);
+  std = TypeConverter.firstValueAsNumber(std);
+  if (std <= 0) {
+    throw new NumError("Function STANDARDIZE parameter 3 value is " + std + ". It should be greater than 0.");
+  }
+  return (value - meanValue) / std;
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -767,5 +786,6 @@ export {
   STDEVP,
   STDEVPA,
   TRIMMEAN,
-  SLOPE
+  SLOPE,
+  STANDARDIZE
 }

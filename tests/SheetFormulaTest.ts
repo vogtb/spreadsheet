@@ -703,6 +703,10 @@ test("Sheet UPPER", function(){
   assertFormulaEquals('=UPPER("str")', "STR");
 });
 
+test("Sheet STANDARDIZE", function(){
+  assertFormulaEquals('=STANDARDIZE(10, 2, 1)', 8);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

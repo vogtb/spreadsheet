@@ -91,7 +91,6 @@ For example 64 tbs to a qt.
 * RSQ
 * SKEW
 * SMALL
-* STANDARDIZE
 * STEYX
 * T.INV
 * T.INV.2T

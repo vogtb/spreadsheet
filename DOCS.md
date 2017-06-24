@@ -1516,6 +1516,17 @@
 @param rangeX - The range or array representing the independent data. 
 @constructor
 ```
+
+### ANDARDIZE 
+
+```
+  Returns the normalized equivalent of a random variable given mean and standard deviation of the distribution. 
+@param value - Value to be standardized. 
+@param meanValue - Arithmetic mean of the distribution 
+@param std - The standard deviation of the distribution or range. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

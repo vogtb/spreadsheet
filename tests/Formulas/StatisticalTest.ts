@@ -25,7 +25,8 @@ import {
   STDEVP,
   STDEVPA,
   TRIMMEAN,
-  SLOPE
+  SLOPE,
+  STANDARDIZE
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -586,4 +587,18 @@ test("SLOPE", function() {
   catchAndAssertEquals(function() {
     SLOPE([1, 3], [1]);
   }, ERRORS.NA_ERROR);
+});
+
+test("STANDARDIZE", function() {
+  assertEquals(STANDARDIZE(10, 2, 1), 8);
+  assertEquals(STANDARDIZE(44, 2.1, 99), 0.42323232323232324);
+  assertEquals(STANDARDIZE(10, 2, [1, []]), 8);
+  assertEquals(STANDARDIZE(44, 0, 10), 4.4);
+  assertEquals(STANDARDIZE(0, 0, 1), 0);
+  catchAndAssertEquals(function() {
+    STANDARDIZE(44, 2.1, 0);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    STANDARDIZE(44, 2.1, -10);
+  }, ERRORS.NUM_ERROR);
 });

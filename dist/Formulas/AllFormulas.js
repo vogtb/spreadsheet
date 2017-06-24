@@ -137,6 +137,7 @@ exports.STDEVP = Statistical_1.STDEVP;
 exports.STDEVPA = Statistical_1.STDEVPA;
 exports.TRIMMEAN = Statistical_1.TRIMMEAN;
 exports.SLOPE = Statistical_1.SLOPE;
+exports.STANDARDIZE = Statistical_1.STANDARDIZE;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

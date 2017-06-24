@@ -777,3 +777,23 @@ var STANDARDIZE = function (value, meanValue, std) {
     return (value - meanValue) / std;
 };
 exports.STANDARDIZE = STANDARDIZE;
+/**
+ * Returns the Nth smallest value in the range, ignoring text values.
+ * @param range -  Range or data-set to consider.
+ * @param n - N in 'Nth'.
+ * @constructor
+ */
+var SMALL = function (range, n) {
+    var data = Filter_1.Filter.flattenAndThrow(range).filter(function (value) {
+        return typeof value != "string";
+    }).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    }).sort(function (a, b) {
+        return a - b;
+    });
+    if (n > data.length || n < 1) {
+        throw new Errors_1.NumError("Function SMALL parameter 2 value " + n + " is out of range.");
+    }
+    return data[n - 1];
+};
+exports.SMALL = SMALL;

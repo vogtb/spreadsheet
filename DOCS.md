@@ -1527,6 +1527,15 @@
 @returns {number} 
 @constructor
 ```
+
+### SMALL 
+
+```
+  Returns the Nth smallest value in the range, ignoring text values. 
+@param range -  Range or data-set to consider. 
+@param n - N in 'Nth'. 
+@constructor
+```
 ## Text
 
 

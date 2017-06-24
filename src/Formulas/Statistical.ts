@@ -759,6 +759,27 @@ var STANDARDIZE = function (value, meanValue, std) {
 };
 
 
+/**
+ * Returns the Nth smallest value in the range, ignoring text values.
+ * @param range -  Range or data-set to consider.
+ * @param n - N in 'Nth'.
+ * @constructor
+ */
+var SMALL =  function (range, n) {
+  var data = Filter.flattenAndThrow(range).filter(function (value) {
+    return typeof value != "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  }).sort(function (a, b) {
+    return a - b;
+  });
+  if (n > data.length || n < 1) {
+    throw new NumError("Function SMALL parameter 2 value " + n + " is out of range.");
+  }
+  return data[n - 1];
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -787,5 +808,6 @@ export {
   STDEVPA,
   TRIMMEAN,
   SLOPE,
-  STANDARDIZE
+  STANDARDIZE,
+  SMALL
 }

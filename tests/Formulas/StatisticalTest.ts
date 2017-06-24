@@ -26,7 +26,8 @@ import {
   STDEVPA,
   TRIMMEAN,
   SLOPE,
-  STANDARDIZE
+  STANDARDIZE,
+  SMALL
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -600,5 +601,17 @@ test("STANDARDIZE", function() {
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
     STANDARDIZE(44, 2.1, -10);
+  }, ERRORS.NUM_ERROR);
+});
+
+test("SMALL", function() {
+  assertEquals(SMALL([2, 12, 22, 1, 0.1, 44, "77", "hello"], 3), 2);
+  assertEquals(SMALL([2, 12, 22, 1, 0.1, 44, "77", "hello"], 4), 12);
+  assertEquals(SMALL([2, 12, 22, 1, 0.1, 44, "77", "hello"], 5), 22);
+  catchAndAssertEquals(function() {
+    SMALL([44, 2.1, "str"], 3);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    SMALL([44, 2.1], 3);
   }, ERRORS.NUM_ERROR);
 });

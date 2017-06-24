@@ -90,7 +90,6 @@ For example 64 tbs to a qt.
 * RANK.EQ
 * RSQ
 * SKEW
-* SMALL
 * STEYX
 * T.INV
 * T.INV.2T

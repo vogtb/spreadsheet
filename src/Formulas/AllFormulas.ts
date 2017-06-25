@@ -145,7 +145,8 @@ import {
   SLOPE,
   STANDARDIZE,
   SMALL,
-  LARGE
+  LARGE,
+  KURT
 } from "./Statistical";
 import {
   ARABIC,
@@ -359,5 +360,6 @@ export {
   UPPER,
   STANDARDIZE,
   SMALL,
-  LARGE
+  LARGE,
+  KURT
 }

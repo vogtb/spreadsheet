@@ -28,7 +28,8 @@ import {
   SLOPE,
   STANDARDIZE,
   SMALL,
-  LARGE
+  LARGE,
+  KURT
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -639,4 +640,16 @@ test("LARGE", function() {
   catchAndAssertEquals(function() {
     LARGE.apply(this, [[44, 2.1], 3, 4]);
   }, ERRORS.NA_ERROR);
+});
+
+test("KURT", function() {
+  assertEquals(KURT(3, 4, 5, 6, 9, 11, 15), -0.23508087990005144);
+  assertEquals(KURT(3, 4, 5, 6, 9, 11, 15, "ignore"), -0.23508087990005144);
+  assertEquals(KURT(11, 15, 11, 1), 2.602498034762867);
+  catchAndAssertEquals(function() {
+    KURT(1, 2, 3);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    KURT(1, 2, 3, "ignore");
+  }, ERRORS.DIV_ZERO_ERROR);
 });

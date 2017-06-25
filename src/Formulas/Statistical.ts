@@ -804,6 +804,33 @@ var LARGE =  function (range, n) {
 };
 
 
+/**
+ * Returns the kurtosis of a data set or range. Ignores text values.
+ * @param values - data set or range to calculate. Must be at least 4 values.
+ * @returns {number}
+ * @constructor
+ */
+var KURT = function (...values) {
+  ArgsChecker.checkAtLeastLength(values, 4, "KURT");
+  var range = Filter.flattenAndThrow(values).filter(function (value) {
+    return typeof value !== "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+  if (range.length < 4) {
+    throw new DivZeroError("KURT requires more values in range. Expected: 4, found: " + range.length + ".");
+  }
+  var m = mean(range);
+  var n = range.length;
+  var sigma = 0;
+  for (var i = 0; i < n; i++) {
+    sigma += Math.pow(range[i] - m, 4);
+  }
+  sigma = sigma / Math.pow(stdev(range, true), 4);
+  return ((n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3))) * sigma - 3 * (n - 1) * (n - 1) / ((n - 2) * (n - 3));
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -834,5 +861,6 @@ export {
   SLOPE,
   STANDARDIZE,
   SMALL,
-  LARGE
+  LARGE,
+  KURT
 }

@@ -1545,6 +1545,15 @@
 @param n - N in 'Nth'. 
 @constructor
 ```
+
+### KURT 
+
+```
+  Returns the kurtosis of a data set or range. Ignores text values. 
+@param values - data set or range to calculate. Must be at least 4 values. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

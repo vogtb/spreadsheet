@@ -820,3 +820,33 @@ var LARGE = function (range, n) {
     return data[n - 1];
 };
 exports.LARGE = LARGE;
+/**
+ * Returns the kurtosis of a data set or range. Ignores text values.
+ * @param values - data set or range to calculate. Must be at least 4 values.
+ * @returns {number}
+ * @constructor
+ */
+var KURT = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(values, 4, "KURT");
+    var range = Filter_1.Filter.flattenAndThrow(values).filter(function (value) {
+        return typeof value !== "string";
+    }).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    if (range.length < 4) {
+        throw new Errors_1.DivZeroError("KURT requires more values in range. Expected: 4, found: " + range.length + ".");
+    }
+    var m = MathHelpers_1.mean(range);
+    var n = range.length;
+    var sigma = 0;
+    for (var i = 0; i < n; i++) {
+        sigma += Math.pow(range[i] - m, 4);
+    }
+    sigma = sigma / Math.pow(MathHelpers_1.stdev(range, true), 4);
+    return ((n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3))) * sigma - 3 * (n - 1) * (n - 1) / ((n - 2) * (n - 3));
+};
+exports.KURT = KURT;

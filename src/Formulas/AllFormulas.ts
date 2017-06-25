@@ -144,7 +144,8 @@ import {
   TRIMMEAN,
   SLOPE,
   STANDARDIZE,
-  SMALL
+  SMALL,
+  LARGE
 } from "./Statistical";
 import {
   ARABIC,
@@ -357,5 +358,6 @@ export {
   LOWER,
   UPPER,
   STANDARDIZE,
-  SMALL
+  SMALL,
+  LARGE
 }

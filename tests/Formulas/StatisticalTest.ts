@@ -27,7 +27,8 @@ import {
   TRIMMEAN,
   SLOPE,
   STANDARDIZE,
-  SMALL
+  SMALL,
+  LARGE
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -602,6 +603,12 @@ test("STANDARDIZE", function() {
   catchAndAssertEquals(function() {
     STANDARDIZE(44, 2.1, -10);
   }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    STANDARDIZE.apply(this, [4, 3, 4, 4]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    STANDARDIZE.apply(this, [4, 3]);
+  }, ERRORS.NA_ERROR);
 });
 
 test("SMALL", function() {
@@ -614,4 +621,22 @@ test("SMALL", function() {
   catchAndAssertEquals(function() {
     SMALL([44, 2.1], 3);
   }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    SMALL.apply(this, [[44, 2.1], 3, 4]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("LARGE", function() {
+  assertEquals(LARGE([2, 12, 22, 1, 0.1, 44, "77", "hello"], 2), 22);
+  assertEquals(LARGE([2, 12, 22, 1, 0.1, 44, "77", "hello"], 3), 12);
+  assertEquals(LARGE([2, 12, 22, 1, 0.1, 44, "77", "hello"], 4), 2);
+  catchAndAssertEquals(function() {
+    LARGE([44, 2.1, "str"], 3);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    LARGE([44, 2.1], 3);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    LARGE.apply(this, [[44, 2.1], 3, 4]);
+  }, ERRORS.NA_ERROR);
 });

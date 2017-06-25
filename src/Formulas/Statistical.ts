@@ -749,6 +749,7 @@ var SLOPE = function (rangeY, rangeX) {
  * @constructor
  */
 var STANDARDIZE = function (value, meanValue, std) {
+  ArgsChecker.checkLength(arguments, 3, "STANDARDIZE");
   value = TypeConverter.firstValueAsNumber(value);
   meanValue = TypeConverter.firstValueAsNumber(meanValue);
   std = TypeConverter.firstValueAsNumber(std);
@@ -766,6 +767,7 @@ var STANDARDIZE = function (value, meanValue, std) {
  * @constructor
  */
 var SMALL =  function (range, n) {
+  ArgsChecker.checkLength(arguments, 2, "SMALL");
   var data = Filter.flattenAndThrow(range).filter(function (value) {
     return typeof value != "string";
   }).map(function (value) {
@@ -775,6 +777,28 @@ var SMALL =  function (range, n) {
   });
   if (n > data.length || n < 1) {
     throw new NumError("Function SMALL parameter 2 value " + n + " is out of range.");
+  }
+  return data[n - 1];
+};
+
+
+/**
+ * Returns the Nth largest value in the range, ignoring text values.
+ * @param range -  Range or data-set to consider.
+ * @param n - N in 'Nth'.
+ * @constructor
+ */
+var LARGE =  function (range, n) {
+  ArgsChecker.checkLength(arguments, 2, "LARGE");
+  var data = Filter.flattenAndThrow(range).filter(function (value) {
+    return typeof value != "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  }).sort(function (a, b) {
+    return b - a;
+  });
+  if (n > data.length || n < 1) {
+    throw new NumError("Function LARGE parameter 2 value " + n + " is out of range.");
   }
   return data[n - 1];
 };
@@ -809,5 +833,6 @@ export {
   TRIMMEAN,
   SLOPE,
   STANDARDIZE,
-  SMALL
+  SMALL,
+  LARGE
 }

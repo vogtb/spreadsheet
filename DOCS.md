@@ -1536,6 +1536,15 @@
 @param n - N in 'Nth'. 
 @constructor
 ```
+
+### LARGE 
+
+```
+  Returns the Nth largest value in the range, ignoring text values. 
+@param range -  Range or data-set to consider. 
+@param n - N in 'Nth'. 
+@constructor
+```
 ## Text
 
 

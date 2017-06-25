@@ -711,6 +711,10 @@ test("Sheet SMALL", function(){
   assertFormulaEquals('=SMALL([1, 2], 2)', 2);
 });
 
+test("Sheet LARGE", function(){
+  assertFormulaEquals('=LARGE([1, 2], 2)', 1);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

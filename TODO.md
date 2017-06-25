@@ -70,7 +70,6 @@ For example 64 tbs to a qt.
 * HYPGEOMDIST
 * INTERCEPT
 * KURT
-* LARGE
 * LOGINV
 * LOGNORMDIST
 * MODE

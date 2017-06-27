@@ -1554,6 +1554,16 @@
 @returns {number} 
 @constructor
 ```
+
+### INTERCEPT 
+
+```
+  Calculates the y-value at which a line will intersect the y-axis by using known x-values and y-values. Any text values will be ignored. 
+@param rangeY - Dependent range of values. 
+@param rangeX - Independent range of values. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

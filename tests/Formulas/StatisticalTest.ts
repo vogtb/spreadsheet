@@ -29,7 +29,8 @@ import {
   STANDARDIZE,
   SMALL,
   LARGE,
-  KURT
+  KURT,
+  INTERCEPT
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -652,4 +653,22 @@ test("KURT", function() {
   catchAndAssertEquals(function() {
     KURT(1, 2, 3, "ignore");
   }, ERRORS.DIV_ZERO_ERROR);
+});
+
+test("INTERCEPT", function() {
+  assertEquals(INTERCEPT([1, 2, 3, 4], [10, 20, 33, 44]), 0.1791776688042246);
+  assertEquals(INTERCEPT([true, 2, 3, 4], [10, 20, 33, "ignore", 44]), 0.1791776688042246);
+  assertEquals(INTERCEPT([1, 2], [10, 20]), 0);
+  catchAndAssertEquals(function() {
+    INTERCEPT([1], [10])
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    INTERCEPT([1, "ignore"], [10, "ignore"])
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    INTERCEPT.apply(this, [[1, 2, 3]]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    INTERCEPT.apply(this, [[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
+  }, ERRORS.NA_ERROR);
 });

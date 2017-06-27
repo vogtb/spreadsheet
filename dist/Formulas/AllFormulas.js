@@ -141,6 +141,7 @@ exports.STANDARDIZE = Statistical_1.STANDARDIZE;
 exports.SMALL = Statistical_1.SMALL;
 exports.LARGE = Statistical_1.LARGE;
 exports.KURT = Statistical_1.KURT;
+exports.INTERCEPT = Statistical_1.INTERCEPT;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

@@ -146,7 +146,8 @@ import {
   STANDARDIZE,
   SMALL,
   LARGE,
-  KURT
+  KURT,
+  INTERCEPT
 } from "./Statistical";
 import {
   ARABIC,
@@ -361,5 +362,6 @@ export {
   STANDARDIZE,
   SMALL,
   LARGE,
-  KURT
+  KURT,
+  INTERCEPT
 }

@@ -831,6 +831,48 @@ var KURT = function (...values) {
 };
 
 
+/**
+ * Calculates the y-value at which a line will intersect the y-axis by using known x-values and y-values. Any text
+ * values will be ignored.
+ * @param rangeY - Dependent range of values.
+ * @param rangeX - Independent range of values.
+ * @returns {number}
+ * @constructor
+ */
+var INTERCEPT = function (rangeY, rangeX) {
+  ArgsChecker.checkLength(arguments, 2, "INTERCEPT");
+  var dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
+    return typeof value !== "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+  var dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
+    return typeof value !== "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+
+  if (dataX.length !== dataY.length) {
+    throw new NAError("INTERCEPT has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
+  }
+
+  var xMean = mean(dataX);
+  var yMean = mean(dataY);
+  var n = dataX.length;
+  var num = 0;
+  var den = 0;
+  for (var i = 0; i < n; i++) {
+    num += (dataX[i] - xMean) * (dataY[i] - yMean);
+    den += Math.pow(dataX[i] - xMean, 2);
+  }
+  if (den === 0) {
+    throw new DivZeroError("Evaluation of function INTERCEPT caused a divide by zero error.");
+  }
+  var b = num / den;
+  return yMean - b * xMean;
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -862,5 +904,6 @@ export {
   STANDARDIZE,
   SMALL,
   LARGE,
-  KURT
+  KURT,
+  INTERCEPT
 }

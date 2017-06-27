@@ -4,6 +4,7 @@ var ArgsChecker_1 = require("../Utilities/ArgsChecker");
 var TypeConverter_1 = require("../Utilities/TypeConverter");
 var Errors_1 = require("../Errors");
 var Date_1 = require("./Date");
+var Filter_1 = require("../Utilities/Filter");
 /**
  * Calculates the depreciation of an asset for a specified period using the double-declining balance method.
  * @param cost - The initial cost of the asset.
@@ -463,3 +464,33 @@ var SLN = function (cost, salvage, life) {
     return (cost - salvage) / life;
 };
 exports.SLN = SLN;
+/**
+ * Returns the net present value of an investment based on a series of periodic cash flows and a discount rate.
+ * @param rate - The discount rate for a period.
+ * @param values - The values representing deposits or withdrawals.
+ * @returns {number}
+ * @constructor
+ * TODO: This function can return results that are prone to floating point precision errors.
+ */
+var NPV = function (rate) {
+    var values = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        values[_i - 1] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 2, "SYD");
+    var range = Filter_1.Filter.flattenAndThrow(values).map(function (value) {
+        try {
+            return TypeConverter_1.TypeConverter.valueToNumber(value);
+        }
+        catch (e) {
+            throw new Errors_1.ValueError("Function NPV parameter 8 expects number values. But '" + value + "' is " + (typeof value)
+                + " and cannot be coerced to a number.");
+        }
+    });
+    var value = 0;
+    for (var j = 0; j < range.length; j++) {
+        value += range[j] / Math.pow(1 + rate, j);
+    }
+    return value;
+};
+exports.NPV = NPV;

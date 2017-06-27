@@ -115,7 +115,8 @@ import {
   DOLLARFR,
   EFFECT,
   SYD,
-  SLN
+  SLN,
+  NPV
 } from "./Financial";
 import {
   AVERAGE,
@@ -369,5 +370,6 @@ export {
   INTERCEPT,
   FORECAST,
   SYD,
-  SLN
+  SLN,
+  NPV
 }

@@ -7,11 +7,12 @@ import {
 } from "../Utilities/TypeConverter";
 import {
   NumError,
-  DivZeroError
+  DivZeroError, ValueError
 } from "../Errors"
 import {
   YEARFRAC
 } from "./Date";
+import {Filter} from "../Utilities/Filter";
 
 
 /**
@@ -477,6 +478,32 @@ var SLN = function (cost, salvage, life) {
 };
 
 
+/**
+ * Returns the net present value of an investment based on a series of periodic cash flows and a discount rate.
+ * @param rate - The discount rate for a period.
+ * @param values - The values representing deposits or withdrawals.
+ * @returns {number}
+ * @constructor
+ * TODO: This function can return results that are prone to floating point precision errors.
+ */
+var NPV = function (rate, ...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 2, "SYD");
+  var range = Filter.flattenAndThrow(values).map(function (value) {
+    try {
+      return TypeConverter.valueToNumber(value);
+    } catch (e) {
+      throw new ValueError("Function NPV parameter 8 expects number values. But '" + value + "' is " + (typeof value)
+          + " and cannot be coerced to a number.")
+    }
+  });
+  var value = 0;
+  for (var j = 0; j < range.length; j++) {
+    value += range[j] / Math.pow(1 + rate, j);
+  }
+  return value;
+};
+
+
 export {
   ACCRINT,
   CUMPRINC,
@@ -489,5 +516,6 @@ export {
   EFFECT,
   PMT,
   SYD,
-  SLN
+  SLN,
+  NPV
 }

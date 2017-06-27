@@ -10,7 +10,8 @@ import {
   EFFECT,
   PMT,
   SYD,
-  SLN
+  SLN,
+  NPV
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -305,4 +306,18 @@ test("SLN", function() {
   catchAndAssertEquals(function() {
     SLN.apply(this, [10, 10, 10, 10]);
   }, ERRORS.NA_ERROR);
+});
+
+
+test("NPV", function() {
+  assertEquals(NPV(0.01, 200, 100, 22, 99.1), 416.7618977366809);
+  assertEquals(NPV(0.01, 200, -100, 1.4, -100.2, 22, 99.1, "100"), 214.7457214025921);
+  assertEquals(NPV(0.01, 200, -100, 1.4, -100.2, 22, 99.1), 120.54119787717146);
+  assertEquals(NPV(0.01, 200, 100, 22, 99000), 96409.00105891385);
+  catchAndAssertEquals(function() {
+    NPV.apply(this, [10]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    NPV.apply(this, [10, 10, 20, "str"]);
+  }, ERRORS.VALUE_ERROR);
 });

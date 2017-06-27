@@ -459,6 +459,16 @@
 @returns {number} 
 @constructor
 ```
+
+### NPV 
+
+```
+  Returns the net present value of an investment based on a series of periodic cash flows and a discount rate. 
+@param rate - The discount rate for a period. 
+@param values - The values representing deposits or withdrawals. 
+@returns {number} 
+@constructor TODO: This function can return results that are prone to floating point precision errors.
+```
 ## Info
 
 

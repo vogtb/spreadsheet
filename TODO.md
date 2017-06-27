@@ -35,20 +35,20 @@ For example 64 tbs to a qt.
 * ISREF - Requires changes to parser.js
 * ISURL
 * N
-* TYPE
+* TYPE - Requires changes to parser.js
 * CELL - Requires changes to parser.js
 * IFERROR - Requires changes to parser.js
-* ADDRESS
+* ADDRESS - Requires changes to parser.js
 * COLUMN - Requires changes to parser.js
-* COLUMNS
-* HLOOKUP
+* COLUMNS - Requires changes to parser.js
+* HLOOKUP - Requires changes to parser.js
 * INDEX - Requires changes to parser.js
-* INDIRECT
-* LOOKUP
-* MATCH
-* OFFSET
+* INDIRECT - Requires changes to parser.js
+* LOOKUP - Requires changes to parser.js
+* MATCH - Requires changes to parser.js
+* OFFSET - Requires changes to parser.js
 * ROW - Requires changes to parser.js
-* ROWS
+* ROWS - Requires changes to parser.js
 * VLOOKUP - Requires changes to parser.js
 * COUNTBLANK - Requires changes to parser.js
 * MULTINOMIAL

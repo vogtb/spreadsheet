@@ -873,6 +873,52 @@ var INTERCEPT = function (rangeY, rangeX) {
 };
 
 
+/**
+ * Calculates the a future value using existing x-values and y-values. Any text values will be ignored.
+ * @param x - The data point for which you would like to predict the value.
+ * @param rangeY - Dependent range of values.
+ * @param rangeX - Independent range of values.
+ * @returns {number}
+ * @constructor
+ * TODO: This formula will fail to parse since the first argument is followed by an argument that is an array.
+ * TODO (continued) This is a known issue.
+ */
+var FORECAST = function (x, rangeY, rangeX) {
+  ArgsChecker.checkLength(arguments, 3, "FORECAST");
+  x =  TypeConverter.firstValueAsNumber(x);
+  var dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
+    return typeof value !== "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+  var dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
+    return typeof value !== "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+
+  if (dataX.length !== dataY.length) {
+    throw new NAError("FORECAST has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
+  }
+
+  var xMean = mean(dataX);
+  var yMean = mean(dataY);
+  var n = dataX.length;
+  var num = 0;
+  var den = 0;
+  for (var i = 0; i < n; i++) {
+    num += (dataX[i] - xMean) * (dataY[i] - yMean);
+    den += Math.pow(dataX[i] - xMean, 2);
+  }
+  if (den === 0) {
+    throw new DivZeroError("Evaluation of function FORECAST caused a divide by zero error.");
+  }
+  var b = num / den;
+  var a = yMean - b * xMean;
+  return a + b * x;
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -905,5 +951,6 @@ export {
   SMALL,
   LARGE,
   KURT,
-  INTERCEPT
+  INTERCEPT,
+  FORECAST
 }

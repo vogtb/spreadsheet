@@ -147,7 +147,8 @@ import {
   SMALL,
   LARGE,
   KURT,
-  INTERCEPT
+  INTERCEPT,
+  FORECAST
 } from "./Statistical";
 import {
   ARABIC,
@@ -363,5 +364,6 @@ export {
   SMALL,
   LARGE,
   KURT,
-  INTERCEPT
+  INTERCEPT,
+  FORECAST
 }

@@ -1564,6 +1564,17 @@
 @returns {number} 
 @constructor
 ```
+
+### FORECAST 
+
+```
+  Calculates the a future value using existing x-values and y-values. Any text values will be ignored. 
+@param x - The data point for which you would like to predict the value. 
+@param rangeY - Dependent range of values. 
+@param rangeX - Independent range of values. 
+@returns {number} 
+@constructor TODO: This formula will fail to parse since the first argument is followed by an argument that is an array. TODO (continued) This is a known issue.
+```
 ## Text
 
 

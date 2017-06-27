@@ -889,3 +889,46 @@ var INTERCEPT = function (rangeY, rangeX) {
     return yMean - b * xMean;
 };
 exports.INTERCEPT = INTERCEPT;
+/**
+ * Calculates the a future value using existing x-values and y-values. Any text values will be ignored.
+ * @param x - The data point for which you would like to predict the value.
+ * @param rangeY - Dependent range of values.
+ * @param rangeX - Independent range of values.
+ * @returns {number}
+ * @constructor
+ * TODO: This formula will fail to parse since the first argument is followed by an argument that is an array.
+ * TODO (continued) This is a known issue.
+ */
+var FORECAST = function (x, rangeY, rangeX) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 3, "FORECAST");
+    x = TypeConverter_1.TypeConverter.firstValueAsNumber(x);
+    var dataX = Filter_1.Filter.flattenAndThrow(rangeX).filter(function (value) {
+        return typeof value !== "string";
+    }).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    var dataY = Filter_1.Filter.flattenAndThrow(rangeY).filter(function (value) {
+        return typeof value !== "string";
+    }).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    if (dataX.length !== dataY.length) {
+        throw new Errors_1.NAError("FORECAST has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
+    }
+    var xMean = MathHelpers_1.mean(dataX);
+    var yMean = MathHelpers_1.mean(dataY);
+    var n = dataX.length;
+    var num = 0;
+    var den = 0;
+    for (var i = 0; i < n; i++) {
+        num += (dataX[i] - xMean) * (dataY[i] - yMean);
+        den += Math.pow(dataX[i] - xMean, 2);
+    }
+    if (den === 0) {
+        throw new Errors_1.DivZeroError("Evaluation of function FORECAST caused a divide by zero error.");
+    }
+    var b = num / den;
+    var a = yMean - b * xMean;
+    return a + b * x;
+};
+exports.FORECAST = FORECAST;

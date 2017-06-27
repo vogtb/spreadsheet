@@ -30,7 +30,8 @@ import {
   SMALL,
   LARGE,
   KURT,
-  INTERCEPT
+  INTERCEPT,
+  FORECAST
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -670,5 +671,26 @@ test("INTERCEPT", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     INTERCEPT.apply(this, [[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("FORCAST", function() {
+  assertEquals(FORECAST(0, [1, 2, 3, 4], [10, 20, 33, 44]), 0.1791776688042246);
+  assertEquals(FORECAST(1, [1, 2, 3, 4], [10, 20, 33, 44]), 0.2659373821199545);
+  assertEquals(FORECAST(22, [1, 2, 3, 4], [10, 20, 33, 44]), 2.087891361750283);
+  assertEquals(FORECAST(-10, [1, 2, 3, 4], [10, 20, 33, 44]), -0.6884194643530746);
+  assertEquals(FORECAST(0, [true, 2, 3, 4], [10, 20, 33, "ignore", 44]), 0.1791776688042246);
+  assertEquals(FORECAST(0, [1, 2], [10, 20]), 0);
+  catchAndAssertEquals(function() {
+    FORECAST(0, [1], [10])
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    FORECAST(0, [1, "ignore"], [10, "ignore"])
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    FORECAST.apply(this, [[1, 2, 3]]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    FORECAST.apply(this, [0, [1, 2, 3], [1, 2, 3], [1, 2, 3]]);
   }, ERRORS.NA_ERROR);
 });

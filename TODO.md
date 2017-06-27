@@ -37,7 +37,7 @@ For example 64 tbs to a qt.
 * N
 * TYPE
 * CELL - Requires changes to parser.js
-* IFERROR
+* IFERROR - Requires changes to parser.js
 * ADDRESS
 * COLUMN - Requires changes to parser.js
 * COLUMNS
@@ -49,8 +49,8 @@ For example 64 tbs to a qt.
 * OFFSET
 * ROW - Requires changes to parser.js
 * ROWS
-* VLOOKUP
-* COUNTBLANK
+* VLOOKUP - Requires changes to parser.js
+* COUNTBLANK - Requires changes to parser.js
 * MULTINOMIAL
 * SERIESSUM
 * SUBTOTAL
@@ -64,7 +64,6 @@ For example 64 tbs to a qt.
 * COVAR
 * CRITBINOM
 * F.DIST.RT
-* FORECAST
 * GEOMEAN
 * HARMEAN
 * HYPGEOMDIST

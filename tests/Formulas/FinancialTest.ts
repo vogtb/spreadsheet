@@ -8,7 +8,8 @@ import {
   DOLLARDE,
   DOLLARFR,
   EFFECT,
-  PMT
+  PMT,
+  SYD
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -267,5 +268,24 @@ test("PMT", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     PMT.apply(this, [0.05/12, 30*12, 100000, 10000, 1, "nope"]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("SYD", function() {
+  assertEquals(SYD(100, 22, 10, 3), 11.345454545454546);
+  assertEquals(SYD(33.99, 22, 10, 3), 1.7440000000000002);
+  assertEquals(SYD(39, 22, 1000, 300), 0.02381018981018981);
+  catchAndAssertEquals(function() {
+    SYD(39, 22, 10, 300);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    SYD(39, 22, 10, -3);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    SYD.apply(this, [10, 10, 10]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    SYD.apply(this, [10, 10, 10, 10, 10]);
   }, ERRORS.NA_ERROR);
 });

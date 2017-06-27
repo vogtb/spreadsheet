@@ -113,7 +113,8 @@ import {
   DOLLAR,
   DOLLARDE,
   DOLLARFR,
-  EFFECT
+  EFFECT,
+  SYD
 } from "./Financial";
 import {
   AVERAGE,
@@ -365,5 +366,6 @@ export {
   LARGE,
   KURT,
   INTERCEPT,
-  FORECAST
+  FORECAST,
+  SYD
 }

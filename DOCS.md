@@ -436,6 +436,18 @@
 @returns {number} 
 @constructor TODO: This function is based off of the open-source versions I was able to dig up online. We should implement a TODO:     second version that is closer to what MSExcel does and is named something like `ACCRINT.MS`.
 ```
+
+### SYD 
+
+```
+  Returns the arithmetic-declining depreciation rate. Use this function to calculate the depreciation amount for one period of the total depreciation span of an object. Arithmetic declining depreciation reduces the depreciation amount from period to period by a fixed sum. 
+@param cost - The initial cost of an asset. 
+@param salvage - the value of an asset after depreciation. 
+@param life - The period fixing the time span over which an asset is depreciated. 
+@param period - The period for which the depreciation is to be calculated. 
+@returns {number} 
+@constructor
+```
 ## Info
 
 

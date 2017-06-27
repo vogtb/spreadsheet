@@ -424,6 +424,37 @@ var ACCRINT = function (issue, firstPayment, settlement, rate, redemption, frequ
   return redemption * rate * factor;
 };
 
+
+/**
+ * Returns the arithmetic-declining depreciation rate. Use this function to calculate the depreciation amount for one
+ * period of the total depreciation span of an object. Arithmetic declining depreciation reduces the depreciation amount
+ * from period to period by a fixed sum.
+ * @param cost - The initial cost of an asset.
+ * @param salvage - the value of an asset after depreciation.
+ * @param life - The period fixing the time span over which an asset is depreciated.
+ * @param period - The period for which the depreciation is to be calculated.
+ * @returns {number}
+ * @constructor
+ */
+var SYD = function (cost, salvage, life, period) {
+  ArgsChecker.checkLength(arguments, 4, "SYD");
+  cost = TypeConverter.firstValueAsNumber(cost);
+  salvage = TypeConverter.firstValueAsNumber(salvage);
+  life = TypeConverter.firstValueAsNumber(life);
+  period = TypeConverter.firstValueAsNumber(period);
+  // Return error if period is lower than 1 or greater than life
+  if (period > life) {
+    throw new NumError("Function SYD parameter 4 value is " + period +
+        ". It should be less than or equal to value of Function SYD parameter 3 with " + life + ".");
+  }
+  if (period < 1) {
+    throw new NumError("Function SYD parameter 4 value is " + period + ". It should be greater than 0.");
+  }
+  period = Math.floor(period);
+
+  return (cost - salvage) * (life - period + 1) * 2 / (life * (life + 1));
+};
+
 export {
   ACCRINT,
   CUMPRINC,
@@ -434,5 +465,6 @@ export {
   DOLLARDE,
   DOLLARFR,
   EFFECT,
-  PMT
+  PMT,
+  SYD
 }

@@ -154,5 +154,4 @@ For example 64 tbs to a qt.
 * RATE
 * RECEIVED
 * SLN
-* SYD
 * YIELD

@@ -723,6 +723,11 @@ test("Sheet FORECAST", function(){
   assertFormulaEquals('=FORECAST([0], [1, 2, 3, 4], [10, 20, 33, 44])', 0.1791776688042246);
 });
 
+test("Sheet SYD", function(){
+  assertFormulaEquals('=SYD(100, 22, 10, 3)', 11.345454545454546);
+});
+
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

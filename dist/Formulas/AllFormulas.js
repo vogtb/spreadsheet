@@ -110,6 +110,7 @@ exports.DOLLAR = Financial_1.DOLLAR;
 exports.DOLLARDE = Financial_1.DOLLARDE;
 exports.DOLLARFR = Financial_1.DOLLARFR;
 exports.EFFECT = Financial_1.EFFECT;
+exports.SYD = Financial_1.SYD;
 var Statistical_1 = require("./Statistical");
 exports.AVERAGE = Statistical_1.AVERAGE;
 exports.AVERAGEA = Statistical_1.AVERAGEA;

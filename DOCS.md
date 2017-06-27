@@ -448,6 +448,17 @@
 @returns {number} 
 @constructor
 ```
+
+### SLN 
+
+```
+  Returns the straight-line depreciation of an asset for one period. The amount of the depreciation is constant during the depreciation period. 
+@param cost - The initial cost of the asset. 
+@param salvage - The value of an asset at the end of the depreciation. 
+@param life - The depreciation period determining the number of periods in the deprecation of the asset. 
+@returns {number} 
+@constructor
+```
 ## Info
 
 

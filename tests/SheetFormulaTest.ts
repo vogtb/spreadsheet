@@ -727,6 +727,10 @@ test("Sheet SYD", function(){
   assertFormulaEquals('=SYD(100, 22, 10, 3)', 11.345454545454546);
 });
 
+test("Sheet SLN", function(){
+  assertFormulaEquals('=SLN(100, 22, 10)', 7.80);
+});
+
 
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);

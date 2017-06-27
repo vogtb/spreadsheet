@@ -443,3 +443,23 @@ var SYD = function (cost, salvage, life, period) {
     return (cost - salvage) * (life - period + 1) * 2 / (life * (life + 1));
 };
 exports.SYD = SYD;
+/**
+ * Returns the straight-line depreciation of an asset for one period. The amount of the depreciation is constant during
+ * the depreciation period.
+ * @param cost - The initial cost of the asset.
+ * @param salvage - The value of an asset at the end of the depreciation.
+ * @param life - The depreciation period determining the number of periods in the deprecation of the asset.
+ * @returns {number}
+ * @constructor
+ */
+var SLN = function (cost, salvage, life) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 3, "SYD");
+    cost = TypeConverter_1.TypeConverter.firstValueAsNumber(cost);
+    salvage = TypeConverter_1.TypeConverter.firstValueAsNumber(salvage);
+    life = TypeConverter_1.TypeConverter.firstValueAsNumber(life);
+    if (life === 0) {
+        throw new Errors_1.DivZeroError("Function SLN parameter 3 cannot be zero.");
+    }
+    return (cost - salvage) / life;
+};
+exports.SLN = SLN;

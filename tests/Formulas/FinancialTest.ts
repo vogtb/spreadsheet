@@ -9,7 +9,8 @@ import {
   DOLLARFR,
   EFFECT,
   PMT,
-  SYD
+  SYD,
+  SLN
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -287,5 +288,21 @@ test("SYD", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     SYD.apply(this, [10, 10, 10, 10, 10]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("SLN", function() {
+  assertEquals(SLN(100, 22, 10), 7.80);
+  assertEquals(SLN(22.99, 1, 1), 21.99);
+  assertEquals(SLN(22.99, 1, -1), -21.99);
+  catchAndAssertEquals(function() {
+    SLN(39, 22, 0);
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    SLN.apply(this, [10, 10]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    SLN.apply(this, [10, 10, 10, 10]);
   }, ERRORS.NA_ERROR);
 });

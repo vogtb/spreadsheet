@@ -144,7 +144,6 @@ For example 64 tbs to a qt.
 * IRR
 * MIRR
 * NOMINAL
-* NPER
 * PPMT - Similar to PMT, which is already written.
 * PRICE
 * PRICEDISC

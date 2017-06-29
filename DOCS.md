@@ -469,6 +469,19 @@
 @returns {number} 
 @constructor TODO: This function can return results that are prone to floating point precision errors.
 ```
+
+### NPER 
+
+```
+  Returns the number of payment for an investment. Number is based on constant-amount payments made periodically and a constant interest rate. 
+@param rate - The interest rate. 
+@param payment - The amount of each payment. 
+@param present - THe current value. 
+@param future - [OPTIONAL] - The future value remaining after the final payment has been made. 
+@param type [OPTIONAL 0 by default] - 1 indicates payments are due at the beginning of each period. 0 indicates payments are due at the end of each period. 
+@returns {number} 
+@constructor
+```
 ## Info
 
 

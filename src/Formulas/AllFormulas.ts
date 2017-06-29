@@ -116,7 +116,8 @@ import {
   EFFECT,
   SYD,
   SLN,
-  NPV
+  NPV,
+  NPER
 } from "./Financial";
 import {
   AVERAGE,
@@ -371,5 +372,6 @@ export {
   FORECAST,
   SYD,
   SLN,
-  NPV
+  NPV,
+  NPER
 }

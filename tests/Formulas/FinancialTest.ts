@@ -11,7 +11,8 @@ import {
   PMT,
   SYD,
   SLN,
-  NPV
+  NPV,
+  NPER
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -320,4 +321,25 @@ test("NPV", function() {
   catchAndAssertEquals(function() {
     NPV.apply(this, [10, 10, 20, "str"]);
   }, ERRORS.VALUE_ERROR);
+});
+
+
+test("NPER", function() {
+  assertEquals(NPER(0.04, 100, 4000, 0, 0), -24.362418941571317);
+  assertEquals(NPER(0.04, 100, 4000), -24.362418941571317);
+  assertEquals(NPER(0.02, 100, 4000, 0, 0), -29.68225660720854);
+  assertEquals(NPER(0.01, 100, 4000, 0, 0), -33.815180780052486);
+  assertEquals(NPER(0.04, -50, 1000, 20, 0), 41.44012515117696);
+  assertEquals(NPER(-0.04, -50, 1000, 20, 0), 14.79388878297825);
+  assertEquals(NPER(0.04, -50, 1000, 2000, 1), 61.13849239372526);
+  assertEquals(NPER(0.04, -50, 1000, 2000, 0), 65.39782556827234);
+  catchAndAssertEquals(function() {
+    NPER(0.04, 50, 1000, 2000, 0);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    NPER.apply(this, [0.04, 100]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    NPER.apply(this, [0.04, -50, 1000, 2000, 0, 22]);
+  }, ERRORS.NA_ERROR);
 });

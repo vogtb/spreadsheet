@@ -503,6 +503,38 @@ var NPV = function (rate, ...values) {
   return value;
 };
 
+/**
+ * Returns the number of payment for an investment. Number is based on constant-amount payments made periodically and a
+ * constant interest rate.
+ * @param rate - The interest rate.
+ * @param payment - The amount of each payment.
+ * @param present - THe current value.
+ * @param future - [OPTIONAL] - The future value remaining after the final payment has been made.
+ * @param type [OPTIONAL 0 by default] - 1 indicates payments are due at the beginning of each period. 0 indicates
+ * payments are due at the end of each period.
+ * @returns {number}
+ * @constructor
+ */
+var NPER = function (rate, payment, present, future?, type?) {
+  ArgsChecker.checkLengthWithin(arguments, 3, 5, "NPER");
+  rate = TypeConverter.firstValueAsNumber(rate);
+  payment = TypeConverter.firstValueAsNumber(payment);
+  present = TypeConverter.firstValueAsNumber(present);
+  type = (typeof type === 'undefined') ? 0 : TypeConverter.firstValueAsNumber(type);
+  future = (typeof future === 'undefined') ? 0 : TypeConverter.firstValueAsNumber(future);
+  var num = payment * (1 + rate * type) - future * rate;
+  var den = (present * rate + payment * (1 + rate * type));
+  if (den === 0) {
+    throw new DivZeroError("Evaluation of function NPER cause a divide by zero error.");
+  }
+  var div = Math.log(1 + rate);
+  var logNumDen = Math.log(num / den);
+  if (isNaN(logNumDen)) {
+    throw new NumError("Parameters given function NPER are not possible.");
+  }
+  return  logNumDen / div;
+};
+
 
 export {
   ACCRINT,
@@ -517,5 +549,6 @@ export {
   PMT,
   SYD,
   SLN,
-  NPV
+  NPV,
+  NPER
 }

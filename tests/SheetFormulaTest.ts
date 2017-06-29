@@ -731,6 +731,9 @@ test("Sheet SLN", function(){
   assertFormulaEquals('=SLN(100, 22, 10)', 7.80);
 });
 
+test("Sheet NPER", function(){
+  assertFormulaEquals('=NPER(0.04, 100, 4000, 0, 0)', -24.362418941571317);
+});
 
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);

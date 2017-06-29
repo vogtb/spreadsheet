@@ -12,7 +12,8 @@ import {
   SYD,
   SLN,
   NPV,
-  NPER
+  NPER,
+  NOMINAL
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -341,5 +342,20 @@ test("NPER", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     NPER.apply(this, [0.04, -50, 1000, 2000, 0, 22]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("NOMINAL", function() {
+  assertEquals(NOMINAL(0.8, 12), 0.6024201620105654);
+  assertEquals(NOMINAL(0.9, 2), 0.7568097504180442);
+  catchAndAssertEquals(function() {
+    NOMINAL(0.04, -2);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    NOMINAL.apply(this, [0.04, -50, 44]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    NOMINAL.apply(this, [0.04]);
   }, ERRORS.NA_ERROR);
 });

@@ -117,7 +117,8 @@ import {
   SYD,
   SLN,
   NPV,
-  NPER
+  NPER,
+  NOMINAL
 } from "./Financial";
 import {
   AVERAGE,
@@ -373,5 +374,6 @@ export {
   SYD,
   SLN,
   NPV,
-  NPER
+  NPER,
+  NOMINAL
 }

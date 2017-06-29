@@ -735,6 +735,10 @@ test("Sheet NPER", function(){
   assertFormulaEquals('=NPER(0.04, 100, 4000, 0, 0)', -24.362418941571317);
 });
 
+test("Sheet NOMINAL", function(){
+  assertFormulaEquals('=NOMINAL(0.8, 12)', 0.6024201620105654);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

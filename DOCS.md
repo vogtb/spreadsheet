@@ -482,6 +482,16 @@
 @returns {number} 
 @constructor
 ```
+
+### NOMINAL 
+
+```
+  Calculates the yearly nominal interest rate, given the effective rate and the number of compounding periods per year. 
+@param rate - The effective interest rate. 
+@param periods - The number of periodic interest payments per year. 
+@returns {number} 
+@constructor
+```
 ## Info
 
 

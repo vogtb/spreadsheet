@@ -114,6 +114,7 @@ exports.SYD = Financial_1.SYD;
 exports.SLN = Financial_1.SLN;
 exports.NPV = Financial_1.NPV;
 exports.NPER = Financial_1.NPER;
+exports.NOMINAL = Financial_1.NOMINAL;
 var Statistical_1 = require("./Statistical");
 exports.AVERAGE = Statistical_1.AVERAGE;
 exports.AVERAGEA = Statistical_1.AVERAGEA;

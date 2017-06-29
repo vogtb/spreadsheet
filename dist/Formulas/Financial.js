@@ -526,3 +526,21 @@ var NPER = function (rate, payment, present, future, type) {
     return logNumDen / div;
 };
 exports.NPER = NPER;
+/**
+ * Calculates the yearly nominal interest rate, given the effective rate and the number of compounding periods per year.
+ * @param rate - The effective interest rate.
+ * @param periods - The number of periodic interest payments per year.
+ * @returns {number}
+ * @constructor
+ */
+var NOMINAL = function (rate, periods) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "NOMINAL");
+    rate = TypeConverter_1.TypeConverter.firstValueAsNumber(rate);
+    periods = Math.round(TypeConverter_1.TypeConverter.firstValueAsNumber(periods));
+    if (periods < 1) {
+        throw new Errors_1.NumError("Function NOMINAL parameter 2 value is " + periods
+            + ". It should be greater than or equal to 1.");
+    }
+    return (Math.pow(rate + 1, 1 / periods) - 1) * periods;
+};
+exports.NOMINAL = NOMINAL;

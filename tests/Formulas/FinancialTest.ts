@@ -13,7 +13,8 @@ import {
   SLN,
   NPV,
   NPER,
-  NOMINAL
+  NOMINAL,
+  MIRR
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -357,5 +358,20 @@ test("NOMINAL", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     NOMINAL.apply(this, [0.04]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("MIRR", function() {
+  assertEquals(MIRR([10, 20, -30, 40], 0.05, 0.06), 0.3458084697540138);
+  assertEquals(MIRR([10, 20, -30, 40, 10, 22, -100], 0.01, 0.02), -0.02762369541445353);
+  catchAndAssertEquals(function() {
+    MIRR([10, 20, 30, 40], 0.05, 0.06);
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    MIRR.apply(this, [[10, 20, 30, -10], 0.05]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    MIRR.apply(this, [[10, 20, 30, -10], 0.05, 0.01, 0.09]);
   }, ERRORS.NA_ERROR);
 });

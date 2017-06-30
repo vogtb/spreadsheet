@@ -118,7 +118,8 @@ import {
   SLN,
   NPV,
   NPER,
-  NOMINAL
+  NOMINAL,
+  MIRR
 } from "./Financial";
 import {
   AVERAGE,
@@ -375,5 +376,6 @@ export {
   SLN,
   NPV,
   NPER,
-  NOMINAL
+  NOMINAL,
+  MIRR
 }

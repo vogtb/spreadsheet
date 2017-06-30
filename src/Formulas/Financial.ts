@@ -487,18 +487,18 @@ var SLN = function (cost, salvage, life) {
  * TODO: This function can return results that are prone to floating point precision errors.
  */
 var NPV = function (rate, ...values) {
-  ArgsChecker.checkAtLeastLength(arguments, 2, "SYD");
+  ArgsChecker.checkAtLeastLength(arguments, 2, "NPV");
   var range = Filter.flattenAndThrow(values).map(function (value) {
     try {
       return TypeConverter.valueToNumber(value);
     } catch (e) {
-      throw new ValueError("Function NPV parameter 8 expects number values. But '" + value + "' is " + (typeof value)
+      throw new ValueError("Function NPV expects number values. But '" + value + "' is " + (typeof value)
           + " and cannot be coerced to a number.")
     }
   });
   var value = 0;
-  for (var j = 0; j < range.length; j++) {
-    value += range[j] / Math.pow(1 + rate, j);
+  for (var i = 0; i < range.length; i++) {
+    value += range[i] / Math.pow(1 + rate, i);
   }
   return value;
 };
@@ -553,6 +553,41 @@ var NOMINAL =  function (rate, periods) {
   return (Math.pow(rate + 1, 1 / periods) - 1) * periods;
 };
 
+
+/**
+ * Calculates the modified internal rate of return of a series of investments.
+ * @param values - Range or values of payments.
+ * @param financeRate - The rate of interest of the investments.
+ * @param reinvestRate - The rate of interest of the reinvestment.
+ * @returns {number}
+ * @constructor
+ * TODO: This relies on NPV and will therefore be prone to floating-point errors.
+ */
+var MIRR = function (values, financeRate, reinvestRate) {
+  ArgsChecker.checkLength(arguments, 3, "MIRR");
+  values =  Filter.flattenAndThrow(values).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+  var n = values.length;
+
+  var payments = [];
+  var incomes = [];
+  for (var i = 0; i < n; i++) {
+    if (values[i] < 0) {
+      payments.push(values[i]);
+    } else {
+      incomes.push(values[i]);
+    }
+  }
+  if (incomes.length === 0 || payments.length === 0) {
+    throw new DivZeroError("For MIRR, the values must include positive and negative numbers.");
+  }
+
+  var num = -NPV(reinvestRate, incomes) * Math.pow(1 + reinvestRate, n - 1);
+  var den = NPV(financeRate, payments) * (1 + financeRate);
+  return Math.pow(num / den, 1 / (n - 1)) - 1;
+};
+
 export {
   ACCRINT,
   CUMPRINC,
@@ -568,5 +603,6 @@ export {
   SLN,
   NPV,
   NPER,
-  NOMINAL
+  NOMINAL,
+  MIRR
 }

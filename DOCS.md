@@ -492,6 +492,17 @@
 @returns {number} 
 @constructor
 ```
+
+### MIRR 
+
+```
+  Calculates the modified internal rate of return of a series of investments. 
+@param values - Range or values of payments. 
+@param financeRate - The rate of interest of the investments. 
+@param reinvestRate - The rate of interest of the reinvestment. 
+@returns {number} 
+@constructor TODO: This relies on NPV and will therefore be prone to floating-point errors.
+```
 ## Info
 
 

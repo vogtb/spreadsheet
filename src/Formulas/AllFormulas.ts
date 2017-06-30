@@ -121,7 +121,8 @@ import {
   NOMINAL,
   MIRR,
   IRR,
-  IPMT
+  IPMT,
+  FV
 } from "./Financial";
 import {
   AVERAGE,
@@ -381,5 +382,6 @@ export {
   NOMINAL,
   MIRR,
   IRR,
-  IPMT
+  IPMT,
+  FV
 }

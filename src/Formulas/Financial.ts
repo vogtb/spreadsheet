@@ -254,21 +254,37 @@ var PMT = function (rate, periods, presentValue, futureValue?, endOrBeginning?) 
   return -result;
 };
 
-// TODO: Convert to real formula FV
-function fv(rate, periods, payment, value, type) {
+
+/**
+ * Returns the future value of an investment based on periodic, constant payments and a constant interest rate.
+ * @param rate - The rate of periodic interest.
+ * @param periods - The total number of periods.
+ * @param payment - The annuity paid regularly per period
+ * @param value - [OPTIONAL] - The present cash value of an investment.
+ * @param type - [OPTIONAL] - Defines whether the payment is due at the beginning (1) or the end (0) of a period.
+ * @returns {number}
+ * @constructor
+ */
+var FV = function (rate, periods, payment, value?, type?) {
+  ArgsChecker.checkLengthWithin(arguments, 3, 5, "FV");
+  rate = TypeConverter.firstValueAsNumber(rate);
+  periods = TypeConverter.firstValueAsNumber(periods);
+  payment = TypeConverter.firstValueAsNumber(payment);
+  value = (typeof value === 'undefined') ? 0 : TypeConverter.firstValueAsNumber(value);
+  type = (typeof type === 'undefined') ? 0 : TypeConverter.firstValueAsNumber(type);
   var result;
   if (rate === 0) {
     result = value + payment * periods;
   } else {
     var term = Math.pow(1 + rate, periods);
-    if (type) {
-      result = value * term + payment * (1 + rate) * (term - 1.0) / rate;
-    } else {
+    if (type === 0) {
       result = value * term + payment * (term - 1) / rate;
+    } else {
+      result = value * term + payment * (1 + rate) * (term - 1.0) / rate;
     }
   }
   return -result;
-}
+};
 
 /**
  * Calculates the cumulative principal paid over a range of payment periods for an investment based on constant-amount
@@ -314,9 +330,9 @@ var CUMPRINC = function (rate, numberOfPeriods, presentValue, firstPeriod, lastP
   }
   for (var i = start; i <= end; i++) {
     if (type) {
-      principal += payment - (fv(rate, i - 2, payment, value, 1) - payment) * rate;
+      principal += payment - (FV(rate, i - 2, payment, value, 1) - payment) * rate;
     } else {
-      principal += payment - fv(rate, i - 1, payment, value, 0) * rate;
+      principal += payment - FV(rate, i - 1, payment, value, 0) * rate;
     }
   }
   return principal;
@@ -366,9 +382,9 @@ var CUMIPMT = function (rate, numberOfPeriods, presentValue, firstPeriod, lastPe
   }
   for (var i = start; i <= end; i++) {
     if (type) {
-      interest += fv(rate, i - 2, payment, value, 1) - payment;
+      interest += FV(rate, i - 2, payment, value, 1) - payment;
     } else {
-      interest += fv(rate, i - 1, payment, value, 0);
+      interest += FV(rate, i - 1, payment, value, 0);
     }
   }
   interest *= rate;
@@ -661,9 +677,9 @@ var IPMT = function (rate, period, periods, present, future?, type?) {
     }
   } else {
     if (type === 1) {
-      interest = fv(rate, period - 2, payment, present, 1) - payment;
+      interest = FV(rate, period - 2, payment, present, 1) - payment;
     } else {
-      interest = fv(rate, period - 1, payment, present, 0);
+      interest = FV(rate, period - 1, payment, present, 0);
     }
   }
   return interest * rate;
@@ -687,5 +703,6 @@ export {
   NOMINAL,
   MIRR,
   IRR,
-  IPMT
+  IPMT,
+  FV
 }

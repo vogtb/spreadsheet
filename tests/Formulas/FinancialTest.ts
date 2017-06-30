@@ -16,7 +16,8 @@ import {
   NOMINAL,
   MIRR,
   IRR,
-  IPMT
+  IPMT,
+  FV
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -409,5 +410,19 @@ test("IPMT", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     IPMT.apply(this, [0.025, 1, 66, 25000, 0, 0, 1]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("FV", function() {
+  assertEquals(FV(0.025, 1, 66, 25000, 0), -25690.999999999996);
+  assertEquals(FV(0.025, 1, 66, 25000), -25690.999999999996);
+  assertEquals(FV(0.05, 1, 66, 25000), -26316);
+  assertEquals(FV(0.025, 1, 66, 25000, 1), -25692.649999999998);
+  catchAndAssertEquals(function() {
+    FV.apply(this, [0.025, 1, 66, 25000, 1, 4]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    FV.apply(this, [0.025, 1]);
   }, ERRORS.NA_ERROR);
 });

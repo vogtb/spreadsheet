@@ -394,6 +394,19 @@
 @constructor
 ```
 
+### FV 
+
+```
+  Returns the future value of an investment based on periodic, constant payments and a constant interest rate. 
+@param rate - The rate of periodic interest. 
+@param periods - The total number of periods. 
+@param payment - The annuity paid regularly per period 
+@param value - [OPTIONAL] - The present cash value of an investment. 
+@param type - [OPTIONAL] - Defines whether the payment is due at the beginning (1) or the end (0) of a period. 
+@returns {number} 
+@constructor
+```
+
 ### CUMPRINC 
 
 ```

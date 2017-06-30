@@ -137,7 +137,6 @@ For example 64 tbs to a qt.
 * COUPPCD
 * DISC
 * DURATION
-* FV - already written as a private function, needs to be re-written.
 * FVSCHEDULE
 * INTRATE
 * PPMT - Similar to PMT, which is already written.

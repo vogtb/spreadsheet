@@ -751,6 +751,10 @@ test("Sheet IPMT", function(){
   assertFormulaEquals('=IPMT(0.025, 1, 66, 25000)', -625);
 });
 
+test("Sheet FV", function(){
+  assertFormulaEquals('=FV(0.05, 1, 66, 25000)', -26316);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

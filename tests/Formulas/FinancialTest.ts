@@ -15,7 +15,8 @@ import {
   NPER,
   NOMINAL,
   MIRR,
-  IRR
+  IRR,
+  IPMT
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -379,6 +380,7 @@ test("MIRR", function() {
 
 
 test("MIRR", function() {
+  assertEquals(IRR([-1, 4, 10, 15, -22, 99, 44, 1000, -10, "ignore"]), 5.059102535247803);
   assertEquals(IRR([-1, 4, 10, 15, -22, 99, 44, 1000, -10]), 5.059102535247803);
   assertEquals(IRR([-1, 4, 10, 15, -22, 99, 44, 1000, -10], 0.1), 5.059102535247803);
   assertEquals(IRR([-100, 100, 100, 100, 100, 100]), 0.9659482464194298);
@@ -391,5 +393,21 @@ test("MIRR", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     IRR.apply(this, [[100, 100, 100], 0.01, 4.4]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("IPMT", function() {
+  assertEquals(IPMT(0.025, 1, 66, 25000), -625);
+  assertEquals(IPMT(0.025, 1, 66, 25000, 0, 0), -625);
+  assertEquals(IPMT(0.025, 1, 66, 25000, 1, 1), 0);
+  assertEquals(IPMT(0.025, 1, 66, 25000, 1, 0), -625);
+  assertEquals(IPMT(100, 1, 66, 25000, 0), -2500000);
+  assertEquals(IPMT(0.1, 4, 660, 4, 1), -0.4);
+  catchAndAssertEquals(function() {
+    IPMT.apply(this, [0.025, 1, 66]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    IPMT.apply(this, [0.025, 1, 66, 25000, 0, 0, 1]);
   }, ERRORS.NA_ERROR);
 });

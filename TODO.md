@@ -140,7 +140,6 @@ For example 64 tbs to a qt.
 * FV - already written as a private function, needs to be re-written.
 * FVSCHEDULE
 * INTRATE
-* IPMT
 * PPMT - Similar to PMT, which is already written.
 * PRICE
 * PRICEDISC

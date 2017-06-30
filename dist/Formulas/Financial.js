@@ -546,7 +546,7 @@ var NOMINAL = function (rate, periods) {
 exports.NOMINAL = NOMINAL;
 /**
  * Calculates the modified internal rate of return of a series of investments.
- * @param values - Range or values of payments.
+ * @param values - Range or values of payments. Ignores text values.
  * @param financeRate - The rate of interest of the investments.
  * @param reinvestRate - The rate of interest of the reinvestment.
  * @returns {number}
@@ -555,7 +555,9 @@ exports.NOMINAL = NOMINAL;
  */
 var MIRR = function (values, financeRate, reinvestRate) {
     ArgsChecker_1.ArgsChecker.checkLength(arguments, 3, "MIRR");
-    values = Filter_1.Filter.flattenAndThrow(values).map(function (value) {
+    values = Filter_1.Filter.flattenAndThrow(values).filter(function (value) {
+        return (typeof value !== "string");
+    }).map(function (value) {
         return TypeConverter_1.TypeConverter.valueToNumber(value);
     });
     var n = values.length;
@@ -583,14 +585,16 @@ exports.MIRR = MIRR;
  *
  * Relevant StackOverflow discussion: https://stackoverflow.com/questions/15089151/javascript-irr-internal-rate-of-return-formula-accuracy
  *
- * @param values - Range containing values.
+ * @param values - Range containing values. Ignores text values.
  * @param guess - [OPTIONAL] - The estimated value. Defaults to 0.01.
  * @returns {number}
  * @constructor
  */
 var IRR = function (values, guess) {
     ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 1, 2, "IRR");
-    values = Filter_1.Filter.flattenAndThrow(values).map(function (value) {
+    values = Filter_1.Filter.flattenAndThrow(values).filter(function (value) {
+        return (typeof value !== "string");
+    }).map(function (value) {
         return TypeConverter_1.TypeConverter.valueToNumber(value);
     });
     guess = (guess === undefined) ? 0.1 : TypeConverter_1.TypeConverter.firstValueAsNumber(guess);
@@ -615,3 +619,43 @@ var IRR = function (values, guess) {
     return guess;
 };
 exports.IRR = IRR;
+/**
+ * Calculates the periodic amortization for an investment with regular payments and a constant interest rate.
+ * @param rate - The periodic interest rate.
+ * @param period - The period for which the compound interest is calculated.
+ * @param periods - The total number of periods during which the annuity is paid.
+ * @param present - The present cash value in sequence of payments.
+ * @param future - [OPTIONAL] - The desired value (future value) at the end of the periods.
+ * @param type - [OPTIONAL] - Defines whether the payment is due at the beginning (1) or the end (0) of a period.
+ * @returns {number}
+ * @constructor
+ */
+var IPMT = function (rate, period, periods, present, future, type) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 4, 6, "IPMT");
+    rate = TypeConverter_1.TypeConverter.firstValueAsNumber(rate);
+    period = TypeConverter_1.TypeConverter.firstValueAsNumber(period);
+    periods = TypeConverter_1.TypeConverter.firstValueAsNumber(periods);
+    present = TypeConverter_1.TypeConverter.firstValueAsNumber(present);
+    future = (typeof future === 'undefined') ? 0 : TypeConverter_1.TypeConverter.firstValueAsNumber(future);
+    type = (typeof type === 'undefined') ? 0 : TypeConverter_1.TypeConverter.firstValueAsNumber(type);
+    var payment = PMT(rate, periods, present, future, type);
+    var interest;
+    if (period === 1) {
+        if (type === 1) {
+            interest = 0;
+        }
+        else {
+            interest = -present;
+        }
+    }
+    else {
+        if (type === 1) {
+            interest = fv(rate, period - 2, payment, present, 1) - payment;
+        }
+        else {
+            interest = fv(rate, period - 1, payment, present, 0);
+        }
+    }
+    return interest * rate;
+};
+exports.IPMT = IPMT;

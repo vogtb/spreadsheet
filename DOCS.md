@@ -497,7 +497,7 @@
 
 ```
   Calculates the modified internal rate of return of a series of investments. 
-@param values - Range or values of payments. 
+@param values - Range or values of payments. Ignores text values. 
 @param financeRate - The rate of interest of the investments. 
 @param reinvestRate - The rate of interest of the reinvestment. 
 @returns {number} 
@@ -508,8 +508,22 @@
 
 ```
   Calculates the internal rate of return for an investment. The values represent cash flow values at regular intervals; at least one value must be negative (payments), and at least one value must be positive (income).  Relevant StackOverflow discussion: https:tackoverflow.comquestion15089151javascript-irr-internal-rate-of-return-formula-accuracy  
-@param values - Range containing values. 
+@param values - Range containing values. Ignores text values. 
 @param guess - [OPTIONAL] - The estimated value. Defaults to 0.01. 
+@returns {number} 
+@constructor
+```
+
+### IPMT 
+
+```
+  Calculates the periodic amortization for an investment with regular payments and a constant interest rate. 
+@param rate - The periodic interest rate. 
+@param period - The period for which the compound interest is calculated. 
+@param periods - The total number of periods during which the annuity is paid. 
+@param present - The present cash value in sequence of payments. 
+@param future - [OPTIONAL] - The desired value (future value) at the end of the periods. 
+@param type - [OPTIONAL] - Defines whether the payment is due at the beginning (1) or the end (0) of a period. 
 @returns {number} 
 @constructor
 ```

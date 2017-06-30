@@ -747,6 +747,10 @@ test("Sheet IRR", function(){
   assertFormulaEquals('=IRR([-100, 100, 100])', 0.6180339809507132);
 });
 
+test("Sheet IPMT", function(){
+  assertFormulaEquals('=IPMT(0.025, 1, 66, 25000)', -625);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

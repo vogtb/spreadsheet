@@ -585,6 +585,15 @@
 @returns {boolean} 
 @constructor
 ```
+
+### ISEMAIL 
+
+```
+  Returns true if input is a valid email. Valid domains are Original top-level domains and Country code top-level domains, 
+@param value - Value to check whether it is an email or not. 
+@returns {boolean} 
+@constructor
+```
 ## Logical
 
 

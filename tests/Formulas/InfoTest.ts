@@ -3,7 +3,8 @@ import {
   ISTEXT,
   ISLOGICAL,
   ISNUMBER,
-  ISNONTEXT
+  ISNONTEXT,
+  ISEMAIL
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -56,5 +57,17 @@ test("ISNONTEXT", function(){
   assertEquals(ISNONTEXT(false), true);
   catchAndAssertEquals(function() {
     ISNONTEXT.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("ISEMAIL", function(){
+  assertEquals(ISEMAIL("str"), false);
+  assertEquals(ISEMAIL("ben@example.com"), true);
+  assertEquals(ISEMAIL("steve@apple.com"), true);
+  assertEquals(ISEMAIL("423428374982@hello.tv"), true);
+  assertEquals(ISEMAIL("423428374982@hello.co"), true);
+  assertEquals(ISEMAIL("423428374982@hello.org"), true);
+  catchAndAssertEquals(function() {
+    ISEMAIL.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

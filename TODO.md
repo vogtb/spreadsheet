@@ -26,9 +26,8 @@ For example 64 tbs to a qt.
 ### Formulas to write
 
 * ERROR.TYPE - Requires changes to parser.js
-* ISBLANK - May require changes to parser.js
-* ISEMAIL
-* ISERR
+* ISBLANK - Requires changes to parser.js
+* ISERR - Requires changes to parser.js
 * ISERROR - Requires changes to parser.js
 * ISFORMULA - Requires changes to parser.js
 * ISNA - Requires changes to parser.js

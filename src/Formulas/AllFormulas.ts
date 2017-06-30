@@ -81,7 +81,8 @@ import {
   ISTEXT,
   ISLOGICAL,
   ISNUMBER,
-  ISNONTEXT
+  ISNONTEXT,
+  ISEMAIL
 } from "./Info";
 import {
   CHOOSE
@@ -383,5 +384,6 @@ export {
   MIRR,
   IRR,
   IPMT,
-  FV
+  FV,
+  ISEMAIL
 }

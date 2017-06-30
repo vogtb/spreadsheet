@@ -16,7 +16,6 @@ test("Filter.flatten", function () {
 
 
 test("Filter.filterOutNonNumberValues", function () {
-  // TODO: This function seems to be questionable. Look at where it's used and if it can be made more specific.
   assertArrayEquals(Filter.filterOutNonNumberValues([0, 1, 2, 3, undefined, "0"]), [0, 1, 2, 3, undefined]);
   assertArrayEquals(Filter.filterOutNonNumberValues([0, 1, 2, 3, 4, 5, 6, 7]), [0, 1, 2, 3, 4, 5, 6, 7]);
 });

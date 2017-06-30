@@ -116,6 +116,7 @@ exports.NPV = Financial_1.NPV;
 exports.NPER = Financial_1.NPER;
 exports.NOMINAL = Financial_1.NOMINAL;
 exports.MIRR = Financial_1.MIRR;
+exports.IRR = Financial_1.IRR;
 var Statistical_1 = require("./Statistical");
 exports.AVERAGE = Statistical_1.AVERAGE;
 exports.AVERAGEA = Statistical_1.AVERAGEA;

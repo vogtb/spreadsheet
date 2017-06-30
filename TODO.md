@@ -141,7 +141,6 @@ For example 64 tbs to a qt.
 * FVSCHEDULE
 * INTRATE
 * IPMT
-* IRR
 * PPMT - Similar to PMT, which is already written.
 * PRICE
 * PRICEDISC

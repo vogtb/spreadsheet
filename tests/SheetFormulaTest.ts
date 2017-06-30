@@ -739,6 +739,14 @@ test("Sheet NOMINAL", function(){
   assertFormulaEquals('=NOMINAL(0.8, 12)', 0.6024201620105654);
 });
 
+test("Sheet MIRR", function(){
+  assertFormulaEquals('=MIRR([10, 20, -30, 40], 0.05, 0.06)', 0.3458084697540138);
+});
+
+test("Sheet IRR", function(){
+  assertFormulaEquals('=IRR([-100, 100, 100])', 0.6180339809507132);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

@@ -577,3 +577,41 @@ var MIRR = function (values, financeRate, reinvestRate) {
     return Math.pow(num / den, 1 / (n - 1)) - 1;
 };
 exports.MIRR = MIRR;
+/**
+ * Calculates the internal rate of return for an investment. The values represent cash flow values at regular intervals;
+ * at least one value must be negative (payments), and at least one value must be positive (income).
+ *
+ * Relevant StackOverflow discussion: https://stackoverflow.com/questions/15089151/javascript-irr-internal-rate-of-return-formula-accuracy
+ *
+ * @param values - Range containing values.
+ * @param guess - [OPTIONAL] - The estimated value. Defaults to 0.01.
+ * @returns {number}
+ * @constructor
+ */
+var IRR = function (values, guess) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 1, 2, "IRR");
+    values = Filter_1.Filter.flattenAndThrow(values).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    guess = (guess === undefined) ? 0.1 : TypeConverter_1.TypeConverter.firstValueAsNumber(guess);
+    var min = -1.0;
+    var max = 10.0;
+    var val;
+    var counter = 1;
+    var MAX_ITERATIONS = 500000;
+    do {
+        guess = (min + max) / 2;
+        val = 0;
+        for (var j = 0; j < values.length; j++) {
+            val += values[j] / Math.pow((1 + guess), j);
+        }
+        if (val > 0) {
+            min = guess;
+        }
+        else {
+            max = guess;
+        }
+    } while (Math.abs(val) > 0.000001 && ++counter < MAX_ITERATIONS);
+    return guess;
+};
+exports.IRR = IRR;

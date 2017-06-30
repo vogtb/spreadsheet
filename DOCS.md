@@ -503,6 +503,16 @@
 @returns {number} 
 @constructor TODO: This relies on NPV and will therefore be prone to floating-point errors.
 ```
+
+### IRR 
+
+```
+  Calculates the internal rate of return for an investment. The values represent cash flow values at regular intervals; at least one value must be negative (payments), and at least one value must be positive (income).  Relevant StackOverflow discussion: https:tackoverflow.comquestion15089151javascript-irr-internal-rate-of-return-formula-accuracy  
+@param values - Range containing values. 
+@param guess - [OPTIONAL] - The estimated value. Defaults to 0.01. 
+@returns {number} 
+@constructor
+```
 ## Info
 
 

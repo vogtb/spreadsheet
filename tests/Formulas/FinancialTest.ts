@@ -14,7 +14,8 @@ import {
   NPV,
   NPER,
   NOMINAL,
-  MIRR
+  MIRR,
+  IRR
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -373,5 +374,22 @@ test("MIRR", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     MIRR.apply(this, [[10, 20, 30, -10], 0.05, 0.01, 0.09]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("MIRR", function() {
+  assertEquals(IRR([-1, 4, 10, 15, -22, 99, 44, 1000, -10]), 5.059102535247803);
+  assertEquals(IRR([-1, 4, 10, 15, -22, 99, 44, 1000, -10], 0.1), 5.059102535247803);
+  assertEquals(IRR([-100, 100, 100, 100, 100, 100]), 0.9659482464194298);
+  assertEquals(IRR([-100, 100, 100, 100, 100]), 0.9275619648396969);
+  assertEquals(IRR([-4000, 200, 250, 300, 350]), -0.35242662353266496);
+  assertEquals(IRR([-100, 100]), 9.313225746154785e-9);
+  assertEquals(IRR([-100, 100, 100]), 0.6180339809507132);
+  catchAndAssertEquals(function() {
+    IRR.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    IRR.apply(this, [[100, 100, 100], 0.01, 4.4]);
   }, ERRORS.NA_ERROR);
 });

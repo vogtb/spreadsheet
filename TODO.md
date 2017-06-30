@@ -32,7 +32,6 @@ For example 64 tbs to a qt.
 * ISFORMULA - Requires changes to parser.js
 * ISNA - Requires changes to parser.js
 * ISREF - Requires changes to parser.js
-* ISURL
 * N
 * TYPE - Requires changes to parser.js
 * CELL - Requires changes to parser.js

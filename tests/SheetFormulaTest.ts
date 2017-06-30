@@ -755,6 +755,14 @@ test("Sheet FV", function(){
   assertFormulaEquals('=FV(0.05, 1, 66, 25000)', -26316);
 });
 
+test("Sheet ISEMAIL", function(){
+  assertFormulaEquals('=ISEMAIL("ben@example.com")', true);
+});
+
+test("Sheet ISURL", function(){
+  assertFormulaEquals('=ISURL("example.com")', true);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

@@ -589,8 +589,17 @@
 ### ISEMAIL 
 
 ```
-  Returns true if input is a valid email. Valid domains are Original top-level domains and Country code top-level domains, 
+  Returns true if input is a valid email. Valid domains are Original top-level domains and Country code top-level domains. 
 @param value - Value to check whether it is an email or not. 
+@returns {boolean} 
+@constructor
+```
+
+### ISURL 
+
+```
+  Returns true if the input is a valid URL. 
+@param value - Value to check 
 @returns {boolean} 
 @constructor
 ```

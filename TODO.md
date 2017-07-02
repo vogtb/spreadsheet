@@ -118,7 +118,6 @@ For example 64 tbs to a qt.
 * T
 * TEXT
 * VALUE
-* LINEST
 * LOGEST
 * MDETERM
 * MINVERSE

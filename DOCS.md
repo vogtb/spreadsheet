@@ -1380,6 +1380,16 @@
 @returns {Array} 
 @constructor TODO: Returns RowArray (values stacked in X-direction)
 ```
+
+### LINEST 
+
+```
+  Returns the parameters of a linear trend. 
+@param dataY - The range of data representing Y values. 
+@param dataX - The range of data representing X values. 
+@returns {number[]} 
+@constructor
+```
 ## Statistical
 
 

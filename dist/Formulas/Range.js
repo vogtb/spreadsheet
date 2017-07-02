@@ -4,6 +4,7 @@ var ArgsChecker_1 = require("../Utilities/ArgsChecker");
 var Filter_1 = require("../Utilities/Filter");
 var TypeConverter_1 = require("../Utilities/TypeConverter");
 var Errors_1 = require("../Errors");
+var MathHelpers_1 = require("../Utilities/MathHelpers");
 /**
  * Calculates the frequency distribution of a range into specified classes or "bins".
  * @param range - to get frequency for.
@@ -70,6 +71,7 @@ exports.FREQUENCY = FREQUENCY;
  * TODO: Returns RowArray (values stacked in X-direction)
  */
 var GROWTH = function (knownY, knownX, newX, shouldUseConstant) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 1, 4, "GROWTH");
     // Credits: Ilmari Karonen, FormulaJs (https://github.com/sutoiku/formula.js/)
     knownY = Filter_1.Filter.flattenAndThrow(knownY).map(function (value) {
         if (typeof value !== "number") {
@@ -131,3 +133,38 @@ var GROWTH = function (knownY, knownX, newX, shouldUseConstant) {
     return new_y;
 };
 exports.GROWTH = GROWTH;
+/**
+ * Returns the parameters of a linear trend.
+ * @param dataY - The range of data representing Y values.
+ * @param dataX - The range of data representing X values.
+ * @returns {number[]}
+ * @constructor
+ */
+var LINEST = function (dataY, dataX) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "LINEST");
+    var rangeY = Filter_1.Filter.flattenAndThrow(dataY).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    var rangeX = Filter_1.Filter.flattenAndThrow(dataX).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    if (rangeX.length < 2) {
+        throw new Errors_1.NAError("LINEST requires more data points. Expected: 2, found: " + rangeX.length + ".");
+    }
+    if (rangeY.length < 2) {
+        throw new Errors_1.NAError("LINEST requires more data points. Expected: 2, found: " + rangeY.length + ".");
+    }
+    var xMean = MathHelpers_1.mean(rangeX);
+    var yMean = MathHelpers_1.mean(rangeY);
+    var n = rangeX.length;
+    var num = 0;
+    var den = 0;
+    for (var i = 0; i < n; i++) {
+        num += (rangeX[i] - xMean) * (rangeY[i] - yMean);
+        den += Math.pow(rangeX[i] - xMean, 2);
+    }
+    var m = num / den;
+    var b = yMean - m * xMean;
+    return [m, b];
+};
+exports.LINEST = LINEST;

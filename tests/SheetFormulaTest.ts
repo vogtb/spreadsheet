@@ -763,6 +763,10 @@ test("Sheet ISURL", function(){
   assertFormulaEquals('=ISURL("example.com")', true);
 });
 
+test("Sheet LINEST", function(){
+  assertFormulaEqualsArray('=LINEST([15.53, 19.99, 20.43, 21.18, 25.93, 30], [1, 2, 3, 4, 5, 6])', [2.5977142857142863,	13.08466666666666]);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

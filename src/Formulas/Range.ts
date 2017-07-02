@@ -1,9 +1,18 @@
 import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
-import {Filter} from "../Utilities/Filter";
-import {TypeConverter} from "../Utilities/TypeConverter";
-import {ValueError} from "../Errors";
+import {
+  Filter
+} from "../Utilities/Filter";
+import {
+  TypeConverter
+} from "../Utilities/TypeConverter";
+import {
+  ValueError, NAError
+} from "../Errors";
+import {
+  mean
+} from "../Utilities/MathHelpers";
 
 
 /**
@@ -72,6 +81,7 @@ var FREQUENCY = function (range, bins) : Array<number> {
  * TODO: Returns RowArray (values stacked in X-direction)
  */
 var GROWTH = function (knownY, knownX?, newX?, shouldUseConstant?) {
+  ArgsChecker.checkLengthWithin(arguments, 1, 4, "GROWTH");
   // Credits: Ilmari Karonen, FormulaJs (https://github.com/sutoiku/formula.js/)
 
   knownY = Filter.flattenAndThrow(knownY).map(function (value) {
@@ -137,7 +147,46 @@ var GROWTH = function (knownY, knownX?, newX?, shouldUseConstant?) {
   return new_y;
 };
 
+/**
+ * Returns the parameters of a linear trend.
+ * @param dataY - The range of data representing Y values.
+ * @param dataX - The range of data representing X values.
+ * @returns {number[]}
+ * @constructor
+ */
+var LINEST = function (dataY, dataX) {
+  ArgsChecker.checkLength(arguments, 2, "LINEST");
+  var rangeY = Filter.flattenAndThrow(dataY).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+  var rangeX = Filter.flattenAndThrow(dataX).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+
+  if (rangeX.length < 2) {
+    throw new NAError("LINEST requires more data points. Expected: 2, found: " + rangeX.length + ".");
+  }
+  if (rangeY.length < 2) {
+    throw new NAError("LINEST requires more data points. Expected: 2, found: " + rangeY.length + ".");
+  }
+
+  var xMean = mean(rangeX);
+  var yMean = mean(rangeY);
+  var n = rangeX.length;
+  var num = 0;
+  var den = 0;
+  for (var i = 0; i < n; i++) {
+    num += (rangeX[i] - xMean) * (rangeY[i] - yMean);
+    den += Math.pow(rangeX[i] - xMean, 2);
+  }
+  var m = num / den;
+  var b = yMean - m * xMean;
+  return [m, b];
+};
+
+
 export {
   FREQUENCY,
-  GROWTH
+  GROWTH,
+  LINEST
 }

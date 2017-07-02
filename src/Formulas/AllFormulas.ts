@@ -74,7 +74,8 @@ import {
 } from "./Math";
 import {
   FREQUENCY,
-  GROWTH
+  GROWTH,
+  LINEST
 } from "./Range";
 import {
   NA,
@@ -387,5 +388,6 @@ export {
   IPMT,
   FV,
   ISEMAIL,
-  ISURL
+  ISURL,
+  LINEST
 }

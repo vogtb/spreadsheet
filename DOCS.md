@@ -1770,6 +1770,17 @@
 @returns {number} 
 @constructor
 ```
+
+### NORMINV 
+
+```
+  Returns the inverse of the normal distribution for the given number in the distribution. 
+@param probability - Number in the distribution. 
+@param meanVal - The mean value in the normal distribution. 
+@param standDev - The standard deviation of the normal distribution. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

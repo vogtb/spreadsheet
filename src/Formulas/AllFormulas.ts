@@ -166,7 +166,8 @@ import {
   PERCENTRANK$EXC,
   NORMSINV,
   NORMSDIST,
-  NORMDIST
+  NORMDIST,
+  NORMINV
 } from "./Statistical";
 import {
   ARABIC,
@@ -404,5 +405,6 @@ export {
   PERCENTRANK$EXC,
   NORMSINV,
   NORMSDIST,
-  NORMDIST
+  NORMDIST,
+  NORMINV
 }

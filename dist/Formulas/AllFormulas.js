@@ -161,6 +161,7 @@ exports.PERCENTRANK$EXC = Statistical_1.PERCENTRANK$EXC;
 exports.NORMSINV = Statistical_1.NORMSINV;
 exports.NORMSDIST = Statistical_1.NORMSDIST;
 exports.NORMDIST = Statistical_1.NORMDIST;
+exports.NORMINV = Statistical_1.NORMINV;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

@@ -789,6 +789,10 @@ test("Sheet NORMSINV", function(){
   assertFormulaEquals('=NORMDIST(1, 0, 6, true)', 0.5661838326109037);
 });
 
+test("Sheet NORMINV", function(){
+  assertFormulaEquals('=NORMINV(0.8, 0, 6)', 5.049727401437487);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

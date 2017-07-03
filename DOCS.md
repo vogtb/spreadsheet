@@ -1781,6 +1781,17 @@
 @returns {number} 
 @constructor
 ```
+
+### BINOMDIST 
+
+```
+  Returns the negative binomial distribution. 
+@param k - The value returned for unsuccessful tests. 
+@param r - The value returned for successful tests. 
+@param p - The probability of the success of an attempt, between 0 and 1 inclusively. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

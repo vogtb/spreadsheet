@@ -38,7 +38,8 @@ import {
   NORMSINV,
   NORMSDIST,
   NORMDIST,
-  NORMINV
+  NORMINV,
+  NEGBINOMDIST
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -819,5 +820,27 @@ test("NORMINV", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     NORMINV.apply(this, [0.2, 0.8, 6, 1]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("NEGBINOMDIST", function() {
+  assertEquals(NEGBINOMDIST(5, 3, 0.2), 0.05505024000000004);
+  assertEquals(NEGBINOMDIST(10, 3, 0.2), 0.05669356830720007);
+  assertEquals(NEGBINOMDIST(10, 7, 0.8), 0.00017197049053183967);
+  catchAndAssertEquals(function() {
+    NEGBINOMDIST.apply(this, [-10, 7, 0.8]);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    NEGBINOMDIST.apply(this, [10, -7, 0.8]);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    NEGBINOMDIST.apply(this, [10, 7, -0.8]);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    NEGBINOMDIST.apply(this, [0.2, 0.8]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    NEGBINOMDIST.apply(this, [0.2, 0.8, 6, 1]);
   }, ERRORS.NA_ERROR);
 });

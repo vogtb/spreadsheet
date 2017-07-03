@@ -1217,3 +1217,64 @@ var NORMINV = function (probability, meanVal, standDev) {
     return inv(probability, meanVal, standDev);
 };
 exports.NORMINV = NORMINV;
+/**
+ * Returns the negative binomial distribution.
+ * @param k - The value returned for unsuccessful tests.
+ * @param r - The value returned for successful tests.
+ * @param p - The probability of the success of an attempt, between 0 and 1 inclusively.
+ * @returns {number}
+ * @constructor
+ */
+var NEGBINOMDIST = function (k, r, p) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 3, "NEGBINOMDIST");
+    function _gammaln(x) {
+        var j = 0;
+        var cof = [
+            76.18009172947146, -86.50532032941677, 24.01409824083091,
+            -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5
+        ];
+        var ser = 1.000000000190015;
+        var xx, y, tmp;
+        tmp = (y = xx = x) + 5.5;
+        tmp -= (xx + 0.5) * Math.log(tmp);
+        for (; j < 6; j++)
+            ser += cof[j] / ++y;
+        return Math.log(2.5066282746310005 * ser / xx) - tmp;
+    }
+    function _combinationln(n, m) {
+        return _factorialln(n) - _factorialln(m) - _factorialln(n - m);
+    }
+    function _factorialln(n) {
+        return n < 0 ? NaN : _gammaln(n + 1);
+    }
+    function _factorial(n) {
+        return n < 0 ? NaN : MathHelpers_1.gammafn(n + 1);
+    }
+    function _combination(n, m) {
+        return (n > 170 || m > 170)
+            ? Math.exp(_combinationln(n, m))
+            : (_factorial(n) / _factorial(m)) / _factorial(n - m);
+    }
+    function _pdf(k, r, p) {
+        return k !== (k | 0)
+            ? 0
+            : k < 0
+                ? 0
+                : _combination(k + r - 1, r - 1) * Math.pow(1 - p, k) * Math.pow(p, r);
+    }
+    k = TypeConverter_1.TypeConverter.firstValueAsNumber(k);
+    r = TypeConverter_1.TypeConverter.firstValueAsNumber(r);
+    p = TypeConverter_1.TypeConverter.firstValueAsNumber(p);
+    if (k < 1) {
+        throw new Errors_1.NumError("Function NEGBINOMDIST parameter 1 value is " + k + ". Should be greater than 0.");
+    }
+    if (r < 1) {
+        throw new Errors_1.NumError("Function NEGBINOMDIST parameter 2 value is " + r + ". Should be greater than 0.");
+    }
+    if (p < 0 || p > 1) {
+        throw new Errors_1.NumError("Function NEGBINOMDIST parameter 3 value is " + p +
+            ". Valid values are between 0 and 1 inclusive.");
+    }
+    return _pdf(k, r, p);
+};
+exports.NEGBINOMDIST = NEGBINOMDIST;

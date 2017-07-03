@@ -162,6 +162,7 @@ exports.NORMSINV = Statistical_1.NORMSINV;
 exports.NORMSDIST = Statistical_1.NORMSDIST;
 exports.NORMDIST = Statistical_1.NORMDIST;
 exports.NORMINV = Statistical_1.NORMINV;
+exports.NEGBINOMDIST = Statistical_1.NEGBINOMDIST;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

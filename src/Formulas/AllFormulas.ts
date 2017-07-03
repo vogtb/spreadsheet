@@ -167,7 +167,8 @@ import {
   NORMSINV,
   NORMSDIST,
   NORMDIST,
-  NORMINV
+  NORMINV,
+  NEGBINOMDIST
 } from "./Statistical";
 import {
   ARABIC,
@@ -406,5 +407,6 @@ export {
   NORMSINV,
   NORMSDIST,
   NORMDIST,
-  NORMINV
+  NORMINV,
+  NEGBINOMDIST
 }

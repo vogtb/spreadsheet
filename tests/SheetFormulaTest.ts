@@ -793,6 +793,10 @@ test("Sheet NORMINV", function(){
   assertFormulaEquals('=NORMINV(0.8, 0, 6)', 5.049727401437487);
 });
 
+test("Sheet NEGBINOMDIST", function(){
+  assertFormulaEquals('=NEGBINOMDIST(5, 3, 0.2)', 0.05505024000000004);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

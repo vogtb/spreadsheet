@@ -27,7 +27,8 @@ import {
   cleanFloat,
   mean,
   gammafn,
-  sum
+  sum,
+  erf
 } from "../Utilities/MathHelpers";
 
 
@@ -1054,6 +1055,46 @@ var PERCENTRANK$EXC = function (data, x, significance?) {
 };
 
 
+/**
+ * Returns the inverse of the standard normal distribution for the given number.
+ * @param probability - The probability value.
+ * @returns {number}
+ * @constructor
+ */
+var NORMSINV = function (probability) {
+  ArgsChecker.checkLength(arguments, 1, "NORMSINV");
+  probability =  TypeConverter.firstValueAsNumber(probability);
+  function erfc(x) {
+    return 1 - erf(x);
+  }
+  function erfcinv(p) {
+    var j = 0;
+    var x, err, t, pp;
+    if (p >= 2)
+      return -100;
+    if (p <= 0)
+      return 100;
+    pp = (p < 1) ? p : 2 - p;
+    t = Math.sqrt(-2 * Math.log(pp / 2));
+    x = -0.70711 * ((2.30753 + t * 0.27061) /
+      (1 + t * (0.99229 + t * 0.04481)) - t);
+    for (; j < 2; j++) {
+      err = erfc(x) - pp;
+      x += err / (1.12837916709551257 * Math.exp(-x * x) - x * err);
+    }
+    return (p < 1) ? x : -x;
+  }
+  function inv(p, mean, std) {
+    return -1.41421356237309505 * std * erfcinv(2 * p) + mean;
+  }
+  if (probability <= 0 || probability >= 1) {
+    throw new NumError("Function NORMSINV parameter 1 value is " + probability +
+        ". Valid values are between 0 and 1 exclusive.");
+  }
+  return inv(probability, 0, 1);
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1090,5 +1131,6 @@ export {
   FORECAST,
   POISSON,
   PERCENTRANK,
-  PERCENTRANK$EXC
+  PERCENTRANK$EXC,
+  NORMSINV
 }

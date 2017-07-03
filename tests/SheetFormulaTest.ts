@@ -781,6 +781,10 @@ test("Sheet PERCENTRANK.EXC", function(){
   assertFormulaEquals('=PERCENTRANK.EXC([1], 1)', 1);
 });
 
+test("Sheet NORMSINV", function(){
+  assertFormulaEquals('=NORMSINV(0.1)', -1.2815515655446006);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

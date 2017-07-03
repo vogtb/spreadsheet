@@ -1740,6 +1740,15 @@
 @returns {number} 
 @constructor
 ```
+
+### NORMSINV 
+
+```
+  Returns the inverse of the standard normal distribution for the given number. 
+@param probability - The probability value. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

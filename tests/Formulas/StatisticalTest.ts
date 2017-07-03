@@ -34,7 +34,8 @@ import {
   FORECAST,
   POISSON,
   PERCENTRANK,
-  PERCENTRANK$EXC
+  PERCENTRANK$EXC,
+  NORMSINV
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -748,4 +749,16 @@ test("PERCENTRANK$EXC", function() {
   catchAndAssertEquals(function() {
     PERCENTRANK$EXC([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], -1);
   }, ERRORS.NA_ERROR);
+});
+
+
+test("NORMSINV", function() {
+  assertEquals(NORMSINV(0.1), -1.2815515655446006);
+  assertEquals(NORMSINV(0.4), -0.2533471031357999);
+  catchAndAssertEquals(function() {
+    NORMSINV(0);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    NORMSINV(1);
+  }, ERRORS.NUM_ERROR);
 });

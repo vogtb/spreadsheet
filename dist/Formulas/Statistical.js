@@ -974,7 +974,7 @@ exports.POISSON = POISSON;
  * Returns the percentage rank (percentile) of the given value in a sample. Functions the same as PERCENTRANK.INC.
  * @param data - The array or range of data in the sample.
  * @param x - The value.
- * @param significance - [OPTIONAL] - The number of significant digits to use in the calculation.
+ * @param significance - [OPTIONAL] - The number of significant digits to use in the calculation. Defaults to 3.
  * @returns {number}
  * @constructor
  */
@@ -1016,3 +1016,49 @@ var PERCENTRANK = function (data, x, significance) {
     return v;
 };
 exports.PERCENTRANK = PERCENTRANK;
+/**
+ * Returns the percentage rank (percentile) from 0 to 1 exclusive for a value in a sample.
+ * @param data - The array or range of data in the sample.
+ * @param x - The value
+ * @param significance - [OPTIONAL] - The number of significant digits to use in the calculation. Defaults to 3.
+ * @returns {number}
+ * @constructor
+ */
+var PERCENTRANK$EXC = function (data, x, significance) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 2, 3, "PERCENTRANK.EXC");
+    data = Filter_1.Filter.flattenAndThrow(data).map(TypeConverter_1.TypeConverter.valueToNumber).sort(function (a, b) {
+        return a - b;
+    });
+    x = TypeConverter_1.TypeConverter.firstValueAsNumber(x);
+    var uniques = Filter_1.Filter.unique(data);
+    var n = data.length;
+    var m = uniques.length;
+    if (x < uniques[0] || x > uniques[m - 1]) {
+        throw new Errors_1.NAError("PERCENTRANK.EXC does not have valid input data.");
+    }
+    if (m === 1 && uniques[0] === x) {
+        return 1;
+    }
+    significance = (typeof significance === 'undefined') ? 3 : TypeConverter_1.TypeConverter.firstValueAsNumber(significance);
+    var power = Math.pow(10, significance);
+    var result = 0;
+    var match = false;
+    var i = 0;
+    while (!match && i < m) {
+        if (x === uniques[i]) {
+            result = (data.indexOf(uniques[i]) + 1) / (n + 1);
+            match = true;
+        }
+        else if (x >= uniques[i] && (x < uniques[i + 1] || i === m - 1)) {
+            result = (data.indexOf(uniques[i]) + 1 + (x - uniques[i]) / (uniques[i + 1] - uniques[i])) / (n + 1);
+            match = true;
+        }
+        i++;
+    }
+    var v = Math.floor(result * power) / power;
+    if (isNaN(v)) {
+        throw new Errors_1.NAError("PERCENTRANK.EXC does not have valid input data.");
+    }
+    return v;
+};
+exports.PERCENTRANK$EXC = PERCENTRANK$EXC;

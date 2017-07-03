@@ -777,6 +777,10 @@ test("Sheet PERCENTRANK, PERCENTRANK.INC", function(){
   assertFormulaEquals('=PERCENTRANK.INC([1], 1)', 1);
 });
 
+test("Sheet PERCENTRANK.EXC", function(){
+  assertFormulaEquals('=PERCENTRANK.EXC([1], 1)', 1);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

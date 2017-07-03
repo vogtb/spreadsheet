@@ -33,7 +33,8 @@ import {
   INTERCEPT,
   FORECAST,
   POISSON,
-  PERCENTRANK
+  PERCENTRANK,
+  PERCENTRANK$EXC
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -731,5 +732,20 @@ test("PERCENTRANK", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     PERCENTRANK([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], -1);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("PERCENTRANK$EXC", function() {
+  assertEquals(PERCENTRANK$EXC([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], 4), 0.571);
+  assertEquals(PERCENTRANK$EXC([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], 5), 0.642);
+  assertEquals(PERCENTRANK$EXC([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], 7), 0.785);
+  assertEquals(PERCENTRANK$EXC([1], 1), 1);
+  assertEquals(PERCENTRANK$EXC([22], 22), 1);
+  catchAndAssertEquals(function() {
+    PERCENTRANK$EXC([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], 10);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PERCENTRANK$EXC([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], -1);
   }, ERRORS.NA_ERROR);
 });

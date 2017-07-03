@@ -73,7 +73,6 @@ For example 64 tbs to a qt.
 * NORMINV
 * NORMSDIST
 * NORMSINV
-* PERCENTRANK.EXC
 * PERMUT
 * PROB
 * RANK

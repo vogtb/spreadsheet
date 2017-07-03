@@ -1725,7 +1725,18 @@
   Returns the percentage rank (percentile) of the given value in a sample. Functions the same as PERCENTRANK.INC. 
 @param data - The array or range of data in the sample. 
 @param x - The value. 
-@param significance - [OPTIONAL] - The number of significant digits to use in the calculation. 
+@param significance - [OPTIONAL] - The number of significant digits to use in the calculation. Defaults to 3. 
+@returns {number} 
+@constructor
+```
+
+### EXC 
+
+```
+  Returns the percentage rank (percentile) from 0 to 1 exclusive for a value in a sample. 
+@param data - The array or range of data in the sample. 
+@param x - The value 
+@param significance - [OPTIONAL] - The number of significant digits to use in the calculation. Defaults to 3. 
 @returns {number} 
 @constructor
 ```

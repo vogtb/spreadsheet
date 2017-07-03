@@ -1101,6 +1101,13 @@ var NORMSINV = function (probability) {
     return inv(probability, 0, 1);
 };
 exports.NORMSINV = NORMSINV;
+function _cdf(x, mValue, stdVal) {
+    return 0.5 * (1 + MathHelpers_1.erf((x - mValue) / Math.sqrt(2 * stdVal * stdVal)));
+}
+function _pdf(x, meanVal, std) {
+    return Math.exp(-0.5 * Math.log(2 * Math.PI) -
+        Math.log(std) - Math.pow(x - meanVal, 2) / (2 * std * std));
+}
 /**
  * Returns the standard normal cumulative distribution for the given number.
  * @param z - Value to use in calculation.
@@ -1110,9 +1117,27 @@ exports.NORMSINV = NORMSINV;
 var NORMSDIST = function (z) {
     ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "NORMSDIST");
     z = TypeConverter_1.TypeConverter.firstValueAsNumber(z);
-    function _cdf(x, mValue, stdVal) {
-        return 0.5 * (1 + MathHelpers_1.erf((x - mValue) / Math.sqrt(2 * stdVal * stdVal)));
-    }
     return _cdf(z, 0, 1);
 };
 exports.NORMSDIST = NORMSDIST;
+/**
+ * Returns the normal distribution for the given number in the distribution.
+ * @param x - Value to use.
+ * @param meanValue - The mean value of the distribution.
+ * @param standDev - The standard deviation of the distribution.
+ * @param cumulative - 0 calculates the density function, 1 calculates the distribution.
+ * @returns {number}
+ * @constructor
+ */
+var NORMDIST = function (x, meanValue, standDev, cumulative) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 4, "NORMDIST");
+    x = TypeConverter_1.TypeConverter.firstValueAsNumber(x);
+    meanValue = TypeConverter_1.TypeConverter.firstValueAsNumber(meanValue);
+    standDev = TypeConverter_1.TypeConverter.firstValueAsNumber(standDev);
+    cumulative = TypeConverter_1.TypeConverter.firstValueAsNumber(cumulative);
+    if (standDev <= 0) {
+        throw new Errors_1.NumError("Function NORMDIST parameter 3 value should be greater than 0. It is " + standDev + ".");
+    }
+    return (cumulative === 0) ? _pdf(x, meanValue, standDev) : _cdf(x, meanValue, standDev);
+};
+exports.NORMDIST = NORMDIST;

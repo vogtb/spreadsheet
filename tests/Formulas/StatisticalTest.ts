@@ -36,7 +36,8 @@ import {
   PERCENTRANK,
   PERCENTRANK$EXC,
   NORMSINV,
-  NORMSDIST
+  NORMSDIST,
+  NORMDIST
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -779,5 +780,24 @@ test("NORMSDIST", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     NORMSDIST.apply(this, [1, 2]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("NORMDIST", function() {
+  assertEquals(NORMDIST(1, 0, 6, true), 0.5661838326109037);
+  assertEquals(NORMDIST(1, 0, 6, false), 0.06557328601698999);
+  assertEquals(NORMDIST(0.5, 0.44, 8, true), 0.5029920390526184);
+  assertEquals(NORMDIST(0.5, 0.44, 8, false), 0.04986638253844748);
+  assertEquals(NORMDIST(-0.5, 0.44, 8, true), 0.45323192202214374);
+  assertEquals(NORMDIST(-0.5, -100, 100, true), 0.840131867824506);
+  catchAndAssertEquals(function() {
+    NORMDIST(-0.5, 0.44, 0, true);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    NORMDIST.apply(this, [1, 0, 6]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    NORMDIST.apply(this, [1, 0, 6, true, 5]);
   }, ERRORS.NA_ERROR);
 });

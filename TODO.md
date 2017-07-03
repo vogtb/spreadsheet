@@ -69,7 +69,6 @@ For example 64 tbs to a qt.
 * LOGNORMDIST
 * MODE
 * NEGBINOMDIST
-* NORMDIST
 * NORMINV
 * PERMUT
 * PROB

@@ -1095,6 +1095,15 @@ var NORMSINV = function (probability) {
 };
 
 
+function _cdf(x, mValue, stdVal) {
+  return 0.5 * (1 + erf((x - mValue) / Math.sqrt(2 * stdVal * stdVal)));
+}
+
+function _pdf(x, meanVal, std) {
+  return Math.exp(-0.5 * Math.log(2 * Math.PI) -
+    Math.log(std) - Math.pow(x - meanVal, 2) / (2 * std * std));
+}
+
 /**
  * Returns the standard normal cumulative distribution for the given number.
  * @param z - Value to use in calculation.
@@ -1104,10 +1113,29 @@ var NORMSINV = function (probability) {
 var NORMSDIST = function (z) {
   ArgsChecker.checkLength(arguments, 1, "NORMSDIST");
   z = TypeConverter.firstValueAsNumber(z);
-  function _cdf(x, mValue, stdVal) {
-    return 0.5 * (1 + erf((x - mValue) / Math.sqrt(2 * stdVal * stdVal)));
-  }
   return _cdf(z, 0, 1);
+};
+
+
+/**
+ * Returns the normal distribution for the given number in the distribution.
+ * @param x - Value to use.
+ * @param meanValue - The mean value of the distribution.
+ * @param standDev - The standard deviation of the distribution.
+ * @param cumulative - 0 calculates the density function, 1 calculates the distribution.
+ * @returns {number}
+ * @constructor
+ */
+var NORMDIST =  function (x, meanValue, standDev, cumulative) {
+  ArgsChecker.checkLength(arguments, 4, "NORMDIST");
+  x = TypeConverter.firstValueAsNumber(x);
+  meanValue = TypeConverter.firstValueAsNumber(meanValue);
+  standDev = TypeConverter.firstValueAsNumber(standDev);
+  cumulative = TypeConverter.firstValueAsNumber(cumulative);
+  if (standDev <= 0) {
+    throw new NumError("Function NORMDIST parameter 3 value should be greater than 0. It is " + standDev + ".");
+  }
+  return (cumulative === 0) ? _pdf(x, meanValue, standDev) : _cdf(x, meanValue, standDev);
 };
 
 
@@ -1149,5 +1177,6 @@ export {
   PERCENTRANK,
   PERCENTRANK$EXC,
   NORMSINV,
-  NORMSDIST
+  NORMSDIST,
+  NORMDIST
 }

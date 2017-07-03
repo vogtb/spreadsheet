@@ -1758,6 +1758,18 @@
 @returns {number} 
 @constructor
 ```
+
+### NORMDIST 
+
+```
+  Returns the normal distribution for the given number in the distribution. 
+@param x - Value to use. 
+@param meanValue - The mean value of the distribution. 
+@param standDev - The standard deviation of the distribution. 
+@param cumulative - 0 calculates the density function, 1 calculates the distribution. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

@@ -156,6 +156,7 @@ exports.KURT = Statistical_1.KURT;
 exports.INTERCEPT = Statistical_1.INTERCEPT;
 exports.FORECAST = Statistical_1.FORECAST;
 exports.POISSON = Statistical_1.POISSON;
+exports.PERCENTRANK = Statistical_1.PERCENTRANK;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;
@@ -196,6 +197,7 @@ var __COMPLEX = {
     "F.DIST": Statistical_1.FDIST$LEFTTAILED,
     "NETWORKDAYS.INTL": Date_1.NETWORKDAYS$INTL,
     "WORKDAY.INTL": Date_1.WORKDAY$INTL,
-    "POISSON.DIST": Statistical_1.POISSON
+    "POISSON.DIST": Statistical_1.POISSON,
+    "PERCENTRANK.INC": Statistical_1.PERCENTRANK
 };
 exports.__COMPLEX = __COMPLEX;

@@ -80,6 +80,21 @@ class Filter {
     }
     return toReturn;
   }
+
+  /**
+   * Returns an array as unique values.
+   * @param arr - to filter down to uniques.
+   * @returns {Array}
+   */
+  static unique(arr: Array<any>) : Array<any> {
+    var a = [];
+    for (var i = 0, l = arr.length; i < l; i++) {
+      if (a.indexOf(arr[i]) === -1 && arr[i] !== '') {
+        a.push(arr[i]);
+      }
+    }
+    return a;
+  }
 }
 
 export {

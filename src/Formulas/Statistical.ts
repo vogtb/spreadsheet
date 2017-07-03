@@ -922,7 +922,7 @@ var FORECAST = function (x, rangeY, rangeX) {
 
 
 /**
- * Returns the Poisson distribution for the given number.
+ * Returns the Poisson distribution for the given number. Functions the same as POISSON.DIST.
  * @param x - Number to use.
  * @param meanValue - The middle value for the Poisson distribution.
  * @param cumulative - [OPTIONAL] - 0 calculates the density function, 1 calculates the distribution. Defaults to 0.
@@ -962,6 +962,52 @@ var POISSON = function (x, meanValue, cumulative?) {
 };
 
 
+/**
+ * Returns the percentage rank (percentile) of the given value in a sample. Functions the same as PERCENTRANK.INC.
+ * @param data - The array or range of data in the sample.
+ * @param x - The value.
+ * @param significance - [OPTIONAL] - The number of significant digits to use in the calculation.
+ * @returns {number}
+ * @constructor
+ */
+var PERCENTRANK = function (data, x, significance?) {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "PERCENTRANK");
+  data = Filter.flattenAndThrow(data).map(TypeConverter.valueToNumber).sort(function (a, b) {
+    return a - b;
+  });
+  x = TypeConverter.firstValueAsNumber(x);
+  var uniques = Filter.unique(data);
+  var n = data.length;
+  var m = uniques.length;
+  if (x < uniques[0] || x > uniques[m - 1]) {
+    throw new NAError("PERCENTRANK does not have valid input data.");
+  }
+  if (m === 1 && uniques[0] === x) {
+    return 1;
+  }
+  significance = (typeof significance === 'undefined') ? 3 : TypeConverter.firstValueAsNumber(significance);
+  var power = Math.pow(10, significance);
+  var result = 0;
+  var match = false;
+  var i = 0;
+  while (!match && i < m) {
+    if (x === uniques[i]) {
+      result = data.indexOf(uniques[i]) / (n - 1);
+      match = true;
+    } else if (x >= uniques[i] && (x < uniques[i + 1] || i === m - 1)) {
+      result = (data.indexOf(uniques[i]) + (x - uniques[i]) / (uniques[i + 1] - uniques[i])) / (n - 1);
+      match = true;
+    }
+    i++;
+  }
+  var v = Math.floor(result * power) / power;
+  if (isNaN(v)) {
+    throw new NAError("PERCENTRANK does not have valid input data.");
+  }
+  return v;
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -996,5 +1042,6 @@ export {
   KURT,
   INTERCEPT,
   FORECAST,
-  POISSON
+  POISSON,
+  PERCENTRANK
 }

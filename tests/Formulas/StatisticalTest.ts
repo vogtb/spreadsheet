@@ -32,7 +32,8 @@ import {
   KURT,
   INTERCEPT,
   FORECAST,
-  POISSON
+  POISSON,
+  PERCENTRANK
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -714,5 +715,21 @@ test("POISSON", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     POISSON.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("PERCENTRANK", function() {
+  assertEquals(PERCENTRANK([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], 4), 0.583);
+  assertEquals(PERCENTRANK([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], 5), 0.666);
+  assertEquals(PERCENTRANK([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], 0), 0);
+  assertEquals(PERCENTRANK([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1, -4], -1), 0.057);
+  assertEquals(PERCENTRANK([1], 1), 1);
+  assertEquals(PERCENTRANK([44], 44), 1);
+  catchAndAssertEquals(function() {
+    PERCENTRANK([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], 10);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PERCENTRANK([1, 5, 3, 7, 3, 2, 6, 8, 4, 9, 0, 3, 1], -1);
   }, ERRORS.NA_ERROR);
 });

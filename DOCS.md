@@ -1711,10 +1711,21 @@
 ### POISSON 
 
 ```
-  Returns the Poisson distribution for the given number. 
+  Returns the Poisson distribution for the given number. Functions the same as POISSON.DIST. 
 @param x - Number to use. 
 @param meanValue - The middle value for the Poisson distribution. 
 @param cumulative - [OPTIONAL] - 0 calculates the density function, 1 calculates the distribution. Defaults to 0. 
+@returns {number} 
+@constructor
+```
+
+### RCENTRANK 
+
+```
+  Returns the percentage rank (percentile) of the given value in a sample. Functions the same as PERCENTRANK.INC. 
+@param data - The array or range of data in the sample. 
+@param x - The value. 
+@param significance - [OPTIONAL] - The number of significant digits to use in the calculation. 
 @returns {number} 
 @constructor
 ```

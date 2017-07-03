@@ -772,6 +772,11 @@ test("Sheet POISSON, POISSON.DIST", function(){
   assertFormulaEquals('=POISSON.DIST(3, 5, true)', 0.26502591529736175);
 });
 
+test("Sheet PERCENTRANK, PERCENTRANK.INC", function(){
+  assertFormulaEquals('=PERCENTRANK([1], 1)', 1);
+  assertFormulaEquals('=PERCENTRANK.INC([1], 1)', 1);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

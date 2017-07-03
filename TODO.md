@@ -77,7 +77,6 @@ For example 64 tbs to a qt.
 * PERCENTRANK.EXC
 * PERCENTRANK.INC
 * PERMUT
-* POISSON
 * PROB
 * RANK
 * RANK.AVG

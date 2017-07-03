@@ -932,3 +932,41 @@ var FORECAST = function (x, rangeY, rangeX) {
     return a + b * x;
 };
 exports.FORECAST = FORECAST;
+/**
+ * Returns the Poisson distribution for the given number.
+ * @param x - Number to use.
+ * @param meanValue - The middle value for the Poisson distribution.
+ * @param cumulative - [OPTIONAL] - 0 calculates the density function, 1 calculates the distribution. Defaults to 0.
+ * @returns {number}
+ * @constructor
+ */
+var POISSON = function (x, meanValue, cumulative) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 2, 3, "POISSON");
+    x = TypeConverter_1.TypeConverter.firstValueAsNumber(x);
+    meanValue = TypeConverter_1.TypeConverter.firstValueAsNumber(meanValue);
+    cumulative = (cumulative === undefined) ? 0 : TypeConverter_1.TypeConverter.firstValueAsNumber(cumulative);
+    if (x < 0) {
+        throw new Errors_1.NumError("Function POISSON parameter 1 value is " + x + ". It should be greater than or equal to 0.");
+    }
+    if (meanValue < 0) {
+        throw new Errors_1.NumError("Function POISSON parameter 2 value is " + x + ". It should be greater than or equal to 0.");
+    }
+    function factorial(n) {
+        return n < 0 ? NaN : MathHelpers_1.gammafn(n + 1);
+    }
+    function poissonPDF(k, l) {
+        return Math.pow(l, k) * Math.exp(-l) / factorial(k);
+    }
+    function poissonCDF(x, l) {
+        var sumarr = [], k = 0;
+        if (x < 0)
+            return 0;
+        for (; k <= x; k++) {
+            sumarr.push(poissonPDF(k, l));
+        }
+        return MathHelpers_1.sum(sumarr);
+    }
+    ;
+    return (cumulative) ? poissonCDF(x, meanValue) : poissonPDF(x, meanValue);
+};
+exports.POISSON = POISSON;

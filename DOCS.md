@@ -1707,6 +1707,17 @@
 @returns {number} 
 @constructor TODO: This formula will fail to parse since the first argument is followed by an argument that is an array. TODO (continued) This is a known issue.
 ```
+
+### POISSON 
+
+```
+  Returns the Poisson distribution for the given number. 
+@param x - Number to use. 
+@param meanValue - The middle value for the Poisson distribution. 
+@param cumulative - [OPTIONAL] - 0 calculates the density function, 1 calculates the distribution. Defaults to 0. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

@@ -160,7 +160,8 @@ import {
   LARGE,
   KURT,
   INTERCEPT,
-  FORECAST
+  FORECAST,
+  POISSON
 } from "./Statistical";
 import {
   ARABIC,
@@ -204,7 +205,8 @@ import {
 var __COMPLEX = {
   "F.DIST": FDIST$LEFTTAILED,
   "NETWORKDAYS.INTL": NETWORKDAYS$INTL,
-  "WORKDAY.INTL": WORKDAY$INTL
+  "WORKDAY.INTL": WORKDAY$INTL,
+  "POISSON.DIST": POISSON
 };
 
 export {
@@ -389,5 +391,6 @@ export {
   FV,
   ISEMAIL,
   ISURL,
-  LINEST
+  LINEST,
+  POISSON
 }

@@ -767,6 +767,11 @@ test("Sheet LINEST", function(){
   assertFormulaEqualsArray('=LINEST([15.53, 19.99, 20.43, 21.18, 25.93, 30], [1, 2, 3, 4, 5, 6])', [2.5977142857142863,	13.08466666666666]);
 });
 
+test("Sheet POISSON, POISSON.DIST", function(){
+  assertFormulaEquals('=POISSON(3, 5, true)', 0.26502591529736175);
+  assertFormulaEquals('=POISSON.DIST(3, 5, true)', 0.26502591529736175);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

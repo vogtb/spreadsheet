@@ -31,7 +31,8 @@ import {
   LARGE,
   KURT,
   INTERCEPT,
-  FORECAST
+  FORECAST,
+  POISSON
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -692,5 +693,26 @@ test("FORCAST", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     FORECAST.apply(this, [0, [1, 2, 3], [1, 2, 3], [1, 2, 3]]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("POISSON", function() {
+  assertEquals(POISSON(3, 500, true), 1.4932281660406229e-210);
+  assertEquals(POISSON(30, 500, true), 2.660801877634559e-169);
+  assertEquals(POISSON(3, 5, true), 0.26502591529736175);
+  assertEquals(POISSON(3, 5, false), 0.14037389581428059);
+  assertEquals(POISSON(3, 5), 0.14037389581428059);
+  catchAndAssertEquals(function() {
+    POISSON(-3, 5);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    POISSON(3, -5);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    POISSON.apply(this, [1, 2, 3, 4]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    POISSON.apply(this, [1]);
   }, ERRORS.NA_ERROR);
 });

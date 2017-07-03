@@ -164,7 +164,8 @@ import {
   POISSON,
   PERCENTRANK,
   PERCENTRANK$EXC,
-  NORMSINV
+  NORMSINV,
+  NORMSDIST
 } from "./Statistical";
 import {
   ARABIC,
@@ -400,5 +401,6 @@ export {
   POISSON,
   PERCENTRANK,
   PERCENTRANK$EXC,
-  NORMSINV
+  NORMSINV,
+  NORMSDIST
 }

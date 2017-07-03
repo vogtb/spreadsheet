@@ -1101,3 +1101,18 @@ var NORMSINV = function (probability) {
     return inv(probability, 0, 1);
 };
 exports.NORMSINV = NORMSINV;
+/**
+ * Returns the standard normal cumulative distribution for the given number.
+ * @param z - Value to use in calculation.
+ * @returns {number}
+ * @constructor
+ */
+var NORMSDIST = function (z) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "NORMSDIST");
+    z = TypeConverter_1.TypeConverter.firstValueAsNumber(z);
+    function _cdf(x, mValue, stdVal) {
+        return 0.5 * (1 + MathHelpers_1.erf((x - mValue) / Math.sqrt(2 * stdVal * stdVal)));
+    }
+    return _cdf(z, 0, 1);
+};
+exports.NORMSDIST = NORMSDIST;

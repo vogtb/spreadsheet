@@ -1749,6 +1749,15 @@
 @returns {number} 
 @constructor
 ```
+
+### NORMSDIST 
+
+```
+  Returns the standard normal cumulative distribution for the given number. 
+@param z - Value to use in calculation. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

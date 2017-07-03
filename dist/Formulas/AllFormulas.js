@@ -159,6 +159,7 @@ exports.POISSON = Statistical_1.POISSON;
 exports.PERCENTRANK = Statistical_1.PERCENTRANK;
 exports.PERCENTRANK$EXC = Statistical_1.PERCENTRANK$EXC;
 exports.NORMSINV = Statistical_1.NORMSINV;
+exports.NORMSDIST = Statistical_1.NORMSDIST;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

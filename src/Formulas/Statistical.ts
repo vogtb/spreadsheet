@@ -1095,6 +1095,22 @@ var NORMSINV = function (probability) {
 };
 
 
+/**
+ * Returns the standard normal cumulative distribution for the given number.
+ * @param z - Value to use in calculation.
+ * @returns {number}
+ * @constructor
+ */
+var NORMSDIST = function (z) {
+  ArgsChecker.checkLength(arguments, 1, "NORMSDIST");
+  z = TypeConverter.firstValueAsNumber(z);
+  function _cdf(x, mValue, stdVal) {
+    return 0.5 * (1 + erf((x - mValue) / Math.sqrt(2 * stdVal * stdVal)));
+  }
+  return _cdf(z, 0, 1);
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1132,5 +1148,6 @@ export {
   POISSON,
   PERCENTRANK,
   PERCENTRANK$EXC,
-  NORMSINV
+  NORMSINV,
+  NORMSDIST
 }

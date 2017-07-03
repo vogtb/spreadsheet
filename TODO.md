@@ -71,7 +71,6 @@ For example 64 tbs to a qt.
 * NEGBINOMDIST
 * NORMDIST
 * NORMINV
-* NORMSDIST
 * PERMUT
 * PROB
 * RANK

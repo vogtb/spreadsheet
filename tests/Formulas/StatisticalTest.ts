@@ -39,7 +39,8 @@ import {
   NORMSDIST,
   NORMDIST,
   NORMINV,
-  NEGBINOMDIST
+  NEGBINOMDIST,
+  GEOMEAN
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -842,5 +843,18 @@ test("NEGBINOMDIST", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     NEGBINOMDIST.apply(this, [0.2, 0.8, 6, 1]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("GEOMEAN", function() {
+  assertEquals(GEOMEAN(10, 4, 6, 3, 6, 7, 1, 1), 3.6313885790189477);
+  assertEquals(GEOMEAN(10, 4, 6, [3, 6, [7]], 1, 1), 3.6313885790189477);
+  assertEquals(GEOMEAN(10), 10);
+  catchAndAssertEquals(function() {
+    GEOMEAN(10, 2, 4, 5, 2, 0);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    GEOMEAN.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

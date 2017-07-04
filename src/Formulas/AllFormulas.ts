@@ -168,7 +168,8 @@ import {
   NORMSDIST,
   NORMDIST,
   NORMINV,
-  NEGBINOMDIST
+  NEGBINOMDIST,
+  GEOMEAN
 } from "./Statistical";
 import {
   ARABIC,
@@ -408,5 +409,6 @@ export {
   NORMSDIST,
   NORMDIST,
   NORMINV,
-  NEGBINOMDIST
+  NEGBINOMDIST,
+  GEOMEAN
 }

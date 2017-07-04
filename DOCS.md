@@ -1792,6 +1792,15 @@
 @returns {number} 
 @constructor
 ```
+
+### GEOMEAN 
+
+```
+  Returns the geometric mean of a sample. 
+@param values - The numerical arguments or ranges that represent a random sample. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

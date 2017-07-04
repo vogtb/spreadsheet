@@ -1281,6 +1281,32 @@ var NEGBINOMDIST = function (k, r, p) {
 };
 
 
+/**
+ * Returns the geometric mean of a sample.
+ * @param values - The numerical arguments or ranges that represent a random sample.
+ * @returns {number}
+ * @constructor
+ */
+var GEOMEAN  = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "GEOMEAN");
+  function _product(arr) {
+    var prod = 1;
+    var i = arr.length;
+    while (--i >= 0) {
+      prod *= arr[i];
+    }
+    return prod;
+  }
+  values = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber).map(function (value) {
+    if (value <=0) {
+      throw new NumError("GEOMEAN requires inputs greater than 0, but one of the values entered is " + value + ".");
+    }
+    return value;
+  });
+  return Math.pow(_product(values), 1 / values.length);
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1322,5 +1348,6 @@ export {
   NORMSDIST,
   NORMDIST,
   NORMINV,
-  NEGBINOMDIST
+  NEGBINOMDIST,
+  GEOMEAN
 }

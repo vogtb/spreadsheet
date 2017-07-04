@@ -1278,3 +1278,32 @@ var NEGBINOMDIST = function (k, r, p) {
     return _pdf(k, r, p);
 };
 exports.NEGBINOMDIST = NEGBINOMDIST;
+/**
+ * Returns the geometric mean of a sample.
+ * @param values - The numerical arguments or ranges that represent a random sample.
+ * @returns {number}
+ * @constructor
+ */
+var GEOMEAN = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 1, "GEOMEAN");
+    function _product(arr) {
+        var prod = 1;
+        var i = arr.length;
+        while (--i >= 0) {
+            prod *= arr[i];
+        }
+        return prod;
+    }
+    values = Filter_1.Filter.flattenAndThrow(values).map(TypeConverter_1.TypeConverter.valueToNumber).map(function (value) {
+        if (value <= 0) {
+            throw new Errors_1.NumError("GEOMEAN requires inputs greater than 0, but one of the values entered is " + value + ".");
+        }
+        return value;
+    });
+    return Math.pow(_product(values), 1 / values.length);
+};
+exports.GEOMEAN = GEOMEAN;

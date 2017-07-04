@@ -797,6 +797,10 @@ test("Sheet NEGBINOMDIST", function(){
   assertFormulaEquals('=NEGBINOMDIST(5, 3, 0.2)', 0.05505024000000004);
 });
 
+test("Sheet GEOMEAN", function(){
+  assertFormulaEquals('=GEOMEAN(10, 4, 6, 3, 6, 7, 1, 1)', 3.6313885790189477);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

@@ -62,7 +62,6 @@ For example 64 tbs to a qt.
 * COVAR
 * CRITBINOM
 * F.DIST.RT
-* HARMEAN
 * HYPGEOMDIST
 * LOGINV
 * LOGNORMDIST

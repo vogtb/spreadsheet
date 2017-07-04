@@ -1307,6 +1307,29 @@ var GEOMEAN  = function (...values) {
 };
 
 
+/**
+ * Returns the harmonic mean of a data set.
+ * @param values - The numerical arguments or ranges that represent a sample.
+ * @returns {number}
+ * @constructor
+ */
+var HARMEAN = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "HARMEAN");
+  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber).map(function (value) {
+    if (value <=0) {
+      throw new NumError("HARMEAN requires inputs greater than 0, but one of the values entered is " + value + ".");
+    }
+    return value;
+  });
+  var n = range.length;
+  var den = 0;
+  for (var i = 0; i < n; i++) {
+    den += 1 / range[i];
+  }
+  return n / den;
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1349,5 +1372,6 @@ export {
   NORMDIST,
   NORMINV,
   NEGBINOMDIST,
-  GEOMEAN
+  GEOMEAN,
+  HARMEAN
 }

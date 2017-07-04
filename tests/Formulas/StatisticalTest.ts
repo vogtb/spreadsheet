@@ -40,7 +40,8 @@ import {
   NORMDIST,
   NORMINV,
   NEGBINOMDIST,
-  GEOMEAN
+  GEOMEAN,
+  HARMEAN
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -856,5 +857,18 @@ test("GEOMEAN", function() {
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
     GEOMEAN.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("HARMEAN", function() {
+  assertEquals(HARMEAN(10, 4, 6, 3, 6, 7, 1, 1), 2.532027128862095);
+  assertEquals(HARMEAN(10, 4, 6, [3, 6, [7]], 1, 1), 2.532027128862095);
+  assertEquals(GEOMEAN(10), 10);
+  catchAndAssertEquals(function() {
+    HARMEAN(10, 2, 4, 5, 2, 0);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    HARMEAN.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

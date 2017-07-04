@@ -801,6 +801,10 @@ test("Sheet GEOMEAN", function(){
   assertFormulaEquals('=GEOMEAN(10, 4, 6, 3, 6, 7, 1, 1)', 3.6313885790189477);
 });
 
+test("Sheet HARMEAN", function(){
+  assertFormulaEquals('=HARMEAN(10, 4, 6, 3, 6, 7, 1, 1)', 2.532027128862095);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

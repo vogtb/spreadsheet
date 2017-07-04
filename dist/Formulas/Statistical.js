@@ -1307,3 +1307,29 @@ var GEOMEAN = function () {
     return Math.pow(_product(values), 1 / values.length);
 };
 exports.GEOMEAN = GEOMEAN;
+/**
+ * Returns the harmonic mean of a data set.
+ * @param values - The numerical arguments or ranges that represent a sample.
+ * @returns {number}
+ * @constructor
+ */
+var HARMEAN = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 1, "HARMEAN");
+    var range = Filter_1.Filter.flattenAndThrow(values).map(TypeConverter_1.TypeConverter.valueToNumber).map(function (value) {
+        if (value <= 0) {
+            throw new Errors_1.NumError("HARMEAN requires inputs greater than 0, but one of the values entered is " + value + ".");
+        }
+        return value;
+    });
+    var n = range.length;
+    var den = 0;
+    for (var i = 0; i < n; i++) {
+        den += 1 / range[i];
+    }
+    return n / den;
+};
+exports.HARMEAN = HARMEAN;

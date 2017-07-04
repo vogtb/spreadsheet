@@ -169,7 +169,8 @@ import {
   NORMDIST,
   NORMINV,
   NEGBINOMDIST,
-  GEOMEAN
+  GEOMEAN,
+  HARMEAN
 } from "./Statistical";
 import {
   ARABIC,
@@ -410,5 +411,6 @@ export {
   NORMDIST,
   NORMINV,
   NEGBINOMDIST,
-  GEOMEAN
+  GEOMEAN,
+  HARMEAN
 }

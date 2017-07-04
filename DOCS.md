@@ -1801,6 +1801,15 @@
 @returns {number} 
 @constructor
 ```
+
+### HARMEAN 
+
+```
+  Returns the harmonic mean of a data set. 
+@param values - The numerical arguments or ranges that represent a sample. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

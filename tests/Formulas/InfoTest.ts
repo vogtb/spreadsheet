@@ -5,7 +5,8 @@ import {
   ISNUMBER,
   ISNONTEXT,
   ISEMAIL,
-  ISURL
+  ISURL,
+  N
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -93,5 +94,16 @@ test("ISURL", function(){
   assertEquals(ISURL("urn:oasis:names:specification:docbook:dtd:xml:4.1.2"), true);
   catchAndAssertEquals(function() {
     ISURL.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("N", function(){
+  assertEquals(N("10"), 10);
+  assertEquals(N(10), 10);
+  assertEquals(N(true), 1);
+  assertEquals(N(false), 0);
+  assertEquals(N(["10", "str"]), 10);
+  catchAndAssertEquals(function() {
+    NA.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

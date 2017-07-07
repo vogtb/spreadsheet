@@ -84,7 +84,8 @@ import {
   ISNUMBER,
   ISNONTEXT,
   ISEMAIL,
-  ISURL
+  ISURL,
+  N
 } from "./Info";
 import {
   CHOOSE
@@ -414,5 +415,6 @@ export {
   NEGBINOMDIST,
   GEOMEAN,
   HARMEAN,
-  CONFIDENCE
+  CONFIDENCE,
+  N
 }

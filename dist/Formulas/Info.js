@@ -109,3 +109,14 @@ var ISURL = function (value) {
     return true;
 };
 exports.ISURL = ISURL;
+/**
+ * Returns the value as a number.
+ * @param value - value to return.
+ * @returns {number}
+ * @constructor
+ */
+var N = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "N");
+    return TypeConverter_1.TypeConverter.firstValueAsNumber(value);
+};
+exports.N = N;

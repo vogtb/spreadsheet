@@ -120,6 +120,17 @@ var ISURL = function (value) {
   return true;
 };
 
+/**
+ * Returns the value as a number.
+ * @param value - value to return.
+ * @returns {number}
+ * @constructor
+ */
+var N = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "N");
+  return TypeConverter.firstValueAsNumber(value);
+};
+
 
 export {
   NA,
@@ -128,5 +139,6 @@ export {
   ISNUMBER,
   ISNONTEXT,
   ISEMAIL,
-  ISURL
+  ISURL,
+  N
 }

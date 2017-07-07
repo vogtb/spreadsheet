@@ -85,6 +85,7 @@ exports.ISNUMBER = Info_1.ISNUMBER;
 exports.ISNONTEXT = Info_1.ISNONTEXT;
 exports.ISEMAIL = Info_1.ISEMAIL;
 exports.ISURL = Info_1.ISURL;
+exports.N = Info_1.N;
 var Lookup_1 = require("./Lookup");
 exports.CHOOSE = Lookup_1.CHOOSE;
 var Logical_1 = require("./Logical");

@@ -603,6 +603,15 @@
 @returns {boolean} 
 @constructor
 ```
+
+### N 
+
+```
+  Returns the value as a number. 
+@param value - value to return. 
+@returns {number} 
+@constructor
+```
 ## Logical
 
 

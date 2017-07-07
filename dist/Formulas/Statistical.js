@@ -1333,3 +1333,85 @@ var HARMEAN = function () {
     return n / den;
 };
 exports.HARMEAN = HARMEAN;
+/**
+ * Returns the (1-alpha) confidence interval for a normal distribution.
+ * @param alpha - The level of the confidence interval
+ * @param standDev - The standard deviation for the total population
+ * @param size - The size of the population.
+ * @returns {number}
+ * @constructor
+ */
+var CONFIDENCE = function (alpha, standDev, size) {
+    alpha = TypeConverter_1.TypeConverter.firstValueAsNumber(alpha);
+    standDev = TypeConverter_1.TypeConverter.firstValueAsNumber(standDev);
+    size = TypeConverter_1.TypeConverter.firstValueAsNumber(size);
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 3, "CONFIDENCE");
+    if (alpha <= 0 || alpha >= 1) {
+        throw new Errors_1.NumError("Function CONFIDENCE parameter 1 value is " + alpha
+            + ". Valid values are between 0 and 1 exclusively.");
+    }
+    if (standDev <= 0) {
+        throw new Errors_1.NumError("Function CONFIDENCE parameter 2 value is " + standDev + ". It should be greater than 0.");
+    }
+    if (size <= 0) {
+        throw new Errors_1.NumError("Function CONFIDENCE parameter 3 value is " + size + ". It should be at least 1.");
+    }
+    function _erfc(x) {
+        return 1 - MathHelpers_1.erf(x);
+    }
+    function _erfcinv(p) {
+        var j = 0;
+        var x, err, t, pp;
+        if (p >= 2)
+            return -100;
+        if (p <= 0)
+            return 100;
+        pp = (p < 1) ? p : 2 - p;
+        t = Math.sqrt(-2 * Math.log(pp / 2));
+        x = -0.70711 * ((2.30753 + t * 0.27061) /
+            (1 + t * (0.99229 + t * 0.04481)) - t);
+        for (; j < 2; j++) {
+            err = _erfc(x) - pp;
+            x += err / (1.12837916709551257 * Math.exp(-x * x) - x * err);
+        }
+        return (p < 1) ? x : -x;
+    }
+    function _normalInv(p, m, std) {
+        return -1.41421356237309505 * std * _erfcinv(2 * p) + m;
+    }
+    function _sumsqerr(arr) {
+        var mean = mean(arr);
+        var sum = 0;
+        var i = arr.length;
+        var tmp;
+        while (--i >= 0) {
+            tmp = arr[i] - mean;
+            sum += tmp * tmp;
+        }
+        return sum;
+    }
+    function _variance(arr, flag) {
+        return _sumsqerr(arr) / (arr.length - (flag ? 1 : 0));
+    }
+    function _normalci() {
+        var values = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            values[_i] = arguments[_i];
+        }
+        var ans = new Array(2);
+        var change;
+        if (values.length === 4) {
+            change = Math.abs(_normalInv(values[1] / 2, 0, 1) *
+                values[2] / Math.sqrt(values[3]));
+        }
+        else {
+            change = Math.abs(_normalInv(values[1] / 2, 0, 1) *
+                Math.sqrt(_variance(arguments[2])) / Math.sqrt(values[2].length));
+        }
+        ans[0] = values[0] - change;
+        ans[1] = values[0] + change;
+        return ans;
+    }
+    return _normalci(1, alpha, standDev, size)[1] - 1;
+};
+exports.CONFIDENCE = CONFIDENCE;

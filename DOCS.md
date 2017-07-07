@@ -1810,6 +1810,17 @@
 @returns {number} 
 @constructor
 ```
+
+### ONFIDENCE 
+
+```
+  Returns the (1-alpha) confidence interval for a normal distribution. 
+@param alpha - The level of the confidence interval 
+@param standDev - The standard deviation for the total population 
+@param size - The size of the population. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

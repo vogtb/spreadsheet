@@ -805,6 +805,10 @@ test("Sheet HARMEAN", function(){
   assertFormulaEquals('=HARMEAN(10, 4, 6, 3, 6, 7, 1, 1)', 2.532027128862095);
 });
 
+test("Sheet HARMEAN", function(){
+  assertFormulaEquals('=CONFIDENCE(0.04, 6.48, 25)', 2.6616585881788426);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

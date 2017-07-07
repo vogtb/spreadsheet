@@ -58,7 +58,6 @@ For example 64 tbs to a qt.
 * TO_PERCENT - Contingent upon cells having display formats derived from type-hierarchy
 * TO_TEXT - Contingent upon cells having display formats derived from type-hierarchy
 * BINOMDIST
-* CONFIDENCE
 * COVAR
 * CRITBINOM
 * F.DIST.RT

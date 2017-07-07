@@ -170,7 +170,8 @@ import {
   NORMINV,
   NEGBINOMDIST,
   GEOMEAN,
-  HARMEAN
+  HARMEAN,
+  CONFIDENCE
 } from "./Statistical";
 import {
   ARABIC,
@@ -412,5 +413,6 @@ export {
   NORMINV,
   NEGBINOMDIST,
   GEOMEAN,
-  HARMEAN
+  HARMEAN,
+  CONFIDENCE
 }

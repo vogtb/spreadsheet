@@ -41,7 +41,8 @@ import {
   NORMINV,
   NEGBINOMDIST,
   GEOMEAN,
-  HARMEAN
+  HARMEAN,
+  CONFIDENCE
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -870,5 +871,26 @@ test("HARMEAN", function() {
   }, ERRORS.NUM_ERROR);
   catchAndAssertEquals(function() {
     HARMEAN.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("CONFIDENCE", function() {
+  assertEquals(CONFIDENCE(0.04, 6.48, 25), 2.6616585881788426);
+  assertEquals(CONFIDENCE(0.0001, 101.1, 24281), 2.5242568756291566);
+  assertEquals(CONFIDENCE(0.8, 101.1, 24281), 0.1643742612132182);
+  catchAndAssertEquals(function() {
+    CONFIDENCE(0, 101.1, 24281);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    CONFIDENCE(0.1, 0, 24281);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    CONFIDENCE(0.1, 2.1, 0);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    CONFIDENCE.apply(this, [0.8, 101.1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    CONFIDENCE.apply(this, [0.8, 101.1, 24281, 22]);
   }, ERRORS.NA_ERROR);
 });

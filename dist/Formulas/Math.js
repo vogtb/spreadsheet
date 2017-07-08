@@ -1342,3 +1342,39 @@ var UNARY_PERCENT = function (value) {
     return TypeConverter_1.TypeConverter.firstValueAsNumber(value) / 100;
 };
 exports.UNARY_PERCENT = UNARY_PERCENT;
+/**
+ * Returns the factorial of the sum of the arguments divided by the product of the factorials of the arguments.
+ * @param values - Range of numbers.
+ * @returns {number}
+ * @constructor
+ */
+var MULTINOMIAL = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(values, 1, "MULTINOMIAL");
+    values = Filter_1.Filter.flattenAndThrow(values).map(TypeConverter_1.TypeConverter.valueToNumber);
+    var memoizeFact = [];
+    function _fact(value) {
+        var n = Math.floor(value);
+        if (n === 0 || n === 1) {
+            return 1;
+        }
+        else if (memoizeFact[n] > 0) {
+            return memoizeFact[n];
+        }
+        else {
+            memoizeFact[n] = _fact(n - 1) * n;
+            return memoizeFact[n];
+        }
+    }
+    var sum = 0;
+    var divisor = 1;
+    for (var i = 0; i < values.length; i++) {
+        sum += arguments[i];
+        divisor *= _fact(values[i]);
+    }
+    return _fact(sum) / divisor;
+};
+exports.MULTINOMIAL = MULTINOMIAL;

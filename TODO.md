@@ -48,7 +48,6 @@ For example 64 tbs to a qt.
 * ROWS - Requires changes to parser.js
 * VLOOKUP - Requires changes to parser.js
 * COUNTBLANK - Requires changes to parser.js
-* MULTINOMIAL
 * SERIESSUM
 * SUBTOTAL
 * TO_DATE - Contingent upon cells having display formats derived from type-hierarchy

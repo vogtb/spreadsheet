@@ -71,7 +71,8 @@ import {
   UMINUS,
   MROUND,
   FACTDOUBLE,
-  UNARY_PERCENT
+  UNARY_PERCENT,
+  MULTINOMIAL
 } from "./Math";
 import {
   FREQUENCY,
@@ -418,5 +419,6 @@ export {
   HARMEAN,
   CONFIDENCE,
   N,
-  UNARY_PERCENT
+  UNARY_PERCENT,
+  MULTINOMIAL
 }

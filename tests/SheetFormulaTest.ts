@@ -817,6 +817,10 @@ test("Sheet UNARY_PERCENT", function(){
   assertFormulaEquals('=UNARY_PERCENT(10)', 0.1);
 });
 
+test("Sheet MULTINOMIAL", function(){
+  assertFormulaEquals('=MULTINOMIAL(2, 22)', 276);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

@@ -71,7 +71,8 @@ import {
   UMINUS,
   MROUND,
   FACTDOUBLE,
-  UNARY_PERCENT
+  UNARY_PERCENT,
+  MULTINOMIAL
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1500,5 +1501,16 @@ test("UNARY_PERCENT", function(){
   assertEquals(UNARY_PERCENT(0), 0);
   catchAndAssertEquals(function() {
     UNARY_PERCENT.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("MULTINOMIAL", function(){
+  assertEquals(MULTINOMIAL(1, 2, 3), 60);
+  assertEquals(MULTINOMIAL(1, 33, 100), 2.4592658588587683e+33);
+  assertEquals(MULTINOMIAL(2, 22), 276);
+  assertEquals(MULTINOMIAL(3), 1);
+  catchAndAssertEquals(function() {
+    MULTINOMIAL.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

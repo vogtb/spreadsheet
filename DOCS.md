@@ -1374,6 +1374,15 @@
 @returns {number} 
 @constructor
 ```
+
+### LTINOMIAL 
+
+```
+  Returns the factorial of the sum of the arguments divided by the product of the factorials of the arguments. 
+@param values - Range of numbers. 
+@returns {number} 
+@constructor
+```
 ## Range
 
 

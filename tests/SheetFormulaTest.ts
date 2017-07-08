@@ -821,6 +821,14 @@ test("Sheet MULTINOMIAL", function(){
   assertFormulaEquals('=MULTINOMIAL(2, 22)', 276);
 });
 
+test("Sheet BINOMDIST", function(){
+  assertFormulaEquals('=BINOMDIST(14, 22, 0.4, true)', 0.9929516025629364);
+});
+
+test("Sheet COVAR", function(){
+  assertFormulaEquals('=COVAR([2, 4, 5, 1], [7, 3, 1, 3])', -2);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

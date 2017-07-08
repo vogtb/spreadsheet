@@ -1477,3 +1477,27 @@ var BINOMDIST = function (successes, trials, probability, cumulative) {
     return (cumulative) ? _binomialCDF(successes, trials, probability) : _binomialPDF(successes, trials, probability);
 };
 exports.BINOMDIST = BINOMDIST;
+/**
+ * Returns the covariance of the product of paired deviations.
+ * @param dataY - The first range of data.
+ * @param dataX - The second range of data.
+ * @returns {number}
+ * @constructor
+ */
+var COVAR = function (dataY, dataX) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "COVAR");
+    dataY = Filter_1.Filter.flattenAndThrow(dataY).map(TypeConverter_1.TypeConverter.valueToNumber);
+    dataX = Filter_1.Filter.flattenAndThrow(dataX).map(TypeConverter_1.TypeConverter.valueToNumber);
+    if (dataX.length !== dataY.length) {
+        throw new Errors_1.NAError("COVAR has mismatched argument count " + dataY.length + " vs " + dataX.length + ".");
+    }
+    var mean1 = MathHelpers_1.mean(dataY);
+    var mean2 = MathHelpers_1.mean(dataX);
+    var result = 0;
+    var n = dataY.length;
+    for (var i = 0; i < n; i++) {
+        result += (dataY[i] - mean1) * (dataX[i] - mean2);
+    }
+    return result / n;
+};
+exports.COVAR = COVAR;

@@ -1860,6 +1860,16 @@
 @returns {number} 
 @constructor
 ```
+
+### COVAR 
+
+```
+  Returns the covariance of the product of paired deviations. 
+@param dataY - The first range of data. 
+@param dataX - The second range of data. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

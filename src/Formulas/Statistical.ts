@@ -1473,6 +1473,31 @@ var BINOMDIST = function (successes, trials, probability, cumulative) {
 };
 
 
+/**
+ * Returns the covariance of the product of paired deviations.
+ * @param dataY - The first range of data.
+ * @param dataX - The second range of data.
+ * @returns {number}
+ * @constructor
+ */
+var COVAR = function (dataY, dataX) {
+  ArgsChecker.checkLength(arguments, 2, "COVAR");
+  dataY = Filter.flattenAndThrow(dataY).map(TypeConverter.valueToNumber);
+  dataX = Filter.flattenAndThrow(dataX).map(TypeConverter.valueToNumber);
+  if (dataX.length !== dataY.length) {
+    throw new NAError("COVAR has mismatched argument count " + dataY.length + " vs " + dataX.length + ".");
+  }
+  var mean1 = mean(dataY);
+  var mean2 = mean(dataX);
+  var result = 0;
+  var n = dataY.length;
+  for (var i = 0; i < n; i++) {
+    result += (dataY[i] - mean1) * (dataX[i] - mean2);
+  }
+  return result / n;
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1518,5 +1543,6 @@ export {
   GEOMEAN,
   HARMEAN,
   CONFIDENCE,
-  BINOMDIST
+  BINOMDIST,
+  COVAR
 }

@@ -43,7 +43,8 @@ import {
   GEOMEAN,
   HARMEAN,
   CONFIDENCE,
-  BINOMDIST
+  BINOMDIST,
+  COVAR
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -914,5 +915,19 @@ test("BINOMDIST", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     BINOMDIST.apply(this, [20, 20, 1, true, 10]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("COVAR", function() {
+  assertEquals(COVAR([2, 4, 5, 1, 3], [7, 3, 1, 3, 4]), -1.5999999999999999);
+  assertEquals(COVAR([2, 4, 5, 1], [7, 3, 1, 3]), -2);
+  catchAndAssertEquals(function() {
+    COVAR([2, 4, 5, 1], [7, 3, 1, 3, 4]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    COVAR.apply(this, [[10, 10, 10]]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    COVAR.apply(this, [[10, 10, 10], [1, 2, 4], 1000000]);
   }, ERRORS.NA_ERROR);
 });

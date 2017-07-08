@@ -175,7 +175,8 @@ import {
   GEOMEAN,
   HARMEAN,
   CONFIDENCE,
-  BINOMDIST
+  BINOMDIST,
+  COVAR
 } from "./Statistical";
 import {
   ARABIC,
@@ -422,5 +423,6 @@ export {
   N,
   UNARY_PERCENT,
   MULTINOMIAL,
-  BINOMDIST
+  BINOMDIST,
+  COVAR
 }

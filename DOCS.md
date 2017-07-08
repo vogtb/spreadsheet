@@ -1848,6 +1848,18 @@
 @returns {number} 
 @constructor
 ```
+
+### BINOMDIST 
+
+```
+  Returns the individual term binomial distribution probability. 
+@param successes - The number of successes in a set of trials. 
+@param trials - The number of independent trials. 
+@param probability - The probability of success on each trial. 
+@param cumulative - 0 calculates the probability of a single event, 1 calculates the cumulative probability. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

@@ -169,6 +169,7 @@ exports.NEGBINOMDIST = Statistical_1.NEGBINOMDIST;
 exports.GEOMEAN = Statistical_1.GEOMEAN;
 exports.HARMEAN = Statistical_1.HARMEAN;
 exports.CONFIDENCE = Statistical_1.CONFIDENCE;
+exports.BINOMDIST = Statistical_1.BINOMDIST;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

@@ -1342,10 +1342,10 @@ exports.HARMEAN = HARMEAN;
  * @constructor
  */
 var CONFIDENCE = function (alpha, standDev, size) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 3, "CONFIDENCE");
     alpha = TypeConverter_1.TypeConverter.firstValueAsNumber(alpha);
     standDev = TypeConverter_1.TypeConverter.firstValueAsNumber(standDev);
     size = TypeConverter_1.TypeConverter.firstValueAsNumber(size);
-    ArgsChecker_1.ArgsChecker.checkLength(arguments, 3, "CONFIDENCE");
     if (alpha <= 0 || alpha >= 1) {
         throw new Errors_1.NumError("Function CONFIDENCE parameter 1 value is " + alpha
             + ". Valid values are between 0 and 1 exclusively.");
@@ -1415,3 +1415,65 @@ var CONFIDENCE = function (alpha, standDev, size) {
     return _normalci(1, alpha, standDev, size)[1] - 1;
 };
 exports.CONFIDENCE = CONFIDENCE;
+/**
+ * Returns the individual term binomial distribution probability.
+ * @param successes - The number of successes in a set of trials.
+ * @param trials - The number of independent trials.
+ * @param probability - The probability of success on each trial.
+ * @param cumulative - 0 calculates the probability of a single event, 1 calculates the cumulative probability.
+ * @returns {number}
+ * @constructor
+ */
+var BINOMDIST = function (successes, trials, probability, cumulative) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 4, "BINOMDIST");
+    successes = TypeConverter_1.TypeConverter.firstValueAsNumber(successes);
+    trials = TypeConverter_1.TypeConverter.firstValueAsNumber(trials);
+    probability = TypeConverter_1.TypeConverter.firstValueAsNumber(probability);
+    cumulative = TypeConverter_1.TypeConverter.firstValueAsNumber(cumulative);
+    function _binomialCDF(x, n, p) {
+        var binomarr = [], k = 0;
+        if (x < 0) {
+            return 0;
+        }
+        if (x < n) {
+            for (; k <= x; k++) {
+                binomarr[k] = _binomialPDF(k, n, p);
+            }
+            return MathHelpers_1.sum(binomarr);
+        }
+        return 1;
+    }
+    function _combination(n, m) {
+        // make sure n or m don't exceed the upper limit of usable values
+        return (n > 170 || m > 170)
+            ? Math.exp(_combinationln(n, m))
+            : (_factorial(n) / _factorial(m)) / _factorial(n - m);
+    }
+    function _factorial(n) {
+        return n < 0 ? NaN : MathHelpers_1.gammafn(n + 1);
+    }
+    function _factorialln(n) {
+        return n < 0 ? NaN : MathHelpers_1.gammaln(n + 1);
+    }
+    function _combinationln(n, m) {
+        return _factorialln(n) - _factorialln(m) - _factorialln(n - m);
+    }
+    function _binomialPDF(k, n, p) {
+        return (p === 0 || p === 1) ?
+            ((n * p) === k ? 1 : 0) :
+            _combination(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
+    }
+    if (trials < 0) {
+        throw new Errors_1.NumError("Function BINOMDIST parameter 2 value is " + trials + ", but should be greater than 0.");
+    }
+    if (trials < successes) {
+        throw new Errors_1.NumError("Function BINOMDIST parameter 1 value is " + trials
+            + ". It should be less than or equal to value of Function BINOMDIST parameter 2 with " + successes + ".");
+    }
+    if (probability > 1 || probability < 0) {
+        throw new Errors_1.NumError("Function BINOMDIST parameter 3 value is " + probability
+            + ", but should be between 0 and 1 inclusive.");
+    }
+    return (cumulative) ? _binomialCDF(successes, trials, probability) : _binomialPDF(successes, trials, probability);
+};
+exports.BINOMDIST = BINOMDIST;

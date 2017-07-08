@@ -42,7 +42,8 @@ import {
   NEGBINOMDIST,
   GEOMEAN,
   HARMEAN,
-  CONFIDENCE
+  CONFIDENCE,
+  BINOMDIST
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -892,5 +893,26 @@ test("CONFIDENCE", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     CONFIDENCE.apply(this, [0.8, 101.1, 24281, 22]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("BINOMDIST", function() {
+  assertEquals(BINOMDIST(20, 22, 0.04, true), 0.9999999999999998);
+  assertEquals(BINOMDIST(14, 22, 0.4, true), 0.9929516025629364);
+  assertEquals(BINOMDIST(14, 22, 0.4, false), 0.014417421604478797);
+  catchAndAssertEquals(function() {
+    BINOMDIST(21, 20, 0.4, false);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    BINOMDIST(20, 20, -1, false);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    BINOMDIST(20, 0, -1, false);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    BINOMDIST.apply(this, [20, 20, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    BINOMDIST.apply(this, [20, 20, 1, true, 10]);
   }, ERRORS.NA_ERROR);
 });

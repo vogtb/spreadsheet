@@ -235,9 +235,11 @@ var Parser = (function () {
                     }
                     break;
                 case 23:
+                    // console.log("message from parser: 'calling function with no args': ", $$[$0 - 2]);
                     this.$ = yy.handler.helper.callFunction.call(this, $$[$0 - 2], '');
                     break;
                 case 24:
+                    // console.log("message from parser: 'calling function w/ args': ", $$[$0 - 3], $$[$0 - 1]);
                     this.$ = yy.handler.helper.callFunction.call(this, $$[$0 - 3], $$[$0 - 1]);
                     break;
                 case 28:
@@ -1201,7 +1203,7 @@ var Parser = (function () {
                             }
                             else if (this._backtrack) {
                                 match = false;
-                                continue; // rule action called reject() implying a rule MISmatch.
+                                continue; // rule action called reject() implying a rule mis-match.
                             }
                             else {
                                 // else: this is a lexer rule which consumes input without producing a token (e.g. whitespace)
@@ -1371,11 +1373,13 @@ var Parser = (function () {
             rules: [/^(?:\s+)/,
                 /^(?:"(\\["]|[^"])*")/,
                 /^(?:'(\\[']|[^'])*')/,
+                // Changed from /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+(?=[(]))/
                 /^(?:[A-Za-z.]{1,}[A-Za-z_0-9]+(?=[(]))/,
                 /^(?:([0]?[1-9]|1[0-2])[:][0-5][0-9]([:][0-5][0-9])?[ ]?(AM|am|aM|Am|PM|pm|pM|Pm))/,
                 /^(?:([0]?[0-9]|1[0-9]|2[0-3])[:][0-5][0-9]([:][0-5][0-9])?)/,
                 /^(?:\$[A-Za-z]+\$[0-9]+)/,
                 /^(?:[A-Za-z]+[0-9]+)/,
+                // Changed from /^(?:[A-Za-z.]+(?=[(]))/
                 /^(?:[A-Za-z.]+(?=[(]))/,
                 /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+)/,
                 /^(?:[A-Za-z_]+)/,

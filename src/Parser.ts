@@ -234,9 +234,11 @@ var Parser = (function () {
           }
           break;
         case 23:
+          // console.log("message from parser: 'calling function with no args': ", $$[$0 - 2]);
           this.$ = yy.handler.helper.callFunction.call(this, $$[$0 - 2], '');
           break;
         case 24:
+          // console.log("message from parser: 'calling function w/ args': ", $$[$0 - 3], $$[$0 - 1]);
           this.$ = yy.handler.helper.callFunction.call(this, $$[$0 - 3], $$[$0 - 1]);
           break;
         case 28:
@@ -1027,7 +1029,7 @@ var Parser = (function () {
         }
       },
 
-// resets the lexer, sets new input
+      // resets the lexer, sets new input
       setInput: function (input, yy) {
         this.yy = yy || this.yy || {};
         this._input = input;
@@ -1048,7 +1050,7 @@ var Parser = (function () {
         return this;
       },
 
-// consumes and returns one char from the input
+      // consumes and returns one char from the input
       input: function () {
         var ch = this._input[0];
         this.yytext += ch;
@@ -1071,7 +1073,7 @@ var Parser = (function () {
         return ch;
       },
 
-// unshifts one char (or a string) into the input
+      // unshifts one char (or a string) into the input
       unput: function (ch) {
         var len = ch.length;
         var lines = ch.split(/(?:\r\n?|\n)/g);
@@ -1106,13 +1108,13 @@ var Parser = (function () {
         return this;
       },
 
-// When called from action, caches matched text and appends it on next action
+      // When called from action, caches matched text and appends it on next action
       more: function () {
         this._more = true;
         return this;
       },
 
-// When called from action, signals the lexer that this rule fails to match the input, so the next matching rule (regex) should be tested instead.
+      // When called from action, signals the lexer that this rule fails to match the input, so the next matching rule (regex) should be tested instead.
       reject: function () {
         if (this.options.backtrack_lexer) {
           this._backtrack = true;
@@ -1127,18 +1129,18 @@ var Parser = (function () {
         return this;
       },
 
-// retain first n characters of the match
+      // retain first n characters of the match
       less: function (n) {
         this.unput(this.match.slice(n));
       },
 
-// displays already matched input, i.e. for error messages
+      // displays already matched input, i.e. for error messages
       pastInput: function () {
         var past = this.matched.substr(0, this.matched.length - this.match.length);
         return (past.length > 20 ? '...' : '') + past.substr(-20).replace(/\n/g, "");
       },
 
-// displays upcoming input, i.e. for error messages
+      // displays upcoming input, i.e. for error messages
       upcomingInput: function () {
         var next = this.match;
         if (next.length < 20) {
@@ -1147,14 +1149,14 @@ var Parser = (function () {
         return (next.substr(0, 20) + (next.length > 20 ? '...' : '')).replace(/\n/g, "");
       },
 
-// displays the character position where the lexing error occurred, i.e. for error messages
+      // displays the character position where the lexing error occurred, i.e. for error messages
       showPosition: function () {
         var pre = this.pastInput();
         var c = new Array(pre.length + 1).join("-");
         return pre + this.upcomingInput() + "\n" + c + "^";
       },
 
-// test the lexed token: return FALSE when not a match, otherwise return token
+      // test the lexed token: return FALSE when not a match, otherwise return token
       test_match: function (match, indexed_rule) {
         var token,
           lines,
@@ -1226,7 +1228,7 @@ var Parser = (function () {
         return false;
       },
 
-// return next match in input
+      // return next match in input
       next: function () {
         if (this.done) {
           return this.EOF;
@@ -1255,7 +1257,7 @@ var Parser = (function () {
                 return token;
               } else if (this._backtrack) {
                 match = false;
-                continue; // rule action called reject() implying a rule MISmatch.
+                continue; // rule action called reject() implying a rule mis-match.
               } else {
                 // else: this is a lexer rule which consumes input without producing a token (e.g. whitespace)
                 return false;
@@ -1284,7 +1286,7 @@ var Parser = (function () {
         }
       },
 
-// return next match that has a token
+      // return next match that has a token
       lex: function lex() {
         var r = this.next();
         if (r) {
@@ -1294,12 +1296,12 @@ var Parser = (function () {
         }
       },
 
-// activates a new lexer condition state (pushes the new lexer condition state onto the condition stack)
+      // activates a new lexer condition state (pushes the new lexer condition state onto the condition stack)
       begin: function begin(condition) {
         this.conditionStack.push(condition);
       },
 
-// pop the previously active lexer condition state off the condition stack
+      // pop the previously active lexer condition state off the condition stack
       popState: function popState() {
         var n = this.conditionStack.length - 1;
         if (n > 0) {
@@ -1309,7 +1311,7 @@ var Parser = (function () {
         }
       },
 
-// produce the lexer rule set which is active for the currently active lexer condition state
+      // produce the lexer rule set which is active for the currently active lexer condition state
       _currentRules: function _currentRules() {
         if (this.conditionStack.length && this.conditionStack[this.conditionStack.length - 1]) {
           return this.conditions[this.conditionStack[this.conditionStack.length - 1]].rules;
@@ -1318,7 +1320,7 @@ var Parser = (function () {
         }
       },
 
-// return the currently active lexer condition state; when an index argument is provided it produces the N-th previous condition state, if available
+      // return the currently active lexer condition state; when an index argument is provided it produces the N-th previous condition state, if available
       topState: function topState(n) {
         n = this.conditionStack.length - 1 - Math.abs(n || 0);
         if (n >= 0) {
@@ -1328,12 +1330,12 @@ var Parser = (function () {
         }
       },
 
-// alias for begin(condition)
+      // alias for begin(condition)
       pushState: function pushState(condition) {
         this.begin(condition);
       },
 
-// return the number of states currently on the stack
+      // return the number of states currently on the stack
       stateStackSize: function stateStackSize() {
         return this.conditionStack.length;
       },
@@ -1422,43 +1424,45 @@ var Parser = (function () {
         }
       },
       // NOTE: Alterations made in some regular-expressions to allow for formulas containing dot-notation. Eg: F.INV
-      rules: [/^(?:\s+)/,
-        /^(?:"(\\["]|[^"])*")/,
-        /^(?:'(\\[']|[^'])*')/,
-        /^(?:[A-Za-z.]{1,}[A-Za-z_0-9]+(?=[(]))/, // Changed from /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+(?=[(]))/
-        /^(?:([0]?[1-9]|1[0-2])[:][0-5][0-9]([:][0-5][0-9])?[ ]?(AM|am|aM|Am|PM|pm|pM|Pm))/,
-        /^(?:([0]?[0-9]|1[0-9]|2[0-3])[:][0-5][0-9]([:][0-5][0-9])?)/,
-        /^(?:\$[A-Za-z]+\$[0-9]+)/,
-        /^(?:[A-Za-z]+[0-9]+)/,
-        /^(?:[A-Za-z.]+(?=[(]))/, //Changed from /^(?:[A-Za-z.]+(?=[(]))/
-        /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+)/,
-        /^(?:[A-Za-z_]+)/,
-        /^(?:[0-9]+)/,
-        /^(?:\[(.*)?\])/,
-        /^(?:\$)/,
-        /^(?:&)/,
-        /^(?: )/,
-        /^(?:[.])/,
-        /^(?::)/,
-        /^(?:;)/,
-        /^(?:,)/,
-        /^(?:\*)/,
-        /^(?:\/)/,
-        /^(?:-)/,
-        /^(?:\+)/,
-        /^(?:\^)/,
-        /^(?:\()/,
-        /^(?:\))/,
-        /^(?:>)/,
-        /^(?:<)/,
-        /^(?:NOT\b)/,
-        /^(?:")/,
-        /^(?:')/,
-        /^(?:!)/,
-        /^(?:=)/,
-        /^(?:%)/,
-        /^(?:[#])/,
-        /^(?:$)/],
+      rules: [/^(?:\s+)/, // rule 0
+        /^(?:"(\\["]|[^"])*")/, // rule 1
+        /^(?:'(\\[']|[^'])*')/, // rule 2
+        // Changed from /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+(?=[(]))/
+        /^(?:[A-Za-z.]{1,}[A-Za-z_0-9]+(?=[(]))/, // rule 3
+        /^(?:([0]?[1-9]|1[0-2])[:][0-5][0-9]([:][0-5][0-9])?[ ]?(AM|am|aM|Am|PM|pm|pM|Pm))/, // rule 4
+        /^(?:([0]?[0-9]|1[0-9]|2[0-3])[:][0-5][0-9]([:][0-5][0-9])?)/, // rule 5
+        /^(?:\$[A-Za-z]+\$[0-9]+)/, // rule 6
+        /^(?:[A-Za-z]+[0-9]+)/, // rule 7
+        // Changed from /^(?:[A-Za-z.]+(?=[(]))/
+        /^(?:[A-Za-z.]+(?=[(]))/, // rule 8
+        /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+)/, // rule 9
+        /^(?:[A-Za-z_]+)/, // rule 10
+        /^(?:[0-9]+)/, // rule 11
+        /^(?:\[(.*)?\])/, // rule 12
+        /^(?:\$)/, // rule 13
+        /^(?:&)/, // rule 14
+        /^(?: )/, // rule 15
+        /^(?:[.])/, // rule 16
+        /^(?::)/, // rule 17
+        /^(?:;)/, // rule 18
+        /^(?:,)/, // rule 19
+        /^(?:\*)/, // rule 20
+        /^(?:\/)/, // rule 21
+        /^(?:-)/, // rule 22
+        /^(?:\+)/, // rule 23
+        /^(?:\^)/, // rule 24
+        /^(?:\()/, // rule 25
+        /^(?:\))/, // rule 26
+        /^(?:>)/, // rule 27
+        /^(?:<)/, // rule 28
+        /^(?:NOT\b)/, // rule 29
+        /^(?:")/, // rule 30
+        /^(?:')/, // rule 31
+        /^(?:!)/, // rule 32
+        /^(?:=)/, // rule 33
+        /^(?:%)/, // rule 34
+        /^(?:[#])/, // rule 35
+        /^(?:$)/], // rule 36
       conditions: {
         "INITIAL": {
           "rules": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36],

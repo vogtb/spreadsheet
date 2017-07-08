@@ -72,11 +72,14 @@
  }
  */
 var Parser = (function () {
-  var o = function (k, v, o, l) {
-    for (o = o || {}, l = k.length; l--; o[k[l]] = v);
+  var o = function (k, v, o?, l?) {
+    for (o = o || {}, l = k.length; l--; o[k[l]] = v) {
+    }
     return o
   }, $V0 = [1, 4], $V1 = [1, 5], $V2 = [1, 7], $V3 = [1, 10], $V4 = [1, 8], $V5 = [1, 9], $V6 = [1, 11], $V7 = [1, 16], $V8 = [1, 17], $V9 = [1, 14], $Va = [1, 15], $Vb = [1, 18], $Vc = [1, 20], $Vd = [1, 21], $Ve = [1, 22], $Vf = [1, 23], $Vg = [1, 24], $Vh = [1, 25], $Vi = [1, 26], $Vj = [1, 27], $Vk = [1, 28], $Vl = [1, 29], $Vm = [5, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31], $Vn = [5, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31, 33], $Vo = [1, 38], $Vp = [5, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31, 35], $Vq = [5, 12, 13, 15, 16, 17, 18, 19, 30, 31], $Vr = [5, 12, 15, 16, 17, 18, 30, 31], $Vs = [5, 12, 13, 15, 16, 17, 18, 19, 20, 21, 30, 31], $Vt = [15, 30, 31], $Vu = [5, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31, 32, 36];
   var parser = {
+    lexer: undefined,
+    Parser: undefined,
     trace: function trace() {
     },
     yy: {},
@@ -158,212 +161,135 @@ var Parser = (function () {
       var $0 = $$.length - 1;
       switch (yystate) {
         case 1:
-
           return $$[$0 - 1];
-
-          break;
         case 2:
-
           this.$ = yy.handler.helper.callVariable.call(this, $$[$0]);
-
           break;
         case 3:
-
           this.$ = yy.handler.time.call(yy.obj, $$[$0], true);
-
           break;
         case 4:
-
           this.$ = yy.handler.time.call(yy.obj, $$[$0]);
-
           break;
         case 5:
-
           this.$ = yy.handler.helper.number($$[$0]);
-
           break;
         case 6:
-
           this.$ = yy.handler.helper.string($$[$0]);
-
           break;
         case 7:
-
           this.$ = yy.handler.helper.specialMatch('&', $$[$0 - 2], $$[$0]);
-
           break;
         case 8:
-
           this.$ = yy.handler.helper.logicMatch('=', $$[$0 - 2], $$[$0]);
-
           break;
         case 9:
-
           this.$ = yy.handler.helper.mathMatch('+', $$[$0 - 2], $$[$0]);
-
           break;
         case 10:
-
           this.$ = yy.handler.helper.number($$[$0 - 1]);
-
           break;
         case 11:
-
           this.$ = yy.handler.helper.logicMatch('<=', $$[$0 - 3], $$[$0]);
-
           break;
         case 12:
-
           this.$ = yy.handler.helper.logicMatch('>=', $$[$0 - 3], $$[$0]);
-
           break;
         case 13:
-
           this.$ = yy.handler.helper.logicMatch('<>', $$[$0 - 3], $$[$0]);
-
           break;
         case 14:
-
           this.$ = yy.handler.helper.logicMatch('NOT', $$[$0 - 2], $$[$0]);
-
           break;
         case 15:
-
           this.$ = yy.handler.helper.logicMatch('>', $$[$0 - 2], $$[$0]);
-
           break;
         case 16:
-
           this.$ = yy.handler.helper.logicMatch('<', $$[$0 - 2], $$[$0]);
-
           break;
         case 17:
-
           this.$ = yy.handler.helper.mathMatch('-', $$[$0 - 2], $$[$0]);
-
           break;
         case 18:
-
           this.$ = yy.handler.helper.mathMatch('*', $$[$0 - 2], $$[$0]);
-
           break;
         case 19:
-
           this.$ = yy.handler.helper.mathMatch('/', $$[$0 - 2], $$[$0]);
-
           break;
         case 20:
-
           this.$ = yy.handler.helper.mathMatch('^', $$[$0 - 2], $$[$0]);
-
           break;
         case 21:
-
           var n1 = yy.handler.helper.numberInverted($$[$0]);
           this.$ = n1;
           if (isNaN(this.$)) {
             this.$ = 0;
           }
-
           break;
         case 22:
-
           var n1 = yy.handler.helper.number($$[$0]);
           this.$ = n1;
           if (isNaN(this.$)) {
             this.$ = 0;
           }
-
           break;
         case 23:
-
           this.$ = yy.handler.helper.callFunction.call(this, $$[$0 - 2], '');
-
           break;
         case 24:
-
           this.$ = yy.handler.helper.callFunction.call(this, $$[$0 - 3], $$[$0 - 1]);
-
           break;
         case 28:
-
           this.$ = yy.handler.helper.fixedCellValue.call(yy.obj, $$[$0]);
-
           break;
         case 29:
-
           this.$ = yy.handler.helper.fixedCellRangeValue.call(yy.obj, $$[$0 - 2], $$[$0]);
-
           break;
         case 30:
-
           this.$ = yy.handler.helper.cellValue.call(yy.obj, $$[$0]);
-
           break;
         case 31:
-
           this.$ = yy.handler.helper.cellRangeValue.call(yy.obj, $$[$0 - 2], $$[$0]);
-
           break;
         case 32:
-
           if (yy.handler.utils.isArray($$[$0])) {
             this.$ = $$[$0];
           } else {
             this.$ = [$$[$0]];
           }
-
           break;
         case 33:
-
           var result = [],
             arr = eval("[" + yytext + "]");
-
           arr.forEach(function (item) {
             result.push(item);
           });
-
           this.$ = result;
-
           break;
         case 34:
         case 35:
-
           $$[$0 - 2].push($$[$0]);
           this.$ = $$[$0 - 2];
-
           break;
         case 36:
-
           this.$ = [$$[$0]];
-
           break;
         case 37:
-
           this.$ = (yy.handler.utils.isArray($$[$0 - 2]) ? $$[$0 - 2] : [$$[$0 - 2]]);
           this.$.push($$[$0]);
-
           break;
         case 38:
-
           this.$ = $$[$0];
-
           break;
         case 39:
-
-          this.$ = ($$[$0 - 2] + '.' + $$[$0]) * 1;
-
+          this.$ = parseFloat($$[$0 - 2] + '.' + $$[$0]) * 1;
           break;
         case 40:
-
           this.$ = $$[$0 - 1] * 0.01;
-
           break;
         case 41:
         case 42:
-
           this.$ = $$[$0 - 2] + $$[$0 - 1] + $$[$0];
-
           break;
       }
     },
@@ -867,7 +793,7 @@ var Parser = (function () {
       //this.reductionCount = this.shiftCount = 0;
 
       var lexer = Object.create(this.lexer);
-      var sharedState = {yy: {}};
+      var sharedState = {yy: {parseError: undefined, lexer: {parseError: undefined}, parser: {parseError: undefined}}};
       // copy state
       for (var k in this.yy) {
         if (Object.prototype.hasOwnProperty.call(this.yy, k)) {
@@ -898,18 +824,20 @@ var Parser = (function () {
         lstack.length = lstack.length - n;
       }
 
-      _token_stack:
-        function lex() {
-          var token;
-          token = lexer.lex() || EOF;
-          // if token isn't its numeric value, convert
-          if (typeof token !== 'number') {
-            token = self.symbols_[token] || token;
-          }
-          return token;
+      function lex() {
+        var token;
+        token = lexer.lex() || EOF;
+        // if token isn't its numeric value, convert
+        if (typeof token !== 'number') {
+          token = self.symbols_[token] || token;
         }
+        return token;
+      }
 
-      var symbol, preErrorSymbol, state, action, a, r, yyval = {}, p, len, newState, expected;
+      var symbol, preErrorSymbol, state, action, a, r, yyval = {
+        $: undefined,
+        _$: undefined
+      }, p, len, newState, expected;
       while (true) {
         // retreive state number from top of stack
         state = stack[stack.length - 1];
@@ -925,89 +853,88 @@ var Parser = (function () {
           action = table[state] && table[state][symbol];
         }
 
-        _handle_error:
-          // handle parse error
-          if (typeof action === 'undefined' || !action.length || !action[0]) {
-            var error_rule_depth;
-            var errStr = '';
+        // handle parse error
+        if (typeof action === 'undefined' || !action.length || !action[0]) {
+          var error_rule_depth;
+          var errStr = '';
 
-            // Return the rule stack depth where the nearest error rule can be found.
-            // Return FALSE when no error recovery rule was found.
-            function locateNearestErrorRecoveryRule(state) {
-              var stack_probe = stack.length - 1;
-              var depth = 0;
-
-              // try to recover from error
-              for (; ;) {
-                // check for error recovery rule in this state
-                if ((TERROR.toString()) in table[state]) {
-                  return depth;
-                }
-                if (state === 0 || stack_probe < 2) {
-                  return false; // No suitable error recovery rule available.
-                }
-                stack_probe -= 2; // popStack(1): [symbol, action]
-                state = stack[stack_probe];
-                ++depth;
-              }
-            }
-
-            if (!recovering) {
-              // first see if there's any chance at hitting an error recovery rule:
-              error_rule_depth = locateNearestErrorRecoveryRule(state);
-
-              // Report error
-              expected = [];
-              for (p in table[state]) {
-                if (this.terminals_[p] && p > TERROR) {
-                  expected.push("'" + this.terminals_[p] + "'");
-                }
-              }
-              if (lexer.showPosition) {
-                errStr = 'Parse error on line ' + (yylineno + 1) + ":\n" + lexer.showPosition() + "\nExpecting " + expected.join(', ') + ", got '" + (this.terminals_[symbol] || symbol) + "'";
-              } else {
-                errStr = 'Parse error on line ' + (yylineno + 1) + ": Unexpected " +
-                  (symbol == EOF ? "end of input" :
-                    ("'" + (this.terminals_[symbol] || symbol) + "'"));
-              }
-              this.parseError(errStr, {
-                text: lexer.match,
-                token: this.terminals_[symbol] || symbol,
-                line: lexer.yylineno,
-                loc: yyloc,
-                expected: expected,
-                recoverable: (error_rule_depth !== false)
-              });
-            } else if (preErrorSymbol !== EOF) {
-              error_rule_depth = locateNearestErrorRecoveryRule(state);
-            }
-
-            // just recovered from another error
-            if (recovering == 3) {
-              if (symbol === EOF || preErrorSymbol === EOF) {
-                throw new Error(errStr || 'Parsing halted while starting to recover from another error.');
-              }
-
-              // discard current lookahead and grab another
-              yyleng = lexer.yyleng;
-              yytext = lexer.yytext;
-              yylineno = lexer.yylineno;
-              yyloc = lexer.yylloc;
-              symbol = lex();
-            }
+          // Return the rule stack depth where the nearest error rule can be found.
+          // Return FALSE when no error recovery rule was found.
+          this.locateNearestErrorRecoveryRule = function(state) {
+            var stack_probe = stack.length - 1;
+            var depth = 0;
 
             // try to recover from error
-            if (error_rule_depth === false) {
-              throw new Error(errStr || 'Parsing halted. No suitable error recovery rule available.');
+            for (; ;) {
+              // check for error recovery rule in this state
+              if ((TERROR.toString()) in table[state]) {
+                return depth;
+              }
+              if (state === 0 || stack_probe < 2) {
+                return false; // No suitable error recovery rule available.
+              }
+              stack_probe -= 2; // popStack(1): [symbol, action]
+              state = stack[stack_probe];
+              ++depth;
             }
-            popStack(error_rule_depth);
-
-            preErrorSymbol = (symbol == TERROR ? null : symbol); // save the lookahead token
-            symbol = TERROR;         // insert generic error symbol as new lookahead
-            state = stack[stack.length - 1];
-            action = table[state] && table[state][TERROR];
-            recovering = 3; // allow 3 real symbols to be shifted before reporting a new error
           }
+
+          if (!recovering) {
+            // first see if there's any chance at hitting an error recovery rule:
+            error_rule_depth = this.locateNearestErrorRecoveryRule(state);
+
+            // Report error
+            expected = [];
+            for (p in table[state]) {
+              if (this.terminals_[p] && p > TERROR) {
+                expected.push("'" + this.terminals_[p] + "'");
+              }
+            }
+            if (lexer.showPosition) {
+              errStr = 'Parse error on line ' + (yylineno + 1) + ":\n" + lexer.showPosition() + "\nExpecting " + expected.join(', ') + ", got '" + (this.terminals_[symbol] || symbol) + "'";
+            } else {
+              errStr = 'Parse error on line ' + (yylineno + 1) + ": Unexpected " +
+                (symbol == EOF ? "end of input" :
+                  ("'" + (this.terminals_[symbol] || symbol) + "'"));
+            }
+            this.parseError(errStr, {
+              text: lexer.match,
+              token: this.terminals_[symbol] || symbol,
+              line: lexer.yylineno,
+              loc: yyloc,
+              expected: expected,
+              recoverable: (error_rule_depth !== false)
+            });
+          } else if (preErrorSymbol !== EOF) {
+            error_rule_depth = this.locateNearestErrorRecoveryRule(state);
+          }
+
+          // just recovered from another error
+          if (recovering == 3) {
+            if (symbol === EOF || preErrorSymbol === EOF) {
+              throw new Error(errStr || 'Parsing halted while starting to recover from another error.');
+            }
+
+            // discard current lookahead and grab another
+            yyleng = lexer.yyleng;
+            yytext = lexer.yytext;
+            yylineno = lexer.yylineno;
+            yyloc = lexer.yylloc;
+            symbol = lex();
+          }
+
+          // try to recover from error
+          if (error_rule_depth === false) {
+            throw new Error(errStr || 'Parsing halted. No suitable error recovery rule available.');
+          }
+          popStack(error_rule_depth);
+
+          preErrorSymbol = (symbol == TERROR ? null : symbol); // save the lookahead token
+          symbol = TERROR;         // insert generic error symbol as new lookahead
+          state = stack[stack.length - 1];
+          action = table[state] && table[state][TERROR];
+          recovering = 3; // allow 3 real symbols to be shifted before reporting a new error
+        }
 
         // this shouldn't happen, unless resolve defaults are off
         if (action[0] instanceof Array && action.length > 1) {
@@ -1083,8 +1010,6 @@ var Parser = (function () {
         }
 
       }
-
-      return true;
     }
   };
 
@@ -1420,117 +1345,80 @@ var Parser = (function () {
             break;
           case 1:
             return 10;
-            break;
           case 2:
             return 10;
-            break;
           case 3:
             return 23;
-            break;
           case 4:
             return 7;
-            break;
           case 5:
             return 8;
-            break;
           case 6:
             //if (yy.obj.type == 'cell') return 26;
             //return 32;
-            return 26
-
-            break;
+            return 26;
           case 7:
             //if (yy.obj.type == 'cell') return 28;
             //return 32;
             return 28;
-
-            break;
           case 8:
             return 23;
-            break;
           case 9:
             return 32;
-            break;
           case 10:
             return 32;
-            break;
           case 11:
             return 34;
-            break;
           case 12:
             return 29;
-            break;
           case 13:/* skip whitespace */
             break;
           case 14:
             return 11;
-            break;
           case 15:
             return ' ';
-            break;
           case 16:
             return 33;
-            break;
           case 17:
             return 27;
-            break;
           case 18:
             return 30;
-            break;
           case 19:
             return 31;
-            break;
           case 20:
             return 20;
-            break;
           case 21:
             return 21;
-            break;
           case 22:
             return 19;
-            break;
           case 23:
             return 13;
-            break;
           case 24:
             return 22;
-            break;
           case 25:
             return 14;
-            break;
           case 26:
             return 15;
-            break;
           case 27:
             return 17;
-            break;
           case 28:
             return 16;
-            break;
           case 29:
             return 18;
-            break;
           case 30:
             return '"';
-            break;
           case 31:
             return "'";
-            break;
           case 32:
             return "!";
-            break;
           case 33:
             return 12;
-            break;
           case 34:
             return 35;
-            break;
           case 35:
             return 36;
-            break;
           case 36:
             return 5;
-            break;
         }
       },
       // NOTE: Alterations made in some regular-expressions to allow for formulas containing dot-notation. Eg: F.INV
@@ -1590,6 +1478,6 @@ var Parser = (function () {
   return new Parser;
 })();
 
-module.exports = {
-  Parser: Parser
-};
+export {
+  Parser
+}

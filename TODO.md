@@ -25,29 +25,29 @@ For example 64 tbs to a qt.
 
 ### Formulas to write
 
-* ERROR.TYPE - Requires changes to parser.js
-* ISBLANK - Requires changes to parser.js
-* ISERR - Requires changes to parser.js
-* ISERROR - Requires changes to parser.js
-* ISFORMULA - Requires changes to parser.js
-* ISNA - Requires changes to parser.js
-* ISREF - Requires changes to parser.js
-* TYPE - Requires changes to parser.js
-* CELL - Requires changes to parser.js
-* IFERROR - Requires changes to parser.js
-* ADDRESS - Requires changes to parser.js
-* COLUMN - Requires changes to parser.js
-* COLUMNS - Requires changes to parser.js
-* HLOOKUP - Requires changes to parser.js
-* INDEX - Requires changes to parser.js
-* INDIRECT - Requires changes to parser.js
-* LOOKUP - Requires changes to parser.js
-* MATCH - Requires changes to parser.js
-* OFFSET - Requires changes to parser.js
-* ROW - Requires changes to parser.js
-* ROWS - Requires changes to parser.js
-* VLOOKUP - Requires changes to parser.js
-* COUNTBLANK - Requires changes to parser.js
+* ERROR.TYPE - Requires changes to Parser.ts
+* ISBLANK - Requires changes to Parser.ts
+* ISERR - Requires changes to Parser.ts
+* ISERROR - Requires changes to Parser.ts
+* ISFORMULA - Requires changes to Parser.ts
+* ISNA - Requires changes to Parser.ts
+* ISREF - Requires changes to Parser.ts
+* TYPE - Requires changes to Parser.ts
+* CELL - Requires changes to Parser.ts
+* IFERROR - Requires changes to Parser.ts
+* ADDRESS - Requires changes to Parser.ts
+* COLUMN - Requires changes to Parser.ts
+* COLUMNS - Requires changes to Parser.ts
+* HLOOKUP - Requires changes to Parser.ts
+* INDEX - Requires changes to Parser.ts
+* INDIRECT - Requires changes to Parser.ts
+* LOOKUP - Requires changes to Parser.ts
+* MATCH - Requires changes to Parser.ts
+* OFFSET - Requires changes to Parser.ts
+* ROW - Requires changes to Parser.ts
+* ROWS - Requires changes to Parser.ts
+* VLOOKUP - Requires changes to Parser.ts
+* COUNTBLANK - Requires changes to
 * SERIESSUM
 * SUBTOTAL
 * TO_DATE - Contingent upon cells having display formats derived from type-hierarchy

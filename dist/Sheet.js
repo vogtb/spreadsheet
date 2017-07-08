@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-/// <reference path="parser.d.ts"/>
 var Parser_1 = require("./Parser");
 var Cell_1 = require("./Cell");
 var Errors_1 = require("./Errors");

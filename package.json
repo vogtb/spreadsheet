@@ -4,7 +4,7 @@
   "description": "TypeScript/javascript implementation of a spreadsheet.",
   "scripts": {
     "clean": "rm -rf dist/* && rm -rf test_output/*",
-    "build": "tsc && cp lib/parser.js dist/",
+    "build": "tsc",
     "docs": "./docs.sh src/Formulas",
     "test": "./tests.sh",
     "test:quiet": "./tests.sh | grep -v Test:"

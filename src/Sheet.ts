@@ -1,4 +1,3 @@
-/// <reference path="parser.d.ts"/>
 import {
   Parser
 } from "./Parser";

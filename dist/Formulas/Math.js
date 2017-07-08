@@ -1331,3 +1331,14 @@ var FACTDOUBLE = function (value) {
     }
 };
 exports.FACTDOUBLE = FACTDOUBLE;
+/**
+ * Returns a value as a percentage where 100 is 1.0, and 0 is 0.
+ * @param value - To convert.
+ * @returns {number}
+ * @constructor
+ */
+var UNARY_PERCENT = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "UNARY_PERCENT");
+    return TypeConverter_1.TypeConverter.firstValueAsNumber(value) / 100;
+};
+exports.UNARY_PERCENT = UNARY_PERCENT;

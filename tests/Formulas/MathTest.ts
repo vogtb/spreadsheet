@@ -70,7 +70,8 @@ import {
   UPLUS,
   UMINUS,
   MROUND,
-  FACTDOUBLE
+  FACTDOUBLE,
+  UNARY_PERCENT
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1489,5 +1490,15 @@ test("SIGN", function(){
   assertEquals(SIGN(true), 1);
   catchAndAssertEquals(function() {
     SIGN.apply(this, [3, 2]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("UNARY_PERCENT", function(){
+  assertEquals(UNARY_PERCENT(100), 1);
+  assertEquals(UNARY_PERCENT(2), 0.02);
+  assertEquals(UNARY_PERCENT(0), 0);
+  catchAndAssertEquals(function() {
+    UNARY_PERCENT.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

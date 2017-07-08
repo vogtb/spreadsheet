@@ -73,6 +73,7 @@ exports.UPLUS = Math_1.UPLUS;
 exports.UMINUS = Math_1.UMINUS;
 exports.MROUND = Math_1.MROUND;
 exports.FACTDOUBLE = Math_1.FACTDOUBLE;
+exports.UNARY_PERCENT = Math_1.UNARY_PERCENT;
 var Range_1 = require("./Range");
 exports.FREQUENCY = Range_1.FREQUENCY;
 exports.GROWTH = Range_1.GROWTH;

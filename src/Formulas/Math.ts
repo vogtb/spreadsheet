@@ -1341,6 +1341,17 @@ var FACTDOUBLE = function (value) {
   }
 };
 
+/**
+ * Returns a value as a percentage where 100 is 1.0, and 0 is 0.
+ * @param value - To convert.
+ * @returns {number}
+ * @constructor
+ */
+var UNARY_PERCENT = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "UNARY_PERCENT");
+  return TypeConverter.firstValueAsNumber(value) / 100;
+};
+
 export {
   ABS,
   ACOS,
@@ -1413,5 +1424,6 @@ export {
   UPLUS,
   UMINUS,
   MROUND,
-  FACTDOUBLE
+  FACTDOUBLE,
+  UNARY_PERCENT
 }

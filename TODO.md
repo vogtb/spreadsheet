@@ -51,7 +51,6 @@ For example 64 tbs to a qt.
 * MULTINOMIAL
 * SERIESSUM
 * SUBTOTAL
-* UNARY_PERCENT
 * TO_DATE - Contingent upon cells having display formats derived from type-hierarchy
 * TO_DOLLARS - Contingent upon cells having display formats derived from type-hierarchy
 * TO_PERCENT - Contingent upon cells having display formats derived from type-hierarchy

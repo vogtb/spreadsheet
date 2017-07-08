@@ -1365,6 +1365,15 @@
 @returns {number} 
 @constructor
 ```
+
+### PERCENT 
+
+```
+  Returns a value as a percentage where 100 is 1.0, and 0 is 0. 
+@param value - To convert. 
+@returns {number} 
+@constructor
+```
 ## Range
 
 

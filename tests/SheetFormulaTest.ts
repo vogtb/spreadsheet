@@ -813,6 +813,10 @@ test("Sheet N", function(){
   assertFormulaEquals('=N("10")', 10);
 });
 
+test("Sheet UNARY_PERCENT", function(){
+  assertFormulaEquals('=UNARY_PERCENT(10)', 0.1);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

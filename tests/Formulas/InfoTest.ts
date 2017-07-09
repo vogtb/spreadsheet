@@ -6,7 +6,8 @@ import {
   ISNONTEXT,
   ISEMAIL,
   ISURL,
-  N
+  N,
+  ISREF
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -14,6 +15,9 @@ import {
   catchAndAssertEquals,
   test
 } from "../Utils/Asserts";
+import {
+  Cell
+} from "../../src/Cell";
 
 
 test("NA", function(){
@@ -105,5 +109,15 @@ test("N", function(){
   assertEquals(N(["10", "str"]), 10);
   catchAndAssertEquals(function() {
     NA.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("ISREF", function(){
+  assertEquals(ISREF("10"), false);
+  assertEquals(ISREF(false), false);
+  assertEquals(ISREF(new Cell("A1")), true);
+  assertEquals(ISREF([new Cell("A1"), new Cell("A2"), new Cell("A3")]), true);
+  catchAndAssertEquals(function() {
+    ISREF.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

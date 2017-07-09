@@ -7,6 +7,9 @@ import {
 import {
   TypeConverter
 } from "../Utilities/TypeConverter";
+import {
+  Cell
+} from "../Cell";
 
 
 /**
@@ -132,6 +135,19 @@ var N = function (value) {
 };
 
 
+/**
+ * Tests if the content of one or several cells is a reference. Verifies the type of references in a cell or a range of
+ * cells. If an error occurs, the function returns a logical or numerical value.
+ * @param value - The value to be tested, to determine whether it is a reference.
+ * @returns {boolean}
+ * @constructor
+ */
+var ISREF = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ISREF");
+  return TypeConverter.firstValue(value) instanceof Cell;
+};
+
+
 export {
   NA,
   ISTEXT,
@@ -140,5 +156,6 @@ export {
   ISNONTEXT,
   ISEMAIL,
   ISURL,
-  N
+  N,
+  ISREF
 }

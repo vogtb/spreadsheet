@@ -87,7 +87,8 @@ import {
   ISNONTEXT,
   ISEMAIL,
   ISURL,
-  N
+  N,
+  ISREF
 } from "./Info";
 import {
   CHOOSE
@@ -424,5 +425,6 @@ export {
   UNARY_PERCENT,
   MULTINOMIAL,
   BINOMDIST,
-  COVAR
+  COVAR,
+  ISREF
 }

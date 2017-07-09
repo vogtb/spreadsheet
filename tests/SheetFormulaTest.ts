@@ -829,6 +829,12 @@ test("Sheet COVAR", function(){
   assertFormulaEquals('=COVAR([2, 4, 5, 1], [7, 3, 1, 3])', -2);
 });
 
+test("Sheet ISREF", function(){
+  assertFormulaEquals('=ISREF(B1)', true);
+  assertFormulaEquals('=ISREF(B1:B10)', true);
+  assertFormulaEquals('=ISREF(100)', false);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

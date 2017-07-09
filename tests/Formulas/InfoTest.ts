@@ -7,7 +7,8 @@ import {
   ISEMAIL,
   ISURL,
   N,
-  ISREF
+  ISREF,
+  ERRORTYPE
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -18,6 +19,15 @@ import {
 import {
   Cell
 } from "../../src/Cell";
+import {
+  RefError,
+  NullError,
+  NAError,
+  DivZeroError,
+  ValueError,
+  NameError,
+  NumError
+} from "../../src/Errors";
 
 
 test("NA", function(){
@@ -119,5 +129,24 @@ test("ISREF", function(){
   assertEquals(ISREF([new Cell("A1"), new Cell("A2"), new Cell("A3")]), true);
   catchAndAssertEquals(function() {
     ISREF.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("ERRORTYPE", function(){
+  var errorCell = new Cell("A1");
+  errorCell.setError(new NAError("error"));
+  assertEquals(ERRORTYPE(new NullError("error")), 1);
+  assertEquals(ERRORTYPE(new DivZeroError("error")), 2);
+  assertEquals(ERRORTYPE(new ValueError("error")), 3);
+  assertEquals(ERRORTYPE(new RefError("error")), 4);
+  assertEquals(ERRORTYPE(new NameError("error")), 5);
+  assertEquals(ERRORTYPE(new NumError("error")), 6);
+  assertEquals(ERRORTYPE(new NAError("error")), 7);
+  assertEquals(ERRORTYPE(errorCell), 7);
+  catchAndAssertEquals(function() {
+    ERRORTYPE.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    ERRORTYPE(10);
   }, ERRORS.NA_ERROR);
 });

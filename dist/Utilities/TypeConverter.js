@@ -4,6 +4,7 @@ exports.__esModule = true;
 var moment = require("moment");
 var Errors_1 = require("../Errors");
 var DateRegExBuilder_1 = require("./DateRegExBuilder");
+var Cell_1 = require("../Cell");
 var YEAR_MONTHDIG_DAY = DateRegExBuilder_1.DateRegExBuilder.DateRegExBuilder()
     .start()
     .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY().FLEX_DELIMITER_LOOSEDOT().MM().FLEX_DELIMITER_LOOSEDOT().DD_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
@@ -418,6 +419,17 @@ var TypeConverter = (function () {
      * @returns {number} to return. Will always return a number or throw an error. Never returns undefined.
      */
     TypeConverter.valueToNumber = function (value) {
+        if (value instanceof Cell_1.Cell) {
+            if (value.isBlank()) {
+                return 0;
+            }
+            else {
+                if (value.hasError()) {
+                    throw value.getError();
+                }
+                value = value.getValue();
+            }
+        }
         if (typeof value === "number") {
             return value;
         }
@@ -455,6 +467,17 @@ var TypeConverter = (function () {
      * @returns {boolean} to return.
      */
     TypeConverter.valueToBoolean = function (value) {
+        if (value instanceof Cell_1.Cell) {
+            if (value.isBlank()) {
+                return false;
+            }
+            else {
+                if (value.hasError()) {
+                    throw value.getError();
+                }
+                value = value.getValue();
+            }
+        }
         if (typeof value === "number") {
             return value !== 0;
         }
@@ -471,7 +494,18 @@ var TypeConverter = (function () {
      * @returns {string} string representation of value
      */
     TypeConverter.valueToString = function (value) {
-        if (typeof value === "number") {
+        if (value instanceof Cell_1.Cell) {
+            if (value.isBlank()) {
+                return "";
+            }
+            else {
+                if (value.hasError()) {
+                    throw value.getError();
+                }
+                return value.getValue().toString();
+            }
+        }
+        else if (typeof value === "number") {
             return value.toString();
         }
         else if (typeof value === "string") {
@@ -487,7 +521,18 @@ var TypeConverter = (function () {
      * @returns {number} representing a time value
      */
     TypeConverter.valueToTimestampNumber = function (value) {
-        if (typeof value === "number") {
+        if (value instanceof Cell_1.Cell) {
+            if (value.isBlank()) {
+                return 0;
+            }
+            else {
+                if (value.hasError()) {
+                    throw value.getError();
+                }
+                return value.getValue();
+            }
+        }
+        else if (typeof value === "number") {
             return value;
         }
         else if (typeof value === "string") {
@@ -523,7 +568,7 @@ var TypeConverter = (function () {
      * @returns {boolean} if could be coerced to a number
      */
     TypeConverter.canCoerceToNumber = function (value) {
-        if (typeof value === "number" || typeof value === "boolean") {
+        if (typeof value === "number" || typeof value === "boolean" || value instanceof Cell_1.Cell) {
             return true;
         }
         else if (typeof value === "string") {
@@ -623,7 +668,18 @@ var TypeConverter = (function () {
      * @returns {number} date
      */
     TypeConverter.valueToDateNumber = function (value, coerceBoolean) {
-        if (typeof value === "number") {
+        if (value instanceof Cell_1.Cell) {
+            if (value.isBlank()) {
+                return 0;
+            }
+            else {
+                if (value.hasError()) {
+                    throw value.getError();
+                }
+                return value.getValue();
+            }
+        }
+        else if (typeof value === "number") {
             return value;
         }
         else if (typeof value === "string") {

@@ -59,12 +59,15 @@ var Sheet = (function () {
             this.data = {};
         }
         /**
-         * Gets the cell corresponding to the key. If the value is not defined, will return undefined.
+         * Gets the cell corresponding to the key. If the value is undefined, will return blank cell..
          * @param key to look up cell
-         * @returns {Cell} to return, if it exists. Returns undefined if key not in matrix.
+         * @returns {Cell} to return, if it exists. Returns blank cell if key not in matrix.
          */
         Matrix.prototype.getCell = function (key) {
-            return this.data[key];
+            if (key in this.data) {
+                return this.data[key];
+            }
+            return new Cell_1.Cell(key);
         };
         /**
          * Add cell to matrix. If it exists, update the necessary values. If it doesn't exist add it.
@@ -383,7 +386,7 @@ var Sheet = (function () {
         cellValue: function (cellId) {
             var value, origin = this, cell = instance.matrix.getCell(cellId);
             // get value, defaulting to undefined
-            value = cell ? cell.getValue() : undefined;
+            value = cell.isBlank() ? undefined : cell.getValue();
             //update dependencies
             instance.matrix.getCell(origin).updateDependencies([cellId]);
             // check references error
@@ -393,16 +396,17 @@ var Sheet = (function () {
                 }
             }
             // check if any error occurs
-            if (cell && cell.getError()) {
+            if (!cell.isBlank() && cell.getError()) {
                 throw cell.getError();
+            }
+            if (cell.isBlank()) {
+                return cell;
             }
             // return value if is set
             if (utils.isSet(value)) {
                 var result = instance.helper.number(value);
                 return !isNaN(result) ? result : value;
             }
-            // cell is not available
-            return undefined;
         },
         cellRangeValue: function (start, end) {
             var coordsStart = utils.cellCoords(start), coordsEnd = utils.cellCoords(end), origin = this;

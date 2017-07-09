@@ -126,11 +126,37 @@ var Cell = (function () {
         return this.error;
     };
     /**
+     * Easier way to check if this cell has an error.
+     * @returns {boolean}
+     */
+    Cell.prototype.hasError = function () {
+        return this.error !== null;
+    };
+    /**
+     * A cell is deemed blank if it contains no value, no error, and no typed value.
+     * @returns {boolean}
+     */
+    Cell.prototype.isBlank = function () {
+        return this.error === null && this.rawFormulaText === null && this.typedValue === null;
+    };
+    /**
      * Returns the human-readable string representation of this cell, omitting some obvious fields.
      * @returns {string}
      */
     Cell.prototype.toString = function () {
         return "id=" + this.id + ", value=" + this.typedValue + ", rawFormulaText=" + this.rawFormulaText + ", error=" + this.error;
+    };
+    /**
+     * Build a cell with an id and value.
+     * @param id - A1-notation id or key.
+     * @param value - value of the cell.
+     * @returns {Cell}
+     * @constructor
+     */
+    Cell.BuildFrom = function (id, value) {
+        var cell = new Cell(id);
+        cell.setValue(value);
+        return cell;
     };
     return Cell;
 }());

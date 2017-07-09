@@ -612,6 +612,23 @@
 @returns {number} 
 @constructor
 ```
+
+### ISREF 
+
+```
+  Tests if the content of one or several cells is a reference. Verifies the type of references in a cell or a range of cells. If an error occurs, the function returns a logical or numerical value. 
+@param value - The value to be tested, to determine whether it is a reference. 
+@returns {boolean} 
+@constructor
+```
+
+### ERRORTYPE 
+
+```
+  Returns the number corresponding to an error value occurring in a different cell. With the aid of this number, an error message text can be generated. If an error occurs, the function returns a logical or numerical value. 
+@param value - Contains either the addrereference of the cell in which the error occurs, or the error directly. Eg: `=ERRORTYPE(NA())` 
+@constructor TODO: This formula, while written correctly in javascript, needs to be called inside of a try-catch-block inside the ParserSheet. Otherwise the errors thrown by nested formulas break through. Eg: `=ERRORTYPE(NA())`, NA bubbles up. Once this is done, we should test it inside SheetFormulaTest.ts
+```
 ## Logical
 
 

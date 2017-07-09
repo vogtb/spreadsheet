@@ -88,6 +88,8 @@ exports.ISNONTEXT = Info_1.ISNONTEXT;
 exports.ISEMAIL = Info_1.ISEMAIL;
 exports.ISURL = Info_1.ISURL;
 exports.N = Info_1.N;
+exports.ISREF = Info_1.ISREF;
+exports.ERRORTYPE = Info_1.ERRORTYPE;
 var Lookup_1 = require("./Lookup");
 exports.CHOOSE = Lookup_1.CHOOSE;
 var Logical_1 = require("./Logical");
@@ -213,6 +215,7 @@ var __COMPLEX = {
     "WORKDAY.INTL": Date_1.WORKDAY$INTL,
     "POISSON.DIST": Statistical_1.POISSON,
     "PERCENTRANK.INC": Statistical_1.PERCENTRANK,
-    "PERCENTRANK.EXC": Statistical_1.PERCENTRANK$EXC
+    "PERCENTRANK.EXC": Statistical_1.PERCENTRANK$EXC,
+    "ERROR.TYPE": Info_1.ERRORTYPE
 };
 exports.__COMPLEX = __COMPLEX;

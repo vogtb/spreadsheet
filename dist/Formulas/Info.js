@@ -3,6 +3,7 @@ exports.__esModule = true;
 var ArgsChecker_1 = require("../Utilities/ArgsChecker");
 var Errors_1 = require("../Errors");
 var TypeConverter_1 = require("../Utilities/TypeConverter");
+var Cell_1 = require("../Cell");
 /**
  * Returns the "value not available" error, "#N/A".
  * @constructor
@@ -120,3 +121,60 @@ var N = function (value) {
     return TypeConverter_1.TypeConverter.firstValueAsNumber(value);
 };
 exports.N = N;
+/**
+ * Tests if the content of one or several cells is a reference. Verifies the type of references in a cell or a range of
+ * cells. If an error occurs, the function returns a logical or numerical value.
+ * @param value - The value to be tested, to determine whether it is a reference.
+ * @returns {boolean}
+ * @constructor
+ */
+var ISREF = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ISREF");
+    return TypeConverter_1.TypeConverter.firstValue(value) instanceof Cell_1.Cell;
+};
+exports.ISREF = ISREF;
+/**
+ * Returns the number corresponding to an error value occurring in a different cell. With the aid of this number, an
+ * error message text can be generated. If an error occurs, the function returns a logical or numerical value.
+ * @param value - Contains either the address/reference of the cell in which the error occurs, or the error directly.
+ * Eg: `=ERRORTYPE(NA())`
+ * @constructor
+ * TODO: This formula, while written correctly in javascript, needs to be called inside of a try-catch-block inside the
+ * Parser/Sheet. Otherwise the errors thrown by nested formulas break through. Eg: `=ERRORTYPE(NA())`, NA bubbles up.
+ * Once this is done, we should test it inside SheetFormulaTest.ts
+ */
+var ERRORTYPE = function (value) {
+    value = TypeConverter_1.TypeConverter.firstValue(value);
+    if (value instanceof Cell_1.Cell) {
+        if (value.hasError()) {
+            value = value.getError();
+        }
+        else {
+            throw new Errors_1.NAError("Function ERROR.TYPE parameter 1 value is not an error.");
+        }
+    }
+    if (value instanceof Error) {
+        switch (value.name) {
+            case Errors_1.NULL_ERROR:
+                return 1;
+            case Errors_1.DIV_ZERO_ERROR:
+                return 2;
+            case Errors_1.VALUE_ERROR:
+                return 3;
+            case Errors_1.REF_ERROR:
+                return 4;
+            case Errors_1.NAME_ERROR:
+                return 5;
+            case Errors_1.NUM_ERROR:
+                return 6;
+            case Errors_1.NA_ERROR:
+                return 7;
+            default:
+                return 8;
+        }
+    }
+    else {
+        throw new Errors_1.NAError("Function ERROR.TYPE parameter 1 value is not an error.");
+    }
+};
+exports.ERRORTYPE = ERRORTYPE;

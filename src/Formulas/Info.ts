@@ -2,7 +2,8 @@ import {
   ArgsChecker
 } from "../Utilities/ArgsChecker";
 import {
-  NAError
+  NAError, NullError, DivZeroError, ValueError, RefError, NameError, NumError, NULL_ERROR, DIV_ZERO_ERROR, VALUE_ERROR,
+  REF_ERROR, NAME_ERROR, NUM_ERROR, NA_ERROR
 } from "../Errors";
 import {
   TypeConverter
@@ -148,6 +149,50 @@ var ISREF = function (value) {
 };
 
 
+/**
+ * Returns the number corresponding to an error value occurring in a different cell. With the aid of this number, an
+ * error message text can be generated. If an error occurs, the function returns a logical or numerical value.
+ * @param value - Contains either the address/reference of the cell in which the error occurs, or the error directly.
+ * Eg: `=ERRORTYPE(NA())`
+ * @constructor
+ * TODO: This formula, while written correctly in javascript, needs to be called inside of a try-catch-block inside the
+ * Parser/Sheet. Otherwise the errors thrown by nested formulas break through. Eg: `=ERRORTYPE(NA())`, NA bubbles up.
+ * Once this is done, we should test it inside SheetFormulaTest.ts
+ */
+var ERRORTYPE = function (value) {
+  value = TypeConverter.firstValue(value);
+  if (value instanceof Cell) {
+    if (value.hasError()) {
+      value = value.getError();
+    } else {
+      throw new NAError("Function ERROR.TYPE parameter 1 value is not an error.");
+    }
+  }
+  if (value instanceof Error) {
+    switch (value.name) {
+      case NULL_ERROR:
+        return 1;
+      case DIV_ZERO_ERROR:
+        return 2;
+      case VALUE_ERROR:
+        return 3;
+      case REF_ERROR:
+        return 4;
+      case NAME_ERROR:
+        return 5;
+      case NUM_ERROR:
+        return 6;
+      case NA_ERROR:
+        return 7;
+      default:
+        return 8;
+    }
+  } else {
+    throw new NAError("Function ERROR.TYPE parameter 1 value is not an error.");
+  }
+};
+
+
 export {
   NA,
   ISTEXT,
@@ -157,5 +202,6 @@ export {
   ISEMAIL,
   ISURL,
   N,
-  ISREF
+  ISREF,
+  ERRORTYPE
 }

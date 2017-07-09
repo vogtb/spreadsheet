@@ -37,3 +37,10 @@ test("Cell.isBlank", function(){
   assertIsNull(v.getError());
   assertEquals(v.isBlank(), true);
 });
+
+test("Cell.BuildFrom", function(){
+  var v = Cell.BuildFrom("A1", 10);
+  assertEquals(v.getValue(), 10);
+  assertIsNull(v.getError());
+  assertEquals(v.isBlank(), false);
+});

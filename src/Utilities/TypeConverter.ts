@@ -434,9 +434,10 @@ class TypeConverter {
         if (value.hasError()) {
           throw value.getError();
         }
-        return value.getValue();
+        value = value.getValue();
       }
-    } else if (typeof value === "number") {
+    }
+    if (typeof value === "number") {
       return value;
     } else if (typeof value === "string") {
       if (value === "") {
@@ -472,6 +473,16 @@ class TypeConverter {
    * @returns {boolean} to return.
    */
   public static valueToBoolean(value: any) {
+    if (value instanceof Cell) {
+      if (value.isBlank()) {
+        return false;
+      } else {
+        if (value.hasError()) {
+          throw value.getError();
+        }
+        value = value.getValue();
+      }
+    }
     if (typeof value === "number") {
       return value !== 0;
     } else if (typeof value === "string") {
@@ -486,7 +497,16 @@ class TypeConverter {
    * @returns {string} string representation of value
    */
   public static valueToString(value: any) : string {
-    if (typeof value === "number") {
+    if (value instanceof Cell) {
+      if (value.isBlank()) {
+        return "";
+      } else {
+        if (value.hasError()) {
+          throw value.getError();
+        }
+        return value.getValue().toString();
+      }
+    } else if (typeof value === "number") {
       return value.toString();
     } else if (typeof value === "string") {
       return value;
@@ -501,7 +521,16 @@ class TypeConverter {
    * @returns {number} representing a time value
    */
   public static valueToTimestampNumber(value: any) : number {
-    if (typeof value === "number") {
+    if (value instanceof Cell) {
+      if (value.isBlank()) {
+        return 0;
+      } else {
+        if (value.hasError()) {
+          throw value.getError();
+        }
+        return value.getValue();
+      }
+    } else if (typeof value === "number") {
       return value;
     } else if (typeof value === "string") {
       if (value == "") {
@@ -536,7 +565,7 @@ class TypeConverter {
    * @returns {boolean} if could be coerced to a number
    */
   public static canCoerceToNumber(value: any) : boolean {
-    if (typeof value === "number" || typeof value === "boolean") {
+    if (typeof value === "number" || typeof value === "boolean" || value instanceof Cell) {
       return true;
     } else if (typeof value === "string") {
       return TypeConverter.isNumber(value);
@@ -643,7 +672,16 @@ class TypeConverter {
    * @returns {number} date
    */
   public static valueToDateNumber(value: any, coerceBoolean?: boolean) : number {
-    if (typeof value === "number") {
+    if (value instanceof Cell) {
+      if (value.isBlank()) {
+        return 0;
+      } else {
+        if (value.hasError()) {
+          throw value.getError();
+        }
+        return value.getValue();
+      }
+    } else if (typeof value === "number") {
       return value;
     } else if (typeof value === "string") {
       try {

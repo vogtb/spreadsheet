@@ -164,6 +164,19 @@ class Cell {
   toString() : string {
     return "id=" + this.id + ", value=" + this.typedValue + ", rawFormulaText=" + this.rawFormulaText + ", error=" + this.error;
   }
+
+  /**
+   * Build a cell with an id and value.
+   * @param id - A1-notation id or key.
+   * @param value - value of the cell.
+   * @returns {Cell}
+   * @constructor
+   */
+  static BuildFrom(id: string, value: any) : Cell {
+    var cell = new Cell(id);
+    cell.setValue(value);
+    return cell;
+  }
 }
 
 function toNum(chr) {

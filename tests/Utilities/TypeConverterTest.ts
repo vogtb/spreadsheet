@@ -2,12 +2,23 @@
 import * as moment from "moment";
 import {
   assertEquals,
-  test, catchAndAssertEquals
+  test,
+  catchAndAssertEquals
 } from "../Utils/Asserts";
 import {
   TypeConverter
 } from "../../src/Utilities/TypeConverter";
-import {VALUE_ERROR, REF_ERROR} from "../../src/Errors";
+import {
+  VALUE_ERROR,
+  REF_ERROR, ValueError
+} from "../../src/Errors";
+import {
+  Cell
+} from "../../src/Cell";
+
+var ERROR_CELL = new Cell("A1");
+ERROR_CELL.setError(new ValueError("Whooops!"));
+
 
 test("TypeConverter.unitsToTimeNumber", function () {
   assertEquals(TypeConverter.unitsToTimeNumber(10, 10, 10), 0.4237268518518518);
@@ -62,6 +73,7 @@ test("TypeConverter.momentToNumber", function () {
 
 
 test("TypeConverter.valueToDateNumber", function () {
+  assertEquals(TypeConverter.valueToDateNumber(Cell.BuildFrom("A1", 10)), 10);
   assertEquals(TypeConverter.valueToDateNumber(10), 10);
   assertEquals(TypeConverter.valueToDateNumber("10"), 10);
   assertEquals(TypeConverter.valueToDateNumber("10.0"), 10);
@@ -73,12 +85,16 @@ test("TypeConverter.valueToDateNumber", function () {
     TypeConverter.valueToDateNumber(false); // Do not convert boolean
   }, VALUE_ERROR);
   catchAndAssertEquals(function () {
+    TypeConverter.valueToDateNumber(ERROR_CELL);
+  }, VALUE_ERROR);
+  catchAndAssertEquals(function () {
     console.log(TypeConverter.valueToDateNumber("str"));
   }, VALUE_ERROR);
 });
 
 
 test("TypeConverter.firstValueAsDateNumber", function () {
+  assertEquals(TypeConverter.firstValueAsDateNumber([Cell.BuildFrom("A1", 10)]), 10);
   assertEquals(TypeConverter.firstValueAsDateNumber([10]), 10);
   assertEquals(TypeConverter.firstValueAsDateNumber([[10]]), 10);
   assertEquals(TypeConverter.firstValueAsDateNumber([[[[[10]]]]]), 10);
@@ -88,6 +104,9 @@ test("TypeConverter.firstValueAsDateNumber", function () {
   assertEquals(TypeConverter.firstValueAsDateNumber(["1992-1-2"]), 33605);
   assertEquals(TypeConverter.firstValueAsDateNumber([false], true), 0);
   assertEquals(TypeConverter.firstValueAsDateNumber([true], true), 1);
+  catchAndAssertEquals(function () {
+    TypeConverter.firstValueAsDateNumber([ERROR_CELL]);
+  }, VALUE_ERROR);
   catchAndAssertEquals(function () {
     TypeConverter.firstValueAsDateNumber([false]); // Do not convert boolean
   }, VALUE_ERROR);
@@ -112,6 +131,7 @@ test("TypeConverter.firstValue", function () {
 
 
 test("TypeConverter.valueToTimestampNumber", function () {
+  assertEquals(TypeConverter.valueToTimestampNumber(Cell.BuildFrom("A1", 10)), 10);
   assertEquals(TypeConverter.valueToTimestampNumber(10), 10);
   assertEquals(TypeConverter.valueToTimestampNumber(""), 0);
   assertEquals(TypeConverter.valueToTimestampNumber("12:00pm"), 0.5);
@@ -127,10 +147,15 @@ test("TypeConverter.valueToTimestampNumber", function () {
   catchAndAssertEquals(function () {
     TypeConverter.valueToTimestampNumber("str");
   }, VALUE_ERROR);
+  catchAndAssertEquals(function () {
+    TypeConverter.valueToTimestampNumber(ERROR_CELL);
+  }, VALUE_ERROR);
 });
 
 
 test("TypeConverter.valueToString", function () {
+  assertEquals(TypeConverter.valueToString(Cell.BuildFrom("A1", 10)), "10");
+  assertEquals(TypeConverter.valueToString(new Cell("A1")), "");
   assertEquals(TypeConverter.valueToString(10), "10");
   assertEquals(TypeConverter.valueToString("10"), "10");
   assertEquals(TypeConverter.valueToString("This is a string"), "This is a string");
@@ -138,10 +163,16 @@ test("TypeConverter.valueToString", function () {
   assertEquals(TypeConverter.valueToString(-0.33824284782334), "-0.33824284782334");
   assertEquals(TypeConverter.valueToString(false), "FALSE");
   assertEquals(TypeConverter.valueToString(true), "TRUE");
+  catchAndAssertEquals(function () {
+    TypeConverter.valueToString(ERROR_CELL);
+  }, VALUE_ERROR);
 });
 
 
 test("TypeConverter.valueToBoolean", function () {
+  assertEquals(TypeConverter.valueToBoolean(Cell.BuildFrom("A1", 10)), true);
+  assertEquals(TypeConverter.valueToBoolean(Cell.BuildFrom("A1", 0)), false);
+  assertEquals(TypeConverter.valueToBoolean(new Cell("A1")), false);
   assertEquals(TypeConverter.valueToBoolean(10), true);
   assertEquals(TypeConverter.valueToBoolean(-10), true);
   assertEquals(TypeConverter.valueToBoolean(1.11111), true);
@@ -151,10 +182,15 @@ test("TypeConverter.valueToBoolean", function () {
   catchAndAssertEquals(function () {
     TypeConverter.valueToBoolean("str");
   }, VALUE_ERROR);
+  catchAndAssertEquals(function () {
+    TypeConverter.valueToBoolean(ERROR_CELL);
+  }, VALUE_ERROR);
 });
 
 
 test("TypeConverter.valueToNumber", function () {
+  assertEquals(TypeConverter.valueToNumber(Cell.BuildFrom("A1", 10)), 10);
+  assertEquals(TypeConverter.valueToNumber(Cell.BuildFrom("A1", "10")), 10);
   assertEquals(TypeConverter.valueToNumber(10), 10);
   assertEquals(TypeConverter.valueToNumber(-10), -10);
   assertEquals(TypeConverter.valueToNumber(1.11111), 1.11111);
@@ -170,6 +206,9 @@ test("TypeConverter.valueToNumber", function () {
   assertEquals(TypeConverter.valueToNumber("-$10.217983172"), -10.217983172);
   catchAndAssertEquals(function () {
     TypeConverter.valueToNumber("str");
+  }, VALUE_ERROR);
+  catchAndAssertEquals(function () {
+    TypeConverter.valueToNumber(ERROR_CELL);
   }, VALUE_ERROR);
 });
 
@@ -241,6 +280,9 @@ test("TypeConverter.stringToNumber", function () {
 
 
 test("TypeConverter.valueToNumberGracefully", function () {
+  assertEquals(TypeConverter.valueToNumberGracefully(Cell.BuildFrom("A1", "10")), 10);
+  assertEquals(TypeConverter.valueToNumberGracefully(Cell.BuildFrom("A1", "not-graceful")), 0);
+  assertEquals(TypeConverter.valueToNumberGracefully(new Cell("A1")), 0);
   assertEquals(TypeConverter.valueToNumberGracefully(10), 10);
   assertEquals(TypeConverter.valueToNumberGracefully(-10), -10);
   assertEquals(TypeConverter.valueToNumberGracefully(1.11111), 1.11111);

@@ -24,6 +24,10 @@ For example 64 tbs to a qt.
 For example `=#N/A` should force an error to be thrown inside the cell.
 
 
+### Formula's use of type-conversion could be standardized
+We could give each function a type-array that matches the arguments, and could be used to map to the TypeConverter functions. For example if a formula looks like `THING(a: number, b: string, c: array<numbers>)` it could have a property called `typeArray = ["number", "string", "array<numbers>"]` and then for each argument it uses a map to see which TypeConverter function it should use to ensure type on those arguments. This would allow us to test these type-converters more efficiently, rather than testing to be sure each formula converted the types properly.
+
+
 ### Fix documentation regular expression, it is butchering URLs.
 
 

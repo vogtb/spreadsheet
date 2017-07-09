@@ -13,9 +13,13 @@ import {
   catchAndAssertEquals,
   test
 } from "../Utils/Asserts";
+import {
+  Cell
+} from "../../src/Cell";
 
 
 test("BIN2DEC", function(){
+  assertEquals(BIN2DEC(Cell.BuildFrom("A1", "1010101010")), -342);
   assertEquals(BIN2DEC("1010101010"), -342);
   assertEquals(BIN2DEC("10"), 2);
   assertEquals(BIN2DEC(["10", "str"]), 2);
@@ -35,6 +39,7 @@ test("BIN2DEC", function(){
 
 
 test("BIN2HEX", function(){
+  assertEquals(BIN2HEX(Cell.BuildFrom("A1", "1010101010")), "FFFFFFFEAA");
   assertEquals(BIN2HEX("1010101010"), "FFFFFFFEAA");
   assertEquals(BIN2HEX("10"), "2");
   assertEquals(BIN2HEX("10101010"), "AA");
@@ -63,6 +68,7 @@ test("BIN2HEX", function(){
 
 
 test("BIN2OCT", function(){
+  assertEquals(BIN2OCT(Cell.BuildFrom("A1", "1010101010")), "7777777252");
   assertEquals(BIN2OCT("1010101010"), "7777777252");
   assertEquals(BIN2OCT("10"), "2");
   assertEquals(BIN2OCT("100"), "4");
@@ -91,6 +97,7 @@ test("BIN2OCT", function(){
 
 
 test("DEC2BIN", function(){
+  assertEquals(DEC2BIN(Cell.BuildFrom("A1", 100)), "1100100");
   assertEquals(DEC2BIN([100]), "1100100");
   assertEquals(DEC2BIN(100), "1100100");
   assertEquals(DEC2BIN(22), "10110");
@@ -126,6 +133,7 @@ test("DEC2BIN", function(){
 
 
 test("DEC2HEX", function(){
+  assertEquals(DEC2HEX(Cell.BuildFrom("A1", 100)), "64");
   assertEquals(DEC2HEX([100]), "64");
   assertEquals(DEC2HEX(100), "64");
   assertEquals(DEC2HEX(22), "16");
@@ -164,6 +172,7 @@ test("DEC2HEX", function(){
 
 
 test("DEC2OCT", function(){
+  assertEquals(DEC2OCT(Cell.BuildFrom("A1", 100)), "144");
   assertEquals(DEC2OCT([100]), "144");
   assertEquals(DEC2OCT(100), "144");
   assertEquals(DEC2OCT(22), "26");
@@ -202,6 +211,7 @@ test("DEC2OCT", function(){
 
 
 test("DELTA", function(){
+  assertEquals(DELTA(Cell.BuildFrom("A1", 2), 2), 1);
   assertEquals(DELTA(2, 2), 1);
   assertEquals(DELTA(2, 1), 0);
   assertEquals(DELTA(2), 0);

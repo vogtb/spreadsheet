@@ -8,7 +8,8 @@ import {
   ISURL,
   N,
   ISREF,
-  ERRORTYPE
+  ERRORTYPE,
+  ISBLANK
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -148,5 +149,17 @@ test("ERRORTYPE", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     ERRORTYPE(10);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("ISBLANK", function(){
+  assertEquals(ISBLANK(10), false);
+  assertEquals(ISBLANK([]), false);
+  assertEquals(ISBLANK(undefined), true);
+  assertEquals(ISBLANK(Cell.BuildFrom("A1", 10)), false);
+  assertEquals(ISBLANK(new Cell("A1")), true);
+  catchAndAssertEquals(function() {
+    ISBLANK.apply(this, [])
   }, ERRORS.NA_ERROR);
 });

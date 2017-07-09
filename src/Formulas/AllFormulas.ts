@@ -89,7 +89,8 @@ import {
   ISURL,
   N,
   ISREF,
-  ERRORTYPE
+  ERRORTYPE,
+  ISBLANK
 } from "./Info";
 import {
   CHOOSE
@@ -429,5 +430,6 @@ export {
   BINOMDIST,
   COVAR,
   ISREF,
-  ERRORTYPE
+  ERRORTYPE,
+  ISBLANK
 }

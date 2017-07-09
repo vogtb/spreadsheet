@@ -835,6 +835,11 @@ test("Sheet ISREF", function(){
   assertFormulaEquals('=ISREF(100)', false);
 });
 
+test("Sheet ISBLANK", function(){
+  assertFormulaEquals('=ISBLANK(10)', false);
+  assertFormulaEquals('=ISBLANK(N10)', true);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

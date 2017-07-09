@@ -629,6 +629,15 @@
 @param value - Contains either the addrereference of the cell in which the error occurs, or the error directly. Eg: `=ERRORTYPE(NA())` 
 @constructor TODO: This formula, while written correctly in javascript, needs to be called inside of a try-catch-block inside the ParserSheet. Otherwise the errors thrown by nested formulas break through. Eg: `=ERRORTYPE(NA())`, NA bubbles up. Once this is done, we should test it inside SheetFormulaTest.ts
 ```
+
+### ISBLANK 
+
+```
+  Returns TRUE if the reference to a cell is blank. This function is used to determine if the content of a cell is empty. A cell with a formula inside is not empty. If an error occurs, the function returns a logical or numerical value. 
+@param value - The content to be tested. 
+@returns {boolean} 
+@constructor
+```
 ## Logical
 
 

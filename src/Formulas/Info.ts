@@ -11,6 +11,7 @@ import {
 import {
   Cell
 } from "../Cell";
+import {Filter} from "../Utilities/Filter";
 
 
 /**
@@ -160,6 +161,7 @@ var ISREF = function (value) {
  * Once this is done, we should test it inside SheetFormulaTest.ts
  */
 var ERRORTYPE = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ERRORTYPE");
   value = TypeConverter.firstValue(value);
   if (value instanceof Cell) {
     if (value.hasError()) {
@@ -193,6 +195,23 @@ var ERRORTYPE = function (value) {
 };
 
 
+/**
+ * Returns TRUE if the reference to a cell is blank. This function is used to determine if the content of a cell is
+ * empty. A cell with a formula inside is not empty. If an error occurs, the function returns a logical or numerical
+ * value.
+ * @param value - The content to be tested.
+ * @returns {boolean}
+ * @constructor
+ */
+var ISBLANK = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ISBLANK");
+  if (value instanceof Cell) {
+    return value.isBlank();
+  }
+  return value === undefined;
+};
+
+
 export {
   NA,
   ISTEXT,
@@ -203,5 +222,6 @@ export {
   ISURL,
   N,
   ISREF,
-  ERRORTYPE
+  ERRORTYPE,
+  ISBLANK
 }

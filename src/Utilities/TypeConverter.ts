@@ -7,6 +7,7 @@ import {
 import {
   DateRegExBuilder
 } from "./DateRegExBuilder";
+import {Cell} from "../Cell";
 
 const YEAR_MONTHDIG_DAY = DateRegExBuilder.DateRegExBuilder()
   .start()
@@ -426,7 +427,16 @@ class TypeConverter {
    * @returns {number} to return. Will always return a number or throw an error. Never returns undefined.
    */
   public static valueToNumber(value : any) {
-    if (typeof value === "number") {
+    if (value instanceof Cell) {
+      if (value.isBlank()) {
+        return 0;
+      } else {
+        if (value.hasError()) {
+          throw value.getError();
+        }
+        return value.getValue();
+      }
+    } else if (typeof value === "number") {
       return value;
     } else if (typeof value === "string") {
       if (value === "") {

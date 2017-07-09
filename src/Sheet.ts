@@ -77,12 +77,15 @@ var Sheet = (function () {
     public data: Object = {};
 
     /**
-     * Gets the cell corresponding to the key. If the value is not defined, will return undefined.
+     * Gets the cell corresponding to the key. If the value is undefined, will return blank cell..
      * @param key to look up cell
-     * @returns {Cell} to return, if it exists. Returns undefined if key not in matrix.
+     * @returns {Cell} to return, if it exists. Returns blank cell if key not in matrix.
      */
     getCell(key: string) : Cell {
-      return this.data[key];
+      if (key in this.data) {
+        return this.data[key];
+      }
+      return new Cell(key);
     }
 
     /**
@@ -463,7 +466,7 @@ var Sheet = (function () {
         cell = instance.matrix.getCell(cellId);
 
       // get value, defaulting to undefined
-      value = cell ? cell.getValue() : undefined;
+      value = cell.isBlank() ? undefined : cell.getValue();
       //update dependencies
       instance.matrix.getCell(origin).updateDependencies([cellId]);
       // check references error
@@ -474,19 +477,19 @@ var Sheet = (function () {
       }
 
       // check if any error occurs
-      if (cell && cell.getError()) {
+      if (!cell.isBlank() && cell.getError()) {
         throw cell.getError()
+      }
+
+      if (cell.isBlank()) {
+        return cell;
       }
 
       // return value if is set
       if (utils.isSet(value)) {
         var result = instance.helper.number(value);
-
         return !isNaN(result) ? result : value;
       }
-
-      // cell is not available
-      return undefined;
     },
 
     cellRangeValue: function (start: string, end: string) {

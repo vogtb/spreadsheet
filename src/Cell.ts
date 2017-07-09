@@ -142,6 +142,22 @@ class Cell {
   }
 
   /**
+   * Easier way to check if this cell has an error.
+   * @returns {boolean}
+   */
+  hasError() : boolean {
+    return this.error !== null;
+  }
+
+  /**
+   * A cell is deemed blank if it contains no value, no error, and no typed value.
+   * @returns {boolean}
+   */
+  isBlank(): boolean {
+    return this.error === null && this.rawFormulaText === null && this.typedValue === null;
+  }
+
+  /**
    * Returns the human-readable string representation of this cell, omitting some obvious fields.
    * @returns {string}
    */

@@ -4,7 +4,7 @@ import {
 import {
   assertEquals,
   assertArrayEquals,
-  test
+  test, assertIsNull
 } from "./Utils/Asserts";
 
 test("Cell.constructor", function(){
@@ -13,7 +13,7 @@ test("Cell.constructor", function(){
   assertEquals(cell.getRow(), 0);
   assertArrayEquals(cell.getDependencies(), []);
   assertEquals(cell.getId(), "A1");
-  assertEquals(cell.getFormula(), null);
+  assertIsNull(cell.getFormula());
   assertEquals(cell.hasFormula(), false);
 });
 
@@ -29,4 +29,11 @@ test("Cell.setValue", function(){
   var v = new Cell("A1");
   v.setValue("100");
   assertEquals("100", v.getValue());
+});
+
+test("Cell.isBlank", function(){
+  var v = new Cell("A1");
+  assertIsNull(v.getValue());
+  assertIsNull(v.getError());
+  assertEquals(v.isBlank(), true);
 });

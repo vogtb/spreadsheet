@@ -11,6 +11,18 @@ function assertEquals(actual, expected) {
 }
 
 /**
+ * Asserts value is equal to null.
+ * @param actual - value to test.
+ */
+function assertIsNull(actual) {
+  if (null !== actual) {
+    console.log("expected:", null, " actual:", actual);
+    console.trace();
+  }
+}
+
+
+/**
  * Assert two arrays are equal using strict equality testing on individual items.
  * @param actual value
  * @param expected value
@@ -58,6 +70,7 @@ function test(description: string, toRun: Function) {
 
 
 export {
+  assertIsNull,
   assertEquals,
   assertArrayEquals,
   catchAndAssertEquals,

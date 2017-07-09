@@ -195,3 +195,19 @@ var ISBLANK = function (value) {
     return value === undefined;
 };
 exports.ISBLANK = ISBLANK;
+/**
+ * Returns TRUE if the value refers to any error value except #N/A. You can use this function to control error values
+ * in certain cells. If an error occurs, the function returns a logical or numerical value.
+ * @param value - Any value or expression in which a test is performed to determine whether an error value not equal to
+ * #N/A is present.
+ * @returns {boolean}
+ * @constructor
+ * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
+ */
+var ISERR = function (value) {
+    if (value instanceof Error) {
+        return value.name !== Errors_1.NA_ERROR;
+    }
+    return false;
+};
+exports.ISERR = ISERR;

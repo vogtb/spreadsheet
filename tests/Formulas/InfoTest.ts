@@ -9,7 +9,8 @@ import {
   N,
   ISREF,
   ERRORTYPE,
-  ISBLANK
+  ISBLANK,
+  ISERR
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -162,4 +163,14 @@ test("ISBLANK", function(){
   catchAndAssertEquals(function() {
     ISBLANK.apply(this, [])
   }, ERRORS.NA_ERROR);
+});
+
+
+test("ISERR", function(){
+  assertEquals(ISERR(10), false);
+  assertEquals(ISERR([]), false);
+  assertEquals(ISERR(new NAError("error")), false);
+  assertEquals(ISERR(new DivZeroError("error")), true);
+  assertEquals(ISERR(new NameError("error")), true);
+  assertEquals(ISERR(new RefError("error")), true);
 });

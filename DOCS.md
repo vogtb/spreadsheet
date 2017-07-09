@@ -638,6 +638,15 @@
 @returns {boolean} 
 @constructor
 ```
+
+### ISERR 
+
+```
+  Returns TRUE if the value refers to any error value except #NA. You can use this function to control error values in certain cells. If an error occurs, the function returns a logical or numerical value. 
+@param value - Any value or expression in which a test is performed to determine whether an error value not equal to #NA is present. 
+@returns {boolean} 
+@constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
+```
 ## Logical
 
 

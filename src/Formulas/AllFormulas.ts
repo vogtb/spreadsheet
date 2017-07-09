@@ -90,7 +90,8 @@ import {
   N,
   ISREF,
   ERRORTYPE,
-  ISBLANK
+  ISBLANK,
+  ISERR
 } from "./Info";
 import {
   CHOOSE
@@ -431,5 +432,6 @@ export {
   COVAR,
   ISREF,
   ERRORTYPE,
-  ISBLANK
+  ISBLANK,
+  ISERR
 }

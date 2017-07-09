@@ -840,6 +840,10 @@ test("Sheet ISBLANK", function(){
   assertFormulaEquals('=ISBLANK(N10)', true);
 });
 
+test("Sheet ISERR", function(){
+  assertFormulaEquals('=ISERR(10)', false);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

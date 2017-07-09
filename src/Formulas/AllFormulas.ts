@@ -92,7 +92,8 @@ import {
   ERRORTYPE,
   ISBLANK,
   ISERR,
-  ISERROR
+  ISERROR,
+  ISNA
 } from "./Info";
 import {
   CHOOSE
@@ -435,5 +436,6 @@ export {
   ERRORTYPE,
   ISBLANK,
   ISERR,
-  ISERROR
+  ISERROR,
+  ISNA
 }

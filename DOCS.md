@@ -656,6 +656,15 @@
 @returns {boolean} 
 @constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
 ```
+
+### ISNA 
+
+```
+  Returns TRUE if a cell contains the #NA (value not available) error value. If an error occurs, the function returns a logical or numerical value. 
+@param value - The value or expression to be tested. 
+@returns {boolean} 
+@constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
+```
 ## Logical
 
 

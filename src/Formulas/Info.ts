@@ -255,6 +255,32 @@ var ISERROR = function (value) {
 };
 
 
+/**
+ * Returns TRUE if a cell contains the #N/A (value not available) error value. If an error occurs, the function returns
+ * a logical or numerical value.
+ * @param value - The value or expression to be tested.
+ * @returns {boolean}
+ * @constructor
+ * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
+ */
+var ISNA = function (value) {
+  try {
+    value = TypeConverter.firstValue(value);
+  } catch (e) {
+    return false;
+  }
+  if (value instanceof Cell) {
+    if (value.hasError()) {
+      return value.getError().name === NA_ERROR;
+    }
+  }
+  if (value instanceof Error) {
+    return value.name === NA_ERROR;
+  }
+  return false;
+};
+
+
 export {
   NA,
   ISTEXT,
@@ -268,5 +294,6 @@ export {
   ERRORTYPE,
   ISBLANK,
   ISERR,
-  ISERROR
+  ISERROR,
+  ISNA
 }

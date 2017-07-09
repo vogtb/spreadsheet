@@ -11,7 +11,8 @@ import {
   ERRORTYPE,
   ISBLANK,
   ISERR,
-  ISERROR
+  ISERROR,
+  ISNA
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -194,4 +195,20 @@ test("ISERROR", function(){
   assertEquals(ISERROR(new DivZeroError("error")), true);
   assertEquals(ISERROR(new NameError("error")), true);
   assertEquals(ISERROR(new RefError("error")), true);
+});
+
+
+test("ISNA", function(){
+  var errorCell = new Cell("A1");
+  errorCell.setError(new NAError("err"));
+  assertEquals(ISNA(errorCell), true);
+  assertEquals(ISNA(Cell.BuildFrom("A1", 10)), false);
+  assertEquals(ISNA(new Cell("A1")), false);
+  assertEquals(ISNA("10"), false);
+  assertEquals(ISNA(10), false);
+  assertEquals(ISNA([]), false);
+  assertEquals(ISNA(new NAError("error")), true);
+  assertEquals(ISNA(new DivZeroError("error")), false);
+  assertEquals(ISNA(new NameError("error")), false);
+  assertEquals(ISNA(new RefError("error")), false);
 });

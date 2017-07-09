@@ -647,6 +647,15 @@
 @returns {boolean} 
 @constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
 ```
+
+### ISERROR 
+
+```
+  Tests if the cells contain general error values. ISERROR recognizes the #NA error value. If an error occurs, the function returns a logical or numerical value. 
+@param value - is any value where a test is performed to determine whether it is an error value. 
+@returns {boolean} 
+@constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
+```
 ## Logical
 
 

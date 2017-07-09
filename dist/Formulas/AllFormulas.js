@@ -92,6 +92,7 @@ exports.ISREF = Info_1.ISREF;
 exports.ERRORTYPE = Info_1.ERRORTYPE;
 exports.ISBLANK = Info_1.ISBLANK;
 exports.ISERR = Info_1.ISERR;
+exports.ISERROR = Info_1.ISERROR;
 var Lookup_1 = require("./Lookup");
 exports.CHOOSE = Lookup_1.CHOOSE;
 var Logical_1 = require("./Logical");

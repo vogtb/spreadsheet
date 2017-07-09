@@ -844,6 +844,10 @@ test("Sheet ISERR", function(){
   assertFormulaEquals('=ISERR(10)', false);
 });
 
+test("Sheet ISERROR", function(){
+  assertFormulaEquals('=ISERROR(10)', false);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

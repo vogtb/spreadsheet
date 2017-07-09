@@ -222,10 +222,36 @@ var ISBLANK = function (value) {
  * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 var ISERR = function (value) {
+  if (value instanceof Cell) {
+    if (value.hasError()) {
+      return value.getError().name !== NA_ERROR;
+    }
+    return false;
+  }
   if (value instanceof Error) {
     return value.name !== NA_ERROR;
   }
   return false;
+};
+
+/**
+ * Tests if the cells contain general error values. ISERROR recognizes the #N/A error value. If an error occurs, the
+ * function returns a logical or numerical value.
+ * @param value - is any value where a test is performed to determine whether it is an error value.
+ * @returns {boolean}
+ * @constructor
+ * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
+ */
+var ISERROR = function (value) {
+  try {
+    value = TypeConverter.firstValue(value);
+  } catch (e) {
+    return true;
+  }
+  if (value instanceof Cell) {
+    return value.hasError();
+  }
+  return value instanceof Error;
 };
 
 
@@ -241,5 +267,6 @@ export {
   ISREF,
   ERRORTYPE,
   ISBLANK,
-  ISERR
+  ISERR,
+  ISERROR
 }

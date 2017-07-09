@@ -91,7 +91,8 @@ import {
   ISREF,
   ERRORTYPE,
   ISBLANK,
-  ISERR
+  ISERR,
+  ISERROR
 } from "./Info";
 import {
   CHOOSE
@@ -433,5 +434,6 @@ export {
   ISREF,
   ERRORTYPE,
   ISBLANK,
-  ISERR
+  ISERR,
+  ISERROR
 }

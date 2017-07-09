@@ -10,7 +10,8 @@ import {
   ISREF,
   ERRORTYPE,
   ISBLANK,
-  ISERR
+  ISERR,
+  ISERROR
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -167,10 +168,30 @@ test("ISBLANK", function(){
 
 
 test("ISERR", function(){
+  var errorCell = new Cell("A1");
+  errorCell.setError(new DivZeroError("err"));
+  assertEquals(ISERR(errorCell), true);
+  assertEquals(ISERR(Cell.BuildFrom("A1", 10)), false);
   assertEquals(ISERR(10), false);
   assertEquals(ISERR([]), false);
   assertEquals(ISERR(new NAError("error")), false);
   assertEquals(ISERR(new DivZeroError("error")), true);
   assertEquals(ISERR(new NameError("error")), true);
   assertEquals(ISERR(new RefError("error")), true);
+});
+
+
+test("ISERROR", function(){
+  var errorCell = new Cell("A1");
+  errorCell.setError(new DivZeroError("err"));
+  assertEquals(ISERROR(errorCell), true);
+  assertEquals(ISERROR(Cell.BuildFrom("A1", 10)), false);
+  assertEquals(ISERROR(new Cell("A1")), false);
+  assertEquals(ISERROR("10"), false);
+  assertEquals(ISERROR(10), false);
+  assertEquals(ISERROR([]), true);
+  assertEquals(ISERROR(new NAError("error")), true);
+  assertEquals(ISERROR(new DivZeroError("error")), true);
+  assertEquals(ISERROR(new NameError("error")), true);
+  assertEquals(ISERROR(new RefError("error")), true);
 });

@@ -12,7 +12,8 @@ import {
   ISBLANK,
   ISERR,
   ISERROR,
-  ISNA
+  ISNA,
+  IFERROR
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -179,6 +180,9 @@ test("ISERR", function(){
   assertEquals(ISERR(new DivZeroError("error")), true);
   assertEquals(ISERR(new NameError("error")), true);
   assertEquals(ISERR(new RefError("error")), true);
+  catchAndAssertEquals(function() {
+    ISERR.apply(this, [])
+  }, ERRORS.NA_ERROR);
 });
 
 
@@ -195,6 +199,9 @@ test("ISERROR", function(){
   assertEquals(ISERROR(new DivZeroError("error")), true);
   assertEquals(ISERROR(new NameError("error")), true);
   assertEquals(ISERROR(new RefError("error")), true);
+  catchAndAssertEquals(function() {
+    ISERROR.apply(this, [])
+  }, ERRORS.NA_ERROR);
 });
 
 
@@ -211,4 +218,20 @@ test("ISNA", function(){
   assertEquals(ISNA(new DivZeroError("error")), false);
   assertEquals(ISNA(new NameError("error")), false);
   assertEquals(ISNA(new RefError("error")), false);
+  catchAndAssertEquals(function() {
+    ISNA.apply(this, [])
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("IFERROR", function(){
+  var errorCell = new Cell("A1");
+  errorCell.setError(new NAError("err"));
+  assertEquals(IFERROR(errorCell, 10), 10);
+  assertEquals(IFERROR(10), 10);
+  assertEquals(IFERROR(Cell.BuildFrom("A1", 10), "abc"), Cell.BuildFrom("A1", 10));
+  assertEquals(IFERROR(new Cell("A1")), new Cell("A1"));
+  catchAndAssertEquals(function() {
+    IFERROR.apply(this, [])
+  }, ERRORS.NA_ERROR);
 });

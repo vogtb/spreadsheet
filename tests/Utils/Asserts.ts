@@ -1,12 +1,20 @@
+import {Cell} from "../../src/Cell";
 /**
  * Assert two params are equal using strict equality testing.
  * @param actual value
  * @param expected value
  */
 function assertEquals(actual, expected) {
-  if (expected !== actual) {
-    console.log("expected:", expected, " actual:", actual);
-    console.trace();
+  if (actual instanceof Cell && expected instanceof Cell) {
+    if (!expected.equals(actual)) {
+      console.log("expected:", expected, " actual:", actual);
+      console.trace();
+    }
+  } else {
+    if (expected !== actual) {
+      console.log("expected:", expected, " actual:", actual);
+      console.trace();
+    }
   }
 }
 

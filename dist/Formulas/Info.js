@@ -205,6 +205,7 @@ exports.ISBLANK = ISBLANK;
  * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 var ISERR = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ISERR");
     if (value instanceof Cell_1.Cell) {
         if (value.hasError()) {
             return value.getError().name !== Errors_1.NA_ERROR;
@@ -226,6 +227,7 @@ exports.ISERR = ISERR;
  * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 var ISERROR = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ISERROR");
     try {
         value = TypeConverter_1.TypeConverter.firstValue(value);
     }
@@ -247,6 +249,7 @@ exports.ISERROR = ISERROR;
  * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 var ISNA = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ISNA");
     try {
         value = TypeConverter_1.TypeConverter.firstValue(value);
     }
@@ -264,3 +267,20 @@ var ISNA = function (value) {
     return false;
 };
 exports.ISNA = ISNA;
+/**
+ * Returns the first argument if no error value is present, otherwise returns the second argument if provided, or a
+ * blank if the second argument is absent.
+ * @param value - Value to check for error.
+ * @param valueIfError - [OPTIONAL] - Value to return if no error is present in the first argument.
+ * @returns {any}
+ * @constructor
+ * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
+ */
+var IFERROR = function (value, valueIfError) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 1, 2, "IFERROR");
+    if (value instanceof Cell_1.Cell && valueIfError === undefined) {
+        return ISERROR(value) ? new Cell_1.Cell(value.getId()) : value;
+    }
+    return ISERROR(value) ? valueIfError : value;
+};
+exports.IFERROR = IFERROR;

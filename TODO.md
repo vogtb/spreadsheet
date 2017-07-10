@@ -41,7 +41,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * ISFORMULA - Requires changes to Parser/Sheet to fetch a cell, and check the formula field to see if it contains a formula.
 * TYPE - Requires changes to Parser/Sheet to allow for values or cells to be returned to the function. If it's a value, return the value type. If it's a cell, return the value or error inside it.
 * CELL - Requires changes to Parser/Sheet so that the raw cell is returned to the function. The raw cell should contain all information necessary for returning specified info.
-* IFERROR - similar reasons to ISERR.
 * ADDRESS
 * COLUMN
 * COLUMNS

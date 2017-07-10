@@ -147,6 +147,14 @@ var Cell = (function () {
         return "id=" + this.id + ", value=" + this.typedValue + ", rawFormulaText=" + this.rawFormulaText + ", error=" + this.error;
     };
     /**
+     * Comparing two cells.
+     * @param other
+     * @returns {boolean}
+     */
+    Cell.prototype.equals = function (other) {
+        return this.toString() === other.toString();
+    };
+    /**
      * Build a cell with an id and value.
      * @param id - A1-notation id or key.
      * @param value - value of the cell.

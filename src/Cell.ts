@@ -166,6 +166,15 @@ class Cell {
   }
 
   /**
+   * Comparing two cells.
+   * @param other
+   * @returns {boolean}
+   */
+  equals(other : Cell) : boolean {
+    return this.toString() === other.toString();
+  }
+
+  /**
    * Build a cell with an id and value.
    * @param id - A1-notation id or key.
    * @param value - value of the cell.

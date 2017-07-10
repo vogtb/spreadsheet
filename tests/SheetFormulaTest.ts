@@ -852,6 +852,10 @@ test("Sheet ISNA", function(){
   assertFormulaEquals('=ISNA(10)', false);
 });
 
+test("Sheet IFERROR", function(){
+  assertFormulaEquals('=IFERROR(10)', 10);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

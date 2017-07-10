@@ -665,6 +665,16 @@
 @returns {boolean} 
 @constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
 ```
+
+### IFERROR 
+
+```
+  Returns the first argument if no error value is present, otherwise returns the second argument if provided, or a blank if the second argument is absent. 
+@param value - Value to check for error. 
+@param valueIfError - [OPTIONAL] - Value to return if no error is present in the first argument. 
+@returns {any} 
+@constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
+```
 ## Logical
 
 

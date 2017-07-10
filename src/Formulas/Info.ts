@@ -302,6 +302,43 @@ var IFERROR = function (value, valueIfError?) {
 };
 
 
+/**
+ * Returns a number corresponding to the type of data passed into the function. 1 = number, 2 = text, 4 = boolean,
+ * 16 = error, 64 = array/range, 128 = any other type of cell.
+ * @param value - Value for which the type will be determined.
+ * @returns {number}
+ * @constructor
+ */
+var TYPE = function (value) {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "TYPE");
+  if (value instanceof Cell) {
+    if (value.hasError()) {
+      return 16;
+    }
+    value = value.getValue();
+  }
+  if (value === null) {
+    return 1;
+  }
+  if (typeof value === "number") {
+    return 1;
+  }
+  if (typeof value === "string") {
+    return 2;
+  }
+  if (typeof value === "boolean") {
+    return 4;
+  }
+  if (value instanceof Error) {
+    return 16;
+  }
+  if (value instanceof Array) {
+    return 64;
+  }
+  return 128;
+};
+
+
 export {
   NA,
   ISTEXT,
@@ -317,5 +354,6 @@ export {
   ISERR,
   ISERROR,
   ISNA,
-  IFERROR
+  IFERROR,
+  TYPE
 }

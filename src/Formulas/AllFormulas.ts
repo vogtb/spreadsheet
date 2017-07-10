@@ -94,7 +94,8 @@ import {
   ISERR,
   ISERROR,
   ISNA,
-  IFERROR
+  IFERROR,
+  TYPE
 } from "./Info";
 import {
   CHOOSE
@@ -439,5 +440,6 @@ export {
   ISERR,
   ISERROR,
   ISNA,
-  IFERROR
+  IFERROR,
+  TYPE
 }

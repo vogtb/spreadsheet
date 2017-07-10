@@ -856,6 +856,10 @@ test("Sheet IFERROR", function(){
   assertFormulaEquals('=IFERROR(10)', 10);
 });
 
+test("Sheet TYPE", function(){
+  assertFormulaEquals('=TYPE(10)', 1);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

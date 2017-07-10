@@ -13,7 +13,8 @@ import {
   ISERR,
   ISERROR,
   ISNA,
-  IFERROR
+  IFERROR,
+  TYPE
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -233,5 +234,24 @@ test("IFERROR", function(){
   assertEquals(IFERROR(new Cell("A1")), new Cell("A1"));
   catchAndAssertEquals(function() {
     IFERROR.apply(this, [])
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("TYPE", function(){
+  assertEquals(TYPE(44), 1);
+  assertEquals(TYPE("str"), 2);
+  assertEquals(TYPE(false), 4);
+  assertEquals(TYPE(new NAError("err")), 16);
+  assertEquals(TYPE([1, 2, 3]), 64);
+  var errorCell = new Cell("A1");
+  errorCell.setError(new NAError("err"));
+  assertEquals(TYPE(errorCell), 16);
+  assertEquals(TYPE(Cell.BuildFrom("A1", 1)), 1);
+  assertEquals(TYPE(Cell.BuildFrom("A1", "string")), 2);
+  assertEquals(TYPE(Cell.BuildFrom("A1", false)), 4);
+  assertEquals(TYPE(new Cell("A1")), 1);
+  catchAndAssertEquals(function() {
+    TYPE.apply(this, [])
   }, ERRORS.NA_ERROR);
 });

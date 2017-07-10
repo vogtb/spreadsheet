@@ -675,6 +675,15 @@
 @returns {any} 
 @constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
 ```
+
+### TYPE 
+
+```
+  Returns a number corresponding to the type of data passed into the function. 1 = number, 2 = text, 4 = boolean, 16 = error, 64 = arrayrange, 128 = any other type of cell. 
+@param value - Value for which the type will be determined. 
+@returns {number} 
+@constructor
+```
 ## Logical
 
 

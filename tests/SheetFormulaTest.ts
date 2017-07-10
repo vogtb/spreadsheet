@@ -27,6 +27,15 @@ function assertFormulaEquals(formula: string, expectation: any) {
   assertEquals(cell.getValue(), expectation);
 }
 
+function assertFormulaEqualsDependsOnReference(refId: string, value: any, formula: string, expectation: any) {
+  var sheet  = new Sheet();
+  sheet.setCell(refId, value);
+  sheet.setCell("A1", formula);
+  var cell = sheet.getCell("A1");
+  assertEquals(cell.getError(), null);
+  assertEquals(cell.getValue(), expectation);
+}
+
 function assertFormulaResultsInType(formula: string, type: string) {
   var sheet  = new Sheet();
   sheet.setCell("A1", formula);
@@ -858,6 +867,10 @@ test("Sheet IFERROR", function(){
 
 test("Sheet TYPE", function(){
   assertFormulaEquals('=TYPE(10)', 1);
+});
+
+test("Sheet COLUMN", function(){
+  assertFormulaEqualsDependsOnReference('D1', 10, '=COLUMN(D1)', 4);
 });
 
 test("Sheet *", function(){

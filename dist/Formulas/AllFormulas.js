@@ -96,6 +96,7 @@ exports.ISERROR = Info_1.ISERROR;
 exports.ISNA = Info_1.ISNA;
 exports.IFERROR = Info_1.IFERROR;
 exports.TYPE = Info_1.TYPE;
+exports.COLUMN = Info_1.COLUMN;
 var Lookup_1 = require("./Lookup");
 exports.CHOOSE = Lookup_1.CHOOSE;
 var Logical_1 = require("./Logical");

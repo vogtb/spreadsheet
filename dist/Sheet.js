@@ -399,14 +399,7 @@ var Sheet = (function () {
             if (!cell.isBlank() && cell.getError()) {
                 throw cell.getError();
             }
-            if (cell.isBlank()) {
-                return cell;
-            }
-            // return value if is set
-            if (utils.isSet(value)) {
-                var result = instance.helper.number(value);
-                return !isNaN(result) ? result : value;
-            }
+            return cell;
         },
         cellRangeValue: function (start, end) {
             var coordsStart = utils.cellCoords(start), coordsEnd = utils.cellCoords(end), origin = this;

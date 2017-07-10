@@ -339,6 +339,20 @@ var TYPE = function (value) {
 };
 
 
+/**
+ * Returns the column number of a specified cell, starting with column 1 for A.
+ * @param cell - Cell, defaults to the cell calling this formula, when used in the context of a spreadsheet.
+ * @constructor
+ */
+var COLUMN =  function (cell) {
+  ArgsChecker.checkLength(arguments, 1, "COLUMN");
+  if (!(cell instanceof Cell)) {
+    throw new NAError("Argument must be a range or reference.");
+  }
+  return cell.getColumn() + 1;
+};
+
+
 export {
   NA,
   ISTEXT,
@@ -355,5 +369,6 @@ export {
   ISERROR,
   ISNA,
   IFERROR,
-  TYPE
+  TYPE,
+  COLUMN
 }

@@ -320,3 +320,16 @@ var TYPE = function (value) {
     return 128;
 };
 exports.TYPE = TYPE;
+/**
+ * Returns the column number of a specified cell, starting with column 1 for A.
+ * @param cell - Cell, defaults to the cell calling this formula, when used in the context of a spreadsheet.
+ * @constructor
+ */
+var COLUMN = function (cell) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "COLUMN");
+    if (!(cell instanceof Cell_1.Cell)) {
+        throw new Errors_1.NAError("Argument must be a range or reference.");
+    }
+    return cell.getColumn() + 1;
+};
+exports.COLUMN = COLUMN;

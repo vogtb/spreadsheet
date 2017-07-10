@@ -684,6 +684,14 @@
 @returns {number} 
 @constructor
 ```
+
+### COLUMN 
+
+```
+  Returns the column number of a specified cell, starting with column 1 for A. 
+@param cell - Cell, defaults to the cell calling this formula, when used in the context of a spreadsheet. 
+@constructor
+```
 ## Logical
 
 

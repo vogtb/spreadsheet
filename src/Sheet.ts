@@ -475,21 +475,11 @@ var Sheet = (function () {
           throw new RefError("Reference does not exist.");
         }
       }
-
       // check if any error occurs
       if (!cell.isBlank() && cell.getError()) {
         throw cell.getError()
       }
-
-      if (cell.isBlank()) {
-        return cell;
-      }
-
-      // return value if is set
-      if (utils.isSet(value)) {
-        var result = instance.helper.number(value);
-        return !isNaN(result) ? result : value;
-      }
+      return cell;
     },
 
     cellRangeValue: function (start: string, end: string) {

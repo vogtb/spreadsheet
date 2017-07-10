@@ -41,7 +41,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * ISFORMULA - Requires changes to Parser/Sheet to fetch a cell, and check the formula field to see if it contains a formula.
 * CELL - Requires changes to Parser/Sheet so that the raw cell is returned to the function. The raw cell should contain all information necessary for returning specified info.
 * ADDRESS - In order to implement this, cells need to be aware of their sheet.
-* COLUMN
 * COLUMNS
 * HLOOKUP
 * INDEX

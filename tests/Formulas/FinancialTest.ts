@@ -17,7 +17,8 @@ import {
   MIRR,
   IRR,
   IPMT,
-  FV
+  FV,
+  PPMT
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -436,5 +437,26 @@ test("FV", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     FV.apply(this, [0.025, 1]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("PPMT", function() {
+  assertEquals(PPMT(0.025, 4, 24, 50000, 0, 1), -1623.8890945416422);
+  assertEquals(PPMT(0.010, 3, 24, 33000, 0, 1), -1235.6588292014105);
+  assertEquals(PPMT(0, 3, 24, 33000, 0, 1), -1375.00);
+  assertEquals(PPMT(0, 3, 24, 0, 0, 1), 0);
+  assertEquals(PPMT(0, 1, 3, 100, -1000, 1), 300);
+  catchAndAssertEquals(function() {
+    PPMT(0, 0, 24, 33000, 0, 1)
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    PPMT(0, 4, 0, 33000, 0, 1)
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    PPMT.apply(this, [0, 4, 0]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PPMT.apply(this, [0, 4, 0, 4000, 1, 1, 1]);
   }, ERRORS.NA_ERROR);
 });

@@ -675,3 +675,33 @@ var IPMT = function (rate, period, periods, present, future, type) {
     return interest * rate;
 };
 exports.IPMT = IPMT;
+/**
+ * Returns for a given period the payment on the principal for an investment that is based on periodic and constant
+ * payments and a constant interest rate.
+ * @param rate - The periodic interest rate.
+ * @param period - The amortization period.
+ * @param periods - The total number of periods during which the annuity is paid.
+ * @param present - The present value in the sequence of payments.
+ * @param future - [OPTIONAL] - The desired future value. Defaults to 0.
+ * @param type - [OPTIONAL] - Indicates how the year is to be calculated. 0 indicates payments are due at end of
+ * period, 1 indicates payments are due at beginning of period. Defaults to 0.
+ * @returns {number}
+ * @constructor
+ */
+var PPMT = function (rate, period, periods, present, future, type) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 4, 6, "PPMT");
+    rate = TypeConverter_1.TypeConverter.firstValueAsNumber(rate);
+    period = TypeConverter_1.TypeConverter.firstValueAsNumber(period);
+    if (period < 1) {
+        throw new Errors_1.NumError("Function PPMT parameter 2 value is " + period + ", but should be greater than or equal to 1.");
+    }
+    periods = TypeConverter_1.TypeConverter.firstValueAsNumber(periods);
+    if (periods <= 0) {
+        throw new Errors_1.NumError("Function PPMT parameter 3 value is " + periods + ", but should be greater than 0.");
+    }
+    present = TypeConverter_1.TypeConverter.firstValueAsNumber(present);
+    future = (typeof future === 'undefined') ? 0 : TypeConverter_1.TypeConverter.firstValueAsNumber(future);
+    type = (typeof type === 'undefined') ? 0 : TypeConverter_1.TypeConverter.firstValueAsNumber(type);
+    return PMT(rate, periods, present, future, type) - IPMT(rate, period, periods, present, future, type);
+};
+exports.PPMT = PPMT;

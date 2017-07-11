@@ -138,7 +138,8 @@ import {
   MIRR,
   IRR,
   IPMT,
-  FV
+  FV,
+  PPMT
 } from "./Financial";
 import {
   AVERAGE,
@@ -447,5 +448,6 @@ export {
   TYPE,
   COLUMN,
   ROW,
-  T
+  T,
+  PPMT
 }

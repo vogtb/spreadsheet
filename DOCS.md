@@ -540,6 +540,20 @@
 @returns {number} 
 @constructor
 ```
+
+### PPMT 
+
+```
+  Returns for a given period the payment on the principal for an investment that is based on periodic and constant payments and a constant interest rate. 
+@param rate - The periodic interest rate. 
+@param period - The amortization period. 
+@param periods - The total number of periods during which the annuity is paid. 
+@param present - The present value in the sequence of payments. 
+@param future - [OPTIONAL] - The desired future value. Defaults to 0. 
+@param type - [OPTIONAL] - Indicates how the year is to be calculated. 0 indicates payments are due at end of period, 1 indicates payments are due at beginning of period. Defaults to 0. 
+@returns {number} 
+@constructor
+```
 ## Info
 
 

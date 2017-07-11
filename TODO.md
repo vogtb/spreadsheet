@@ -102,7 +102,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * ROMAN
 * SEARCH
 * SEARCHB
-* SPLIT
 * SUBSTITUTE
 * TEXT
 * VALUE
@@ -124,7 +123,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * DURATION
 * FVSCHEDULE
 * INTRATE
-* PPMT - Similar to PMT, which is already written.
 * PRICE
 * PRICEDISC
 * PRICEMAT

@@ -333,3 +333,16 @@ var COLUMN = function (cell) {
     return cell.getColumn() + 1;
 };
 exports.COLUMN = COLUMN;
+/**
+ * Returns the row number of a specified cell, starting with row 1 for A1.
+ * @param cell - Cell, defaults to the cell calling this formula, when used in the context of a spreadsheet.
+ * @constructor
+ */
+var ROW = function (cell) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ROW");
+    if (!(cell instanceof Cell_1.Cell)) {
+        throw new Errors_1.NAError("Argument must be a range or reference.");
+    }
+    return cell.getRow() + 1;
+};
+exports.ROW = ROW;

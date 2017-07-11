@@ -353,6 +353,20 @@ var COLUMN =  function (cell) {
 };
 
 
+/**
+ * Returns the row number of a specified cell, starting with row 1 for A1.
+ * @param cell - Cell, defaults to the cell calling this formula, when used in the context of a spreadsheet.
+ * @constructor
+ */
+var ROW =  function (cell) {
+  ArgsChecker.checkLength(arguments, 1, "ROW");
+  if (!(cell instanceof Cell)) {
+    throw new NAError("Argument must be a range or reference.");
+  }
+  return cell.getRow() + 1;
+};
+
+
 export {
   NA,
   ISTEXT,
@@ -370,5 +384,6 @@ export {
   ISNA,
   IFERROR,
   TYPE,
-  COLUMN
+  COLUMN,
+  ROW
 }

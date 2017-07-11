@@ -873,6 +873,11 @@ test("Sheet COLUMN", function(){
   assertFormulaEqualsDependsOnReference('D1', 10, '=COLUMN(D1)', 4);
 });
 
+test("Sheet ROW", function(){
+  assertFormulaEqualsDependsOnReference('D2', 10, '=ROW(D2)', 2);
+});
+
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

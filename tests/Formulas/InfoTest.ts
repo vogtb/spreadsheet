@@ -15,7 +15,8 @@ import {
   ISNA,
   IFERROR,
   TYPE,
-  COLUMN
+  COLUMN,
+  ROW
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -260,6 +261,7 @@ test("TYPE", function(){
 
 test("COLUMN", function(){
   assertEquals(COLUMN(new Cell("A1")), 1);
+  assertEquals(COLUMN(new Cell("A2")), 1);
   assertEquals(COLUMN(new Cell("B1")), 2);
   assertEquals(COLUMN(new Cell("C1")), 3);
   catchAndAssertEquals(function() {
@@ -267,5 +269,18 @@ test("COLUMN", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     COLUMN.apply(this, [])
+  }, ERRORS.NA_ERROR);
+});
+
+test("ROW", function(){
+  assertEquals(ROW(new Cell("A1")), 1);
+  assertEquals(ROW(new Cell("A2")), 2);
+  assertEquals(ROW(new Cell("A3")), 3);
+  assertEquals(ROW(new Cell("M3")), 3);
+  catchAndAssertEquals(function() {
+    ROW(10)
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    ROW.apply(this, [])
   }, ERRORS.NA_ERROR);
 });

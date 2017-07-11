@@ -692,6 +692,14 @@
 @param cell - Cell, defaults to the cell calling this formula, when used in the context of a spreadsheet. 
 @constructor
 ```
+
+### ROW 
+
+```
+  Returns the row number of a specified cell, starting with row 1 for A1. 
+@param cell - Cell, defaults to the cell calling this formula, when used in the context of a spreadsheet. 
+@constructor
+```
 ## Logical
 
 

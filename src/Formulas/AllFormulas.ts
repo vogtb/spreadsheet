@@ -96,7 +96,8 @@ import {
   ISNA,
   IFERROR,
   TYPE,
-  COLUMN
+  COLUMN,
+  ROW
 } from "./Info";
 import {
   CHOOSE
@@ -443,5 +444,6 @@ export {
   ISNA,
   IFERROR,
   TYPE,
-  COLUMN
+  COLUMN,
+  ROW
 }

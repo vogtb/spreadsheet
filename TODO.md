@@ -48,7 +48,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * LOOKUP
 * MATCH
 * OFFSET
-* ROW
 * ROWS
 * VLOOKUP
 * COUNTBLANK - Requires changes to to Parser/Sheet so when we iterate through a range to return an array, we call a special function that accumulates all values, blank/null/undefined or otherwise.

@@ -197,7 +197,8 @@ import {
   CONVERT,
   TRIM,
   LOWER,
-  UPPER
+  UPPER,
+  T
 } from "./Text"
 import {
   DATE,
@@ -445,5 +446,6 @@ export {
   IFERROR,
   TYPE,
   COLUMN,
-  ROW
+  ROW,
+  T
 }

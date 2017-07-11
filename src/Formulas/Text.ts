@@ -462,6 +462,21 @@ var UPPER = function (value) {
   return text.toUpperCase();
 };
 
+
+/**
+ * Returns string arguments as text, or the empty string if the value is not text.
+ * @param value - Value to return.
+ * @constructor
+ */
+var T = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "T");
+  var v = TypeConverter.firstValue(value);
+  if (typeof v === "string") {
+    return v;
+  }
+  return "";
+};
+
 export {
   ARABIC,
   CHAR,
@@ -471,5 +486,6 @@ export {
   CONVERT,
   TRIM,
   LOWER,
-  UPPER
+  UPPER,
+  T
 }

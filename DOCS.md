@@ -2043,3 +2043,11 @@
 @param value - Text to convert. 
 @constructor
 ```
+
+### T 
+
+```
+  Returns string arguments as text, or the empty string if the value is not text. 
+@param value - Value to return. 
+@constructor
+```

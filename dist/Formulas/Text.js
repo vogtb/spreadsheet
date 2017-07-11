@@ -442,3 +442,17 @@ var UPPER = function (value) {
     return text.toUpperCase();
 };
 exports.UPPER = UPPER;
+/**
+ * Returns string arguments as text, or the empty string if the value is not text.
+ * @param value - Value to return.
+ * @constructor
+ */
+var T = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "T");
+    var v = TypeConverter_1.TypeConverter.firstValue(value);
+    if (typeof v === "string") {
+        return v;
+    }
+    return "";
+};
+exports.T = T;

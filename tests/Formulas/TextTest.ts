@@ -7,7 +7,8 @@ import {
   CONVERT,
   TRIM,
   LOWER,
-  UPPER
+  UPPER,
+  T
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -174,5 +175,16 @@ test("UPPER", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     UPPER.apply(this, ["test", 5]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("T", function(){
+  assertEquals(T("test"), "test");
+  assertEquals(T(["test"]), "test");
+  assertEquals(T(5), "");
+  assertEquals(T(false), "");
+  catchAndAssertEquals(function() {
+    T.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

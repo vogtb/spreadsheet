@@ -877,6 +877,10 @@ test("Sheet ROW", function(){
   assertFormulaEqualsDependsOnReference('D2', 10, '=ROW(D2)', 2);
 });
 
+test("Sheet T", function(){
+  assertFormulaEquals('=T(10)', "");
+  assertFormulaEquals('=T("str")', "str");
+});
 
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);

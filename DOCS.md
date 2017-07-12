@@ -2058,6 +2058,18 @@
 @returns {number} 
 @constructor
 ```
+
+### PROB 
+
+```
+  Returns the probability that values in a range are between two limits. Data is the array or range of data in the ample. 
+@param range - The array or range of data in the sample. 
+@param probability - The array or range of the corresponding probabilities 
+@param start - The start value of the interval whose probabilities are to be summed. 
+@param end - [OPTIONAL] - The end value of the interval whose probabilities are to be summed. If this parameter is missing, the probability for the start value is calculated 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

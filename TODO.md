@@ -66,7 +66,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * LOGINV
 * LOGNORMDIST
 * MODE
-* PROB
 * RANK
 * RANK.AVG
 * RANK.EQ

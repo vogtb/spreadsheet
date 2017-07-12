@@ -191,6 +191,7 @@ exports.PERMUT = Statistical_1.PERMUT;
 exports.RSQ = Statistical_1.RSQ;
 exports.SKEW = Statistical_1.SKEW;
 exports.STEYX = Statistical_1.STEYX;
+exports.PROB = Statistical_1.PROB;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

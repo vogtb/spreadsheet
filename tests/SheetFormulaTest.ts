@@ -922,6 +922,10 @@ test("Sheet STEYX", function(){
   assertFormulaEquals('=STEYX([1, 2, 3, 4], [1, 3, 5, 2])', 1.4638501094227998);
 });
 
+test("Sheet PROB", function(){
+  assertFormulaEquals('=PROB([1, 2, 3, 4], [0.25, 0.25, 0.25, 0.25], 3)', 0.25);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

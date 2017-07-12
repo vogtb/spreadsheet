@@ -53,7 +53,8 @@ import {
   PERMUT,
   RSQ,
   SKEW,
-  STEYX
+  STEYX,
+  PROB
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1089,5 +1090,27 @@ test("STEYX", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     STEYX.apply(this, [[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("PROB", function() {
+  assertEquals(PROB([1, 2, 3, 4], [0.25, 0.25, 0.25, 0.25], 3), 0.25);
+  assertEquals(PROB([1], [1], 3), 0);
+  assertEquals(PROB([1], [1], 0.1, 100), 1);
+  assertEquals(PROB([1, 2, 3], [0.25, 0.25, 0.5], 3), 0.5);
+  assertEquals(PROB([1, 2, 4], [0.25, 0.25, 0.5], 3), 0);
+  assertEquals(PROB([1, 2, 3], [0.25, 0.25, 0.5], 3, 100), 0.5);
+  assertEquals(PROB([1, 2, 3], [0.25, 0.25, 0.5], 0.1, 100), 1);
+  catchAndAssertEquals(function() {
+    PROB([1, 2, 3, 4], [0.25, 0.25, 0.25], 3);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PROB([1, 2, 3, 4], [0.25, 0.25, 0.25, 0.99], 3);
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    PROB.apply(this, [[1, 2, 3, 4], [0.25, 0.25, 0.25]]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PROB.apply(this, [[1, 2, 3, 4], [0.25, 0.25, 0.25], 10, 10, 10]);
   }, ERRORS.NA_ERROR);
 });

@@ -196,7 +196,8 @@ import {
   PERMUT,
   RSQ,
   SKEW,
-  STEYX
+  STEYX,
+  PROB
 } from "./Statistical";
 import {
   ARABIC,
@@ -467,5 +468,6 @@ export {
   PERMUT,
   RSQ,
   SKEW,
-  STEYX
+  STEYX,
+  PROB
 }

@@ -1787,3 +1787,43 @@ var STEYX = function (rangeY, rangeX) {
     return Math.sqrt((lft - num * num / den) / (n - 2));
 };
 exports.STEYX = STEYX;
+/**
+ * Returns the probability that values in a range are between two limits. Data is the array or range of data in the
+ * sample.
+ * @param range - The array or range of data in the sample.
+ * @param probability - The array or range of the corresponding probabilities
+ * @param start - The start value of the interval whose probabilities are to be summed.
+ * @param end - [OPTIONAL] - The end value of the interval whose probabilities are to be summed. If this parameter is
+ * missing, the probability for the start value is calculated
+ * @returns {number}
+ * @constructor
+ */
+var PROB = function (range, probability, start, end) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 3, 4, "PROB");
+    range = Filter_1.Filter.flattenAndThrow(range);
+    probability = Filter_1.Filter.flattenAndThrow(probability);
+    if (range.length !== probability.length) {
+        throw new Errors_1.NAError("PROB has mismatched argument count " + range.length + " vs " + probability.length + ".");
+    }
+    var sum = Math_1.SUM(probability);
+    if (sum <= 0 || sum > 1) {
+        throw new Errors_1.ValueError("Function PROB parameter 2 should sum to 1, but sums to " + sum + ".");
+    }
+    start = TypeConverter_1.TypeConverter.firstValueAsNumber(start);
+    end = (end === undefined) ? start : TypeConverter_1.TypeConverter.firstValueAsNumber(end);
+    if (start === end) {
+        return (range.indexOf(start) >= 0) ? probability[range.indexOf(start)] : 0;
+    }
+    var sorted = range.sort(function (a, b) {
+        return a - b;
+    });
+    var n = sorted.length;
+    var result = 0;
+    for (var i = 0; i < n; i++) {
+        if (sorted[i] >= start && sorted[i] <= end) {
+            result += probability[range.indexOf(sorted[i])];
+        }
+    }
+    return result;
+};
+exports.PROB = PROB;

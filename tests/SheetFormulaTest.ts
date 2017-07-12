@@ -914,6 +914,10 @@ test("Sheet RSQ", function(){
   assertFormulaEquals('=RSQ([10, 22, 4], [1, 3, 7])', 0.2500000000000001);
 });
 
+test("Sheet SKEW", function(){
+  assertFormulaEquals('=SKEW(1, 2, 3, 4, 5, 6, 100)', 2.6336050735387375);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

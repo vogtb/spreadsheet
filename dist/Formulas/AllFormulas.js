@@ -189,6 +189,7 @@ exports.VARA = Statistical_1.VARA;
 exports.VAR = Statistical_1.VAR;
 exports.PERMUT = Statistical_1.PERMUT;
 exports.RSQ = Statistical_1.RSQ;
+exports.SKEW = Statistical_1.SKEW;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

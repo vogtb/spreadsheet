@@ -1709,6 +1709,32 @@ var RSQ = function (rangeY, rangeX) {
 };
 
 
+/**
+ * Returns the skewness of a distribution.
+ * @param values - The numerical values or range.
+ * @returns {number}
+ * @constructor
+ */
+var SKEW = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "SKEW");
+  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  var n = range.length;
+  if (n < 3) {
+    throw new DivZeroError("SKEW requires at least 3 data points.");
+  }
+  var meanValue = mean(range);
+  var sigma = 0;
+  for (var i = 0; i < n; i++) {
+    sigma += Math.pow(range[i] - meanValue, 3);
+  }
+  var d = ((n - 1) * (n - 2) * Math.pow(stdev(range, true), 3));
+  if (d === 0) {
+    throw new DivZeroError("Evaluation of function SKEW caused a divide by zero error.");
+  }
+  return n * sigma / d;
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1762,5 +1788,6 @@ export {
   VARA,
   VAR,
   PERMUT,
-  RSQ
+  RSQ,
+  SKEW
 }

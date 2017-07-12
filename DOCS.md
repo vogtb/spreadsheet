@@ -2039,6 +2039,15 @@
 @returns {number} 
 @constructor
 ```
+
+### SKEW 
+
+```
+  Returns the skewness of a distribution. 
+@param values - The numerical values or range. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

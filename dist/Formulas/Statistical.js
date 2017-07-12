@@ -1725,3 +1725,32 @@ var RSQ = function (rangeY, rangeX) {
     return Math.pow(PEARSON(dataX, dataY), 2);
 };
 exports.RSQ = RSQ;
+/**
+ * Returns the skewness of a distribution.
+ * @param values - The numerical values or range.
+ * @returns {number}
+ * @constructor
+ */
+var SKEW = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 1, "SKEW");
+    var range = Filter_1.Filter.flattenAndThrow(values).map(TypeConverter_1.TypeConverter.valueToNumber);
+    var n = range.length;
+    if (n < 3) {
+        throw new Errors_1.DivZeroError("SKEW requires at least 3 data points.");
+    }
+    var meanValue = MathHelpers_1.mean(range);
+    var sigma = 0;
+    for (var i = 0; i < n; i++) {
+        sigma += Math.pow(range[i] - meanValue, 3);
+    }
+    var d = ((n - 1) * (n - 2) * Math.pow(MathHelpers_1.stdev(range, true), 3));
+    if (d === 0) {
+        throw new Errors_1.DivZeroError("Evaluation of function SKEW caused a divide by zero error.");
+    }
+    return n * sigma / d;
+};
+exports.SKEW = SKEW;

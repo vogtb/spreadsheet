@@ -51,7 +51,8 @@ import {
   VARA,
   VAR,
   PERMUT,
-  RSQ
+  RSQ,
+  SKEW
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1057,5 +1058,17 @@ test("RSQ", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     RSQ.apply(this, [[1]]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("SKEW", function() {
+  assertEquals(SKEW(1, 2, 3, 4, 5, 6), 0);
+  assertEquals(SKEW(1, 2, 3,[4, 5], 6), 0);
+  assertEquals(SKEW(1, 2, 3, 4, 5, 6, 100), 2.6336050735387375);
+  catchAndAssertEquals(function() {
+    SKEW(1)
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    SKEW.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

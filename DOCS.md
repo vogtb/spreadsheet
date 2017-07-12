@@ -1984,6 +1984,15 @@
 @returns {number} 
 @constructor
 ```
+
+### VARPA 
+
+```
+  Estimate the variance based on the entire population. Text will be converted to numbers, if possible. 
+@param values - Values of population. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

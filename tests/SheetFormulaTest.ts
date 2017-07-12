@@ -890,6 +890,10 @@ test("Sheet WEIBULL", function(){
   assertFormulaEquals('=WEIBULL(2.4, 2, 4, true)', 0.30232367392896886);
 });
 
+test("Sheet VARPA", function(){
+  assertFormulaEquals('=VARPA(1, 2, 3, 4, 5, 6, 7, 8)', 5.25);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

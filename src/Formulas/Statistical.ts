@@ -1528,6 +1528,36 @@ var WEIBULL = function (x, shape, scale, cumulative) {
 };
 
 
+/**
+ * Estimate the variance based on the entire population. Text will be converted to numbers, if possible.
+ * @param values - Values of population.
+ * @returns {number}
+ * @constructor
+ */
+var VARPA = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "VARPA");
+  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  var n = range.length;
+  var sigma = 0;
+  var count = 0;
+  var mean = AVERAGEA(range);
+  for (var i = 0; i < n; i++) {
+    var el = range[i];
+    if (typeof el === 'number') {
+      sigma += Math.pow(el - mean, 2);
+    } else if (el === true) {
+      sigma += Math.pow(1 - mean, 2);
+    } else {
+      sigma += Math.pow(0 - mean, 2);
+    }
+
+    if (el !== null) {
+      count++;
+    }
+  }
+  return sigma / count;
+};
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1575,5 +1605,6 @@ export {
   CONFIDENCE,
   BINOMDIST,
   COVAR,
-  WEIBULL
+  WEIBULL,
+  VARPA
 }

@@ -1530,3 +1530,38 @@ var WEIBULL = function (x, shape, scale, cumulative) {
         * Math.exp(-Math.pow(x / scale, shape)) * shape / Math.pow(scale, shape);
 };
 exports.WEIBULL = WEIBULL;
+/**
+ * Estimate the variance based on the entire population. Text will be converted to numbers, if possible.
+ * @param values - Values of population.
+ * @returns {number}
+ * @constructor
+ */
+var VARPA = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 1, "VARPA");
+    var range = Filter_1.Filter.flattenAndThrow(values).map(TypeConverter_1.TypeConverter.valueToNumber);
+    var n = range.length;
+    var sigma = 0;
+    var count = 0;
+    var mean = AVERAGEA(range);
+    for (var i = 0; i < n; i++) {
+        var el = range[i];
+        if (typeof el === 'number') {
+            sigma += Math.pow(el - mean, 2);
+        }
+        else if (el === true) {
+            sigma += Math.pow(1 - mean, 2);
+        }
+        else {
+            sigma += Math.pow(0 - mean, 2);
+        }
+        if (el !== null) {
+            count++;
+        }
+    }
+    return sigma / count;
+};
+exports.VARPA = VARPA;

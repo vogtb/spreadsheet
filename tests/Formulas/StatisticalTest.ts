@@ -45,7 +45,8 @@ import {
   CONFIDENCE,
   BINOMDIST,
   COVAR,
-  WEIBULL
+  WEIBULL,
+  VARPA
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -951,5 +952,19 @@ test("WEIBULL", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     WEIBULL.apply(this, [10, 10, 10, 10, 10]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("VARPA", function() {
+  assertEquals(VARPA(1, 2, 3, 4, 5, 6, 7, 8), 5.25);
+  assertEquals(VARPA(1, 2, 3, 4, [5, [6]], 7, 8), 5.25);
+  assertEquals(VARPA(1, 2, 3, 4, 5, 6, 7, 8, "0"), 6.666666666666667);
+  assertEquals(VARPA(1, 2, 3, 4, 5, 6, 7, 8, "10"), 7.654320987654322);
+  assertEquals(VARPA(1, 2, 3, 4, 5, 6, 7, 8, false), 6.666666666666667);
+  catchAndAssertEquals(function() {
+    VARPA(1, 2, 3, 4, 5, 6, 7, 8, "ignore");
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    VARPA.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

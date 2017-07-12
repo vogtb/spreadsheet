@@ -183,6 +183,7 @@ exports.CONFIDENCE = Statistical_1.CONFIDENCE;
 exports.BINOMDIST = Statistical_1.BINOMDIST;
 exports.COVAR = Statistical_1.COVAR;
 exports.WEIBULL = Statistical_1.WEIBULL;
+exports.VARPA = Statistical_1.VARPA;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

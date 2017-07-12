@@ -82,7 +82,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * VAR
 * VARA
 * VARP
-* VARPA
 * ZTEST
 * CLEAN
 * FIND

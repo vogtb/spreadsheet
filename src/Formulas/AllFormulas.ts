@@ -188,7 +188,8 @@ import {
   CONFIDENCE,
   BINOMDIST,
   COVAR,
-  WEIBULL
+  WEIBULL,
+  VARPA
 } from "./Statistical";
 import {
   ARABIC,
@@ -451,5 +452,6 @@ export {
   ROW,
   T,
   PPMT,
-  WEIBULL
+  WEIBULL,
+  VARPA
 }

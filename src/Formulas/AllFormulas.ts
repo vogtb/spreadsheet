@@ -187,7 +187,8 @@ import {
   HARMEAN,
   CONFIDENCE,
   BINOMDIST,
-  COVAR
+  COVAR,
+  WEIBULL
 } from "./Statistical";
 import {
   ARABIC,
@@ -449,5 +450,6 @@ export {
   COLUMN,
   ROW,
   T,
-  PPMT
+  PPMT,
+  WEIBULL
 }

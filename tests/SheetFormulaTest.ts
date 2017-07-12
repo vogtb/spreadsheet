@@ -886,6 +886,10 @@ test("Sheet PPMT", function(){
   assertFormulaEquals('=PPMT(0, 3, 24, 33000, 0, 1)', -1375.00);
 });
 
+test("Sheet WEIBULL", function(){
+  assertFormulaEquals('=WEIBULL(2.4, 2, 4, true)', 0.30232367392896886);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

@@ -1501,3 +1501,32 @@ var COVAR = function (dataY, dataX) {
     return result / n;
 };
 exports.COVAR = COVAR;
+/**
+ * Returns the values of the Weibull distribution for the given number.
+ * @param x - Number to use in calculation.
+ * @param shape - The Alpha parameter of the Weibull distribution. Should be greater than 0.
+ * @param scale - The Beta parameter of the Weibull distribution. Should be greater than 0.
+ * @param cumulative - Indicates the type of function: If 0 the form of the function is calculated, if 1 then the
+ * distribution is calculated.
+ * @returns {number}
+ * @constructor
+ */
+var WEIBULL = function (x, shape, scale, cumulative) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 4, "WEIBULL");
+    x = TypeConverter_1.TypeConverter.firstValueAsNumber(x);
+    if (x < 0) {
+        throw new Errors_1.NumError("Function WEIBULL parameter 1 value is " + x + ", but should be greater than or equal to 0.");
+    }
+    shape = TypeConverter_1.TypeConverter.firstValueAsNumber(shape);
+    if (shape <= 0) {
+        throw new Errors_1.NumError("Function WEIBULL parameter 2 value is " + shape + ", but should be greater than 0.");
+    }
+    scale = TypeConverter_1.TypeConverter.firstValueAsNumber(scale);
+    if (scale <= 0) {
+        throw new Errors_1.NumError("Function WEIBULL parameter 2 value is " + scale + ", but should be greater than 0.");
+    }
+    cumulative = TypeConverter_1.TypeConverter.firstValueAsNumber(cumulative);
+    return (cumulative) ? 1 - Math.exp(-Math.pow(x / scale, shape)) : Math.pow(x, shape - 1)
+        * Math.exp(-Math.pow(x / scale, shape)) * shape / Math.pow(scale, shape);
+};
+exports.WEIBULL = WEIBULL;

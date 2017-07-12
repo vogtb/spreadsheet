@@ -1498,6 +1498,36 @@ var COVAR = function (dataY, dataX) {
 };
 
 
+/**
+ * Returns the values of the Weibull distribution for the given number.
+ * @param x - Number to use in calculation.
+ * @param shape - The Alpha parameter of the Weibull distribution. Should be greater than 0.
+ * @param scale - The Beta parameter of the Weibull distribution. Should be greater than 0.
+ * @param cumulative - Indicates the type of function: If 0 the form of the function is calculated, if 1 then the
+ * distribution is calculated.
+ * @returns {number}
+ * @constructor
+ */
+var WEIBULL = function (x, shape, scale, cumulative) {
+  ArgsChecker.checkLength(arguments, 4, "WEIBULL");
+  x = TypeConverter.firstValueAsNumber(x);
+  if (x < 0) {
+    throw new NumError("Function WEIBULL parameter 1 value is " + x + ", but should be greater than or equal to 0.");
+  }
+  shape = TypeConverter.firstValueAsNumber(shape);
+  if (shape <= 0) {
+    throw new NumError("Function WEIBULL parameter 2 value is " + shape + ", but should be greater than 0.");
+  }
+  scale = TypeConverter.firstValueAsNumber(scale);
+  if (scale <= 0) {
+    throw new NumError("Function WEIBULL parameter 2 value is " + scale + ", but should be greater than 0.");
+  }
+  cumulative = TypeConverter.firstValueAsNumber(cumulative);
+  return (cumulative) ? 1 - Math.exp(-Math.pow(x / scale, shape)) : Math.pow(x, shape - 1)
+      * Math.exp(-Math.pow(x / scale, shape)) * shape / Math.pow(scale, shape);
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1544,5 +1574,6 @@ export {
   HARMEAN,
   CONFIDENCE,
   BINOMDIST,
-  COVAR
+  COVAR,
+  WEIBULL
 }

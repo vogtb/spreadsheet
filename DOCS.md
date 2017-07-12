@@ -1972,6 +1972,18 @@
 @returns {number} 
 @constructor
 ```
+
+### WEIBULL 
+
+```
+  Returns the values of the Weibull distribution for the given number. 
+@param x - Number to use in calculation. 
+@param shape - The Alpha parameter of the Weibull distribution. Should be greater than 0. 
+@param scale - The Beta parameter of the Weibull distribution. Should be greater than 0. 
+@param cumulative - Indicates the type of function: If 0 the form of the function is calculated, if 1 then the distribution is calculated. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

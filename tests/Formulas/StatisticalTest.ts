@@ -44,7 +44,8 @@ import {
   HARMEAN,
   CONFIDENCE,
   BINOMDIST,
-  COVAR
+  COVAR,
+  WEIBULL
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -929,5 +930,26 @@ test("COVAR", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     COVAR.apply(this, [[10, 10, 10], [1, 2, 4], 1000000]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("WEIBULL", function() {
+  assertEquals(WEIBULL(2.4, 2, 4, true), 0.30232367392896886);
+  assertEquals(WEIBULL(3.1, 4, 4, true), 0.3028470073265427);
+  assertEquals(WEIBULL(0.16, 1, 4, false), 0.2401973597880808);
+  catchAndAssertEquals(function() {
+    WEIBULL(-10, 2, 4, true);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    WEIBULL(10, 0, 4, true);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    WEIBULL(10, 1, 0, true);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    WEIBULL.apply(this, [10, 10, 10]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    WEIBULL.apply(this, [10, 10, 10, 10, 10]);
   }, ERRORS.NA_ERROR);
 });

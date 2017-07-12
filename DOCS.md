@@ -2048,6 +2048,16 @@
 @returns {number} 
 @constructor
 ```
+
+### STEYX 
+
+```
+  Returns the standard error of the predicted y value for each x in the regression. Text values will be ignored. 
+@param rangeY - An array or range of data points. 
+@param rangeX - An array or range of data points. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

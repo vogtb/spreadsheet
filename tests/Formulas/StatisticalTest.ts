@@ -52,7 +52,8 @@ import {
   VAR,
   PERMUT,
   RSQ,
-  SKEW
+  SKEW,
+  STEYX
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1070,5 +1071,23 @@ test("SKEW", function() {
   }, ERRORS.DIV_ZERO_ERROR);
   catchAndAssertEquals(function() {
     SKEW.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("STEYX", function() {
+  assertEquals(STEYX([1, 2, 3, 4], [1, 3, 5, 2]), 1.4638501094227998);
+  assertEquals(STEYX([1, 2, 3, 4, "str"], [1, 3, 5, 2, "str"]), 1.4638501094227998);
+  assertEquals(STEYX([1, 2, 3], [1, 3, 5]), 0);
+  catchAndAssertEquals(function() {
+    STEYX([1, 2], [1, 3]);
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    STEYX([1, 2, 3, 4], [1, 2, 3]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    STEYX.apply(this, [[1, 2, 3]]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    STEYX.apply(this, [[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
   }, ERRORS.NA_ERROR);
 });

@@ -918,6 +918,10 @@ test("Sheet SKEW", function(){
   assertFormulaEquals('=SKEW(1, 2, 3, 4, 5, 6, 100)', 2.6336050735387375);
 });
 
+test("Sheet STEYX", function(){
+  assertFormulaEquals('=STEYX([1, 2, 3, 4], [1, 3, 5, 2])', 1.4638501094227998);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

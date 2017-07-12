@@ -1689,16 +1689,8 @@ var RSQ = function (rangeY, rangeX) {
   if (!Array.isArray(rangeX)) {
     rangeX = [rangeX];
   }
-  var dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
-    return typeof value !== "string";
-  }).map(function (value) {
-    return TypeConverter.valueToNumber(value);
-  });
-  var dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
-    return typeof value !== "string";
-  }).map(function (value) {
-    return TypeConverter.valueToNumber(value);
-  });
+  var dataX = Filter.flattenAndThrow(rangeX).map(TypeConverter.valueToNumber);
+  var dataY = Filter.flattenAndThrow(rangeY).map(TypeConverter.valueToNumber);
   if (dataX.length !== dataY.length) {
     throw new NAError("SLOPE has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
   }
@@ -1732,6 +1724,48 @@ var SKEW = function (...values) {
     throw new DivZeroError("Evaluation of function SKEW caused a divide by zero error.");
   }
   return n * sigma / d;
+};
+
+
+/**
+ * Returns the standard error of the predicted y value for each x in the regression. Text values will be ignored.
+ * @param rangeY - An array or range of data points.
+ * @param rangeX - An array or range of data points.
+ * @returns {number}
+ * @constructor
+ */
+var STEYX =  function (rangeY, rangeX) {
+  ArgsChecker.checkLength(arguments, 2, "STEYX");
+  if (!Array.isArray(rangeY)) {
+    rangeY = [rangeY];
+  }
+  if (!Array.isArray(rangeX)) {
+    rangeX = [rangeX];
+  }
+  var dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
+    return typeof value !== "string";
+  }).map(TypeConverter.valueToNumber);
+  var dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
+    return typeof value !== "string";
+  }).map(TypeConverter.valueToNumber);
+  if (dataX.length !== dataY.length) {
+    throw new NAError("STEYX has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
+  }
+  if (dataY.length === 2 && dataX.length === 2) {
+    throw new DivZeroError("Evaluation of function STEYX caused a divide by zero error.");
+  }
+  var xmean = mean(dataX);
+  var ymean = mean(dataY);
+  var n = dataX.length;
+  var lft = 0;
+  var num = 0;
+  var den = 0;
+  for (var i = 0; i < n; i++) {
+    lft += Math.pow(dataY[i] - ymean, 2);
+    num += (dataX[i] - xmean) * (dataY[i] - ymean);
+    den += Math.pow(dataX[i] - xmean, 2);
+  }
+  return Math.sqrt((lft - num * num / den) / (n - 2));
 };
 
 
@@ -1789,5 +1823,6 @@ export {
   VAR,
   PERMUT,
   RSQ,
-  SKEW
+  SKEW,
+  STEYX
 }

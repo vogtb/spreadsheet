@@ -187,6 +187,7 @@ exports.VARPA = Statistical_1.VARPA;
 exports.VARP = Statistical_1.VARP;
 exports.VARA = Statistical_1.VARA;
 exports.VAR = Statistical_1.VAR;
+exports.PERMUT = Statistical_1.PERMUT;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

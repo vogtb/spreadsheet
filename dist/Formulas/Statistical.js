@@ -1659,3 +1659,35 @@ var VAR = function () {
     return sigma / (count - 1);
 };
 exports.VAR = VAR;
+/**
+ * Returns the number of permutations for a given number of objects.
+ * @param total - The total number of objects
+ * @param objects - The number of objects in each permutation.
+ * @returns {number}
+ * @constructor
+ */
+var PERMUT = function (total, objects) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "PERMUT");
+    total = TypeConverter_1.TypeConverter.firstValueAsNumber(total);
+    objects = TypeConverter_1.TypeConverter.firstValueAsNumber(objects);
+    if (total < objects) {
+        throw new Errors_1.NumError("Function PERMUT parameter 2 value is " + objects +
+            ", should be less than or equal to value of Function PERMUT parameter 1 of " + objects + ".");
+    }
+    var memoizeFact = [];
+    function _fact(value) {
+        var n = Math.floor(value);
+        if (n === 0 || n === 1) {
+            return 1;
+        }
+        else if (memoizeFact[n] > 0) {
+            return memoizeFact[n];
+        }
+        else {
+            memoizeFact[n] = _fact(n - 1) * n;
+            return memoizeFact[n];
+        }
+    }
+    return _fact(total) / _fact(total - objects);
+};
+exports.PERMUT = PERMUT;

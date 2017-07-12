@@ -49,7 +49,8 @@ import {
   VARPA,
   VARP,
   VARA,
-  VAR
+  VAR,
+  PERMUT
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1021,5 +1022,22 @@ test("VAR", function() {
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
     VAR.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("PERMUT", function() {
+  assertEquals(PERMUT(4, 2), 12);
+  assertEquals(PERMUT(44, 2), 1892);
+  assertEquals(PERMUT(11, 1), 11);
+  assertEquals(PERMUT(4, 0), 1);
+  assertEquals(PERMUT(0, 0), 1);
+  catchAndAssertEquals(function() {
+    PERMUT(4, 20);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    PERMUT.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PERMUT.apply(this, [1, 2, 3]);
   }, ERRORS.NA_ERROR);
 });

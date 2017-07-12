@@ -192,7 +192,8 @@ import {
   VARPA,
   VARP,
   VARA,
-  VAR
+  VAR,
+  PERMUT
 } from "./Statistical";
 import {
   ARABIC,
@@ -459,5 +460,6 @@ export {
   VARPA,
   VARP,
   VARA,
-  VAR
+  VAR,
+  PERMUT
 }

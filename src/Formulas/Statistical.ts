@@ -1643,6 +1643,37 @@ var VAR = function (...values) {
 };
 
 
+/**
+ * Returns the number of permutations for a given number of objects.
+ * @param total - The total number of objects
+ * @param objects - The number of objects in each permutation.
+ * @returns {number}
+ * @constructor
+ */
+var PERMUT = function (total, objects) {
+  ArgsChecker.checkLength(arguments, 2, "PERMUT");
+  total = TypeConverter.firstValueAsNumber(total);
+  objects = TypeConverter.firstValueAsNumber(objects);
+  if (total < objects) {
+    throw new NumError("Function PERMUT parameter 2 value is " + objects +
+        ", should be less than or equal to value of Function PERMUT parameter 1 of " + objects + ".");
+  }
+  var memoizeFact = [];
+  function _fact(value) {
+    var n = Math.floor(value);
+    if (n === 0 || n === 1) {
+      return 1;
+    } else if (memoizeFact[n] > 0) {
+      return memoizeFact[n];
+    } else {
+      memoizeFact[n] = _fact(n - 1) * n;
+      return memoizeFact[n];
+    }
+  }
+  return _fact(total) / _fact(total - objects);
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1694,5 +1725,6 @@ export {
   VARPA,
   VARP,
   VARA,
-  VAR
+  VAR,
+  PERMUT
 }

@@ -2019,6 +2019,16 @@
 @param values - Values in sample. 
 @constructor
 ```
+
+### PERMUT 
+
+```
+  Returns the number of permutations for a given number of objects. 
+@param total - The total number of objects 
+@param objects - The number of objects in each permutation. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

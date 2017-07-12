@@ -2002,6 +2002,15 @@
 @returns {number} 
 @constructor
 ```
+
+### VARA 
+
+```
+  Estimate the variance based on a sample. 
+@param values 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

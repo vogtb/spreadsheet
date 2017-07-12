@@ -185,6 +185,7 @@ exports.COVAR = Statistical_1.COVAR;
 exports.WEIBULL = Statistical_1.WEIBULL;
 exports.VARPA = Statistical_1.VARPA;
 exports.VARP = Statistical_1.VARP;
+exports.VARA = Statistical_1.VARA;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

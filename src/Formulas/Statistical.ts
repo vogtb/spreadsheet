@@ -1585,6 +1585,42 @@ var VARP =  function (...values) {
   return sigma / count;
 };
 
+
+/**
+ * Estimate the variance based on a sample.
+ * @param values
+ * @returns {number}
+ * @constructor
+ */
+var VARA = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "VARA");
+  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  var n = range.length;
+  if (n < 2) {
+    throw new DivZeroError("Evaluation of function VARA caused a divide by zero error.");
+  }
+  var sigma = 0;
+  var count = 0;
+  var mean = AVERAGEA(range);
+  for (var i = 0; i < n; i++) {
+    var el = range[i];
+    if (typeof el === 'number') {
+      sigma += Math.pow(el - mean, 2);
+    } else if (el === true) {
+      sigma += Math.pow(1 - mean, 2);
+    } else {
+      sigma += Math.pow(0 - mean, 2);
+    }
+
+    if (el !== null) {
+      count++;
+    }
+  }
+  return sigma / (count - 1);
+};
+
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1634,5 +1670,6 @@ export {
   COVAR,
   WEIBULL,
   VARPA,
-  VARP
+  VARP,
+  VARA
 }

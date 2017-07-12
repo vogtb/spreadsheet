@@ -902,6 +902,11 @@ test("Sheet VARA", function(){
   assertFormulaEquals('=VARA(1, 2, 3, 4, 5, 6, 7, 8)', 6);
 });
 
+test("Sheet VAR", function(){
+  assertFormulaEquals('=VAR(1, 2, 3, 4, 5, 6, 7, 8)', 6);
+});
+
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

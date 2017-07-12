@@ -1620,6 +1620,28 @@ var VARA = function (...values) {
 };
 
 
+/**
+ * Estimate the variance based on a sample.
+ * @param values - Values in sample.
+ * @constructor
+ */
+var VAR = function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "VAR");
+  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  var n = range.length;
+  if (n < 2) {
+    throw new DivZeroError("Evaluation of function VAR caused a divide by zero error.");
+  }
+  var sigma = 0;
+  var count = 0;
+  var mean = AVERAGE(range);
+  for (var i = 0; i < n; i++) {
+    sigma += Math.pow(range[i] - mean, 2);
+    count++;
+  }
+  return sigma / (count - 1);
+};
+
 
 export {
   AVERAGE,
@@ -1671,5 +1693,6 @@ export {
   WEIBULL,
   VARPA,
   VARP,
-  VARA
+  VARA,
+  VAR
 }

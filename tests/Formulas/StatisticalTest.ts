@@ -48,7 +48,8 @@ import {
   WEIBULL,
   VARPA,
   VARP,
-  VARA
+  VARA,
+  VAR
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1004,5 +1005,21 @@ test("VARA", function() {
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
     VARA.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("VAR", function() {
+  assertEquals(VAR(1, 2, 3, 4, 5, 6, 7, 8), 6);
+  assertEquals(VAR(1, 2, 3, 4, 5, 6, 7, 8, "0"), 7.5);
+  assertEquals(VAR(1, 2, 3, 4, 5, 6, 7, 8, false), 7.5);
+  assertEquals(VAR(1, 2, 3, 4, 5, 6, 7, 8, "10"), 8.611111111111112);
+  catchAndAssertEquals(function() {
+    VAR(1);
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    VAR(1, 2, 3, 4, 5, 6, 7, 8, "ignore");
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    VAR.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

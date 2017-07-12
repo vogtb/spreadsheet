@@ -191,7 +191,8 @@ import {
   WEIBULL,
   VARPA,
   VARP,
-  VARA
+  VARA,
+  VAR
 } from "./Statistical";
 import {
   ARABIC,
@@ -457,5 +458,6 @@ export {
   WEIBULL,
   VARPA,
   VARP,
-  VARA
+  VARA,
+  VAR
 }

@@ -2011,6 +2011,14 @@
 @returns {number} 
 @constructor
 ```
+
+### VAR 
+
+```
+  Estimate the variance based on a sample. 
+@param values - Values in sample. 
+@constructor
+```
 ## Text
 
 

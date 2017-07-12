@@ -1674,6 +1674,41 @@ var PERMUT = function (total, objects) {
 };
 
 
+/**
+ * Returns the square of the Pearson correlation coefficient based on the given values.
+ * @param rangeY - An array or range of data points.
+ * @param rangeX - An array or range of data points.
+ * @returns {number}
+ * @constructor
+ */
+var RSQ = function (rangeY, rangeX) {
+  ArgsChecker.checkLength(arguments, 2, "RSQ");
+  if (!Array.isArray(rangeY)) {
+    rangeY = [rangeY];
+  }
+  if (!Array.isArray(rangeX)) {
+    rangeX = [rangeX];
+  }
+  var dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
+    return typeof value !== "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+  var dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
+    return typeof value !== "string";
+  }).map(function (value) {
+    return TypeConverter.valueToNumber(value);
+  });
+  if (dataX.length !== dataY.length) {
+    throw new NAError("SLOPE has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
+  }
+  if (dataY.length === 1 && dataX.length === 1) {
+    throw new DivZeroError("Evaluation of function RSQ caused a divide by zero error.");
+  }
+  return Math.pow(PEARSON(dataX, dataY), 2);
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1726,5 +1761,6 @@ export {
   VARP,
   VARA,
   VAR,
-  PERMUT
+  PERMUT,
+  RSQ
 }

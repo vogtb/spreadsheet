@@ -50,7 +50,8 @@ import {
   VARP,
   VARA,
   VAR,
-  PERMUT
+  PERMUT,
+  RSQ
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1039,5 +1040,22 @@ test("PERMUT", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     PERMUT.apply(this, [1, 2, 3]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("RSQ", function() {
+  assertEquals(RSQ([10, 22, 4], [1, 3, 7]), 0.2500000000000001);
+  assertEquals(RSQ([10, 22], [1, 3]), 1);
+  catchAndAssertEquals(function() {
+    RSQ([1, 2, 3], [1, 2]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    RSQ(1, 1);
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    RSQ.apply(this, [[1], [1], [1]]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    RSQ.apply(this, [[1]]);
   }, ERRORS.NA_ERROR);
 });

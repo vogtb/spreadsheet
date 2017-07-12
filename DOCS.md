@@ -2029,6 +2029,16 @@
 @returns {number} 
 @constructor
 ```
+
+### RSQ 
+
+```
+  Returns the square of the Pearson correlation coefficient based on the given values. 
+@param rangeY - An array or range of data points. 
+@param rangeX - An array or range of data points. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

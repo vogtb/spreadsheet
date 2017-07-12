@@ -910,6 +910,9 @@ test("Sheet PERMUT", function(){
   assertFormulaEquals('=PERMUT(4, 2)', 12);
 });
 
+test("Sheet RSQ", function(){
+  assertFormulaEquals('=RSQ([10, 22, 4], [1, 3, 7])', 0.2500000000000001);
+});
 
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);

@@ -1691,3 +1691,37 @@ var PERMUT = function (total, objects) {
     return _fact(total) / _fact(total - objects);
 };
 exports.PERMUT = PERMUT;
+/**
+ * Returns the square of the Pearson correlation coefficient based on the given values.
+ * @param rangeY - An array or range of data points.
+ * @param rangeX - An array or range of data points.
+ * @returns {number}
+ * @constructor
+ */
+var RSQ = function (rangeY, rangeX) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "RSQ");
+    if (!Array.isArray(rangeY)) {
+        rangeY = [rangeY];
+    }
+    if (!Array.isArray(rangeX)) {
+        rangeX = [rangeX];
+    }
+    var dataX = Filter_1.Filter.flattenAndThrow(rangeX).filter(function (value) {
+        return typeof value !== "string";
+    }).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    var dataY = Filter_1.Filter.flattenAndThrow(rangeY).filter(function (value) {
+        return typeof value !== "string";
+    }).map(function (value) {
+        return TypeConverter_1.TypeConverter.valueToNumber(value);
+    });
+    if (dataX.length !== dataY.length) {
+        throw new Errors_1.NAError("SLOPE has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
+    }
+    if (dataY.length === 1 && dataX.length === 1) {
+        throw new Errors_1.DivZeroError("Evaluation of function RSQ caused a divide by zero error.");
+    }
+    return Math.pow(PEARSON(dataX, dataY), 2);
+};
+exports.RSQ = RSQ;

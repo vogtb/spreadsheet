@@ -1544,6 +1544,9 @@ var VARPA = function () {
     ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 1, "VARPA");
     var range = Filter_1.Filter.flattenAndThrow(values).map(TypeConverter_1.TypeConverter.valueToNumber);
     var n = range.length;
+    if (n < 2) {
+        throw new Errors_1.DivZeroError("Evaluation of function VARP caused a divide by zero error.");
+    }
     var sigma = 0;
     var count = 0;
     var mean = AVERAGEA(range);
@@ -1565,3 +1568,30 @@ var VARPA = function () {
     return sigma / count;
 };
 exports.VARPA = VARPA;
+/**
+ * Estimate the variance based on the entire population.
+ * @param values - Values of entire population.
+ * @returns {number}
+ * @constructor
+ */
+var VARP = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 1, "VARP");
+    var range = Filter_1.Filter.flattenAndThrow(values).map(TypeConverter_1.TypeConverter.valueToNumber);
+    var n = range.length;
+    if (n < 2) {
+        throw new Errors_1.DivZeroError("Evaluation of function VARP caused a divide by zero error.");
+    }
+    var sigma = 0;
+    var count = 0;
+    var mean = AVERAGE(range);
+    for (var i = 0; i < n; i++) {
+        sigma += Math.pow(range[i] - mean, 2);
+        count++;
+    }
+    return sigma / count;
+};
+exports.VARP = VARP;

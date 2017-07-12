@@ -189,7 +189,8 @@ import {
   BINOMDIST,
   COVAR,
   WEIBULL,
-  VARPA
+  VARPA,
+  VARP
 } from "./Statistical";
 import {
   ARABIC,
@@ -453,5 +454,6 @@ export {
   T,
   PPMT,
   WEIBULL,
-  VARPA
+  VARPA,
+  VARP
 }

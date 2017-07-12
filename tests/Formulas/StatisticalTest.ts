@@ -46,7 +46,8 @@ import {
   BINOMDIST,
   COVAR,
   WEIBULL,
-  VARPA
+  VARPA,
+  VARP
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -962,9 +963,29 @@ test("VARPA", function() {
   assertEquals(VARPA(1, 2, 3, 4, 5, 6, 7, 8, "10"), 7.654320987654322);
   assertEquals(VARPA(1, 2, 3, 4, 5, 6, 7, 8, false), 6.666666666666667);
   catchAndAssertEquals(function() {
+    VARPA(1);
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
     VARPA(1, 2, 3, 4, 5, 6, 7, 8, "ignore");
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
     VARPA.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("VARP", function() {
+  assertEquals(VARP(1, 2, 3, 4, 5, 6, 7, 8), 5.25);
+  assertEquals(VARP(1, 2, 3, 4, [5, [6]], 7, 8), 5.25);
+  assertEquals(VARP(1, 2, 3, 4, 5, 6, 7, 8, "0"), 6.666666666666667);
+  assertEquals(VARP(1, 2, 3, 4, 5, 6, 7, 8, "10"), 7.654320987654322);
+  assertEquals(VARP(1, 2, 3, 4, 5, 6, 7, 8, false), 6.666666666666667);
+  catchAndAssertEquals(function() {
+    VARP(1);
+  }, ERRORS.DIV_ZERO_ERROR);
+  catchAndAssertEquals(function() {
+    VARP(1, 2, 3, 4, 5, 6, 7, 8, "ignore");
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    VARP.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

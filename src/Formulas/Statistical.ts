@@ -1538,6 +1538,9 @@ var VARPA = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "VARPA");
   var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
   var n = range.length;
+  if (n < 2) {
+    throw new DivZeroError("Evaluation of function VARP caused a divide by zero error.");
+  }
   var sigma = 0;
   var count = 0;
   var mean = AVERAGEA(range);
@@ -1554,6 +1557,30 @@ var VARPA = function (...values) {
     if (el !== null) {
       count++;
     }
+  }
+  return sigma / count;
+};
+
+
+/**
+ * Estimate the variance based on the entire population.
+ * @param values - Values of entire population.
+ * @returns {number}
+ * @constructor
+ */
+var VARP =  function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "VARP");
+  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  var n = range.length;
+  if (n < 2) {
+    throw new DivZeroError("Evaluation of function VARP caused a divide by zero error.");
+  }
+  var sigma = 0;
+  var count = 0;
+  var mean = AVERAGE(range);
+  for (var i = 0; i < n; i++) {
+    sigma += Math.pow(range[i] - mean, 2);
+    count++;
   }
   return sigma / count;
 };
@@ -1606,5 +1633,6 @@ export {
   BINOMDIST,
   COVAR,
   WEIBULL,
-  VARPA
+  VARPA,
+  VARP
 }

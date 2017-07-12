@@ -1993,6 +1993,15 @@
 @returns {number} 
 @constructor
 ```
+
+### VARP 
+
+```
+  Estimate the variance based on the entire population. 
+@param values - Values of entire population. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

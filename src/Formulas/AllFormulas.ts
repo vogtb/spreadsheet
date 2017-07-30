@@ -201,7 +201,8 @@ import {
   MODE,
   RANK,
   RANK$AVG,
-  RANK$EQ
+  RANK$EQ,
+  LOGNORMDIST
 } from "./Statistical";
 import {
   ARABIC,
@@ -479,5 +480,6 @@ export {
   MODE,
   RANK,
   RANK$AVG,
-  RANK$EQ
+  RANK$EQ,
+  LOGNORMDIST
 }

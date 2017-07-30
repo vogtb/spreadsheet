@@ -1939,6 +1939,29 @@ var RANK$EQ =  function (value, data, isAscending?) {
   return range.indexOf(value) + 1;
 };
 
+/**
+ * Returns the cumulative lognormal distribution for the given number.
+ * @param x - The probability value.
+ * @param meanValue - The mean value of the standard logarithmic distribution.
+ * @param standardDev - The standard deviation of the standard logarithmic distribution.
+ * @returns {number}
+ * @constructor
+ */
+var LOGNORMDIST = function (x, meanValue, standardDev) {
+  ArgsChecker.checkLength(arguments, 3, "LOGNORMDIST");
+  x = TypeConverter.firstValueAsNumber(x);
+  meanValue = TypeConverter.firstValueAsNumber(meanValue);
+  standardDev = TypeConverter.firstValueAsNumber(standardDev);
+  if (x <= 0) {
+    throw new NumError("Function LOGNORMDIST parameter 1 value is " + x + ", but should be greater than 0.");
+  }
+  if (standardDev <= 0) {
+    throw new NumError("Function LOGNORMDIST parameter 3 value is " + standardDev + ", but should be greater than 0.");
+  }
+  var a = (Math.log(x) - meanValue)/Math.sqrt(2 * standardDev * standardDev);
+  return 0.5 + 0.5 * erf(a);
+};
+
 
 export {
   AVERAGE,
@@ -2000,5 +2023,6 @@ export {
   MODE,
   RANK,
   RANK$AVG,
-  RANK$EQ
+  RANK$EQ,
+  LOGNORMDIST
 }

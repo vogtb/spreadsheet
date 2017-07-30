@@ -942,6 +942,10 @@ test("Sheet RANK.EQ", function(){
   assertFormulaEquals('=RANK.EQ([2], [1, 2, 3, 4, 5, 6, 7, 8, 9], true)', 2);
 });
 
+test("Sheet LOGNORMDIST", function(){
+  assertFormulaEquals('=LOGNORMDIST(4, 4, 6)', 0.33155709720516946);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

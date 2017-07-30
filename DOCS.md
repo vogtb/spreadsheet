@@ -2112,6 +2112,17 @@
 @returns {number} 
 @constructor
 ```
+
+### GNORMDIST 
+
+```
+  Returns the cumulative lognormal distribution for the given number. 
+@param x - The probability value. 
+@param meanValue - The mean value of the standard logarithmic distribution. 
+@param standardDev - The standard deviation of the standard logarithmic distribution. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

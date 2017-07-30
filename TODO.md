@@ -64,7 +64,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * F.DIST.RT
 * HYPGEOMDIST
 * LOGINV
-* LOGNORMDIST
 * T.INV
 * T.INV.2T
 * TDIST

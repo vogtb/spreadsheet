@@ -196,6 +196,7 @@ exports.MODE = Statistical_1.MODE;
 exports.RANK = Statistical_1.RANK;
 exports.RANK$AVG = Statistical_1.RANK$AVG;
 exports.RANK$EQ = Statistical_1.RANK$EQ;
+exports.LOGNORMDIST = Statistical_1.LOGNORMDIST;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

@@ -194,6 +194,7 @@ exports.STEYX = Statistical_1.STEYX;
 exports.PROB = Statistical_1.PROB;
 exports.MODE = Statistical_1.MODE;
 exports.RANK = Statistical_1.RANK;
+exports.RANK$AVG = Statistical_1.RANK$AVG;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;
@@ -238,6 +239,7 @@ var __COMPLEX = {
     "POISSON.DIST": Statistical_1.POISSON,
     "PERCENTRANK.INC": Statistical_1.PERCENTRANK,
     "PERCENTRANK.EXC": Statistical_1.PERCENTRANK$EXC,
-    "ERROR.TYPE": Info_1.ERRORTYPE
+    "ERROR.TYPE": Info_1.ERRORTYPE,
+    "RANK.AVG": Statistical_1.RANK$AVG
 };
 exports.__COMPLEX = __COMPLEX;

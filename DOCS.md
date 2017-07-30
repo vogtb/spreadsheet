@@ -2090,6 +2090,17 @@
 @returns {number} 
 @constructor
 ```
+
+### AVG 
+
+```
+  Returns the position of a given entry in the entire list, measured either from top to bottom or bottom to top. If more than one value exists in the same data-set, the average range of the values will be returned. 
+@param value - Value to find the rank of. 
+@param data - Values or range of the data-set. 
+@param isAscending - [OPTIONAL] The type of rank: 0 to rank from the highest, 1 to rank from the lowest. Defaults to 0. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

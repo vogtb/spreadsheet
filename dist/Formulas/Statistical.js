@@ -1889,3 +1889,41 @@ var RANK = function (value, data, isAscending) {
     return range.indexOf(value) + 1;
 };
 exports.RANK = RANK;
+/**
+ * Returns the position of a given entry in the entire list, measured either from top to bottom or bottom to top. If
+ * more than one value exists in the same data-set, the average range of the values will be returned.
+ * @param value - Value to find the rank of.
+ * @param data - Values or range of the data-set.
+ * @param isAscending - [OPTIONAL] The type of rank: 0 to rank from the highest, 1 to rank from the lowest. Defaults to
+ * 0.
+ * @returns {number}
+ * @constructor
+ */
+var RANK$AVG = function (value, data, isAscending) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 2, 3, "RANK.AVG");
+    value = TypeConverter_1.TypeConverter.firstValueAsNumber(value);
+    var range = Filter_1.Filter.flattenAndThrow(data).map(TypeConverter_1.TypeConverter.valueToNumber);
+    function _countIn(range, value) {
+        var result = 0;
+        for (var i = 0; i < range.length; i++) {
+            if (range[i] === value) {
+                result++;
+            }
+        }
+        return result;
+    }
+    isAscending = (typeof isAscending === 'undefined') ? false : isAscending;
+    var sort = (isAscending) ? function (a, b) {
+        return a - b;
+    } : function (a, b) {
+        return b - a;
+    };
+    range = range.sort(sort);
+    var rangeIndex = range.indexOf(value);
+    if (rangeIndex === -1) {
+        throw new Errors_1.NAError("RANK.AVG can't produce a result because parameter 1 is not in the dataset.");
+    }
+    var count = _countIn(range, value);
+    return (count > 1) ? (2 * rangeIndex + count + 1) / 2 : rangeIndex + 1;
+};
+exports.RANK$AVG = RANK$AVG;

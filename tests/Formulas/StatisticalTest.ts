@@ -56,7 +56,8 @@ import {
   STEYX,
   PROB,
   MODE,
-  RANK
+  RANK,
+  RANK$AVG
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1133,6 +1134,8 @@ test("MODE", function() {
 
 test("RANK", function() {
   assertEquals(RANK(2, [1, 2, 3, 4, 5, 6, 7, 8, 9], true), 2);
+  assertEquals(RANK(3, [1, 3, 4, 5, 6, 7, 8, 9]), 7);
+  assertEquals(RANK(3, [1, 3, 4, 5, 6, 7, 8, 9], true), 2);
   assertEquals(RANK(2, [7, 1, 2, 4, 100, 8, 9], true), 2);
   catchAndAssertEquals(function() {
     RANK(44, [7, 1]);
@@ -1142,5 +1145,24 @@ test("RANK", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     RANK.apply(this, [44, [7, 1], true, false]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("RANK.AVG", function() {
+  assertEquals(RANK$AVG(2, [1, 2, 2, 3, 4, 5, 6, 7, 8, 9], true), 2.5);
+  assertEquals(RANK$AVG(2, [1, 2, 2, 3, 4, 5, 6, 7, 8, 9]), 8.5);
+  assertEquals(RANK$AVG(2, [2]), 1);
+  assertEquals(RANK$AVG(2, [1, 2, 3, 4, 5, 6, 7, 8, 9], true), 2);
+  assertEquals(RANK$AVG(3, [1, 3, 4, 5, 6, 7, 8, 9]), 7);
+  assertEquals(RANK$AVG(3, [1, 3, 4, 5, 6, 7, 8, 9], true), 2);
+  assertEquals(RANK$AVG(2, [7, 1, 2, 4, 100, 8, 9], true), 2);
+  catchAndAssertEquals(function() {
+    RANK$AVG(44, [7, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    RANK$AVG.apply(this, [44]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    RANK$AVG.apply(this, [44, [7, 1], true, false]);
   }, ERRORS.NA_ERROR);
 });

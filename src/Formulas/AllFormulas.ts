@@ -199,7 +199,8 @@ import {
   STEYX,
   PROB,
   MODE,
-  RANK
+  RANK,
+  RANK$AVG
 } from "./Statistical";
 import {
   ARABIC,
@@ -248,7 +249,8 @@ var __COMPLEX = {
   "POISSON.DIST": POISSON,
   "PERCENTRANK.INC": PERCENTRANK,
   "PERCENTRANK.EXC": PERCENTRANK$EXC,
-  "ERROR.TYPE": ERRORTYPE
+  "ERROR.TYPE": ERRORTYPE,
+  "RANK.AVG": RANK$AVG
 };
 
 export {
@@ -473,5 +475,6 @@ export {
   STEYX,
   PROB,
   MODE,
-  RANK
+  RANK,
+  RANK$AVG
 }

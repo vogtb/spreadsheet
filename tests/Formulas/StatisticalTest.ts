@@ -54,7 +54,8 @@ import {
   RSQ,
   SKEW,
   STEYX,
-  PROB
+  PROB,
+  MODE
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1112,5 +1113,19 @@ test("PROB", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     PROB.apply(this, [[1, 2, 3, 4], [0.25, 0.25, 0.25], 10, 10, 10]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("MODE", function() {
+  assertEquals(MODE(1, 6, 7, 7, 8), 7);
+  assertEquals(MODE(1, 6, 6, 7, 7, 8), 6);
+  assertEquals(MODE(1, 6, 6, 7, 8), 6);
+  assertEquals(MODE(1, 6, 6, 7, "10"), 6);
+  assertEquals(MODE(1), 1);
+  catchAndAssertEquals(function() {
+    MODE(1, 2, 8);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    MODE();
   }, ERRORS.NA_ERROR);
 });

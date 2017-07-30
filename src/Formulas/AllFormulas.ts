@@ -197,7 +197,8 @@ import {
   RSQ,
   SKEW,
   STEYX,
-  PROB
+  PROB,
+  MODE
 } from "./Statistical";
 import {
   ARABIC,
@@ -469,5 +470,6 @@ export {
   RSQ,
   SKEW,
   STEYX,
-  PROB
+  PROB,
+  MODE
 }

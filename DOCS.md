@@ -2070,6 +2070,15 @@
 @returns {number} 
 @constructor
 ```
+
+### MODE 
+
+```
+  Returns the most commonly occurring value in a range. 
+@param values - Range(s) or values to consider. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

@@ -1810,6 +1810,38 @@ var PROB =  function (range, probability, start, end?) {
 };
 
 
+/**
+ * Returns the most commonly occurring value in a range.
+ * @param values - Range(s) or values to consider.
+ * @returns {number}
+ * @constructor
+ */
+var MODE =  function (...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 1, "MODE");
+  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  var n = range.length;
+  var count = {};
+  var maxItems = [];
+  var max = 0;
+  var currentItem;
+  for (var i = 0; i < n; i++) {
+    currentItem = range[i];
+    count[currentItem] = count[currentItem] ? count[currentItem] + 1 : 1;
+    if (count[currentItem] > max) {
+      max = count[currentItem];
+      maxItems = [];
+    }
+    if (count[currentItem] === max) {
+      maxItems[maxItems.length] = currentItem;
+    }
+  }
+  if (max === 1 && range.length !== 1) {
+    throw new NAError("MODE cannot produce a result because no values occur more than once.");
+  }
+  return maxItems[0];
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1866,5 +1898,6 @@ export {
   RSQ,
   SKEW,
   STEYX,
-  PROB
+  PROB,
+  MODE
 }

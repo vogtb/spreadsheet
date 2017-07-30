@@ -1827,3 +1827,38 @@ var PROB = function (range, probability, start, end) {
     return result;
 };
 exports.PROB = PROB;
+/**
+ * Returns the most commonly occurring value in a range.
+ * @param values - Range(s) or values to consider.
+ * @returns {number}
+ * @constructor
+ */
+var MODE = function () {
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        values[_i] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 1, "MODE");
+    var range = Filter_1.Filter.flattenAndThrow(values).map(TypeConverter_1.TypeConverter.valueToNumber);
+    var n = range.length;
+    var count = {};
+    var maxItems = [];
+    var max = 0;
+    var currentItem;
+    for (var i = 0; i < n; i++) {
+        currentItem = range[i];
+        count[currentItem] = count[currentItem] ? count[currentItem] + 1 : 1;
+        if (count[currentItem] > max) {
+            max = count[currentItem];
+            maxItems = [];
+        }
+        if (count[currentItem] === max) {
+            maxItems[maxItems.length] = currentItem;
+        }
+    }
+    if (max === 1 && range.length !== 1) {
+        throw new Errors_1.NAError("MODE cannot produce a result because no values occur more than once.");
+    }
+    return maxItems[0];
+};
+exports.MODE = MODE;

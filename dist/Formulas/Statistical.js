@@ -1927,3 +1927,31 @@ var RANK$AVG = function (value, data, isAscending) {
     return (count > 1) ? (2 * rangeIndex + count + 1) / 2 : rangeIndex + 1;
 };
 exports.RANK$AVG = RANK$AVG;
+/**
+ * Returns the position of a given entry in the entire list, measured either from top to bottom or bottom to top. If
+ * there is more than one entry of the same value in the dataset, the top rank of the entries will be returned.
+ * @param value - Value to find the rank of.
+ * @param data - Values or range of the data-set.
+ * @param isAscending - [OPTIONAL] The type of rank: 0 to rank from the highest, 1 to rank from the lowest. Defaults to
+ * 0.
+ * @returns {number}
+ * @constructor
+ */
+var RANK$EQ = function (value, data, isAscending) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 2, 3, "RANK.EQ");
+    value = TypeConverter_1.TypeConverter.firstValueAsNumber(value);
+    var range = Filter_1.Filter.flattenAndThrow(data).map(TypeConverter_1.TypeConverter.valueToNumber);
+    isAscending = (typeof isAscending === 'undefined') ? false : isAscending;
+    var sort = (isAscending) ? function (a, b) {
+        return a - b;
+    } : function (a, b) {
+        return b - a;
+    };
+    range = range.sort(sort);
+    var rangeIndex = range.indexOf(value);
+    if (rangeIndex === -1) {
+        throw new Errors_1.NAError("RANK.EQ can't produce a result because parameter 1 is not in the dataset.");
+    }
+    return range.indexOf(value) + 1;
+};
+exports.RANK$EQ = RANK$EQ;

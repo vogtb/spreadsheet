@@ -200,7 +200,8 @@ import {
   PROB,
   MODE,
   RANK,
-  RANK$AVG
+  RANK$AVG,
+  RANK$EQ
 } from "./Statistical";
 import {
   ARABIC,
@@ -250,7 +251,8 @@ var __COMPLEX = {
   "PERCENTRANK.INC": PERCENTRANK,
   "PERCENTRANK.EXC": PERCENTRANK$EXC,
   "ERROR.TYPE": ERRORTYPE,
-  "RANK.AVG": RANK$AVG
+  "RANK.AVG": RANK$AVG,
+  "RANK.EQ": RANK$EQ
 };
 
 export {
@@ -476,5 +478,6 @@ export {
   PROB,
   MODE,
   RANK,
-  RANK$AVG
+  RANK$AVG,
+  RANK$EQ
 }

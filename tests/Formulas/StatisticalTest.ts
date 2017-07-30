@@ -57,7 +57,8 @@ import {
   PROB,
   MODE,
   RANK,
-  RANK$AVG
+  RANK$AVG,
+  RANK$EQ
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1164,5 +1165,24 @@ test("RANK.AVG", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     RANK$AVG.apply(this, [44, [7, 1], true, false]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("RANK.EQ", function() {
+  assertEquals(RANK$EQ(2, [1, 2, 3, 4, 5, 6, 7, 8, 9], true), 2);
+  assertEquals(RANK$EQ(4, [2, 2, 3, 3, 3, 4, 5, 6, 7, 8, 9], true), 6);
+  assertEquals(RANK$EQ(2, [1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9], true), 2);
+  assertEquals(RANK$EQ(3, [2, 2, 3, 3, 3, 4, 5, 6, 7, 8, 9], true), 3);
+  assertEquals(RANK$EQ(3, [1, 3, 4, 5, 6, 7, 8, 9]), 7);
+  assertEquals(RANK$EQ(3, [1, 3, 4, 5, 6, 7, 8, 9], true), 2);
+  assertEquals(RANK$EQ(2, [7, 1, 2, 4, 100, 8, 9], true), 2);
+  catchAndAssertEquals(function() {
+    RANK$EQ(44, [7, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    RANK$EQ.apply(this, [44]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    RANK$EQ.apply(this, [44, [7, 1], true, false]);
   }, ERRORS.NA_ERROR);
 });

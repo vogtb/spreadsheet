@@ -198,7 +198,8 @@ import {
   SKEW,
   STEYX,
   PROB,
-  MODE
+  MODE,
+  RANK
 } from "./Statistical";
 import {
   ARABIC,
@@ -471,5 +472,6 @@ export {
   SKEW,
   STEYX,
   PROB,
-  MODE
+  MODE,
+  RANK
 }

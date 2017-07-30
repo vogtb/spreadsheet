@@ -193,6 +193,7 @@ exports.SKEW = Statistical_1.SKEW;
 exports.STEYX = Statistical_1.STEYX;
 exports.PROB = Statistical_1.PROB;
 exports.MODE = Statistical_1.MODE;
+exports.RANK = Statistical_1.RANK;
 var Text_1 = require("./Text");
 exports.ARABIC = Text_1.ARABIC;
 exports.CHAR = Text_1.CHAR;

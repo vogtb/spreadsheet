@@ -55,7 +55,8 @@ import {
   SKEW,
   STEYX,
   PROB,
-  MODE
+  MODE,
+  RANK
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1127,5 +1128,19 @@ test("MODE", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     MODE();
+  }, ERRORS.NA_ERROR);
+});
+
+test("RANK", function() {
+  assertEquals(RANK(2, [1, 2, 3, 4, 5, 6, 7, 8, 9], true), 2);
+  assertEquals(RANK(2, [7, 1, 2, 4, 100, 8, 9], true), 2);
+  catchAndAssertEquals(function() {
+    RANK(44, [7, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    RANK.apply(this, [44]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    RANK.apply(this, [44, [7, 1], true, false]);
   }, ERRORS.NA_ERROR);
 });

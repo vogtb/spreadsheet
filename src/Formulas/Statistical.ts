@@ -1842,6 +1842,34 @@ var MODE =  function (...values) {
 };
 
 
+/**
+ * Returns the position of a given entry in the entire list, measured either from top to bottom or bottom to top.
+ * @param value - Value to find the rank of.
+ * @param data - Values or range of the data-set.
+ * @param isAscending - [OPTIONAL] The type of rank: 0 to rank from the highest, 1 to rank from the lowest. Defaults to
+ * 0.
+ * @returns {number}
+ * @constructor
+ */
+var RANK = function (value, data, isAscending?) {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "RANK");
+  value = TypeConverter.firstValueAsNumber(value);
+  var range = Filter.flattenAndThrow(data).map(TypeConverter.valueToNumber);
+  isAscending = (typeof isAscending === 'undefined') ? false : isAscending;
+  var sort = (isAscending) ? function (a, b) {
+    return a - b;
+  } : function (a, b) {
+    return b - a;
+  };
+  range = range.sort(sort);
+  var rangeIndex = range.indexOf(value);
+  if (rangeIndex === -1) {
+    throw new NAError("RANK can't produce a result because parameter 1 is not in the dataset.");
+  }
+  return range.indexOf(value) + 1;
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -1899,5 +1927,6 @@ export {
   SKEW,
   STEYX,
   PROB,
-  MODE
+  MODE,
+  RANK
 }

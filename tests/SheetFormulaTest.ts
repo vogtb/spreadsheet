@@ -930,6 +930,10 @@ test("Sheet MODE", function(){
   assertFormulaEquals('=MODE(1, 6, 7, 7, 8)', 7);
 });
 
+test("Sheet RANK", function(){
+  assertFormulaEquals('=RANK([2], [1, 2, 3, 4, 5, 6, 7, 8, 9], true)', 2);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

@@ -946,6 +946,10 @@ test("Sheet LOGNORMDIST", function(){
   assertFormulaEquals('=LOGNORMDIST(4, 4, 6)', 0.33155709720516946);
 });
 
+test("Sheet LOGNORMDIST", function(){
+  assertFormulaEquals('=TDIST(0.55, 1, 2)', 0.6798800684756632);
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

@@ -59,7 +59,8 @@ import {
   RANK,
   RANK$AVG,
   RANK$EQ,
-  LOGNORMDIST
+  LOGNORMDIST,
+  TDIST
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1210,5 +1211,32 @@ test("LOGNORMDIST", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     LOGNORMDIST.apply(this, [4, 4, 4, 4]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("TDIST", function() {
+  assertEquals(TDIST(0.55, 1, 2), 0.6798800684756632);
+  assertEquals(TDIST(0.55, 1, 1), 0.3399400342378316);
+  assertEquals(TDIST(0.55, 100, 1), 0.29177287888140824);
+  catchAndAssertEquals(function() {
+    TDIST(0.55, -1, 1);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    TDIST(0.55, 1, 44);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    TDIST(0.55, 1, 0);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    TDIST(-1, 1, 1);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    TDIST.apply(this, [4, 4, 4, 4]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    TDIST.apply(this, [4, 4]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    TDIST.apply(this, []);
   }, ERRORS.NA_ERROR);
 });

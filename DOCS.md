@@ -2123,6 +2123,17 @@
 @returns {number} 
 @constructor
 ```
+
+### TDIST 
+
+```
+  Returns the t-distribution for the given number. 
+@param x - Value to use in calculation. 
+@param degreesOfFreedom - The number of degrees of freedom for the t-distribution. 
+@param tails - 1 returns the one-tailed test, 2 returns the two-tailed test. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

@@ -1963,6 +1963,92 @@ var LOGNORMDIST = function (x, meanValue, standardDev) {
 };
 
 
+/**
+ * Returns the t-distribution for the given number.
+ * @param x - Value to use in calculation.
+ * @param degreesOfFreedom - The number of degrees of freedom for the t-distribution.
+ * @param tails - 1 returns the one-tailed test, 2 returns the two-tailed test.
+ * @returns {number}
+ * @constructor
+ */
+var TDIST = function (x, degreesOfFreedom, tails) {
+  ArgsChecker.checkLength(arguments, 3, "TDIST");
+  x = TypeConverter.firstValueAsNumber(x);
+  degreesOfFreedom = TypeConverter.firstValueAsNumber(degreesOfFreedom);
+  tails = TypeConverter.firstValueAsNumber(tails);
+  if (tails < 1 || tails > 2) {
+    throw new NumError("Function TDIST parameter 3 value is " + tails +
+        ", but valid values are between 1 and 2, inclusively.");
+  }
+  if (degreesOfFreedom < 1) {
+    throw new NumError("Function TDIST parameter 2 value is " + degreesOfFreedom +
+        ", but it should be greater than or equal to 1.");
+  }
+  if (x < 0) {
+    throw new NumError("Function TDIST parameter 1 value is " + x + ", but it should be greater than or equal to 0.");
+  }
+  function _betacf(x, a, b) {
+    var fpmin = 1e-30;
+    var m = 1;
+    var qab = a + b;
+    var qap = a + 1;
+    var qam = a - 1;
+    var c = 1;
+    var d = 1 - qab * x / qap;
+    var m2, aa, del, h;
+
+    if (Math.abs(d) < fpmin)
+      d = fpmin;
+    d = 1 / d;
+    h = d;
+
+    for (; m <= 100; m++) {
+      m2 = 2 * m;
+      aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+      d = 1 + aa * d;
+      if (Math.abs(d) < fpmin)
+        d = fpmin;
+      c = 1 + aa / c;
+      if (Math.abs(c) < fpmin)
+        c = fpmin;
+      d = 1 / d;
+      h *= d * c;
+      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+      d = 1 + aa * d;
+      if (Math.abs(d) < fpmin)
+        d = fpmin;
+      c = 1 + aa / c;
+      if (Math.abs(c) < fpmin)
+        c = fpmin;
+      d = 1 / d;
+      del = d * c;
+      h *= del;
+      if (Math.abs(del - 1.0) < 3e-7)
+        break;
+    }
+
+    return h;
+  }
+  function _ibeta(x, a, b) {
+    var bt = (x === 0 || x === 1) ?  0 :
+      Math.exp(gammaln(a + b) - gammaln(a) -
+        gammaln(b) + a * Math.log(x) + b *
+        Math.log(1 - x));
+    if (x < 0 || x > 1)
+      return 0;
+    if (x < (a + 1) / (a + b + 2))
+      return bt * _betacf(x, a, b) / a;
+    return 1 - bt * _betacf(1 - x, b, a) / b;
+  }
+  function _studenttCDF(x, dof) {
+    var dof2 = dof / 2;
+    return _ibeta((x + Math.sqrt(x * x + dof)) /
+      (2 * Math.sqrt(x * x + dof)), dof2, dof2);
+  }
+  return tails * (1 - _studenttCDF(x, degreesOfFreedom));
+};
+
+
 export {
   AVERAGE,
   AVERAGEA,
@@ -2024,5 +2110,6 @@ export {
   RANK,
   RANK$AVG,
   RANK$EQ,
-  LOGNORMDIST
+  LOGNORMDIST,
+  TDIST
 }

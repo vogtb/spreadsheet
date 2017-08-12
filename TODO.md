@@ -2,7 +2,7 @@
 
 
 ### Cells should have `formatAs` fields.
-Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might return a number, but the cell that called `DATE` would be aware of it calling a formula that returns an non-primitive type, and would display the returned number as a Date. If you're using `DATE` in conjunction with `DOLLAR` it would still display the returned value as a Date. The hierarchy would look like: [Date, DateTime, Time, Dollar, number, boolean, string]. Advantages to this would include not having to cast down when using primitive operators, and flexibility in display. It would also simplify the types themselves, by having types be constants and just having helpers to convert, display, and do normal operations with them.
+Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might return a number, but the cell that called `DATE` would be aware of it calling a formula that returns an non-primitive type, and would display the returned number as a Date. If you're using `DATE` in conjunction with `DOLLAR` it would still display the returned value as a Date. The hierarchy would look like: [Date, DateTime, Time, Dollar, number, boolean, string]. Advantages to this would include not having to cast down when using primitive operators, and flexibility in display. It would also simplify the types themselves, by having types be constants and just having helpers to convert, display, and do normal operations with them. Requires changes to `TO_DATE`, `TO_PERCENT`, `TO_DOLLAR`, and `TO_TEXT`.
 
 
 ### Sheet should automatically parse some values, unless told otherwise.
@@ -56,10 +56,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 ### Formulas to write
 * SERIESSUM
 * SUBTOTAL
-* TO_DATE - Contingent upon cells having display formats derived from type-hierarchy
-* TO_DOLLARS - Contingent upon cells having display formats derived from type-hierarchy
-* TO_PERCENT - Contingent upon cells having display formats derived from type-hierarchy
-* TO_TEXT - Contingent upon cells having display formats derived from type-hierarchy
 * CRITBINOM
 * F.DIST.RT
 * HYPGEOMDIST

@@ -103,6 +103,12 @@ import {
   CHOOSE
 } from "./Lookup";
 import {
+  TO_DATE,
+  TO_DOLLARS,
+  TO_PERCENT,
+  TO_TEXT
+} from "./Convert";
+import {
   AND,
   EXACT,
   TRUE,
@@ -483,5 +489,9 @@ export {
   RANK$AVG,
   RANK$EQ,
   LOGNORMDIST,
-  TDIST
+  TDIST,
+  TO_DATE,
+  TO_DOLLARS,
+  TO_PERCENT,
+  TO_TEXT
 }

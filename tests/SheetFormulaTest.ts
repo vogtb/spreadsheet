@@ -949,6 +949,22 @@ test("Sheet LOGNORMDIST", function(){
   assertFormulaEquals('=TDIST(0.55, 1, 2)', 0.6798800684756632);
 });
 
+test("Sheet TO_DATE", function(){
+  assertFormulaEquals('=TO_DATE(2)', 2);
+});
+
+test("Sheet TO_DOLLARS", function(){
+  assertFormulaEquals('=TO_DOLLARS(2)', 2);
+});
+
+test("Sheet TO_PERCENT", function(){
+  assertFormulaEquals('=TO_PERCENT(20)', 20);
+});
+
+test("Sheet TO_TEXT", function(){
+  assertFormulaEquals('=TO_TEXT(false)', "FALSE");
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);

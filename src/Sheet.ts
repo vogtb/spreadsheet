@@ -1,6 +1,6 @@
 import {
   Parser
-} from "./Parser";
+} from "./Parser/Parser";
 import {
   Cell
 } from "./Cell";

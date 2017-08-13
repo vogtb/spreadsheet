@@ -341,7 +341,9 @@ var Sheet = (function () {
     /**
      * Is the value a number or can the value be interpreted as a number
      */
-    number: TypeConverter.valueToNumber,
+    number: function (x) {
+      return TypeConverter.valueToNumber(x);
+    },
 
     string: function (str) {
       return str.substring(1, str.length - 1);

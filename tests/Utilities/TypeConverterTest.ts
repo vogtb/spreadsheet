@@ -226,6 +226,7 @@ test("TypeConverter.stringToNumber", function () {
   assertEquals(TypeConverter.stringToNumber("33.213131"), 33.213131);
   assertEquals(TypeConverter.stringToNumber("41.1231"), 41.1231);
   assertEquals(TypeConverter.stringToNumber("10e1"), 100);
+  assertEquals(TypeConverter.stringToNumber("10e2"), 1000);
   assertEquals(TypeConverter.stringToNumber("10E1"), 100);
   assertEquals(TypeConverter.stringToNumber("10.44E1"), 104.39999999999999);
   assertEquals(TypeConverter.stringToNumber("10.44E10"), 104400000000);

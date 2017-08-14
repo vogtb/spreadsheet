@@ -10,6 +10,11 @@ function assertEquals(actual, expected) {
       console.log("expected:", expected, " actual:", actual);
       console.trace();
     }
+  } else if (actual instanceof Object && expected instanceof Object) {
+    if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+      console.log("expected:", expected, " actual:", actual);
+      console.trace();
+    }
   } else {
     if (expected !== actual) {
       console.log("expected:", expected, " actual:", actual);

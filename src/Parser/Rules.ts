@@ -2,8 +2,8 @@
 const WHITE_SPACE_RULE = /^(?:\s+)/; // rule 0
 const DOUBLE_QUOTES_RULE = /^(?:"(\\["]|[^"])*")/; // rule 1
 const SINGLE_QUOTES_RULE = /^(?:'(\\[']|[^'])*')/; // rule 2
-const FORMULA_NAME_RULE = /^(?:[A-Za-z.]{1,}[A-Za-z_0-9]+(?=[(]))/; // Changed from /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+(?=[(]))/
-const DATE_RULE= /^(?:([0]?[1-9]|1[0-2])[:][0-5][0-9]([:][0-5][0-9])?[ ]?(AM|am|aM|Am|PM|pm|pM|Pm))/; // rule 4
+const FORMULA_NAME_RULE = /^(?:[A-Za-z.]{1,}[A-Za-z_0-9]+(?=[(]))/; // Changed from /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+(?=[(]))/ // rule 3
+const DATE_RULE = /^(?:([0]?[1-9]|1[0-2])[:][0-5][0-9]([:][0-5][0-9])?[ ]?(AM|am|aM|Am|PM|pm|pM|Pm))/; // rule 4
 const TIME_RULE = /^(?:([0]?[0-9]|1[0-9]|2[0-3])[:][0-5][0-9]([:][0-5][0-9])?)/; // rule 5
 const $_A1_CELL_RULE = /^(?:\$[A-Za-z]+\$[0-9]+)/; // rule 6
 const A1_CELL_RULE = /^(?:[A-Za-z]+[0-9]+)/; // rules 7
@@ -36,6 +36,7 @@ const EQUALS_SIGN_RULE = /^(?:=)/; // rule 33
 const PERCENT_SIGN_RULE = /^(?:%)/; // rule 34
 const HASH_SIGN_RULE = /^(?:[#])/; // rule 35
 const END_OF_STRING_RULE = /^(?:$)/; // rule 36
+
 
 
 // Sequential rules to use when parsing a given input.

@@ -37,7 +37,44 @@ import {
   EQUALS_SIGN_RULE_INDEX,
   PERCENT_SIGN_RULE_INDEX,
   HASH_SIGN_RULE_INDEX,
-  END_OF_STRING_RULE_INDEX
+  END_OF_STRING_RULE_INDEX,
+  INDEX0,
+  INDEX1,
+  INDEX2,
+  INDEX3,
+  INDEX4,
+  INDEX5,
+  INDEX6,
+  INDEX7,
+  INDEX8,
+  INDEX9,
+  INDEX10,
+  INDEX11,
+  INDEX12,
+  INDEX13,
+  INDEX14,
+  INDEX15,
+  INDEX16,
+  INDEX17,
+  INDEX18,
+  INDEX19,
+  INDEX20,
+  INDEX21,
+  INDEX22,
+  INDEX23,
+  INDEX24,
+  INDEX25,
+  INDEX26,
+  INDEX27,
+  INDEX28,
+  INDEX29,
+  INDEX30,
+  INDEX31,
+  INDEX32,
+  INDEX33,
+  INDEX34,
+  INDEX35,
+  INDEX36
 } from "./Rules";
 import {
   ObjectFromPairs
@@ -117,44 +154,44 @@ import {
  recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
  }
  */
-var Parser = (function () {
-  var o = function (k, v, o?, l?) {
-    for (o = o || {}, l = k.length; l--; o[k[l]] = v) {
+let Parser = (function () {
+  const extendRules = function (k, v, obj?, l?) {
+    for (obj = obj || {}, l = k.length; l--; obj[k[l]] = v) {
     }
-    return o
+    return obj;
   };
-  const $V0 = [1, 4];
-  const $V1 = [1, 5];
-  const $V2 = [1, 7];
-  const $V3 = [1, 10];
-  const $V4 = [1, 8];
-  const $V5 = [1, 9];
-  const $V6 = [1, 11];
-  const $V7 = [1, 16];
-  const $V8 = [1, 17];
-  const $V9 = [1, 14];
-  const $Va = [1, 15];
-  const $Vb = [1, 18];
-  const $Vc = [1, 20];
-  const $Vd = [1, 21];
-  const $Ve = [1, 22];
-  const $Vf = [1, 23];
-  const $Vg = [1, 24];
-  const $Vh = [1, 25];
-  const $Vi = [1, 26];
-  const $Vj = [1, 27];
-  const $Vk = [1, 28];
-  const $Vl = [1, 29];
-  const $Vm = [5, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31];
-  const $Vn = [5, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31, 33];
-  const $Vo = [1, 38];
-  const $Vp = [5, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31, 35, 38];
-  const $Vq = [5, 12, 13, 15, 16, 17, 18, 19, 30, 31];
-  const $Vr = [5, 12, 15, 16, 17, 18, 30, 31];
-  const $Vs = [5, 12, 13, 15, 16, 17, 18, 19, 20, 21, 30, 31];
-  const $Vt = [15, 30, 31];
-  const $Vu = [5, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31, 32, 36];
-  var parser = {
+  const $V0 = [INDEX1, INDEX4];
+  const $V1 = [INDEX1, INDEX5];
+  const $V2 = [INDEX1, INDEX7];
+  const $V3 = [INDEX1, INDEX10];
+  const $V4 = [INDEX1, INDEX8];
+  const $V5 = [INDEX1, INDEX9];
+  const $V6 = [INDEX1, INDEX11];
+  const $V7 = [INDEX1, INDEX16];
+  const $V8 = [INDEX1, INDEX17];
+  const $V9 = [INDEX1, INDEX14];
+  const $Va = [INDEX1, INDEX15];
+  const $Vb = [INDEX1, INDEX18];
+  const $Vc = [INDEX1, INDEX20];
+  const $Vd = [INDEX1, INDEX21];
+  const $Ve = [INDEX1, INDEX22];
+  const $Vf = [INDEX1, INDEX23];
+  const $Vg = [INDEX1, INDEX24];
+  const $Vh = [INDEX1, INDEX25];
+  const $Vi = [INDEX1, INDEX26];
+  const $Vj = [INDEX1, INDEX27];
+  const $Vk = [INDEX1, INDEX28];
+  const $Vl = [INDEX1, INDEX29];
+  const $Vm = [INDEX5, INDEX11, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX20, INDEX21, INDEX22, INDEX30, INDEX31];
+  const $Vn = [INDEX5, INDEX11, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX20, INDEX21, INDEX22, INDEX30, INDEX31, INDEX33];
+  const $Vo = [INDEX1, 38];
+  const $Vp = [INDEX5, INDEX11, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX20, INDEX21, INDEX22, INDEX30, INDEX31, INDEX35, 38];
+  const $Vq = [INDEX5, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX30, INDEX31];
+  const $Vr = [INDEX5, INDEX12, INDEX15, INDEX16, INDEX17, INDEX18, INDEX30, INDEX31];
+  const $Vs = [INDEX5, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX20, INDEX21, INDEX30, INDEX31];
+  const $Vt = [INDEX15, INDEX30, INDEX31];
+  const $Vu = [INDEX5, INDEX11, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX20, INDEX21, INDEX22, INDEX30, INDEX31, INDEX32, INDEX36];
+  let parser = {
     lexer: undefined,
     Parser: undefined,
     trace: function trace() {
@@ -279,7 +316,7 @@ var Parser = (function () {
     performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
       /* this == yyval */
 
-      var $0 = $$.length - 1;
+      let $0 = $$.length - 1;
       switch (yystate) {
         case 1:
           return $$[$0 - 1];
@@ -348,8 +385,7 @@ var Parser = (function () {
           }
           break;
         case 22:
-          var n1 = yy.handler.helper.number($$[$0]);
-          this.$ = n1;
+          this.$ = yy.handler.helper.number($$[$0]);
           if (isNaN(this.$)) {
             this.$ = 0;
           }
@@ -382,7 +418,7 @@ var Parser = (function () {
           }
           break;
         case 33:
-          var result = [],
+          let result = [],
             arr = eval("[" + yytext + "]");
           arr.forEach(function (item) {
             result.push(item);
@@ -421,23 +457,25 @@ var Parser = (function () {
         SINGLE_QUOTES_RULE_INDEX, 13,
         FORMULA_NAME_RULE_INDEX, 1,
         DATE_RULE_INDEX, 2,
-        6, 3,
-        7, $V0,
-        8, $V1,
-        9, 6,
-        10, $V2,
-        13, $V3,
-        14, $V4,
-        19, $V5,
-        23, $V6,
-        25, 12,
-        26, $V7,
-        28, $V8,
-        32, $V9,
-        34, $Va,
-        36, $Vb
+        INDEX6, 3,
+        INDEX7, $V0,
+        INDEX8, $V1,
+        INDEX9, 6,
+        INDEX10, $V2,
+        INDEX13, $V3,
+        INDEX14, $V4,
+        INDEX19, $V5,
+        INDEX23, $V6,
+        INDEX25, 12,
+        INDEX26, $V7,
+        INDEX28, $V8,
+        INDEX32, $V9,
+        INDEX34, $Va,
+        INDEX36, $Vb
       ]),
-      {1: [3]},
+      ObjectFromPairs.of([
+        INDEX1, [3]
+      ]),
       ObjectFromPairs.of([
         TIME_RULE_INDEX, [1, 19],
         INTEGER_RULE_INDEX, $Vc,
@@ -451,11 +489,11 @@ var Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ]),
-      o($Vm, [2, 2], {33: [1, 30]}),
-      o($Vm, [2, 3]),
-      o($Vm, [2, 4]),
-      o($Vm, [2, 5], {35: [1, 31]}),
-      o($Vm, [2, 6]),
+      extendRules($Vm, [2, 2], ObjectFromPairs.of([INDEX33, [1, 30]])),
+      extendRules($Vm, [2, 3]),
+      extendRules($Vm, [2, 4]),
+      extendRules($Vm, [2, 5], ObjectFromPairs.of([INDEX35, [1, 31]])),
+      extendRules($Vm, [2, 6]),
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
         DATE_RULE_INDEX, 32,
@@ -516,12 +554,14 @@ var Parser = (function () {
       ObjectFromPairs.of([
         AMPERSAND_SIGN_RULE_INDEX, [1, 35]
       ]),
-      o($Vm, [2, 25]),
-      o($Vm, [2, 26], ObjectFromPairs.of([2, 36, 32, [1, 37], 36, $Vb])),
-      o($Vn, [2, 36], {36: $Vo}),
-      o($Vp, [2, 38], {33: [1, 39]}),
-      o($Vm, [2, 28], {27: [1, 40]}),
-      o($Vm, [2, 30], {27: [1, 41]}), {32: [1, 42]}, {1: [2, 1]},
+      extendRules($Vm, [2, 25]),
+      extendRules($Vm, [2, 26], ObjectFromPairs.of([2, 36, 32, [1, 37], 36, $Vb])),
+      extendRules($Vn, [2, 36], ObjectFromPairs.of([INDEX36, $Vo])),
+      extendRules($Vp, [2, 38], ObjectFromPairs.of([INDEX33, [1, 39]])),
+      extendRules($Vm, [2, 28], ObjectFromPairs.of([INDEX27, [1, 40]])),
+      extendRules($Vm, [2, 30], ObjectFromPairs.of([INDEX27, [1, 41]])),
+      ObjectFromPairs.of([INDEX32, [1, 42]]),
+      ObjectFromPairs.of([INDEX1, [2, 1]]),
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
         DATE_RULE_INDEX, 43,
@@ -715,8 +755,8 @@ var Parser = (function () {
         PERCENT_SIGN_RULE_INDEX, $Va,
         END_OF_STRING_RULE_INDEX, $Vb
       ]),
-      ObjectFromPairs.of([32, [1, 56]]),
-      o($Vp, [2, 40]),
+      ObjectFromPairs.of([ [1, 56]]),
+      extendRules($Vp, [2, 40]),
       ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, $Vd,
@@ -730,17 +770,17 @@ var Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ]),
-      o($Vq, [2, 21], ObjectFromPairs.of([
-        11, $Vc,
-        20, $Vj,
-        21, $Vk,
-        22, $Vl
+      extendRules($Vq, [2, 21], ObjectFromPairs.of([
+        INDEX11, $Vc,
+        INDEX20, $Vj,
+        INDEX21, $Vk,
+        INDEX22, $Vl
       ])),
-      o($Vq, [2, 22], ObjectFromPairs.of([
-        11, $Vc,
-        20, $Vj,
-        21, $Vk,
-        22, $Vl])
+      extendRules($Vq, [2, 22], ObjectFromPairs.of([
+        INDEX11, $Vc,
+        INDEX20, $Vj,
+        INDEX21, $Vk,
+        INDEX22, $Vl])
       ),
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
@@ -764,15 +804,15 @@ var Parser = (function () {
         PERCENT_SIGN_RULE_INDEX, $Va,
         END_OF_STRING_RULE_INDEX, $Vb
       ]),
-      o($Vm, [2, 27]),
-      ObjectFromPairs.of([36, $Vo]),
-      ObjectFromPairs.of([32, [1, 62]]),
-      ObjectFromPairs.of([34, [1, 63]]),
-      ObjectFromPairs.of([26, [1, 64]]),
-      ObjectFromPairs.of([28, [1, 65]]),
+      extendRules($Vm, [2, 27]),
+      ObjectFromPairs.of([INDEX36, $Vo]),
+      ObjectFromPairs.of([INDEX32, [1, 62]]),
+      ObjectFromPairs.of([INDEX34, [1, 63]]),
+      ObjectFromPairs.of([INDEX26, [1, 64]]),
+      ObjectFromPairs.of([INDEX28, [1, 65]]),
       ObjectFromPairs.of([37, [1, 66]]),
-      o($Vm, [2, 7]),
-      o([5, 12, 15, 30, 31], [2, 8], ObjectFromPairs.of([
+      extendRules($Vm, [2, 7]),
+      extendRules([5, 12, 15, 30, 31], [2, 8], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         DOLLAR_SIGN_RULE_INDEX, $Ve,
         PERIOD_RULE_INDEX, $Vf,
@@ -783,7 +823,12 @@ var Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      o($Vq, [2, 9], {11: $Vc, 20: $Vj, 21: $Vk, 22: $Vl}),
+      extendRules($Vq, [2, 9], ObjectFromPairs.of([
+        INDEX11, $Vc,
+        INDEX20, $Vj,
+        INDEX21, $Vk,
+        INDEX22, $Vl
+      ])),
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
         DATE_RULE_INDEX, 67,
@@ -822,7 +867,7 @@ var Parser = (function () {
         PERCENT_SIGN_RULE_INDEX, $Va,
         END_OF_STRING_RULE_INDEX, $Vb
       ]),
-      o($Vr, [2, 16], ObjectFromPairs.of([
+      extendRules($Vr, [2, 16], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         DOLLAR_SIGN_RULE_INDEX, $Ve,
         COMMA_RULE_INDEX, $Vi,
@@ -849,7 +894,7 @@ var Parser = (function () {
         PERCENT_SIGN_RULE_INDEX, $Va,
         END_OF_STRING_RULE_INDEX, $Vb
       ]),
-      o($Vr, [2, 15], ObjectFromPairs.of([
+      extendRules($Vr, [2, 15], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         DOLLAR_SIGN_RULE_INDEX, $Ve,
         COMMA_RULE_INDEX, $Vi,
@@ -857,7 +902,7 @@ var Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      o([5, 12, 15, 18, 30, 31], [2, 14], ObjectFromPairs.of([
+      extendRules([5, 12, 15, 18, 30, 31], [2, 14], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         DOLLAR_SIGN_RULE_INDEX, $Ve,
         PERIOD_RULE_INDEX, $Vf,
@@ -867,30 +912,30 @@ var Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      o($Vq, [2, 17], ObjectFromPairs.of([
+      extendRules($Vq, [2, 17], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         ASTERISK_RULE_INDEX, $Vj,
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      o($Vs, [2, 18], ObjectFromPairs.of([
+      extendRules($Vs, [2, 18], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      o($Vs, [2, 19], ObjectFromPairs.of([
+      extendRules($Vs, [2, 19], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      o([5, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31], [2, 20], ObjectFromPairs.of([INTEGER_RULE_INDEX, $Vc])),
-      o($Vn, [2, 37]),
-      o($Vm, [2, 10]),
-      o($Vm, [2, 23]),
+      extendRules([5, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31], [2, 20], ObjectFromPairs.of([INTEGER_RULE_INDEX, $Vc])),
+      extendRules($Vn, [2, 37]),
+      extendRules($Vm, [2, 10]),
+      extendRules($Vm, [2, 23]),
       ObjectFromPairs.of([
         SINGLE_WHITESPACE_RULE_INDEX, [1, 70],
         OPEN_DOUBLE_QUOTE_INDEX, [1, 71],
         OPEN_SINGLE_QUITE_INDEX, [1, 72]
       ]),
-      o($Vt, [2, 32], ObjectFromPairs.of([
+      extendRules($Vt, [2, 32], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, $Vd,
         DOLLAR_SIGN_RULE_INDEX, $Ve,
@@ -902,12 +947,12 @@ var Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      o($Vt, [2, 33]), {37: [1, 73]}, // index 37?
-      o($Vp, [2, 39]),
-      o($Vm, [2, 29]),
-      o($Vm, [2, 31]),
-      o($Vu, [2, 41]),
-      o($Vr, [2, 11], ObjectFromPairs.of([
+      extendRules($Vt, [2, 33]), ObjectFromPairs.of([37, [1, 73]]), // index 37?
+      extendRules($Vp, [2, 39]),
+      extendRules($Vm, [2, 29]),
+      extendRules($Vm, [2, 31]),
+      extendRules($Vu, [2, 41]),
+      extendRules($Vr, [2, 11], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         DOLLAR_SIGN_RULE_INDEX, $Ve,
         COMMA_RULE_INDEX, $Vi,
@@ -915,7 +960,7 @@ var Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      o($Vr, [2, 13], ObjectFromPairs.of([
+      extendRules($Vr, [2, 13], ObjectFromPairs.of([
         11, $Vc,
         13, $Ve,
         19, $Vi,
@@ -923,7 +968,7 @@ var Parser = (function () {
         21, $Vk,
         22, $Vl
       ])),
-      o($Vr, [2, 12], ObjectFromPairs.of([
+      extendRules($Vr, [2, 12], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         DOLLAR_SIGN_RULE_INDEX, $Ve,
         COMMA_RULE_INDEX, $Vi,
@@ -931,7 +976,7 @@ var Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      o($Vm, [2, 24]),
+      extendRules($Vm, [2, 24]),
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
         DATE_RULE_INDEX, 74,
@@ -970,8 +1015,8 @@ var Parser = (function () {
         PERCENT_SIGN_RULE_INDEX, $Va,
         END_OF_STRING_RULE_INDEX, $Vb
       ]),
-      o($Vu, [2, 42]),
-      o($Vt, [2, 34], ObjectFromPairs.of([
+      extendRules($Vu, [2, 42]),
+      extendRules($Vt, [2, 34], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, $Vd,
         DOLLAR_SIGN_RULE_INDEX, $Ve,
@@ -983,7 +1028,7 @@ var Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      o($Vt, [2, 35], ObjectFromPairs.of([
+      extendRules($Vt, [2, 35], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
         OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, $Vd,
         DOLLAR_SIGN_RULE_INDEX, $Ve,
@@ -1064,7 +1109,7 @@ var Parser = (function () {
         return token;
       }
 
-      var symbol, preErrorSymbol, state, action, a, r, yyval = {
+      let symbol, preErrorSymbol, state, action, r, yyval = {
         $: undefined,
         _$: undefined
       }, p, len, newState, expected;
@@ -1085,14 +1130,14 @@ var Parser = (function () {
 
         // handle parse error
         if (typeof action === 'undefined' || !action.length || !action[0]) {
-          var error_rule_depth;
-          var errStr = '';
+          let error_rule_depth;
+          let errStr = '';
 
           // Return the rule stack depth where the nearest error rule can be found.
           // Return FALSE when no error recovery rule was found.
           this.locateNearestErrorRecoveryRule = function(state) {
-            var stack_probe = stack.length - 1;
-            var depth = 0;
+            let stack_probe = stack.length - 1;
+            let depth = 0;
 
             // try to recover from error
             for (; ;) {
@@ -1107,7 +1152,7 @@ var Parser = (function () {
               state = stack[stack_probe];
               ++depth;
             }
-          }
+          };
 
           if (!recovering) {
             // first see if there's any chance at hitting an error recovery rule:

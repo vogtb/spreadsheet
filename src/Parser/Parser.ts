@@ -2,7 +2,7 @@ import {
   RULES,
 
   // WHITE_SPACE_RULE_INDEX,
-  // DOUBLE_QUOTES_RULE_INDEX,
+  DOUBLE_QUOTES_RULE_INDEX,
   SINGLE_QUOTES_RULE_INDEX,
   FORMULA_NAME_RULE_INDEX,
   DATE_RULE_INDEX,
@@ -28,53 +28,16 @@ import {
   CARET_SIGN_RULE_INDEX,
   OPEN_PAREN_RULE_INDEX,
   CLOSE_PAREN_RULE_INDEX,
-  // GREATER_THAN_SIGN_RULE_INDEX,
+  GREATER_THAN_SIGN_RULE_INDEX,
   LESS_THAN_SIGN_RULE_INDEX,
   NOT_RULE_INDEX,
   OPEN_DOUBLE_QUOTE_INDEX,
   OPEN_SINGLE_QUITE_INDEX,
   EXCLAMATION_POINT_RULE_INDEX,
-  // EQUALS_SIGN_RULE_INDEX,
+  EQUALS_SIGN_RULE_INDEX,
   PERCENT_SIGN_RULE_INDEX,
-  // HASH_SIGN_RULE_INDEX,
-  END_OF_STRING_RULE_INDEX,
-  // INDEX0,
-  INDEX1,
-  // INDEX2,
-  // INDEX3,
-  INDEX4,
-  INDEX5,
-  INDEX6,
-  INDEX7,
-  INDEX8,
-  INDEX9,
-  INDEX10,
-  INDEX11,
-  INDEX12,
-  INDEX13,
-  INDEX14,
-  INDEX15,
-  INDEX16,
-  INDEX17,
-  INDEX18,
-  INDEX19,
-  INDEX20,
-  INDEX21,
-  INDEX22,
-  INDEX23,
-  INDEX24,
-  INDEX25,
-  INDEX26,
-  INDEX27,
-  INDEX28,
-  INDEX29,
-  INDEX30,
-  INDEX31,
-  INDEX32,
-  INDEX33,
-  INDEX34,
-  INDEX35,
-  INDEX36
+  HASH_SIGN_RULE_INDEX,
+  END_OF_STRING_RULE_INDEX
 } from "./Rules";
 import {
   ObjectFromPairs
@@ -107,42 +70,143 @@ let Parser = (function () {
     for (obj = obj || {}, l = k.length; l--; obj[k[l]] = v) {}
     return obj;
   };
-  const $V0 = [INDEX1, INDEX4];
-  const $V1 = [INDEX1, INDEX5];
-  const $V2 = [INDEX1, INDEX7];
-  const $V3 = [INDEX1, INDEX10];
-  const $V4 = [INDEX1, INDEX8];
-  const $V5 = [INDEX1, INDEX9];
-  const $V6 = [INDEX1, INDEX11];
-  const $V7 = [INDEX1, INDEX16];
-  const $V8 = [INDEX1, INDEX17];
-  const $V9 = [INDEX1, INDEX14];
-  const $Va = [INDEX1, INDEX15];
-  const $Vb = [INDEX1, INDEX18];
-  const $Vc = [INDEX1, INDEX20];
-  const $Vd = [INDEX1, INDEX21];
-  const $Ve = [INDEX1, INDEX22];
-  const $Vf = [INDEX1, INDEX23];
-  const $Vg = [INDEX1, INDEX24];
-  const $Vh = [INDEX1, INDEX25];
-  const $Vi = [INDEX1, INDEX26];
-  const $Vj = [INDEX1, INDEX27];
-  const $Vk = [INDEX1, INDEX28];
-  const $Vl = [INDEX1, INDEX29];
-  const $Vm = [INDEX5, INDEX11, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX20, INDEX21, INDEX22, INDEX30, INDEX31];
-  const $Vn = [INDEX5, INDEX11, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX20, INDEX21, INDEX22, INDEX30, INDEX31, INDEX33];
-  const $Vo = [INDEX1, 38]; // index 38?
-  const $Vp = [INDEX5, INDEX11, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX20, INDEX21, INDEX22, INDEX30, INDEX31, INDEX35, 38]; // index 38?
-  const $Vq = [INDEX5, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX30, INDEX31];
-  const $Vr = [INDEX5, INDEX12, INDEX15, INDEX16, INDEX17, INDEX18, INDEX30, INDEX31];
-  const $Vs = [INDEX5, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX20, INDEX21, INDEX30, INDEX31];
-  const $Vt = [INDEX15, INDEX30, INDEX31];
-  const $Vu = [INDEX5, INDEX11, INDEX12, INDEX13, INDEX15, INDEX16, INDEX17, INDEX18, INDEX19, INDEX20, INDEX21, INDEX22, INDEX30, INDEX31, INDEX32, INDEX36];
+  const $V0 = [DOUBLE_QUOTES_RULE_INDEX, DATE_RULE_INDEX];
+  const $V1 = [DOUBLE_QUOTES_RULE_INDEX, TIME_RULE_INDEX];
+  const $V2 = [DOUBLE_QUOTES_RULE_INDEX, A1_CELL_RULE_INDEX];
+  const $V3 = [DOUBLE_QUOTES_RULE_INDEX, SIMPLE_VARIABLE_RILE_INDEX];
+  const $V4 = [DOUBLE_QUOTES_RULE_INDEX, FORMULA_NAME_SIMPLE_RULE_INDEX];
+  const $V5 = [DOUBLE_QUOTES_RULE_INDEX, VARIABLE_RULE_INDEX];
+  const $V6 = [DOUBLE_QUOTES_RULE_INDEX, INTEGER_RULE_INDEX];
+  const $V7 = [DOUBLE_QUOTES_RULE_INDEX, PERIOD_RULE_INDEX];
+  const $V8 = [DOUBLE_QUOTES_RULE_INDEX, COLON_RULE_INDEX];
+  const $V9 = [DOUBLE_QUOTES_RULE_INDEX, AMPERSAND_SIGN_RULE_INDEX];
+  const $Va = [DOUBLE_QUOTES_RULE_INDEX, SINGLE_WHITESPACE_RULE_INDEX];
+  const $Vb = [DOUBLE_QUOTES_RULE_INDEX, SEMI_COLON_RULE_INDEX];
+  const $Vc = [DOUBLE_QUOTES_RULE_INDEX, ASTERISK_RULE_INDEX];
+  const $Vd = [DOUBLE_QUOTES_RULE_INDEX, FORWARD_SLASH_RULE_INDEX];
+  const $Ve = [DOUBLE_QUOTES_RULE_INDEX, MINUS_SIGN_RULE_INDEX];
+  const $Vf = [DOUBLE_QUOTES_RULE_INDEX, PLUS_SIGN_RULE_INDEX];
+  const $Vg = [DOUBLE_QUOTES_RULE_INDEX, CARET_SIGN_RULE_INDEX];
+  const $Vh = [DOUBLE_QUOTES_RULE_INDEX, OPEN_PAREN_RULE_INDEX];
+  const $Vi = [DOUBLE_QUOTES_RULE_INDEX, CLOSE_PAREN_RULE_INDEX];
+  const $Vj = [DOUBLE_QUOTES_RULE_INDEX, GREATER_THAN_SIGN_RULE_INDEX];
+  const $Vk = [DOUBLE_QUOTES_RULE_INDEX, LESS_THAN_SIGN_RULE_INDEX];
+  const $Vl = [DOUBLE_QUOTES_RULE_INDEX, NOT_RULE_INDEX];
+  const $Vm = [
+    TIME_RULE_INDEX,
+    INTEGER_RULE_INDEX,
+    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
+    DOLLAR_SIGN_RULE_INDEX,
+    SINGLE_WHITESPACE_RULE_INDEX,
+    PERIOD_RULE_INDEX,
+    COLON_RULE_INDEX,
+    SEMI_COLON_RULE_INDEX,
+    COMMA_RULE_INDEX,
+    ASTERISK_RULE_INDEX,
+    FORWARD_SLASH_RULE_INDEX,
+    MINUS_SIGN_RULE_INDEX,
+    OPEN_DOUBLE_QUOTE_INDEX,
+    OPEN_SINGLE_QUITE_INDEX
+  ];
+  const $Vn = [
+    TIME_RULE_INDEX,
+    INTEGER_RULE_INDEX,
+    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
+    DOLLAR_SIGN_RULE_INDEX,
+    SINGLE_WHITESPACE_RULE_INDEX,
+    PERIOD_RULE_INDEX,
+    COLON_RULE_INDEX,
+    SEMI_COLON_RULE_INDEX,
+    COMMA_RULE_INDEX,
+    ASTERISK_RULE_INDEX,
+    FORWARD_SLASH_RULE_INDEX,
+    MINUS_SIGN_RULE_INDEX,
+    OPEN_DOUBLE_QUOTE_INDEX,
+    OPEN_SINGLE_QUITE_INDEX,
+    EQUALS_SIGN_RULE_INDEX
+  ];
+  const $Vo = [DOUBLE_QUOTES_RULE_INDEX, 38]; // index 38?
+  const $Vp = [
+    TIME_RULE_INDEX,
+    INTEGER_RULE_INDEX,
+    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
+    DOLLAR_SIGN_RULE_INDEX,
+    SINGLE_WHITESPACE_RULE_INDEX,
+    PERIOD_RULE_INDEX,
+    COLON_RULE_INDEX,
+    SEMI_COLON_RULE_INDEX,
+    COMMA_RULE_INDEX,
+    ASTERISK_RULE_INDEX,
+    FORWARD_SLASH_RULE_INDEX,
+    MINUS_SIGN_RULE_INDEX,
+    OPEN_DOUBLE_QUOTE_INDEX,
+    OPEN_SINGLE_QUITE_INDEX,
+    HASH_SIGN_RULE_INDEX,
+    38 // index 38?
+  ];
+  const $Vq = [
+    TIME_RULE_INDEX,
+    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
+    DOLLAR_SIGN_RULE_INDEX,
+    SINGLE_WHITESPACE_RULE_INDEX,
+    PERIOD_RULE_INDEX,
+    COLON_RULE_INDEX,
+    SEMI_COLON_RULE_INDEX,
+    COMMA_RULE_INDEX,
+    OPEN_DOUBLE_QUOTE_INDEX,
+    OPEN_SINGLE_QUITE_INDEX
+  ];
+  const $Vr = [
+    TIME_RULE_INDEX,
+    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
+    SINGLE_WHITESPACE_RULE_INDEX,
+    PERIOD_RULE_INDEX,
+    COLON_RULE_INDEX,
+    SEMI_COLON_RULE_INDEX,
+    OPEN_DOUBLE_QUOTE_INDEX,
+    OPEN_SINGLE_QUITE_INDEX
+  ];
+  const $Vs = [
+    TIME_RULE_INDEX,
+    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
+    DOLLAR_SIGN_RULE_INDEX,
+    SINGLE_WHITESPACE_RULE_INDEX,
+    PERIOD_RULE_INDEX,
+    COLON_RULE_INDEX,
+    SEMI_COLON_RULE_INDEX,
+    COMMA_RULE_INDEX,
+    ASTERISK_RULE_INDEX,
+    FORWARD_SLASH_RULE_INDEX,
+    OPEN_DOUBLE_QUOTE_INDEX,
+    OPEN_SINGLE_QUITE_INDEX
+  ];
+  const $Vt = [
+    SINGLE_WHITESPACE_RULE_INDEX,
+    OPEN_DOUBLE_QUOTE_INDEX,
+    OPEN_SINGLE_QUITE_INDEX
+  ];
+  const $Vu = [
+    TIME_RULE_INDEX,
+    INTEGER_RULE_INDEX,
+    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
+    DOLLAR_SIGN_RULE_INDEX,
+    SINGLE_WHITESPACE_RULE_INDEX,
+    PERIOD_RULE_INDEX,
+    COLON_RULE_INDEX,
+    SEMI_COLON_RULE_INDEX,
+    COMMA_RULE_INDEX,
+    ASTERISK_RULE_INDEX,
+    FORWARD_SLASH_RULE_INDEX,
+    MINUS_SIGN_RULE_INDEX,
+    OPEN_DOUBLE_QUOTE_INDEX,
+    OPEN_SINGLE_QUITE_INDEX,
+    EXCLAMATION_POINT_RULE_INDEX,
+    END_OF_STRING_RULE_INDEX
+  ];
   let parser = {
     lexer: undefined,
     Parser: undefined,
-    trace: function trace() {
-    },
+    trace: function trace() {},
     yy: {},
     symbols_: {
       "error": 2,
@@ -260,107 +324,107 @@ let Parser = (function () {
       [2, 3],
       [2, 4]
     ],
-    performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
-      /* this == yyval */
+    performAction: function anonymous(yytext, yyleng, yylineno, yy, actionIndexToPerform /* action[1] */, virtualStack /* vstack */) {
+      // For context, this function is only called with `call` or `apply`, so `this` is `yyval`.
 
-      let $0 = $$.length - 1;
-      switch (yystate) {
+      let $0 = virtualStack.length - 1;
+      switch (actionIndexToPerform) {
         case 1:
-          return $$[$0 - 1];
+          return virtualStack[$0 - 1];
         case 2:
-          this.$ = yy.handler.helper.callVariable.call(this, $$[$0]);
+          this.$ = yy.handler.helper.callVariable.call(this, virtualStack[$0]);
           break;
         case 3:
-          this.$ = yy.handler.time.call(yy.obj, $$[$0], true);
+          this.$ = yy.handler.time.call(yy.obj, virtualStack[$0], true);
           break;
         case 4:
-          this.$ = yy.handler.time.call(yy.obj, $$[$0]);
+          this.$ = yy.handler.time.call(yy.obj, virtualStack[$0]);
           break;
         case 5:
-          this.$ = yy.handler.helper.number($$[$0]);
+          this.$ = yy.handler.helper.number(virtualStack[$0]);
           break;
         case 6:
-          this.$ = yy.handler.helper.string($$[$0]);
+          this.$ = yy.handler.helper.string(virtualStack[$0]);
           break;
         case 7:
-          this.$ = yy.handler.helper.specialMatch('&', $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.specialMatch('&', virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 8:
-          this.$ = yy.handler.helper.logicMatch('=', $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.logicMatch('=', virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 9:
-          this.$ = yy.handler.helper.mathMatch('+', $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.mathMatch('+', virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 10:
-          this.$ = yy.handler.helper.number($$[$0 - 1]);
+          this.$ = yy.handler.helper.number(virtualStack[$0 - 1]);
           break;
         case 11:
-          this.$ = yy.handler.helper.logicMatch('<=', $$[$0 - 3], $$[$0]);
+          this.$ = yy.handler.helper.logicMatch('<=', virtualStack[$0 - 3], virtualStack[$0]);
           break;
         case 12:
-          this.$ = yy.handler.helper.logicMatch('>=', $$[$0 - 3], $$[$0]);
+          this.$ = yy.handler.helper.logicMatch('>=', virtualStack[$0 - 3], virtualStack[$0]);
           break;
         case 13:
-          this.$ = yy.handler.helper.logicMatch('<>', $$[$0 - 3], $$[$0]);
+          this.$ = yy.handler.helper.logicMatch('<>', virtualStack[$0 - 3], virtualStack[$0]);
           break;
         case 14:
-          this.$ = yy.handler.helper.logicMatch('NOT', $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.logicMatch('NOT', virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 15:
-          this.$ = yy.handler.helper.logicMatch('>', $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.logicMatch('>', virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 16:
-          this.$ = yy.handler.helper.logicMatch('<', $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.logicMatch('<', virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 17:
-          this.$ = yy.handler.helper.mathMatch('-', $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.mathMatch('-', virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 18:
-          this.$ = yy.handler.helper.mathMatch('*', $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.mathMatch('*', virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 19:
-          this.$ = yy.handler.helper.mathMatch('/', $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.mathMatch('/', virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 20:
-          this.$ = yy.handler.helper.mathMatch('^', $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.mathMatch('^', virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 21:
-          this.$ = yy.handler.helper.numberInverted($$[$0]);
+          this.$ = yy.handler.helper.numberInverted(virtualStack[$0]);
           if (isNaN(this.$)) {
             this.$ = 0;
           }
           break;
         case 22:
-          this.$ = yy.handler.helper.number($$[$0]);
+          this.$ = yy.handler.helper.number(virtualStack[$0]);
           if (isNaN(this.$)) {
             this.$ = 0;
           }
           break;
         case 23:
           // console.log("message from parser: 'calling function with no args': ", $$[$0 - 2]);
-          this.$ = yy.handler.helper.callFunction.call(this, $$[$0 - 2], '');
+          this.$ = yy.handler.helper.callFunction.call(this, virtualStack[$0 - 2], '');
           break;
         case 24:
           // console.log("message from parser: 'calling function w/ args': ", $$[$0 - 3], $$[$0 - 1]);
-          this.$ = yy.handler.helper.callFunction.call(this, $$[$0 - 3], $$[$0 - 1]);
+          this.$ = yy.handler.helper.callFunction.call(this, virtualStack[$0 - 3], virtualStack[$0 - 1]);
           break;
         case 28:
-          this.$ = yy.handler.helper.fixedCellValue.call(yy.obj, $$[$0]);
+          this.$ = yy.handler.helper.fixedCellValue.call(yy.obj, virtualStack[$0]);
           break;
         case 29:
-          this.$ = yy.handler.helper.fixedCellRangeValue.call(yy.obj, $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.fixedCellRangeValue.call(yy.obj, virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 30:
-          this.$ = yy.handler.helper.cellValue.call(yy.obj, $$[$0]);
+          this.$ = yy.handler.helper.cellValue.call(yy.obj, virtualStack[$0]);
           break;
         case 31:
-          this.$ = yy.handler.helper.cellRangeValue.call(yy.obj, $$[$0 - 2], $$[$0]);
+          this.$ = yy.handler.helper.cellRangeValue.call(yy.obj, virtualStack[$0 - 2], virtualStack[$0]);
           break;
         case 32:
-          if (yy.handler.utils.isArray($$[$0])) {
-            this.$ = $$[$0];
+          if (yy.handler.utils.isArray(virtualStack[$0])) {
+            this.$ = virtualStack[$0];
           } else {
-            this.$ = [$$[$0]];
+            this.$ = [virtualStack[$0]];
           }
           break;
         case 33:
@@ -373,57 +437,75 @@ let Parser = (function () {
           break;
         case 34:
         case 35:
-          $$[$0 - 2].push($$[$0]);
-          this.$ = $$[$0 - 2];
+          virtualStack[$0 - 2].push(virtualStack[$0]);
+          this.$ = virtualStack[$0 - 2];
           break;
         case 36:
-          this.$ = [$$[$0]];
+          this.$ = [virtualStack[$0]];
           break;
         case 37:
-          this.$ = (yy.handler.utils.isArray($$[$0 - 2]) ? $$[$0 - 2] : [$$[$0 - 2]]);
-          this.$.push($$[$0]);
+          this.$ = (yy.handler.utils.isArray(virtualStack[$0 - 2]) ? virtualStack[$0 - 2] : [virtualStack[$0 - 2]]);
+          this.$.push(virtualStack[$0]);
           break;
         case 38:
-          this.$ = $$[$0];
+          this.$ = virtualStack[$0];
           break;
         case 39:
-          this.$ = parseFloat($$[$0 - 2] + '.' + $$[$0]) * 1;
+          this.$ = parseFloat(virtualStack[$0 - 2] + '.' + virtualStack[$0]);
           break;
         case 40:
-          this.$ = $$[$0 - 1] * 0.01;
+          this.$ = virtualStack[$0 - 1] * 0.01;
           break;
         case 41:
         case 42:
-          this.$ = $$[$0 - 2] + $$[$0 - 1] + $$[$0];
+          this.$ = virtualStack[$0 - 2] + virtualStack[$0 - 1] + virtualStack[$0];
           break;
       }
     },
     /**
      * The `table` is an array of objects that map {@link RULES} to LexActions and tokens. Eg:
+     *  { '2': 13,            SINGLE_QUOTES_RULE:
+          '3': 1,
+          '4': 2,
+          '6': 3,
+          '7': [ 1, 4 ],
+          '8': [ 1, 5 ],
+          '9': 6,
+          '10': [ 1, 7 ],
+          '13': [ 1, 10 ],
+          '14': [ 1, 8 ],
+          '19': [ 1, 9 ],
+          '23': [ 1, 11 ],
+          '25': 12,
+          '26': [ 1, 16 ],
+          '28': [ 1, 17 ],
+          '32': [ 1, 14 ],
+          '34': [ 1, 15 ],
+          '36': [ 1, 18 ] }
      */
     table: [
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
         FORMULA_NAME_RULE_INDEX, 1,
         DATE_RULE_INDEX, 2,
-        INDEX6, 3,
-        INDEX7, $V0,
-        INDEX8, $V1,
-        INDEX9, 6,
-        INDEX10, $V2,
-        INDEX13, $V3,
-        INDEX14, $V4,
-        INDEX19, $V5,
-        INDEX23, $V6,
-        INDEX25, 12,
-        INDEX26, $V7,
-        INDEX28, $V8,
-        INDEX32, $V9,
-        INDEX34, $Va,
-        INDEX36, $Vb
+        $_A1_CELL_RULE_INDEX, 3,
+        A1_CELL_RULE_INDEX, $V0,
+        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
+        VARIABLE_RULE_INDEX, 6,
+        SIMPLE_VARIABLE_RILE_INDEX, $V2,
+        DOLLAR_SIGN_RULE_INDEX, $V3,
+        AMPERSAND_SIGN_RULE_INDEX, $V4,
+        COMMA_RULE_INDEX, $V5,
+        PLUS_SIGN_RULE_INDEX, $V6,
+        OPEN_PAREN_RULE_INDEX, 12,
+        CLOSE_PAREN_RULE_INDEX, $V7,
+        LESS_THAN_SIGN_RULE_INDEX, $V8,
+        EXCLAMATION_POINT_RULE_INDEX, $V9,
+        PERCENT_SIGN_RULE_INDEX, $Va,
+        END_OF_STRING_RULE_INDEX, $Vb
       ]),
       ObjectFromPairs.of([
-        INDEX1, [3]
+        DOUBLE_QUOTES_RULE_INDEX, [3]
       ]),
       ObjectFromPairs.of([
         TIME_RULE_INDEX, [LexActions.SHIFT, 19],
@@ -438,10 +520,10 @@ let Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ]),
-      extendRules($Vm, [LexActions.REDUCE, 2], ObjectFromPairs.of([INDEX33, [LexActions.SHIFT, 30]])),
+      extendRules($Vm, [LexActions.REDUCE, 2], ObjectFromPairs.of([EQUALS_SIGN_RULE_INDEX, [LexActions.SHIFT, 30]])),
       extendRules($Vm, [LexActions.REDUCE, 3]),
       extendRules($Vm, [LexActions.REDUCE, 4]),
-      extendRules($Vm, [LexActions.REDUCE, 5], ObjectFromPairs.of([INDEX35, [LexActions.SHIFT, 31]])),
+      extendRules($Vm, [LexActions.REDUCE, 5], ObjectFromPairs.of([HASH_SIGN_RULE_INDEX, [LexActions.SHIFT, 31]])),
       extendRules($Vm, [LexActions.REDUCE, 6]),
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
@@ -505,12 +587,12 @@ let Parser = (function () {
       ]),
       extendRules($Vm, [LexActions.REDUCE, 25]),
       extendRules($Vm, [LexActions.REDUCE, 26], ObjectFromPairs.of([LexActions.REDUCE, 36, 32, [LexActions.SHIFT, 37], 36, $Vb])),
-      extendRules($Vn, [LexActions.REDUCE, 36], ObjectFromPairs.of([INDEX36, $Vo])),
-      extendRules($Vp, [LexActions.REDUCE, 38], ObjectFromPairs.of([INDEX33, [LexActions.SHIFT, 39]])),
-      extendRules($Vm, [LexActions.REDUCE, 28], ObjectFromPairs.of([INDEX27, [LexActions.SHIFT, 40]])),
-      extendRules($Vm, [LexActions.REDUCE, 30], ObjectFromPairs.of([INDEX27, [LexActions.SHIFT, 41]])),
-      ObjectFromPairs.of([INDEX32, [LexActions.SHIFT, 42]]),
-      ObjectFromPairs.of([INDEX1, [LexActions.ACCEPT, 1]]),
+      extendRules($Vn, [LexActions.REDUCE, 36], ObjectFromPairs.of([END_OF_STRING_RULE_INDEX, $Vo])),
+      extendRules($Vp, [LexActions.REDUCE, 38], ObjectFromPairs.of([EQUALS_SIGN_RULE_INDEX, [LexActions.SHIFT, 39]])),
+      extendRules($Vm, [LexActions.REDUCE, 28], ObjectFromPairs.of([GREATER_THAN_SIGN_RULE_INDEX, [LexActions.SHIFT, 40]])),
+      extendRules($Vm, [LexActions.REDUCE, 30], ObjectFromPairs.of([GREATER_THAN_SIGN_RULE_INDEX, [LexActions.SHIFT, 41]])),
+      ObjectFromPairs.of([EXCLAMATION_POINT_RULE_INDEX, [LexActions.SHIFT, 42]]),
+      ObjectFromPairs.of([DOUBLE_QUOTES_RULE_INDEX, [LexActions.ACCEPT, 1]]),
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
         DATE_RULE_INDEX, 43,
@@ -720,16 +802,16 @@ let Parser = (function () {
         MINUS_SIGN_RULE_INDEX, $Vl
       ]),
       extendRules($Vq, [LexActions.REDUCE, 21], ObjectFromPairs.of([
-        INDEX11, $Vc,
-        INDEX20, $Vj,
-        INDEX21, $Vk,
-        INDEX22, $Vl
+        INTEGER_RULE_INDEX, $Vc,
+        ASTERISK_RULE_INDEX, $Vj,
+        FORWARD_SLASH_RULE_INDEX, $Vk,
+        MINUS_SIGN_RULE_INDEX, $Vl
       ])),
       extendRules($Vq, [LexActions.REDUCE, 22], ObjectFromPairs.of([
-        INDEX11, $Vc,
-        INDEX20, $Vj,
-        INDEX21, $Vk,
-        INDEX22, $Vl])
+        INTEGER_RULE_INDEX, $Vc,
+        ASTERISK_RULE_INDEX, $Vj,
+        FORWARD_SLASH_RULE_INDEX, $Vk,
+        MINUS_SIGN_RULE_INDEX, $Vl])
       ),
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
@@ -754,11 +836,11 @@ let Parser = (function () {
         END_OF_STRING_RULE_INDEX, $Vb
       ]),
       extendRules($Vm, [LexActions.REDUCE, 27]),
-      ObjectFromPairs.of([INDEX36, $Vo]),
-      ObjectFromPairs.of([INDEX32, [LexActions.SHIFT, 62]]),
-      ObjectFromPairs.of([INDEX34, [LexActions.SHIFT, 63]]),
-      ObjectFromPairs.of([INDEX26, [LexActions.SHIFT, 64]]),
-      ObjectFromPairs.of([INDEX28, [LexActions.SHIFT, 65]]),
+      ObjectFromPairs.of([END_OF_STRING_RULE_INDEX, $Vo]),
+      ObjectFromPairs.of([EXCLAMATION_POINT_RULE_INDEX, [LexActions.SHIFT, 62]]),
+      ObjectFromPairs.of([PERCENT_SIGN_RULE_INDEX, [LexActions.SHIFT, 63]]),
+      ObjectFromPairs.of([CLOSE_PAREN_RULE_INDEX, [LexActions.SHIFT, 64]]),
+      ObjectFromPairs.of([LESS_THAN_SIGN_RULE_INDEX, [LexActions.SHIFT, 65]]),
       ObjectFromPairs.of([37, [LexActions.SHIFT, 66]]),
       extendRules($Vm, [LexActions.REDUCE, 7]),
       extendRules([5, 12, 15, 30, 31], [LexActions.REDUCE, 8], ObjectFromPairs.of([
@@ -773,10 +855,10 @@ let Parser = (function () {
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
       extendRules($Vq, [LexActions.REDUCE, 9], ObjectFromPairs.of([
-        INDEX11, $Vc,
-        INDEX20, $Vj,
-        INDEX21, $Vk,
-        INDEX22, $Vl
+        INTEGER_RULE_INDEX, $Vc,
+        ASTERISK_RULE_INDEX, $Vj,
+        FORWARD_SLASH_RULE_INDEX, $Vk,
+        MINUS_SIGN_RULE_INDEX, $Vl
       ])),
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
@@ -1058,8 +1140,7 @@ let Parser = (function () {
       }
 
       function lex() {
-        let token;
-        token = lexer.lex() || EOF;
+        let token = lexer.lex() || EOF;
         // if token isn't its numeric value, convert
         if (typeof token !== 'number') {
           token = self.symbols_[token] || token;
@@ -1067,10 +1148,19 @@ let Parser = (function () {
         return token;
       }
 
-      let symbol, preErrorSymbol, state, action, r, yyval = {
-        $: undefined,
-        _$: undefined
-      }, p, len, newState, expected;
+      let symbol,
+        preErrorSymbol,
+        state,
+        action,
+        result,
+        yyval = {
+          $: undefined,
+          _$: undefined
+        },
+        p,
+        len,
+        newState,
+        expected;
       while (true) {
         // retrieve state number from top of stack
         state = stack[stack.length - 1];
@@ -1079,7 +1169,7 @@ let Parser = (function () {
         if (this.defaultActions[state]) {
           action = this.defaultActions[state];
         } else {
-          if (symbol === null || typeof symbol == 'undefined') {
+          if (typeof symbol == 'undefined'|| symbol === null) {
             symbol = lex();
           }
           // read action for current state and first input
@@ -1177,7 +1267,7 @@ let Parser = (function () {
 
         // LexActions are always:
         //   Shift: continue to process tokens.
-        //   Reduce: enough tokens have been gathered for use to reduce input through evaluation.
+        //   Reduce: enough tokens have been gathered to reduce input through evaluation.
         //   Accept: return.
         switch (action[0]) {
           case LexActions.SHIFT: // Shift
@@ -1216,10 +1306,10 @@ let Parser = (function () {
             if (ranges) {
               yyval._$.range = [locationStack[locationStack.length - (len || 1)].range[0], locationStack[locationStack.length - 1].range[1]];
             }
-            r = this.performAction.apply(yyval, [yytext, yyleng, yylineno, sharedState.yy, action[1], semanticValueStack, locationStack].concat(args));
+            result = this.performAction.apply(yyval, [yytext, yyleng, yylineno, sharedState.yy, action[1], semanticValueStack, locationStack].concat(args));
 
-            if (typeof r !== 'undefined') {
-              return r;
+            if (typeof result !== 'undefined') {
+              return result;
             }
 
             // pop off stack
@@ -1246,10 +1336,8 @@ let Parser = (function () {
     }
   };
 
-
-  let lexer = (function () {
-    let lexer = ({
-
+  parser.lexer = (function () {
+    return ({
       EOF: 1,
 
       parseError: function parseError(str, hash) {
@@ -1313,23 +1401,23 @@ let Parser = (function () {
         this.yytext = this.yytext.substr(0, this.yytext.length - len);
         //this.yyleng -= len;
         this.offset -= len;
-        var oldLines = this.match.split(/(?:\r\n?|\n)/g);
+        let oldLines = this.match.split(/(?:\r\n?|\n)/g);
         this.match = this.match.substr(0, this.match.length - 1);
         this.matched = this.matched.substr(0, this.matched.length - 1);
 
         if (lines.length - 1) {
           this.yylineno -= lines.length - 1;
         }
-        var r = this.yylloc.range;
+        let r = this.yylloc.range;
 
         this.yylloc = {
           first_line: this.yylloc.first_line,
           last_line: this.yylineno + 1,
           first_column: this.yylloc.first_column,
           last_column: lines ?
-          (lines.length === oldLines.length ? this.yylloc.first_column : 0)
-          + oldLines[oldLines.length - lines.length].length - lines[0].length :
-          this.yylloc.first_column - len
+            (lines.length === oldLines.length ? this.yylloc.first_column : 0)
+            + oldLines[oldLines.length - lines.length].length - lines[0].length :
+            this.yylloc.first_column - len
         };
 
         if (this.options.ranges) {
@@ -1367,13 +1455,13 @@ let Parser = (function () {
 
       // displays already matched input, i.e. for error messages
       pastInput: function () {
-        var past = this.matched.substr(0, this.matched.length - this.match.length);
+        let past = this.matched.substr(0, this.matched.length - this.match.length);
         return (past.length > 20 ? '...' : '') + past.substr(-20).replace(/\n/g, "");
       },
 
       // displays upcoming input, i.e. for error messages
       upcomingInput: function () {
-        var next = this.match;
+        let next = this.match;
         if (next.length < 20) {
           next += this._input.substr(0, 20 - next.length);
         }
@@ -1382,14 +1470,14 @@ let Parser = (function () {
 
       // displays the character position where the lexing error occurred, i.e. for error messages
       showPosition: function () {
-        var pre = this.pastInput();
-        var c = new Array(pre.length + 1).join("-");
+        let pre = this.pastInput();
+        let c = new Array(pre.length + 1).join("-");
         return pre + this.upcomingInput() + "\n" + c + "^";
       },
 
       // test the lexed token: return FALSE when not a match, otherwise return token
       test_match: function (match, indexed_rule) {
-        var token,
+        let token,
           lines,
           backup;
 
@@ -1429,8 +1517,8 @@ let Parser = (function () {
           last_line: this.yylineno + 1,
           first_column: this.yylloc.last_column,
           last_column: lines ?
-          lines[lines.length - 1].length - lines[lines.length - 1].match(/\r?\n?/)[0].length :
-          this.yylloc.last_column + match[0].length
+            lines[lines.length - 1].length - lines[lines.length - 1].match(/\r?\n?/)[0].length :
+            this.yylloc.last_column + match[0].length
         };
         this.yytext += match[0];
         this.match += match[0];
@@ -1451,7 +1539,7 @@ let Parser = (function () {
           return token;
         } else if (this._backtrack) {
           // recover context
-          for (var k in backup) {
+          for (let k in backup) {
             this[k] = backup[k];
           }
           return false; // rule action called reject() implying the next rule should be tested instead.
@@ -1468,7 +1556,7 @@ let Parser = (function () {
           this.done = true;
         }
 
-        var token,
+        let token,
           match,
           tempMatch,
           index;
@@ -1476,8 +1564,8 @@ let Parser = (function () {
           this.yytext = '';
           this.match = '';
         }
-        var rules = this._currentRules();
-        for (var i = 0; i < rules.length; i++) {
+        let rules = this._currentRules();
+        for (let i = 0; i < rules.length; i++) {
           tempMatch = this._input.match(this.rules[rules[i]]);
           if (tempMatch && (!match || tempMatch[0].length > match[0].length)) {
             match = tempMatch;
@@ -1488,7 +1576,8 @@ let Parser = (function () {
                 return token;
               } else if (this._backtrack) {
                 match = false;
-                continue; // rule action called reject() implying a rule mis-match.
+                // rule action called reject() implying a rule mis-match.
+                // implied `continue`
               } else {
                 // else: this is a lexer rule which consumes input without producing a token (e.g. whitespace)
                 return false;
@@ -1519,7 +1608,7 @@ let Parser = (function () {
 
       // return next match that has a token
       lex: function lex() {
-        var r = this.next();
+        let r = this.next();
         if (r) {
           return r;
         } else {
@@ -1534,7 +1623,7 @@ let Parser = (function () {
 
       // pop the previously active lexer condition state off the condition stack
       popState: function popState() {
-        var n = this.conditionStack.length - 1;
+        let n = this.conditionStack.length - 1;
         if (n > 0) {
           return this.conditionStack.pop();
         } else {
@@ -1570,8 +1659,12 @@ let Parser = (function () {
       stateStackSize: function stateStackSize() {
         return this.conditionStack.length;
       },
-      options: {},
-      performAction: function anonymous(yy, yy_, $avoiding_name_collisions, YY_START) {
+      options: {
+        // backtrack_lexer?
+        // ranges?
+        // flex?
+      },
+      performAction: function anonymous(yy, yy_, $avoiding_name_collisions) {
         switch ($avoiding_name_collisions) {
           case 0:
             // skip whitespace
@@ -1604,7 +1697,8 @@ let Parser = (function () {
             return 34;
           case 12:
             return 29;
-          case 13:/* skip whitespace */
+          case 13:
+            // skip whitespace
             break;
           case 14:
             return 11;
@@ -1701,9 +1795,7 @@ let Parser = (function () {
         }
       }
     });
-    return lexer;
   })();
-  parser.lexer = lexer;
   function Parser() {
     this.yy = {};
   }

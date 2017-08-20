@@ -54,13 +54,12 @@ const enum LexActions {
   ACCEPT
 }
 
-
 const enum ReduceActions {
   NO_ACTION = 0,
   RETURN_LAST,
   CALL_VARIABLE,
-  I3,
-  I4,
+  TIME_CALL_TRUE,
+  TIME_CALL,
   AS_NUMBER,
   AS_STRING,
   AMPERSAND,
@@ -105,8 +104,8 @@ let productions = [];
 productions[ReduceActions.NO_ACTION] = 0;
 productions[ReduceActions.RETURN_LAST] = [3, 2];
 productions[ReduceActions.CALL_VARIABLE] = [4, 1];
-productions[ReduceActions.I3] = [4, 1];
-productions[ReduceActions.I4] = [4, 1];
+productions[ReduceActions.TIME_CALL_TRUE] = [4, 1];
+productions[ReduceActions.TIME_CALL] = [4, 1];
 productions[ReduceActions.AS_NUMBER] = [4, 1];
 productions[ReduceActions.AS_STRING] = [4, 1];
 productions[ReduceActions.AMPERSAND] = [4, 3];
@@ -378,118 +377,118 @@ let Parser = (function () {
     productions: PRODUCTIONS,
     /**
      * Perform a reduce action on the given virtual stack. Basically, fetching, deriving, or calculating a value.
-     * @param yytext ???
-     * @param yyleng ???
-     * @param yylineno ???
-     * @param yy ???
-     * @param reduceActionToPerform - the ReduceAction to perform with the current virtual stack
+     * @param rawValueOfReduceOriginToken - Some actions require the origin token to perform a reduce action. For
+     * example, when reducing the cell reference A1 to it's actual value this value would be "A1".
+     * @param sharedStateYY - the shared state that has all helpers, and current working object.
+     * @param reduceActionToPerform - the ReduceAction to perform with the current virtual stack. Since this function
+     * is only called in one place, this should always be action[1] in that context.
      * @param virtualStack - Array of values to use in action.
      * @returns {number|boolean|string}
      */
-    performAction: function (yytext, yyleng, yylineno, yy, reduceActionToPerform /* action[1] */, virtualStack : Array<any>) {
-      // For context, this function is only called with `call` or `apply`, so `this` is `yyval`.
+    performAction: function (rawValueOfReduceOriginToken, sharedStateYY, reduceActionToPerform, virtualStack : Array<any>) {
+      // For context, this function is only called with `apply`, so `this` is `yyval`.
 
-      let $0 = virtualStack.length - 1;
+      const vsl = virtualStack.length - 1;
       switch (reduceActionToPerform) {
         case ReduceActions.RETURN_LAST:
-          return virtualStack[$0 - 1];
+          return virtualStack[vsl - 1];
         case ReduceActions.CALL_VARIABLE:
-          this.$ = yy.handler.helper.callVariable.call(this, virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.callVariable.call(this, virtualStack[vsl]);
           break;
-        case ReduceActions.I3:
-          this.$ = yy.handler.time.call(yy.obj, virtualStack[$0], true);
+        case ReduceActions.TIME_CALL_TRUE:
+          this.$ = sharedStateYY.handler.time.call(sharedStateYY.obj, virtualStack[vsl], true);
           break;
-        case ReduceActions.I4:
-          this.$ = yy.handler.time.call(yy.obj, virtualStack[$0]);
+        case ReduceActions.TIME_CALL:
+          this.$ = sharedStateYY.handler.time.call(sharedStateYY.obj, virtualStack[vsl]);
           break;
         case ReduceActions.AS_NUMBER:
-          this.$ = yy.handler.helper.number(virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
           break;
         case ReduceActions.AS_STRING:
-          this.$ = yy.handler.helper.string(virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.string(virtualStack[vsl]);
           break;
         case ReduceActions.AMPERSAND:
-          this.$ = yy.handler.helper.specialMatch('&', virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.specialMatch('&', virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.EQUALS:
-          this.$ = yy.handler.helper.logicMatch('=', virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.logicMatch('=', virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.PLUS:
-          this.$ = yy.handler.helper.mathMatch('+', virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.mathMatch('+', virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.LAST_NUMBER:
-          this.$ = yy.handler.helper.number(virtualStack[$0 - 1]);
+          this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl - 1]);
           break;
         case ReduceActions.LTE:
-          this.$ = yy.handler.helper.logicMatch('<=', virtualStack[$0 - 3], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.logicMatch('<=', virtualStack[vsl - 3], virtualStack[vsl]);
           break;
         case ReduceActions.GTE:
-          this.$ = yy.handler.helper.logicMatch('>=', virtualStack[$0 - 3], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.logicMatch('>=', virtualStack[vsl - 3], virtualStack[vsl]);
           break;
         case ReduceActions.NOT_EQ:
-          this.$ = yy.handler.helper.logicMatch('<>', virtualStack[$0 - 3], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.logicMatch('<>', virtualStack[vsl - 3], virtualStack[vsl]);
           break;
         case ReduceActions.NOT:
-          this.$ = yy.handler.helper.logicMatch('NOT', virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.logicMatch('NOT', virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.GT:
-          this.$ = yy.handler.helper.logicMatch('>', virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.logicMatch('>', virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.LT:
-          this.$ = yy.handler.helper.logicMatch('<', virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.logicMatch('<', virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.MINUS:
-          this.$ = yy.handler.helper.mathMatch('-', virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.mathMatch('-', virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.MULTIPLY:
-          this.$ = yy.handler.helper.mathMatch('*', virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.mathMatch('*', virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.DIVIDE:
-          this.$ = yy.handler.helper.mathMatch('/', virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.mathMatch('/', virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.TO_POWER:
-          this.$ = yy.handler.helper.mathMatch('^', virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.mathMatch('^', virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.INVERT_NUM:
-          this.$ = yy.handler.helper.numberInverted(virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.numberInverted(virtualStack[vsl]);
           if (isNaN(this.$)) {
             this.$ = 0;
           }
           break;
         case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
-          this.$ = yy.handler.helper.number(virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
           if (isNaN(this.$)) {
             this.$ = 0;
           }
           break;
         case ReduceActions.CALL_FUNCTION_LAST_BLANK:
-          this.$ = yy.handler.helper.callFunction.call(this, virtualStack[$0 - 2], '');
+          this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 2], '');
           break;
         case ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK:
-          this.$ = yy.handler.helper.callFunction.call(this, virtualStack[$0 - 3], virtualStack[$0 - 1]);
+          this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 3], virtualStack[vsl - 1]);
           break;
         case ReduceActions.FIXED_CELL_VAL:
-          this.$ = yy.handler.helper.fixedCellValue.call(yy.obj, virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.fixedCellValue.call(sharedStateYY.obj, virtualStack[vsl]);
           break;
         case ReduceActions.FIXED_CELL_RANGE_VAL:
-          this.$ = yy.handler.helper.fixedCellRangeValue.call(yy.obj, virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.fixedCellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.CELL_VALUE:
-          this.$ = yy.handler.helper.cellValue.call(yy.obj, virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.cellValue.call(sharedStateYY.obj, virtualStack[vsl]);
           break;
         case ReduceActions.CELL_RANGE_VALUE:
-          this.$ = yy.handler.helper.cellRangeValue.call(yy.obj, virtualStack[$0 - 2], virtualStack[$0]);
+          this.$ = sharedStateYY.handler.helper.cellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
           break;
         case ReduceActions.ENSURE_IS_ARRAY:
-          if (yy.handler.utils.isArray(virtualStack[$0])) {
-            this.$ = virtualStack[$0];
+          if (sharedStateYY.handler.utils.isArray(virtualStack[vsl])) {
+            this.$ = virtualStack[vsl];
           } else {
-            this.$ = [virtualStack[$0]];
+            this.$ = [virtualStack[vsl]];
           }
           break;
         case ReduceActions.ENSURE_YYTEXT_ARRAY:
           let result = [],
-            arr = eval("[" + yytext + "]");
+            arr = eval("[" + rawValueOfReduceOriginToken + "]");
           arr.forEach(function (item) {
             result.push(item);
           });
@@ -497,58 +496,40 @@ let Parser = (function () {
           break;
         case ReduceActions.REDUCE_INT:
         case ReduceActions.REDUCE_PERCENT:
-          virtualStack[$0 - 2].push(virtualStack[$0]);
-          this.$ = virtualStack[$0 - 2];
+          virtualStack[vsl - 2].push(virtualStack[vsl]);
+          this.$ = virtualStack[vsl - 2];
           break;
         case ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY:
-          this.$ = [virtualStack[$0]];
+          this.$ = [virtualStack[vsl]];
           break;
         /**
          * As far as I can tell, we don't use this rule, but I'm hesitant to delete it until I understand why it was
          * initially written.
          */
         case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
-          this.$ = (yy.handler.utils.isArray(virtualStack[$0 - 2]) ? virtualStack[$0 - 2] : [virtualStack[$0 - 2]]);
-          this.$.push(virtualStack[$0]);
+          this.$ = (sharedStateYY.handler.utils.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
+          this.$.push(virtualStack[vsl]);
           break;
         case ReduceActions.REFLEXIVE_REDUCE:
-          this.$ = virtualStack[$0];
+          this.$ = virtualStack[vsl];
           break;
         case ReduceActions.REDUCE_FLOAT:
-          this.$ = parseFloat(virtualStack[$0 - 2] + '.' + virtualStack[$0]);
+          this.$ = parseFloat(virtualStack[vsl - 2] + '.' + virtualStack[vsl]);
           break;
         case ReduceActions.REDUCE_PREV_AS_PERCENT:
-          this.$ = virtualStack[$0 - 1] * 0.01;
+          this.$ = virtualStack[vsl - 1] * 0.01;
           break;
         /**
          * I don't understand where these come from as well, but I want to know the intent behind them.
          */
         case ReduceActions.REDUCE_LAST_THREE_A:
         case ReduceActions.REDUCE_LAST_THREE_B:
-          this.$ = virtualStack[$0 - 2] + virtualStack[$0 - 1] + virtualStack[$0];
+          this.$ = virtualStack[vsl - 2] + virtualStack[vsl - 1] + virtualStack[vsl];
           break;
       }
     },
     /**
-     * The `table` is an array of objects that map {@link RULES} to LexActions and tokens. Eg:
-     *  { '2': 13,            SINGLE_QUOTES_RULE:
-          '3': 1,
-          '4': 2,
-          '6': 3,
-          '7': [ 1, 4 ],
-          '8': [ 1, 5 ],
-          '9': 6,
-          '10': [ 1, 7 ],
-          '13': [ 1, 10 ],
-          '14': [ 1, 8 ],
-          '19': [ 1, 9 ],
-          '23': [ 1, 11 ],
-          '25': 12,
-          '26': [ 1, 16 ],
-          '28': [ 1, 17 ],
-          '32': [ 1, 14 ],
-          '34': [ 1, 15 ],
-          '36': [ 1, 18 ] }
+     * The `table` is an array of objects that map {@link RULES} to LexActions and tokens.
      */
     table: [
       ObjectFromPairs.of([
@@ -1045,7 +1026,9 @@ let Parser = (function () {
         FORWARD_SLASH_RULE_INDEX, $Vk,
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
-      extendRules($Vt, [LexActions.REDUCE, 33]), ObjectFromPairs.of([37, [LexActions.SHIFT, 73]]), // index 37?
+      extendRules($Vt, [LexActions.REDUCE, 33]), ObjectFromPairs.of([
+        37, [LexActions.SHIFT, 73] // index 37?
+      ]),
       extendRules($Vp, [LexActions.REDUCE, 39]),
       extendRules($Vm, [LexActions.REDUCE, 29]),
       extendRules($Vm, [LexActions.REDUCE, 31]),
@@ -1059,12 +1042,12 @@ let Parser = (function () {
         MINUS_SIGN_RULE_INDEX, $Vl
       ])),
       extendRules($Vr, [LexActions.REDUCE, 13], ObjectFromPairs.of([
-        11, $Vc,
-        13, $Ve,
-        19, $Vi,
-        20, $Vj,
-        21, $Vk,
-        22, $Vl
+        INTEGER_RULE_INDEX, $Vc,
+        DOLLAR_SIGN_RULE_INDEX, $Ve,
+        COMMA_RULE_INDEX, $Vi,
+        ASTERISK_RULE_INDEX, $Vj,
+        FORWARD_SLASH_RULE_INDEX, $Vk,
+        MINUS_SIGN_RULE_INDEX, $Vl
       ])),
       extendRules($Vr, [LexActions.REDUCE, 12], ObjectFromPairs.of([
         INTEGER_RULE_INDEX, $Vc,
@@ -1374,7 +1357,7 @@ let Parser = (function () {
             if (ranges) {
               yyval._$.range = [locationStack[locationStack.length - (len || 1)].range[0], locationStack[locationStack.length - 1].range[1]];
             }
-            result = this.performAction.apply(yyval, [yytext, yyleng, yylineno, sharedState.yy, action[1], semanticValueStack, locationStack].concat(args));
+            result = this.performAction.apply(yyval, [yytext, sharedState.yy, action[1], semanticValueStack].concat(args));
 
             if (typeof result !== 'undefined') {
               return result;

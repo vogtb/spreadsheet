@@ -60,44 +60,44 @@ const enum ReduceActions {
   I2,
   I3,
   I4,
-  I5,
-  I6,
-  I7,
-  I8,
-  I9,
-  I10,
-  I11,
-  I12,
-  I13,
-  I14,
-  I15,
-  I16,
-  I17,
-  I18,
-  I19,
-  I20,
-  I21,
-  I22,
-  I23,
-  I24,
+  AS_NUMBER,
+  AS_STRING,
+  AMPERSAND,
+  EQUALS,
+  PLUS,
+  LAST_NUMBER,
+  LTE,
+  GTE,
+  NOT_EQ,
+  NOT,
+  GT,
+  LT,
+  MINUS,
+  MULTIPLY,
+  DIVIDE,
+  TO_POWER,
+  INVERT_NUM,
+  TO_NUMBER_NAN_AS_ZERO,
+  CALL_FUNCTION_LAST_BLANK,
+  CALL_FUNCTION_LAST_TWO_IN_STACK,
   I25,
   I26,
   I27,
-  I28,
-  I29,
-  I30,
-  I31,
-  I32,
-  I33,
-  I34,
-  I35,
-  I36,
-  I37,
-  I38,
-  I39,
-  I40,
-  I41,
-  I42
+  FIXED_CELL_VAL,
+  FIX_EDCELL_RANGE_VAL,
+  CELL_VALUE,
+  CELL_RANGE_VALUE,
+  ENSURE_IS_ARRAY,
+  ENSURE_YYTEXT_ARRAY,
+  REDUCE_INT,
+  REDUCE_PERCENT,
+  WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY,
+  ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH,
+  REFLEXIVE_REDUCE,
+  REDUCE_FLOAT,
+  REUDCE_PREV_AS_PERCENT,
+  REDUCE_LAST_THREE_A,
+  REDUCE_LAST_THREE_B
 }
 
 
@@ -326,7 +326,10 @@ let Parser = (function () {
       36: "#",
       37: "!"
     },
-    productions_: [
+    /**
+     * Maps a ProductionRule to the appropriate number of previous tokens to use in a reduction action.
+     */
+    productions: [
       0,
       [3, 2],
       [4, 1],
@@ -387,92 +390,92 @@ let Parser = (function () {
         case ReduceActions.I4:
           this.$ = yy.handler.time.call(yy.obj, virtualStack[$0]);
           break;
-        case ReduceActions.I5:
+        case ReduceActions.AS_NUMBER:
           this.$ = yy.handler.helper.number(virtualStack[$0]);
           break;
-        case ReduceActions.I6:
+        case ReduceActions.AS_STRING:
           this.$ = yy.handler.helper.string(virtualStack[$0]);
           break;
-        case ReduceActions.I7:
+        case ReduceActions.AMPERSAND:
           this.$ = yy.handler.helper.specialMatch('&', virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I8:
+        case ReduceActions.EQUALS:
           this.$ = yy.handler.helper.logicMatch('=', virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I9:
+        case ReduceActions.PLUS:
           this.$ = yy.handler.helper.mathMatch('+', virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I10:
+        case ReduceActions.LAST_NUMBER:
           this.$ = yy.handler.helper.number(virtualStack[$0 - 1]);
           break;
-        case ReduceActions.I11:
+        case ReduceActions.LTE:
           this.$ = yy.handler.helper.logicMatch('<=', virtualStack[$0 - 3], virtualStack[$0]);
           break;
-        case ReduceActions.I12:
+        case ReduceActions.GTE:
           this.$ = yy.handler.helper.logicMatch('>=', virtualStack[$0 - 3], virtualStack[$0]);
           break;
-        case ReduceActions.I13:
+        case ReduceActions.NOT_EQ:
           this.$ = yy.handler.helper.logicMatch('<>', virtualStack[$0 - 3], virtualStack[$0]);
           break;
-        case ReduceActions.I14:
+        case ReduceActions.NOT:
           this.$ = yy.handler.helper.logicMatch('NOT', virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I15:
+        case ReduceActions.GT:
           this.$ = yy.handler.helper.logicMatch('>', virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I16:
+        case ReduceActions.LT:
           this.$ = yy.handler.helper.logicMatch('<', virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I17:
+        case ReduceActions.MINUS:
           this.$ = yy.handler.helper.mathMatch('-', virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I18:
+        case ReduceActions.MULTIPLY:
           this.$ = yy.handler.helper.mathMatch('*', virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I19:
+        case ReduceActions.DIVIDE:
           this.$ = yy.handler.helper.mathMatch('/', virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I20:
+        case ReduceActions.TO_POWER:
           this.$ = yy.handler.helper.mathMatch('^', virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I21:
+        case ReduceActions.INVERT_NUM:
           this.$ = yy.handler.helper.numberInverted(virtualStack[$0]);
           if (isNaN(this.$)) {
             this.$ = 0;
           }
           break;
-        case ReduceActions.I22:
+        case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
           this.$ = yy.handler.helper.number(virtualStack[$0]);
           if (isNaN(this.$)) {
             this.$ = 0;
           }
           break;
-        case ReduceActions.I23:
+        case ReduceActions.CALL_FUNCTION_LAST_BLANK:
           this.$ = yy.handler.helper.callFunction.call(this, virtualStack[$0 - 2], '');
           break;
-        case ReduceActions.I24:
+        case ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK:
           this.$ = yy.handler.helper.callFunction.call(this, virtualStack[$0 - 3], virtualStack[$0 - 1]);
           break;
-        case ReduceActions.I28:
+        case ReduceActions.FIXED_CELL_VAL:
           this.$ = yy.handler.helper.fixedCellValue.call(yy.obj, virtualStack[$0]);
           break;
-        case ReduceActions.I29:
+        case ReduceActions.FIX_EDCELL_RANGE_VAL:
           this.$ = yy.handler.helper.fixedCellRangeValue.call(yy.obj, virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I30:
+        case ReduceActions.CELL_VALUE:
           this.$ = yy.handler.helper.cellValue.call(yy.obj, virtualStack[$0]);
           break;
-        case ReduceActions.I31:
+        case ReduceActions.CELL_RANGE_VALUE:
           this.$ = yy.handler.helper.cellRangeValue.call(yy.obj, virtualStack[$0 - 2], virtualStack[$0]);
           break;
-        case ReduceActions.I32:
+        case ReduceActions.ENSURE_IS_ARRAY:
           if (yy.handler.utils.isArray(virtualStack[$0])) {
             this.$ = virtualStack[$0];
           } else {
             this.$ = [virtualStack[$0]];
           }
           break;
-        case ReduceActions.I33:
+        case ReduceActions.ENSURE_YYTEXT_ARRAY:
           let result = [],
             arr = eval("[" + yytext + "]");
           arr.forEach(function (item) {
@@ -480,29 +483,36 @@ let Parser = (function () {
           });
           this.$ = result;
           break;
-        case ReduceActions.I34:
-        case ReduceActions.I35:
+        case ReduceActions.REDUCE_INT:
+        case ReduceActions.REDUCE_PERCENT:
           virtualStack[$0 - 2].push(virtualStack[$0]);
           this.$ = virtualStack[$0 - 2];
           break;
-        case ReduceActions.I36:
+        case ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY:
           this.$ = [virtualStack[$0]];
           break;
-        case ReduceActions.I37:
+        /**
+         * As far as I can tell, we don't use this rule, but I'm hesitant to delete it until I understand why it was
+         * initially written.
+         */
+        case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
           this.$ = (yy.handler.utils.isArray(virtualStack[$0 - 2]) ? virtualStack[$0 - 2] : [virtualStack[$0 - 2]]);
           this.$.push(virtualStack[$0]);
           break;
-        case ReduceActions.I38:
+        case ReduceActions.REFLEXIVE_REDUCE:
           this.$ = virtualStack[$0];
           break;
-        case ReduceActions.I39:
+        case ReduceActions.REDUCE_FLOAT:
           this.$ = parseFloat(virtualStack[$0 - 2] + '.' + virtualStack[$0]);
           break;
-        case ReduceActions.I40:
+        case ReduceActions.REUDCE_PREV_AS_PERCENT:
           this.$ = virtualStack[$0 - 1] * 0.01;
           break;
-        case ReduceActions.I41:
-        case ReduceActions.I42:
+        /**
+         * I don't understand where these come from as well, but I want to know the intent behind them.
+         */
+        case ReduceActions.REDUCE_LAST_THREE_A:
+        case ReduceActions.REDUCE_LAST_THREE_B:
           this.$ = virtualStack[$0 - 2] + virtualStack[$0 - 1] + virtualStack[$0];
           break;
       }
@@ -1055,6 +1065,8 @@ let Parser = (function () {
       extendRules($Vm, [LexActions.REDUCE, 24]),
       ObjectFromPairs.of([
         SINGLE_QUOTES_RULE_INDEX, 13,
+        // As far as I can tell, some of these higher values are lazy ways of indicating an out-of-bounds "production"
+        // index, forcing a default to len=1 when reducing values.
         DATE_RULE_INDEX, 74,
         $_A1_CELL_RULE_INDEX, 3,
         A1_CELL_RULE_INDEX, $V0,
@@ -1221,7 +1233,6 @@ let Parser = (function () {
           action = table[state] && table[state][symbol];
         }
 
-        // console.log("symbol:", symbol, "action:", action);
         // handle parse error
         if (typeof action === 'undefined' || !action.length || !action[0]) {
           let error_rule_depth;
@@ -1337,7 +1348,7 @@ let Parser = (function () {
             break;
 
           case LexActions.REDUCE: // Reduce
-            len = this.productions_[action[1]][1];
+            len = this.productions[action[1]][1];
 
             // perform semantic action
             yyval.$ = semanticValueStack[semanticValueStack.length - len]; // default to $$ = $1
@@ -1365,7 +1376,7 @@ let Parser = (function () {
             }
 
             // push non-terminal (reduce)
-            stack.push(this.productions_[action[1]][0]);
+            stack.push(this.productions[action[1]][0]);
             semanticValueStack.push(yyval.$);
             locationStack.push(yyval._$);
             newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
@@ -1715,64 +1726,64 @@ let Parser = (function () {
             // skip whitespace
             break;
           case DOUBLE_QUOTES_RULE_INDEX:
-            return ReduceActions.I10;
+            return ReduceActions.LAST_NUMBER;
           case SINGLE_QUOTES_RULE_INDEX:
-            return ReduceActions.I10;
+            return ReduceActions.LAST_NUMBER;
           case FORMULA_NAME_RULE_INDEX:
-            return ReduceActions.I23;
+            return ReduceActions.CALL_FUNCTION_LAST_BLANK;
           case DATE_RULE_INDEX:
-            return ReduceActions.I7;
+            return ReduceActions.AMPERSAND;
           case TIME_RULE_INDEX:
-            return ReduceActions.I8;
+            return ReduceActions.EQUALS;
           case $_A1_CELL_RULE_INDEX:
             return ReduceActions.I26;
           case A1_CELL_RULE_INDEX:
-            return ReduceActions.I28;
+            return ReduceActions.FIXED_CELL_VAL;
           case FORMULA_NAME_SIMPLE_RULE_INDEX:
-            return ReduceActions.I23;
+            return ReduceActions.CALL_FUNCTION_LAST_BLANK;
           case VARIABLE_RULE_INDEX:
-            return ReduceActions.I32;
+            return ReduceActions.ENSURE_IS_ARRAY;
           case SIMPLE_VARIABLE_RILE_INDEX:
-            return ReduceActions.I32;
+            return ReduceActions.ENSURE_IS_ARRAY;
           case INTEGER_RULE_INDEX:
-            return ReduceActions.I34;
+            return ReduceActions.REDUCE_INT;
           case OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX:
-            return ReduceActions.I29;
+            return ReduceActions.FIX_EDCELL_RANGE_VAL;
           case DOLLAR_SIGN_RULE_INDEX:
             // skip whitespace??
             break;
           case AMPERSAND_SIGN_RULE_INDEX:
-            return ReduceActions.I11;
+            return ReduceActions.LTE;
           case SINGLE_WHITESPACE_RULE_INDEX:
             return ' ';
           case PERIOD_RULE_INDEX:
-            return ReduceActions.I33;
+            return ReduceActions.ENSURE_YYTEXT_ARRAY;
           case COLON_RULE_INDEX:
             return ReduceActions.I27;
           case SEMI_COLON_RULE_INDEX:
-            return ReduceActions.I30;
+            return ReduceActions.CELL_VALUE;
           case COMMA_RULE_INDEX:
-            return ReduceActions.I31;
+            return ReduceActions.CELL_RANGE_VALUE;
           case ASTERISK_RULE_INDEX:
-            return ReduceActions.I20;
+            return ReduceActions.TO_POWER;
           case FORWARD_SLASH_RULE_INDEX:
-            return ReduceActions.I21;
+            return ReduceActions.INVERT_NUM;
           case MINUS_SIGN_RULE_INDEX:
-            return ReduceActions.I19;
+            return ReduceActions.DIVIDE;
           case PLUS_SIGN_RULE_INDEX:
-            return ReduceActions.I13;
+            return ReduceActions.NOT_EQ;
           case CARET_SIGN_RULE_INDEX:
-            return ReduceActions.I22;
+            return ReduceActions.TO_NUMBER_NAN_AS_ZERO;
           case OPEN_PAREN_RULE_INDEX:
-            return ReduceActions.I14;
+            return ReduceActions.NOT;
           case CLOSE_PAREN_RULE_INDEX:
-            return ReduceActions.I15;
+            return ReduceActions.GT;
           case GREATER_THAN_SIGN_RULE_INDEX:
-            return ReduceActions.I17;
+            return ReduceActions.MINUS;
           case LESS_THAN_SIGN_RULE_INDEX:
-            return ReduceActions.I16;
+            return ReduceActions.LT;
           case NOT_RULE_INDEX:
-            return ReduceActions.I18;
+            return ReduceActions.MULTIPLY;
           case OPEN_DOUBLE_QUOTE_INDEX:
             return '"';
           case OPEN_SINGLE_QUITE_INDEX:
@@ -1780,13 +1791,13 @@ let Parser = (function () {
           case EXCLAMATION_POINT_RULE_INDEX:
             return "!";
           case EQUALS_SIGN_RULE_INDEX:
-            return ReduceActions.I12;
+            return ReduceActions.GTE;
           case PERCENT_SIGN_RULE_INDEX:
-            return ReduceActions.I35;
+            return ReduceActions.REDUCE_PERCENT;
           case HASH_SIGN_RULE_INDEX:
-            return ReduceActions.I36;
+            return ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY;
           case END_OF_STRING_RULE_INDEX:
-            return ReduceActions.I5;
+            return ReduceActions.AS_NUMBER;
         }
       },
       rules: RULES,

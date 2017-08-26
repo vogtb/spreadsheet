@@ -101,54 +101,82 @@ const enum ReduceActions {
 }
 
 /**
+ * Represents the length to reduce the stack by, and the token index value that will replace those tokens in the stack.
+ */
+class ReductionPair {
+  private lengthToReduceStackBy : number;
+  private replacementTokenIndex : number;
+  constructor(replacementTokenIndex : number, length : number) {
+    this.lengthToReduceStackBy = length;
+    this.replacementTokenIndex = replacementTokenIndex;
+  }
+
+  /**
+   * Get the number representing the length to reduce the stack by.
+   * @returns {number}
+   */
+  getLengthToReduceStackBy() : number {
+    return this.lengthToReduceStackBy;
+  }
+
+  /**
+   * Get the replacement token index.
+   * @returns {number}
+   */
+  getReplacementTokenIndex() : number {
+    return this.replacementTokenIndex;
+  }
+}
+
+/**
  * Productions is used to look up both the number to use when reducing the stack (productions[x][1]) and the semantic
  * value that will replace the tokens in the stack (productions[x][0]).
- * @type {Array}
+ * @type {Array<ReductionPair>}
  */
-let productions = [];
-productions[ReduceActions.NO_ACTION] = 0;
-productions[ReduceActions.RETURN_LAST] = [3, 2];
-productions[ReduceActions.CALL_VARIABLE] = [4, 1];
-productions[ReduceActions.TIME_CALL_TRUE] = [4, 1];
-productions[ReduceActions.TIME_CALL] = [4, 1];
-productions[ReduceActions.AS_NUMBER] = [4, 1];
-productions[ReduceActions.AS_STRING] = [4, 1];
-productions[ReduceActions.AMPERSAND] = [4, 3];
-productions[ReduceActions.EQUALS] = [4, 3];
-productions[ReduceActions.PLUS] = [4, 3];
-productions[ReduceActions.LAST_NUMBER] = [4, 3];
-productions[ReduceActions.LTE] = [4, 4];
-productions[ReduceActions.GTE] = [4, 4];
-productions[ReduceActions.NOT_EQ] = [4, 4];
-productions[ReduceActions.NOT] = [4, 3];
-productions[ReduceActions.GT] = [4, 3];
-productions[ReduceActions.LT] = [4, 3];
-productions[ReduceActions.MINUS] = [4, 3];
-productions[ReduceActions.MULTIPLY] = [4, 3];
-productions[ReduceActions.DIVIDE] = [4, 3];
-productions[ReduceActions.TO_POWER] = [4, 3];
-productions[ReduceActions.INVERT_NUM] = [4, 2];
-productions[ReduceActions.TO_NUMBER_NAN_AS_ZERO] = [4, 2];
-productions[ReduceActions.CALL_FUNCTION_LAST_BLANK] = [4, 3];
-productions[ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK] = [4, 4];
-productions[ReduceActions.I25] = [4, 1];
-productions[ReduceActions.I26] = [4, 1];
-productions[ReduceActions.I27] = [4, 2];
-productions[ReduceActions.FIXED_CELL_VAL] = [25, 1];
-productions[ReduceActions.FIXED_CELL_RANGE_VAL] = [25, 3];
-productions[ReduceActions.CELL_VALUE] = [25, 1];
-productions[ReduceActions.CELL_RANGE_VALUE] = [25, 3];
-productions[ReduceActions.ENSURE_IS_ARRAY] = [24, 1];
-productions[ReduceActions.ENSURE_YYTEXT_ARRAY] = [24, 1];
-productions[ReduceActions.REDUCE_INT] = [24, 3];
-productions[ReduceActions.REDUCE_PERCENT] = [24, 3];
-productions[ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY] = [6, 1];
-productions[ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH] = [6, 3];
-productions[ReduceActions.REFLEXIVE_REDUCE] = [9, 1];
-productions[ReduceActions.REDUCE_FLOAT] = [9, 3];
-productions[ReduceActions.REDUCE_PREV_AS_PERCENT] = [9, 2];
-productions[ReduceActions.REDUCE_LAST_THREE_A] = [2, 3];
-productions[ReduceActions.REDUCE_LAST_THREE_B] = [2, 4];
+let productions : Array<ReductionPair> = [];
+productions[ReduceActions.NO_ACTION] = null;
+productions[ReduceActions.RETURN_LAST] = new ReductionPair(3, 2);
+productions[ReduceActions.CALL_VARIABLE] = new ReductionPair(4, 1);
+productions[ReduceActions.TIME_CALL_TRUE] = new ReductionPair(4, 1);
+productions[ReduceActions.TIME_CALL] = new ReductionPair(4, 1);
+productions[ReduceActions.AS_NUMBER] = new ReductionPair(4, 1);
+productions[ReduceActions.AS_STRING] = new ReductionPair(4, 1);
+productions[ReduceActions.AMPERSAND] = new ReductionPair(4, 3);
+productions[ReduceActions.EQUALS] = new ReductionPair(4, 3);
+productions[ReduceActions.PLUS] = new ReductionPair(4, 3);
+productions[ReduceActions.LAST_NUMBER] = new ReductionPair(4, 3);
+productions[ReduceActions.LTE] = new ReductionPair(4, 4);
+productions[ReduceActions.GTE] = new ReductionPair(4, 4);
+productions[ReduceActions.NOT_EQ] = new ReductionPair(4, 4);
+productions[ReduceActions.NOT] = new ReductionPair(4, 3);
+productions[ReduceActions.GT] = new ReductionPair(4, 3);
+productions[ReduceActions.LT] = new ReductionPair(4, 3);
+productions[ReduceActions.MINUS] = new ReductionPair(4, 3);
+productions[ReduceActions.MULTIPLY] = new ReductionPair(4, 3);
+productions[ReduceActions.DIVIDE] = new ReductionPair(4, 3);
+productions[ReduceActions.TO_POWER] = new ReductionPair(4, 3);
+productions[ReduceActions.INVERT_NUM] = new ReductionPair(4, 2);
+productions[ReduceActions.TO_NUMBER_NAN_AS_ZERO] = new ReductionPair(4, 2);
+productions[ReduceActions.CALL_FUNCTION_LAST_BLANK] = new ReductionPair(4, 3);
+productions[ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK] = new ReductionPair(4, 4);
+productions[ReduceActions.I25] = new ReductionPair(4, 1);
+productions[ReduceActions.I26] = new ReductionPair(4, 1);
+productions[ReduceActions.I27] = new ReductionPair(4, 2);
+productions[ReduceActions.FIXED_CELL_VAL] = new ReductionPair(25, 1);
+productions[ReduceActions.FIXED_CELL_RANGE_VAL] = new ReductionPair(25, 3);
+productions[ReduceActions.CELL_VALUE] = new ReductionPair(25, 1);
+productions[ReduceActions.CELL_RANGE_VALUE] = new ReductionPair(25, 3);
+productions[ReduceActions.ENSURE_IS_ARRAY] = new ReductionPair(24, 1);
+productions[ReduceActions.ENSURE_YYTEXT_ARRAY] = new ReductionPair(24, 1);
+productions[ReduceActions.REDUCE_INT] = new ReductionPair(24, 3);
+productions[ReduceActions.REDUCE_PERCENT] = new ReductionPair(24, 3);
+productions[ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY] = new ReductionPair(6, 1);
+productions[ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH] = new ReductionPair(6, 3);
+productions[ReduceActions.REFLEXIVE_REDUCE] = new ReductionPair(9, 1);
+productions[ReduceActions.REDUCE_FLOAT] = new ReductionPair(9, 3);
+productions[ReduceActions.REDUCE_PREV_AS_PERCENT] = new ReductionPair(9, 2);
+productions[ReduceActions.REDUCE_LAST_THREE_A] = new ReductionPair(2, 3);
+productions[ReduceActions.REDUCE_LAST_THREE_B] = new ReductionPair(2, 4);
 const PRODUCTIONS = productions;
 
 /**
@@ -1344,9 +1372,9 @@ let Parser = (function () {
             break;
 
           case LexActions.REDUCE: // Reduce
-            let currentProduction = this.productions[action[1]];
+            let currentProduction : ReductionPair = this.productions[action[1]];
 
-            let lengthToReduceStackBy = currentProduction[1];
+            let lengthToReduceStackBy = currentProduction.getLengthToReduceStackBy();
 
             // perform semantic action
             yyval.$ = semanticValueStack[semanticValueStack.length - lengthToReduceStackBy]; // default to $$ = $1
@@ -1374,7 +1402,7 @@ let Parser = (function () {
             }
 
             // push non-terminal (reduce)
-            stack.push(currentProduction[0]);
+            stack.push(currentProduction.getReplacementTokenIndex());
             semanticValueStack.push(yyval.$);
             locationStack.push(yyval._$);
             newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
@@ -1694,30 +1722,12 @@ let Parser = (function () {
         }
       },
 
-      // return the currently active lexer condition state; when an index argument is provided it produces the N-th previous condition state, if available
-      topState: function topState(n) {
-        n = this.conditionStack.length - 1 - Math.abs(n || 0);
-        if (n >= 0) {
-          return this.conditionStack[n];
-        } else {
-          return "INITIAL";
-        }
-      },
-
-      // alias for begin(condition)
-      pushState: function pushState(condition) {
-        this.begin(condition);
-      },
-
-      // return the number of states currently on the stack
-      stateStackSize: function stateStackSize() {
-        return this.conditionStack.length;
-      },
       options: {
         // backtrack_lexer?
         // ranges?
         // flex?
       },
+
       mapActionToActionIndex: function (ruleIndex) {
         switch (ruleIndex) {
           case WHITE_SPACE_RULE_INDEX:

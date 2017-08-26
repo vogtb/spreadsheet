@@ -100,6 +100,11 @@ const enum ReduceActions {
   REDUCE_LAST_THREE_B
 }
 
+/**
+ * Productions is used to look up both the number to use when reducing the stack (productions[x][1]) and the semantic
+ * value that will replace the tokens in the stack (productions[x][0]).
+ * @type {Array}
+ */
 let productions = [];
 productions[ReduceActions.NO_ACTION] = 0;
 productions[ReduceActions.RETURN_LAST] = [3, 2];
@@ -1135,8 +1140,8 @@ let Parser = (function () {
     parse: function parse(input) {
       let self = this,
         stack = [0],
-        semanticValueStack = [null], // semantic value stack
-        locationStack = [], // location stack
+        semanticValueStack = [null],
+        locationStack = [],
         table = this.table,
         yytext = '',
         yylineno = 0,
@@ -1146,9 +1151,6 @@ let Parser = (function () {
         EOF = 1;
 
       let args = locationStack.slice.call(arguments, 1);
-
-      //this.reductionCount = this.shiftCount = 0;
-
       let lexer = Object.create(this.lexer);
       let sharedState = {
         yy: {
@@ -1210,7 +1212,6 @@ let Parser = (function () {
           _$: undefined
         },
         p,
-        len,
         newState,
         expected;
       while (true) {
@@ -1343,19 +1344,21 @@ let Parser = (function () {
             break;
 
           case LexActions.REDUCE: // Reduce
-            len = this.productions[action[1]][1];
+            let currentProduction = this.productions[action[1]];
+
+            let lengthToReduceStackBy = currentProduction[1];
 
             // perform semantic action
-            yyval.$ = semanticValueStack[semanticValueStack.length - len]; // default to $$ = $1
+            yyval.$ = semanticValueStack[semanticValueStack.length - lengthToReduceStackBy]; // default to $$ = $1
             // default location, uses first token for firsts, last for lasts
             yyval._$ = {
-              first_line: locationStack[locationStack.length - (len || 1)].first_line,
+              first_line: locationStack[locationStack.length - (lengthToReduceStackBy || 1)].first_line,
               last_line: locationStack[locationStack.length - 1].last_line,
-              first_column: locationStack[locationStack.length - (len || 1)].first_column,
+              first_column: locationStack[locationStack.length - (lengthToReduceStackBy || 1)].first_column,
               last_column: locationStack[locationStack.length - 1].last_column
             };
             if (ranges) {
-              yyval._$.range = [locationStack[locationStack.length - (len || 1)].range[0], locationStack[locationStack.length - 1].range[1]];
+              yyval._$.range = [locationStack[locationStack.length - (lengthToReduceStackBy || 1)].range[0], locationStack[locationStack.length - 1].range[1]];
             }
             result = this.performAction.apply(yyval, [yytext, sharedState.yy, action[1], semanticValueStack].concat(args));
 
@@ -1364,14 +1367,14 @@ let Parser = (function () {
             }
 
             // pop off stack
-            if (len) {
-              stack = stack.slice(0, -1 * len * 2);
-              semanticValueStack = semanticValueStack.slice(0, -1 * len);
-              locationStack = locationStack.slice(0, -1 * len);
+            if (lengthToReduceStackBy) {
+              stack = stack.slice(0, -1 * lengthToReduceStackBy * 2);
+              semanticValueStack = semanticValueStack.slice(0, -1 * lengthToReduceStackBy);
+              locationStack = locationStack.slice(0, -1 * lengthToReduceStackBy);
             }
 
             // push non-terminal (reduce)
-            stack.push(this.productions[action[1]][0]);
+            stack.push(currentProduction[0]);
             semanticValueStack.push(yyval.$);
             locationStack.push(yyval._$);
             newState = table[stack[stack.length - 2]][stack[stack.length - 1]];

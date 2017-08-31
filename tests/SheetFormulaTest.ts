@@ -996,8 +996,13 @@ test("Sheet numbers/math", function(){
   assertFormulaEquals('= 10%', 0.1);
   assertFormulaEquals('= 10% + 1', 1.1);
   assertFormulaEquals('= "10e1" + 0', 100);
-  // assertFormulaEquals('= 10e1', 100);
-  assertFormulaEquals('= "1,000,000" + 0', 1000000);
+  assertFormulaEquals('= 10e1', 100);
+  assertFormulaEquals('= 10e-1', 1);
+  assertFormulaEquals('= 10e+1', 100);
+  assertFormulaEquals('= 10E1', 100);
+  assertFormulaEquals('= 10E-1', 1);
+  assertFormulaEquals('= 10E+1', 100);
+  assertFormulaEquals('= "1,000,000"  + 0', 1000000);
   assertFormulaEqualsError('= "10e" + 10', VALUE_ERROR);
   assertFormulaEquals('= "+$10.00" + 0', 10);
   assertFormulaEquals('= "-$10.00" + 0', -10);

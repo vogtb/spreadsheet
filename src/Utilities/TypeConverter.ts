@@ -67,21 +67,21 @@ const Y2K_YEAR = 2000;
  * @returns {Moment} mutated and altered.
  */
 function matchTimestampAndMutateMoment(timestampString : string, momentToMutate: moment.Moment) : moment.Moment {
-  var matches = timestampString.match(TIMESTAMP);
+  let  matches = timestampString.match(TIMESTAMP);
   if (matches && matches[1] !== undefined) { // 10am
-    var hours = parseInt(matches[2]);
+    let  hours = parseInt(matches[2]);
     if (hours > 12) {
       throw new Error();
     }
     momentToMutate.add(hours, 'hours');
   } else if (matches && matches[6] !== undefined) { // 10:10
-    var hours = parseInt(matches[7]);
-    var minutes = parseInt(matches[8]);
+    let  hours = parseInt(matches[7]);
+    let  minutes = parseInt(matches[8]);
     momentToMutate.add(hours, 'hours').add(minutes, 'minutes');
   } else if (matches && matches[11] !== undefined) { // 10:10am
-    var hours = parseInt(matches[13]);
-    var minutes = parseInt(matches[14]);
-    var pmTrue = (matches[16].toLowerCase() === "pm");
+    let  hours = parseInt(matches[13]);
+    let  minutes = parseInt(matches[14]);
+    let  pmTrue = (matches[16].toLowerCase() === "pm");
     if (hours > 12) {
       throw new Error();
     }
@@ -95,15 +95,15 @@ function matchTimestampAndMutateMoment(timestampString : string, momentToMutate:
     }
     momentToMutate.add(minutes, 'minutes');
   } else if (matches && matches[17] !== undefined) { // 10:10:10
-    var hours = parseInt(matches[19]);
-    var minutes = parseInt(matches[20]);
-    var seconds = parseInt(matches[21]);
+    let  hours = parseInt(matches[19]);
+    let  minutes = parseInt(matches[20]);
+    let  seconds = parseInt(matches[21]);
     momentToMutate.add(hours, 'hours').add(minutes, 'minutes').add(seconds, 'seconds');
   } else if (matches && matches[23] !== undefined) { // // 10:10:10am
-    var hours = parseInt(matches[25]);
-    var minutes = parseInt(matches[26]);
-    var seconds = parseInt(matches[27]);
-    var pmTrue = (matches[28].toLowerCase() === "pm");
+    let  hours = parseInt(matches[25]);
+    let  minutes = parseInt(matches[26]);
+    let  seconds = parseInt(matches[27]);
+    let  pmTrue = (matches[28].toLowerCase() === "pm");
     if (hours > 12) {
       throw new Error();
     }
@@ -123,7 +123,7 @@ function matchTimestampAndMutateMoment(timestampString : string, momentToMutate:
 }
 
 /**
- * Static class of helpers used to convert various types to each other.
+ * Static class of helpers used to convert let ious types to each other.
  */
 class TypeConverter {
 
@@ -137,7 +137,7 @@ class TypeConverter {
    * @returns {number} representing time of day
    */
   static stringToTimeNumber(timeString: string) : number {
-    var m;
+    let  m;
     try {
       m = matchTimestampAndMutateMoment(timeString, moment.utc([FIRST_YEAR]).startOf("year"));
     } catch (e) {
@@ -156,7 +156,7 @@ class TypeConverter {
    * @returns {moment}
    */
   private static parseStringToMoment(dateString : string) : moment.Moment {
-    var m;
+    let  m;
 
     /**
      * Creates moment object from years, months and days.
@@ -166,13 +166,13 @@ class TypeConverter {
      * @returns {Moment} created moment
      */
     function createMoment(years, months, days) : moment.Moment {
-      var actualYear = years;
+      let  actualYear = years;
       if (years >= 0 && years < 30) {
         actualYear = Y2K_YEAR + years;
       } else if (years >= 30 && years < 100) {
         actualYear = FIRST_YEAR + years;
       }
-      var tmpMoment = moment.utc([actualYear]).startOf("year");
+      let  tmpMoment = moment.utc([actualYear]).startOf("year");
       if (typeof months === "string") {
         tmpMoment.month(months);
       } else {
@@ -188,11 +188,11 @@ class TypeConverter {
     // Check YEAR_MONTHDIG, YYYY(fd)MM, '1992/06'
     // NOTE: Must come before YEAR_MONTHDIG_DAY matching.
     if (m === undefined) {
-      var matches = dateString.match(YEAR_MONTHDIG);
+      let  matches = dateString.match(YEAR_MONTHDIG);
       if (matches && matches.length >= 6) {
-        var years = parseInt(matches[3]);
-        var months = parseInt(matches[5]) - 1; // Months are zero indexed.
-        var tmpMoment = createMoment(years, months, 0);
+        let  years = parseInt(matches[3]);
+        let  months = parseInt(matches[5]) - 1; // Months are zero indexed.
+        let  tmpMoment = createMoment(years, months, 0);
         if (matches[6] !== undefined) {
           tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
         }
@@ -202,16 +202,16 @@ class TypeConverter {
 
     // Check YEAR_MONTHDIG_DAY, YYYY(fd)MM(fd)DD, "1992/06/24"
     if (m === undefined) {
-      var matches = dateString.match(YEAR_MONTHDIG_DAY);
+      let  matches = dateString.match(YEAR_MONTHDIG_DAY);
       if (matches && matches.length >= 8) {
         // Check delimiters. If they're not the same, throw error.
         if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
           throw new Error();
         }
-        var years = parseInt(matches[3]);
-        var months = parseInt(matches[5]) - 1; // Months are zero indexed.
-        var days = parseInt(matches[7]) - 1; // Days are zero indexed.
-        var tmpMoment = createMoment(years, months, days);
+        let  years = parseInt(matches[3]);
+        let  months = parseInt(matches[5]) - 1; // Months are zero indexed.
+        let  days = parseInt(matches[7]) - 1; // Days are zero indexed.
+        let  tmpMoment = createMoment(years, months, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
           tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
         }
@@ -222,11 +222,11 @@ class TypeConverter {
     // Check MONTHDIG_YEAR, MM(fd)YYYY, '06/1992'
     // NOTE: Must come before MONTHDIG_DAY_YEAR matching.
     if (m === undefined) {
-      var matches = dateString.match(MONTHDIG_YEAR);
+      let  matches = dateString.match(MONTHDIG_YEAR);
       if (matches && matches.length >= 6) {
-        var years = parseInt(matches[5]);
-        var months = parseInt(matches[3]) - 1; // Months are zero indexed.
-        var tmpMoment = createMoment(years, months, 0);
+        let  years = parseInt(matches[5]);
+        let  months = parseInt(matches[3]) - 1; // Months are zero indexed.
+        let  tmpMoment = createMoment(years, months, 0);
         if (matches[6] !== undefined) {
           tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
         }
@@ -236,16 +236,16 @@ class TypeConverter {
 
     // Check MONTHDIG_DAY_YEAR, MM(fd)DD(fd)YYYY, "06/24/1992"
     if (m === undefined) {
-      var matches = dateString.match(MONTHDIG_DAY_YEAR);
+      let  matches = dateString.match(MONTHDIG_DAY_YEAR);
       if (matches && matches.length >= 8) {
         // Check delimiters. If they're not the same, throw error.
         if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
           throw new Error();
         }
-        var years = parseInt(matches[7]);
-        var months = parseInt(matches[3]) - 1; // Months are zero indexed.
-        var days = parseInt(matches[5]) - 1; // Days are zero indexed.
-        var tmpMoment = createMoment(years, months, days);
+        let  years = parseInt(matches[7]);
+        let  months = parseInt(matches[3]) - 1; // Months are zero indexed.
+        let  days = parseInt(matches[5]) - 1; // Days are zero indexed.
+        let  tmpMoment = createMoment(years, months, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
           tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
         }
@@ -256,11 +256,11 @@ class TypeConverter {
     // Check MONTHNAME_YEAR, Month(fd)YYYY, 'Aug 1992'
     // NOTE: Needs to come before DAY_MONTHNAME_YEAR matching.
     if (m === undefined) {
-      var matches = dateString.match(MONTHNAME_YEAR);
+      let  matches = dateString.match(MONTHNAME_YEAR);
       if (matches && matches.length >= 6) {
-        var years = parseInt(matches[5]);
-        var monthName = matches[3];
-        var tmpMoment = createMoment(years, monthName, 0);
+        let  years = parseInt(matches[5]);
+        let  monthName = matches[3];
+        let  tmpMoment = createMoment(years, monthName, 0);
         if (matches[6] !== undefined) {
           tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
         }
@@ -270,16 +270,16 @@ class TypeConverter {
 
     // Check MONTHNAME_DAY_YEAR, Month(fd)DD(fd)YYYY, 'Aug 19 2020'
     if (m === undefined) {
-      var matches = dateString.match(MONTHNAME_DAY_YEAR);
+      let  matches = dateString.match(MONTHNAME_DAY_YEAR);
       if (matches && matches.length >= 8) {
         // Check delimiters. If they're not the same, throw error.
         if (matches[4].replace(/\s*/g, '') !== matches[6].replace(/\s*/g, '')) {
           throw new Error();
         }
-        var years = parseInt(matches[7]);
-        var monthName = matches[3];
-        var days = parseInt(matches[5]) - 1; // Days are zero indexed.
-        var tmpMoment = createMoment(years, monthName, days);
+        let  years = parseInt(matches[7]);
+        let  monthName = matches[3];
+        let  days = parseInt(matches[5]) - 1; // Days are zero indexed.
+        let  tmpMoment = createMoment(years, monthName, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
           tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
         }
@@ -289,18 +289,18 @@ class TypeConverter {
 
     // Check DAY_MONTHNAME_YEAR, DD(fd)Month(fd)YYYY, '24/July/1992'
     if (m === undefined) {
-      var matches = dateString.match(DAY_MONTHNAME_YEAR);
+      let  matches = dateString.match(DAY_MONTHNAME_YEAR);
       if (matches && matches.length >= 8) {
-        var years = parseInt(matches[7]);
-        var monthName = matches[5];
-        var days = parseInt(matches[3]) - 1; // Days are zero indexed.
-        var firstDelimiter = matches[4].replace(/\s*/g, '');
-        var secondDelimiter = matches[6].replace(/\s*/g, '');
+        let  years = parseInt(matches[7]);
+        let  monthName = matches[5];
+        let  days = parseInt(matches[3]) - 1; // Days are zero indexed.
+        let  firstDelimiter = matches[4].replace(/\s*/g, '');
+        let  secondDelimiter = matches[6].replace(/\s*/g, '');
         // Check delimiters. If they're not the same, and the first one isn't a space, throw error.
         if (firstDelimiter !== secondDelimiter && firstDelimiter !== "") {
           throw new Error();
         }
-        var tmpMoment = createMoment(years, monthName, days);
+        let  tmpMoment = createMoment(years, monthName, days);
         if (matches.length >= 9 && matches[8] !== undefined) {
           tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
         }
@@ -310,11 +310,11 @@ class TypeConverter {
 
     // Check YEAR_MONTHNAME, YYYY(fd)Month, '1992/Aug'
     if (m === undefined) {
-      var matches = dateString.match(YEAR_MONTHNAME);
+      let  matches = dateString.match(YEAR_MONTHNAME);
       if (matches && matches.length >= 6) {
-        var years = parseInt(matches[3]);
-        var monthName = matches[5];
-        var tmpMoment = createMoment(years, monthName, 0);
+        let  years = parseInt(matches[3]);
+        let  monthName = matches[5];
+        let  tmpMoment = createMoment(years, monthName, 0);
         if (matches[6] !== undefined) {
           tmpMoment = matchTimestampAndMutateMoment(matches[6], tmpMoment);
         }
@@ -331,7 +331,7 @@ class TypeConverter {
    */
   public static stringToDateNumber(dateString : string) : number {
     // m will be set and valid or invalid, or will remain undefined
-    var m;
+    let  m;
     try {
       m = TypeConverter.parseStringToMoment(dateString);
     } catch (e) {
@@ -345,7 +345,7 @@ class TypeConverter {
 
   /**
    * Converts strings to numbers, returning undefined if string cannot be parsed to number. Examples: "100", "342424",
-   * "10%", "33.213131", "41.1231", "10e1", "10E1", "10.44E1", "-$9.29", "+$9.29", "1,000.1", "2000,000,000".
+   * "10%", "33.213131", "41.1231", "10e+1", "10E-1", "10.44E1", "-$9.29", "+$9.29", "1,000.1", "2000,000,000".
    * For reference see: https://regex101.com/r/PwghnF/9/
    * @param value to parse.
    * @returns {number} or undefined
@@ -358,32 +358,34 @@ class TypeConverter {
       return x !== undefined;
     }
 
-    var NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\d*)? *(%)? *$/;
+    // var NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\d*)? *(%)? *$/;
+    let NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\+|\-)? *(\d*)? *(%)? *$/;
     var matches = value.match(NUMBER_REGEX);
     if (matches !== null) {
-      var firstSign = matches[1];
-      var currency = matches[2];
-      var secondSign = matches[3];
-      var wholeNumberWithCommas = matches[4];
-      var decimalPoint = matches[10];
-      var decimalNumber = matches[11];
-      var sciNotation = matches[12];
-      var sciNotationFactor = matches[13];
-      var percentageSign = matches[14];
+      let  firstSign = matches[1];
+      let  currency = matches[2];
+      let  secondSign = matches[3];
+      let  wholeNumberWithCommas = matches[4];
+      let  decimalPoint = matches[10];
+      let  decimalNumber = matches[11];
+      let  sciNotation = matches[12];
+      let  sciNotationSign = matches[13];
+      let  sciNotationFactor = matches[14];
+      let  percentageSign = matches[15];
 
       // Number is not valid if it is a currency and in scientific notation.
       if (isDefined(currency) && isDefined(sciNotation)) {
-        return undefined;
+        return;
       }
       // Number is not valid if there are two signs.
       if (isDefined(firstSign) && isDefined(secondSign)) {
-        return undefined;
+        return;
       }
       // Number is not valid if we have 'sciNotation' but no 'sciNotationFactor'
       if (isDefined(sciNotation) && isUndefined(sciNotationFactor)) {
-        return undefined
+        return;
       }
-      var activeSign;
+      let  activeSign;
       if (isUndefined(firstSign) && isUndefined(secondSign)) {
         activeSign = "+";
       } else if (!isUndefined(firstSign)) {
@@ -391,22 +393,21 @@ class TypeConverter {
       } else {
         activeSign = secondSign;
       }
-      var x;
+      let  x;
       if (isDefined(wholeNumberWithCommas)) {
         if (isDefined(decimalNumber) && isDefined(decimalNumber)) {
-          // console.log("parsing:", value, activeSign + wholeNumberWithCommas.split(",").join("") + decimalPoint + decimalNumber);
           x = parseFloat(activeSign + wholeNumberWithCommas.split(",").join("") + decimalPoint + decimalNumber);
         } else {
-          // console.log("parsing:", value, activeSign + wholeNumberWithCommas.split(",").join(""))
           x = parseFloat(activeSign + wholeNumberWithCommas.split(",").join(""));
         }
       } else {
-        // console.log("parsing:", value, activeSign + "0" + decimalPoint + decimalNumber);
         x = parseFloat(activeSign + "0" + decimalPoint + decimalNumber);
       }
 
       if (isDefined(sciNotation) && isDefined(sciNotationFactor)) {
-        x = x * Math.pow(10, parseInt(sciNotationFactor));
+        sciNotationSign = isDefined(sciNotationSign) ? sciNotationSign : "+";
+        // x + "e" + "-" + "10"
+        x = parseFloat(x.toString() + sciNotation.toString() + "" + sciNotationSign.toString() + sciNotationFactor.toString())
       }
       if (!isUndefined(percentageSign)) {
         x = x * 0.01;
@@ -416,7 +417,7 @@ class TypeConverter {
       try {
         return TypeConverter.stringToDateNumber(value);
       } catch (_) {
-        return undefined;
+        return;
       }
     }
   }
@@ -443,9 +444,9 @@ class TypeConverter {
       if (value === "") {
         return 0;
       }
-      var n = TypeConverter.stringToNumber(value);
+      let  n = TypeConverter.stringToNumber(value);
       if (n === undefined) {
-        throw new ValueError("Function ____ expects number values, but is text and cannot be coerced to a number.");
+        throw new ValueError("Function expects number values, but is text and cannot be coerced to a number.");
       }
       return n;
     } else if (typeof value === "boolean") {
@@ -735,7 +736,7 @@ class TypeConverter {
    * @returns {number} representing time of day between 0 and 1, exclusive on end.
    */
   public static unitsToTimeNumber(hours: number, minutes: number, seconds: number): number {
-    var v = (((hours % 24) * 60 * 60) + ((minutes) * 60) + (seconds)) / 86400;
+    let  v = (((hours % 24) * 60 * 60) + ((minutes) * 60) + (seconds)) / 86400;
     return v % 1;
   }
 }
@@ -745,7 +746,7 @@ class TypeConverter {
  * @param n number to check
  * @returns {number} n as long as it's not zero.
  */
-var checkForDevideByZero = function(n : number) : number {
+let  checkForDevideByZero = function(n : number) : number {
   n = +n;  // Coerce to number.
   if (!n) {  // Matches +0, -0, NaN
     throw new DivZeroError("Evaluation of function caused a divide by zero error.");

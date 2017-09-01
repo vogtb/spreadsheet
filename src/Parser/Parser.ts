@@ -43,7 +43,6 @@ const HASH_SIGN_RULE = /^(?:[#])/; // rule 35
 const END_OF_STRING_RULE = /^(?:$)/; // rule 36
 
 
-
 // Sequential rules to use when parsing a given input.
 const RULES = [
   WHITE_SPACE_RULE,
@@ -84,47 +83,6 @@ const RULES = [
   HASH_SIGN_RULE,
   END_OF_STRING_RULE
 ];
-
-// While it is unlikely that an index for a given rule will change, initializing them with `indexOf` will allow me to
-// change their ordering without having to find and replace indexes manually.
-const WHITE_SPACE_RULE_INDEX = RULES.indexOf(WHITE_SPACE_RULE);
-const DOUBLE_QUOTES_RULE_INDEX = RULES.indexOf(DOUBLE_QUOTES_RULE);
-const SINGLE_QUOTES_RULE_INDEX = RULES.indexOf(SINGLE_QUOTES_RULE);
-const FORMULA_NAME_RULE_INDEX = RULES.indexOf(FORMULA_NAME_RULE);
-const DATE_RULE_INDEX = RULES.indexOf(DATE_RULE);
-const TIME_RULE_INDEX = RULES.indexOf(TIME_RULE);
-const $_A1_CELL_RULE_INDEX = RULES.indexOf($_A1_CELL_RULE);
-const A1_CELL_RULE_INDEX = RULES.indexOf(A1_CELL_RULE);
-const FORMULA_NAME_SIMPLE_RULE_INDEX = RULES.indexOf(FORMULA_NAME_SIMPLE_RULE);
-const VARIABLE_RULE_INDEX = RULES.indexOf(VARIABLE_RULE);
-const SIMPLE_VARIABLE_RILE_INDEX = RULES.indexOf(SIMPLE_VARIABLE_RILE);
-const INTEGER_RULE_INDEX = RULES.indexOf(INTEGER_RULE);
-const OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX = RULES.indexOf(OPEN_AND_CLOSE_OF_ARRAY_RULE);
-const DOLLAR_SIGN_RULE_INDEX = RULES.indexOf(DOLLAR_SIGN_RULE);
-const AMPERSAND_SIGN_RULE_INDEX = RULES.indexOf(AMPERSAND_SIGN_RULE);
-const SINGLE_WHITESPACE_RULE_INDEX = RULES.indexOf(SINGLE_WHITESPACE_RULE);
-const PERIOD_RULE_INDEX = RULES.indexOf(PERIOD_RULE);
-const COLON_RULE_INDEX = RULES.indexOf(COLON_RULE);
-const SEMI_COLON_RULE_INDEX = RULES.indexOf(SEMI_COLON_RULE);
-const COMMA_RULE_INDEX = RULES.indexOf(COMMA_RULE);
-const ASTERISK_RULE_INDEX = RULES.indexOf(ASTERISK_RULE);
-const FORWARD_SLASH_RULE_INDEX = RULES.indexOf(FORWARD_SLASH_RULE);
-const MINUS_SIGN_RULE_INDEX = RULES.indexOf(MINUS_SIGN_RULE);
-const PLUS_SIGN_RULE_INDEX = RULES.indexOf(PLUS_SIGN_RULE);
-const CARET_SIGN_RULE_INDEX = RULES.indexOf(CARET_SIGN_RULE);
-const OPEN_PAREN_RULE_INDEX = RULES.indexOf(OPEN_PAREN_RULE);
-const CLOSE_PAREN_RULE_INDEX = RULES.indexOf(CLOSE_PAREN_RULE);
-const GREATER_THAN_SIGN_RULE_INDEX = RULES.indexOf(GREATER_THAN_SIGN_RULE);
-const LESS_THAN_SIGN_RULE_INDEX = RULES.indexOf(LESS_THAN_SIGN_RULE);
-const NOT_RULE_INDEX = RULES.indexOf(NOT_RULE);
-const OPEN_DOUBLE_QUOTE_INDEX = RULES.indexOf(OPEN_DOUBLE_QUOTE);
-const OPEN_SINGLE_QUITE_INDEX = RULES.indexOf(OPEN_SINGLE_QUITE);
-const EXCLAMATION_POINT_RULE_INDEX = RULES.indexOf(EXCLAMATION_POINT_RULE);
-const EQUALS_SIGN_RULE_INDEX = RULES.indexOf(EQUALS_SIGN_RULE);
-const PERCENT_SIGN_RULE_INDEX = RULES.indexOf(PERCENT_SIGN_RULE);
-const HASH_SIGN_RULE_INDEX = RULES.indexOf(HASH_SIGN_RULE);
-const END_OF_STRING_RULE_INDEX = RULES.indexOf(END_OF_STRING_RULE);
-
 
 /**
  * Actions to take when processing tokens one by one. We're always either taking the next token, reducing our current
@@ -277,138 +235,138 @@ let Parser = (function () {
     for (obj = obj || {}, l = k.length; l--; obj[k[l]] = v) {}
     return obj;
   };
-  const $V0 = [DOUBLE_QUOTES_RULE_INDEX, DATE_RULE_INDEX];
-  const $V1 = [DOUBLE_QUOTES_RULE_INDEX, TIME_RULE_INDEX];
-  const $V2 = [DOUBLE_QUOTES_RULE_INDEX, A1_CELL_RULE_INDEX];
-  const $V3 = [DOUBLE_QUOTES_RULE_INDEX, SIMPLE_VARIABLE_RILE_INDEX];
-  const $V4 = [DOUBLE_QUOTES_RULE_INDEX, FORMULA_NAME_SIMPLE_RULE_INDEX];
-  const $V5 = [DOUBLE_QUOTES_RULE_INDEX, VARIABLE_RULE_INDEX];
-  const $V6 = [DOUBLE_QUOTES_RULE_INDEX, INTEGER_RULE_INDEX];
-  const $V7 = [DOUBLE_QUOTES_RULE_INDEX, PERIOD_RULE_INDEX];
-  const $V8 = [DOUBLE_QUOTES_RULE_INDEX, COLON_RULE_INDEX];
-  const $V9 = [DOUBLE_QUOTES_RULE_INDEX, AMPERSAND_SIGN_RULE_INDEX];
-  const $Va = [DOUBLE_QUOTES_RULE_INDEX, SINGLE_WHITESPACE_RULE_INDEX];
-  const $Vb = [DOUBLE_QUOTES_RULE_INDEX, SEMI_COLON_RULE_INDEX];
-  const $Vc = [DOUBLE_QUOTES_RULE_INDEX, ASTERISK_RULE_INDEX];
-  const $Vd = [DOUBLE_QUOTES_RULE_INDEX, FORWARD_SLASH_RULE_INDEX];
-  const $Ve = [DOUBLE_QUOTES_RULE_INDEX, MINUS_SIGN_RULE_INDEX];
-  const $Vf = [DOUBLE_QUOTES_RULE_INDEX, PLUS_SIGN_RULE_INDEX];
-  const $Vg = [DOUBLE_QUOTES_RULE_INDEX, CARET_SIGN_RULE_INDEX];
-  const $Vh = [DOUBLE_QUOTES_RULE_INDEX, OPEN_PAREN_RULE_INDEX];
-  const $Vi = [DOUBLE_QUOTES_RULE_INDEX, CLOSE_PAREN_RULE_INDEX];
-  const $Vj = [DOUBLE_QUOTES_RULE_INDEX, GREATER_THAN_SIGN_RULE_INDEX];
-  const $Vk = [DOUBLE_QUOTES_RULE_INDEX, LESS_THAN_SIGN_RULE_INDEX];
-  const $Vl = [DOUBLE_QUOTES_RULE_INDEX, NOT_RULE_INDEX];
+  const $V0 = [1, 4];
+  const $V1 = [1, 5];
+  const $V2 = [1, 7];
+  const $V3 = [1, 10];
+  const $V4 = [1, 8];
+  const $V5 = [1, 9];
+  const $V6 = [1, 11];
+  const $V7 = [1, 16];
+  const $V8 = [1, 17];
+  const $V9 = [1, 14];
+  const $Va = [1, 15];
+  const $Vb = [1, 18];
+  const $Vc = [1, 20];
+  const $Vd = [1, 21];
+  const $Ve = [1, 22];
+  const $Vf = [1, 23];
+  const $Vg = [1, 24];
+  const $Vh = [1, 25];
+  const $Vi = [1, 26];
+  const $Vj = [1, 27];
+  const $Vk = [1, 28];
+  const $Vl = [1, 29];
   const $Vm = [
-    TIME_RULE_INDEX,
-    INTEGER_RULE_INDEX,
-    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
-    DOLLAR_SIGN_RULE_INDEX,
-    SINGLE_WHITESPACE_RULE_INDEX,
-    PERIOD_RULE_INDEX,
-    COLON_RULE_INDEX,
-    SEMI_COLON_RULE_INDEX,
-    COMMA_RULE_INDEX,
-    ASTERISK_RULE_INDEX,
-    FORWARD_SLASH_RULE_INDEX,
-    MINUS_SIGN_RULE_INDEX,
-    OPEN_DOUBLE_QUOTE_INDEX,
-    OPEN_SINGLE_QUITE_INDEX
+    5,
+    11,
+    12,
+    13,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    30,
+    31
   ];
   const $Vn = [
-    TIME_RULE_INDEX,
-    INTEGER_RULE_INDEX,
-    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
-    DOLLAR_SIGN_RULE_INDEX,
-    SINGLE_WHITESPACE_RULE_INDEX,
-    PERIOD_RULE_INDEX,
-    COLON_RULE_INDEX,
-    SEMI_COLON_RULE_INDEX,
-    COMMA_RULE_INDEX,
-    ASTERISK_RULE_INDEX,
-    FORWARD_SLASH_RULE_INDEX,
-    MINUS_SIGN_RULE_INDEX,
-    OPEN_DOUBLE_QUOTE_INDEX,
-    OPEN_SINGLE_QUITE_INDEX,
-    EQUALS_SIGN_RULE_INDEX
+    5,
+    11,
+    12,
+    13,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    30,
+    31,
+    33
   ];
-  const $Vo = [DOUBLE_QUOTES_RULE_INDEX, 38]; // index 38?
+  const $Vo = [1, 38]; // index 38?
   const $Vp = [
-    TIME_RULE_INDEX,
-    INTEGER_RULE_INDEX,
-    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
-    DOLLAR_SIGN_RULE_INDEX,
-    SINGLE_WHITESPACE_RULE_INDEX,
-    PERIOD_RULE_INDEX,
-    COLON_RULE_INDEX,
-    SEMI_COLON_RULE_INDEX,
-    COMMA_RULE_INDEX,
-    ASTERISK_RULE_INDEX,
-    FORWARD_SLASH_RULE_INDEX,
-    MINUS_SIGN_RULE_INDEX,
-    OPEN_DOUBLE_QUOTE_INDEX,
-    OPEN_SINGLE_QUITE_INDEX,
-    HASH_SIGN_RULE_INDEX,
+    5,
+    11,
+    12,
+    13,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    30,
+    31,
+    35,
     38 // index 38?
   ];
   const $Vq = [
-    TIME_RULE_INDEX,
-    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
-    DOLLAR_SIGN_RULE_INDEX,
-    SINGLE_WHITESPACE_RULE_INDEX,
-    PERIOD_RULE_INDEX,
-    COLON_RULE_INDEX,
-    SEMI_COLON_RULE_INDEX,
-    COMMA_RULE_INDEX,
-    OPEN_DOUBLE_QUOTE_INDEX,
-    OPEN_SINGLE_QUITE_INDEX
+    5,
+    12,
+    13,
+    15,
+    16,
+    17,
+    18,
+    19,
+    30,
+    31
   ];
   const $Vr = [
-    TIME_RULE_INDEX,
-    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
-    SINGLE_WHITESPACE_RULE_INDEX,
-    PERIOD_RULE_INDEX,
-    COLON_RULE_INDEX,
-    SEMI_COLON_RULE_INDEX,
-    OPEN_DOUBLE_QUOTE_INDEX,
-    OPEN_SINGLE_QUITE_INDEX
+    5,
+    12,
+    15,
+    16,
+    17,
+    18,
+    30,
+    31
   ];
   const $Vs = [
-    TIME_RULE_INDEX,
-    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
-    DOLLAR_SIGN_RULE_INDEX,
-    SINGLE_WHITESPACE_RULE_INDEX,
-    PERIOD_RULE_INDEX,
-    COLON_RULE_INDEX,
-    SEMI_COLON_RULE_INDEX,
-    COMMA_RULE_INDEX,
-    ASTERISK_RULE_INDEX,
-    FORWARD_SLASH_RULE_INDEX,
-    OPEN_DOUBLE_QUOTE_INDEX,
-    OPEN_SINGLE_QUITE_INDEX
+    5,
+    12,
+    13,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    30,
+    31
   ];
   const $Vt = [
-    SINGLE_WHITESPACE_RULE_INDEX,
-    OPEN_DOUBLE_QUOTE_INDEX,
-    OPEN_SINGLE_QUITE_INDEX
+    15,
+    30,
+    31
   ];
   const $Vu = [
-    TIME_RULE_INDEX,
-    INTEGER_RULE_INDEX,
-    OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX,
-    DOLLAR_SIGN_RULE_INDEX,
-    SINGLE_WHITESPACE_RULE_INDEX,
-    PERIOD_RULE_INDEX,
-    COLON_RULE_INDEX,
-    SEMI_COLON_RULE_INDEX,
-    COMMA_RULE_INDEX,
-    ASTERISK_RULE_INDEX,
-    FORWARD_SLASH_RULE_INDEX,
-    MINUS_SIGN_RULE_INDEX,
-    OPEN_DOUBLE_QUOTE_INDEX,
-    OPEN_SINGLE_QUITE_INDEX,
-    EXCLAMATION_POINT_RULE_INDEX,
-    END_OF_STRING_RULE_INDEX
+    5,
+    11,
+    12,
+    13,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    30,
+    31,
+    32,
+    36
   ];
   let parser = {
     lexer: undefined,
@@ -648,498 +606,498 @@ let Parser = (function () {
      */
     table: [
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        FORMULA_NAME_RULE_INDEX, 1,
-        DATE_RULE_INDEX, 2,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        3, 1,
+        4, 2,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        DOUBLE_QUOTES_RULE_INDEX, [3]
+        1, [3]
       ]),
       ObjectFromPairs.of([
-        TIME_RULE_INDEX, [LexActions.SHIFT, 19],
-        INTEGER_RULE_INDEX, $Vc,
-        OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, $Vd,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        PERIOD_RULE_INDEX, $Vf,
-        COLON_RULE_INDEX, $Vg,
-        SEMI_COLON_RULE_INDEX, $Vh,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        5, [LexActions.SHIFT, 19],
+        11, $Vc,
+        12, $Vd,
+        13, $Ve,
+        16, $Vf,
+        17, $Vg,
+        18, $Vh,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ]),
-      extendRules($Vm, [LexActions.REDUCE, 2], ObjectFromPairs.of([EQUALS_SIGN_RULE_INDEX, [LexActions.SHIFT, 30]])),
+      extendRules($Vm, [LexActions.REDUCE, 2], ObjectFromPairs.of([33, [LexActions.SHIFT, 30]])),
       extendRules($Vm, [LexActions.REDUCE, 3]),
       extendRules($Vm, [LexActions.REDUCE, 4]),
-      extendRules($Vm, [LexActions.REDUCE, 5], ObjectFromPairs.of([HASH_SIGN_RULE_INDEX, [LexActions.SHIFT, 31]])),
+      extendRules($Vm, [LexActions.REDUCE, 5], ObjectFromPairs.of([35, [LexActions.SHIFT, 31]])),
       extendRules($Vm, [LexActions.REDUCE, 6]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 32,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 32,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 33,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 33,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 34,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 34,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        AMPERSAND_SIGN_RULE_INDEX, [LexActions.SHIFT, 35]
+        14, [LexActions.SHIFT, 35]
       ]),
       extendRules($Vm, [LexActions.REDUCE, 25]),
       extendRules($Vm, [LexActions.REDUCE, 26], ObjectFromPairs.of([LexActions.REDUCE, 36, 32, [LexActions.SHIFT, 37], 36, $Vb])),
-      extendRules($Vn, [LexActions.REDUCE, 36], ObjectFromPairs.of([END_OF_STRING_RULE_INDEX, $Vo])),
-      extendRules($Vp, [LexActions.REDUCE, 38], ObjectFromPairs.of([EQUALS_SIGN_RULE_INDEX, [LexActions.SHIFT, 39]])),
-      extendRules($Vm, [LexActions.REDUCE, 28], ObjectFromPairs.of([GREATER_THAN_SIGN_RULE_INDEX, [LexActions.SHIFT, 40]])),
-      extendRules($Vm, [LexActions.REDUCE, 30], ObjectFromPairs.of([GREATER_THAN_SIGN_RULE_INDEX, [LexActions.SHIFT, 41]])),
-      ObjectFromPairs.of([EXCLAMATION_POINT_RULE_INDEX, [LexActions.SHIFT, 42]]),
-      ObjectFromPairs.of([DOUBLE_QUOTES_RULE_INDEX, [LexActions.ACCEPT, 1]]),
+      extendRules($Vn, [LexActions.REDUCE, 36], ObjectFromPairs.of([36, $Vo])),
+      extendRules($Vp, [LexActions.REDUCE, 38], ObjectFromPairs.of([33, [LexActions.SHIFT, 39]])),
+      extendRules($Vm, [LexActions.REDUCE, 28], ObjectFromPairs.of([27, [LexActions.SHIFT, 40]])),
+      extendRules($Vm, [LexActions.REDUCE, 30], ObjectFromPairs.of([27, [LexActions.SHIFT, 41]])),
+      ObjectFromPairs.of([32, [LexActions.SHIFT, 42]]),
+      ObjectFromPairs.of([1, [LexActions.ACCEPT, 1]]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 43,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 43,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 44,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 44,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 45,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 45,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 48,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, [1, 46],
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COLON_RULE_INDEX, [1, 47],
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 48,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        12, [1, 46],
+        13, $V3,
+        14, $V4,
+        17, [1, 47],
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 50,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, [1, 49],
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 50,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        12, [1, 49],
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 51,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 51,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 52,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 52,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 53,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 53,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 54,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 54,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 55,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 55,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([ [LexActions.SHIFT, 56]]),
       extendRules($Vp, [LexActions.REDUCE, 40]),
       ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, $Vd,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        SINGLE_WHITESPACE_RULE_INDEX, [LexActions.SHIFT, 57],
-        PERIOD_RULE_INDEX, $Vf,
-        COLON_RULE_INDEX, $Vg,
-        SEMI_COLON_RULE_INDEX, $Vh,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        12, $Vd,
+        13, $Ve,
+        15, [LexActions.SHIFT, 57],
+        16, $Vf,
+        17, $Vg,
+        18, $Vh,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ]),
       extendRules($Vq, [LexActions.REDUCE, 21], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       extendRules($Vq, [LexActions.REDUCE, 22], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl])
+        11, $Vc,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl])
       ),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 60,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        SINGLE_WHITESPACE_RULE_INDEX, [1, 58],
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        CARET_SIGN_RULE_INDEX, 59,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        NOT_RULE_INDEX, [1, 61],
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 60,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        15, [1, 58],
+        19, $V5,
+        23, $V6,
+        24, 59,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        29, [1, 61],
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       extendRules($Vm, [LexActions.REDUCE, 27]),
-      ObjectFromPairs.of([END_OF_STRING_RULE_INDEX, $Vo]),
-      ObjectFromPairs.of([EXCLAMATION_POINT_RULE_INDEX, [LexActions.SHIFT, 62]]),
-      ObjectFromPairs.of([PERCENT_SIGN_RULE_INDEX, [LexActions.SHIFT, 63]]),
-      ObjectFromPairs.of([CLOSE_PAREN_RULE_INDEX, [LexActions.SHIFT, 64]]),
-      ObjectFromPairs.of([LESS_THAN_SIGN_RULE_INDEX, [LexActions.SHIFT, 65]]),
+      ObjectFromPairs.of([36, $Vo]),
+      ObjectFromPairs.of([32, [LexActions.SHIFT, 62]]),
+      ObjectFromPairs.of([34, [LexActions.SHIFT, 63]]),
+      ObjectFromPairs.of([26, [LexActions.SHIFT, 64]]),
+      ObjectFromPairs.of([28, [LexActions.SHIFT, 65]]),
       ObjectFromPairs.of([37, [LexActions.SHIFT, 66]]),
       extendRules($Vm, [LexActions.REDUCE, 7]),
       extendRules([5, 12, 15, 30, 31], [LexActions.REDUCE, 8], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        PERIOD_RULE_INDEX, $Vf,
-        COLON_RULE_INDEX, $Vg,
-        SEMI_COLON_RULE_INDEX, $Vh,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        13, $Ve,
+        16, $Vf,
+        17, $Vg,
+        18, $Vh,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       extendRules($Vq, [LexActions.REDUCE, 9], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 67,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 67,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 68,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 68,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
       extendRules($Vr, [LexActions.REDUCE, 16], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        13, $Ve,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 69,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 69,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb
       ]),
-      extendRules($Vr, [LexActions.REDUCE, 15], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+      extendRules($Vr, [LexActions.REDUCE, 15], ObjectFromPairs.of([ //51
+        11, $Vc,
+        13, $Ve,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       extendRules([5, 12, 15, 18, 30, 31], [LexActions.REDUCE, 14], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        PERIOD_RULE_INDEX, $Vf,
-        COLON_RULE_INDEX, $Vg,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        13, $Ve,
+        16, $Vf,
+        17, $Vg,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       extendRules($Vq, [LexActions.REDUCE, 17], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       extendRules($Vs, [LexActions.REDUCE, 18], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        22, $Vl
       ])),
       extendRules($Vs, [LexActions.REDUCE, 19], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        22, $Vl
       ])),
-      extendRules([5, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31], [LexActions.REDUCE, 20], ObjectFromPairs.of([INTEGER_RULE_INDEX, $Vc])),
+      extendRules([5, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31], [LexActions.REDUCE, 20], ObjectFromPairs.of([11, $Vc])),
       extendRules($Vn, [LexActions.REDUCE, 37]),
       extendRules($Vm, [LexActions.REDUCE, 10]),
       extendRules($Vm, [LexActions.REDUCE, 23]),
       ObjectFromPairs.of([
-        SINGLE_WHITESPACE_RULE_INDEX, [LexActions.SHIFT, 70],
-        OPEN_DOUBLE_QUOTE_INDEX, [LexActions.SHIFT, 71],
-        OPEN_SINGLE_QUITE_INDEX, [LexActions.SHIFT, 72]
+        15, [LexActions.SHIFT, 70],
+        30, [LexActions.SHIFT, 71],
+        31, [LexActions.SHIFT, 72]
       ]),
       extendRules($Vt, [LexActions.REDUCE, 32], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, $Vd,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        PERIOD_RULE_INDEX, $Vf,
-        COLON_RULE_INDEX, $Vg,
-        SEMI_COLON_RULE_INDEX, $Vh,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        12, $Vd,
+        13, $Ve,
+        16, $Vf,
+        17, $Vg,
+        18, $Vh,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       extendRules($Vt, [LexActions.REDUCE, 33]), ObjectFromPairs.of([
         37, [LexActions.SHIFT, 73] // index 37?
@@ -1149,97 +1107,99 @@ let Parser = (function () {
       extendRules($Vm, [LexActions.REDUCE, 31]),
       extendRules($Vu, [LexActions.REDUCE, 41]),
       extendRules($Vr, [LexActions.REDUCE, 11], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        13, $Ve,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       extendRules($Vr, [LexActions.REDUCE, 13], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        13, $Ve,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       extendRules($Vr, [LexActions.REDUCE, 12], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        13, $Ve,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       extendRules($Vm, [LexActions.REDUCE, 24]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
+        2, 13,
         // As far as I can tell, some of these higher values are lazy ways of indicating an out-of-bounds "production"
         // index, forcing a default to len=1 when reducing values.
-        DATE_RULE_INDEX, 74,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        4, 74,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb,
+        12, $Vd,
       ]),
       ObjectFromPairs.of([
-        SINGLE_QUOTES_RULE_INDEX, 13,
-        DATE_RULE_INDEX, 75,
-        $_A1_CELL_RULE_INDEX, 3,
-        A1_CELL_RULE_INDEX, $V0,
-        FORMULA_NAME_SIMPLE_RULE_INDEX, $V1,
-        VARIABLE_RULE_INDEX, 6,
-        SIMPLE_VARIABLE_RILE_INDEX, $V2,
-        DOLLAR_SIGN_RULE_INDEX, $V3,
-        AMPERSAND_SIGN_RULE_INDEX, $V4,
-        COMMA_RULE_INDEX, $V5,
-        PLUS_SIGN_RULE_INDEX, $V6,
-        OPEN_PAREN_RULE_INDEX, 12,
-        CLOSE_PAREN_RULE_INDEX, $V7,
-        LESS_THAN_SIGN_RULE_INDEX, $V8,
-        EXCLAMATION_POINT_RULE_INDEX, $V9,
-        PERCENT_SIGN_RULE_INDEX, $Va,
-        END_OF_STRING_RULE_INDEX, $Vb
+        2, 13,
+        4, 75,
+        6, 3,
+        7, $V0,
+        8, $V1,
+        9, 6,
+        10, $V2,
+        13, $V3,
+        14, $V4,
+        19, $V5,
+        23, $V6,
+        25, 12,
+        26, $V7,
+        28, $V8,
+        32, $V9,
+        34, $Va,
+        36, $Vb,
+        12, $Vd,
       ]),
       extendRules($Vu, [LexActions.REDUCE, 42]),
       extendRules($Vt, [LexActions.REDUCE, 34], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, $Vd,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        PERIOD_RULE_INDEX, $Vf,
-        COLON_RULE_INDEX, $Vg,
-        SEMI_COLON_RULE_INDEX, $Vh,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        12, $Vd,
+        13, $Ve,
+        16, $Vf,
+        17, $Vg,
+        18, $Vh,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ])),
       extendRules($Vt, [LexActions.REDUCE, 35], ObjectFromPairs.of([
-        INTEGER_RULE_INDEX, $Vc,
-        OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX, $Vd,
-        DOLLAR_SIGN_RULE_INDEX, $Ve,
-        PERIOD_RULE_INDEX, $Vf,
-        COLON_RULE_INDEX, $Vg,
-        SEMI_COLON_RULE_INDEX, $Vh,
-        COMMA_RULE_INDEX, $Vi,
-        ASTERISK_RULE_INDEX, $Vj,
-        FORWARD_SLASH_RULE_INDEX, $Vk,
-        MINUS_SIGN_RULE_INDEX, $Vl
+        11, $Vc,
+        12, $Vd,
+        13, $Ve,
+        16, $Vf,
+        17, $Vg,
+        18, $Vh,
+        19, $Vi,
+        20, $Vj,
+        21, $Vk,
+        22, $Vl
       ]))
     ],
-    defaultActions: ObjectFromPairs.of([COMMA_RULE_INDEX, [LexActions.REDUCE, 1]]),
+    defaultActions: ObjectFromPairs.of([19, [LexActions.REDUCE, 1]]),
     parseError: function parseError(str, hash) {
       if (hash.recoverable) {
         this.trace(str);
@@ -1373,7 +1333,7 @@ let Parser = (function () {
             expected = [];
             for (p in table[state]) {
               if (this.terminals_[p] && p > TERROR) {
-                expected.push("'" + this.terminals_[p] + "'");
+                expected.push(this.terminals_[p]);
               }
             }
             if (lexer.showPosition) {
@@ -1389,6 +1349,7 @@ let Parser = (function () {
               line: lexer.yylineno,
               loc: yyloc,
               expected: expected,
+              state: state,
               recoverable: (error_rule_depth !== false)
             });
           } else if (preErrorSymbol !== EOF) {
@@ -1812,81 +1773,81 @@ let Parser = (function () {
 
       mapActionToActionIndex: function (ruleIndex) {
         switch (ruleIndex) {
-          case WHITE_SPACE_RULE_INDEX:
+          case 0:
             // skip whitespace
             break;
-          case DOUBLE_QUOTES_RULE_INDEX:
+          case 1:
             return ReduceActions.LAST_NUMBER;
-          case SINGLE_QUOTES_RULE_INDEX:
+          case 2:
             return ReduceActions.LAST_NUMBER;
-          case FORMULA_NAME_RULE_INDEX:
+          case 3:
             return ReduceActions.CALL_FUNCTION_LAST_BLANK;
-          case DATE_RULE_INDEX:
+          case 4:
             return ReduceActions.AMPERSAND;
-          case TIME_RULE_INDEX:
+          case 5:
             return ReduceActions.EQUALS;
-          case $_A1_CELL_RULE_INDEX:
+          case 6:
             return ReduceActions.I26;
-          case A1_CELL_RULE_INDEX:
+          case 7:
             return ReduceActions.FIXED_CELL_VAL;
-          case FORMULA_NAME_SIMPLE_RULE_INDEX:
+          case 8:
             return ReduceActions.CALL_FUNCTION_LAST_BLANK;
-          case VARIABLE_RULE_INDEX:
+          case 9:
             return ReduceActions.ENSURE_IS_ARRAY;
-          case SIMPLE_VARIABLE_RILE_INDEX:
+          case 10:
             return ReduceActions.ENSURE_IS_ARRAY;
-          case INTEGER_RULE_INDEX:
+          case 11:
             return ReduceActions.REDUCE_INT;
-          case OPEN_AND_CLOSE_OF_ARRAY_RULE_INDEX:
+          case 12:
             return ReduceActions.FIXED_CELL_RANGE_VAL;
-          case DOLLAR_SIGN_RULE_INDEX:
+          case 13:
             // skip whitespace??
             break;
-          case AMPERSAND_SIGN_RULE_INDEX:
+          case 14:
             return ReduceActions.LTE;
-          case SINGLE_WHITESPACE_RULE_INDEX:
+          case 15:
             return ' ';
-          case PERIOD_RULE_INDEX:
+          case 16:
             return ReduceActions.ENSURE_YYTEXT_ARRAY;
-          case COLON_RULE_INDEX:
+          case 17:
             return ReduceActions.I27;
-          case SEMI_COLON_RULE_INDEX:
+          case 18:
             return ReduceActions.CELL_VALUE;
-          case COMMA_RULE_INDEX:
+          case 19:
             return ReduceActions.CELL_RANGE_VALUE;
-          case ASTERISK_RULE_INDEX:
+          case 20:
             return ReduceActions.TO_POWER;
-          case FORWARD_SLASH_RULE_INDEX:
+          case 21:
             return ReduceActions.INVERT_NUM;
-          case MINUS_SIGN_RULE_INDEX:
+          case 22:
             return ReduceActions.DIVIDE;
-          case PLUS_SIGN_RULE_INDEX:
+          case 23:
             return ReduceActions.NOT_EQ;
-          case CARET_SIGN_RULE_INDEX:
+          case 24:
             return ReduceActions.TO_NUMBER_NAN_AS_ZERO;
-          case OPEN_PAREN_RULE_INDEX:
+          case 25:
             return ReduceActions.NOT;
-          case CLOSE_PAREN_RULE_INDEX:
+          case 26:
             return ReduceActions.GT;
-          case GREATER_THAN_SIGN_RULE_INDEX:
+          case 27:
             return ReduceActions.MINUS;
-          case LESS_THAN_SIGN_RULE_INDEX:
+          case 28:
             return ReduceActions.LT;
-          case NOT_RULE_INDEX:
+          case 29:
             return ReduceActions.MULTIPLY;
-          case OPEN_DOUBLE_QUOTE_INDEX:
+          case 30:
             return '"';
-          case OPEN_SINGLE_QUITE_INDEX:
+          case 31:
             return "'";
-          case EXCLAMATION_POINT_RULE_INDEX:
+          case 32:
             return "!";
-          case EQUALS_SIGN_RULE_INDEX:
+          case 33:
             return ReduceActions.GTE;
-          case PERCENT_SIGN_RULE_INDEX:
+          case 34:
             return ReduceActions.REDUCE_PERCENT;
-          case HASH_SIGN_RULE_INDEX:
+          case 35:
             return ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY;
-          case END_OF_STRING_RULE_INDEX:
+          case 36:
             return ReduceActions.AS_NUMBER;
         }
       },

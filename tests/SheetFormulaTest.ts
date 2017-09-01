@@ -160,7 +160,7 @@ test("Sheet CONVERT", function(){
 });
 
 test("Sheet CORREL", function(){
-  assertFormulaEquals('=CORREL([9, 5],[10, 4])', 1);
+  assertFormulaEquals('=CORREL([9, 5], [10, 4])', 1);
 });
 
 test("Sheet CHOOSE", function(){

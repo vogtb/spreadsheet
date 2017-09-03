@@ -10,8 +10,8 @@ import {
 
 
 test("CHOOSE", function(){
-  assertEquals(CHOOSE.apply(this, [1, 1, 2, 3]), 1);
-  assertEquals(CHOOSE.apply(this, [2, 1, 2, 3]), 2);
+  assertEquals(CHOOSE(1, 1, 2, 3), 1);
+  assertEquals(CHOOSE(2, 1, 2, 3), 2);
   catchAndAssertEquals(function() {
     CHOOSE.apply(this, []);
   }, ERRORS.NA_ERROR);

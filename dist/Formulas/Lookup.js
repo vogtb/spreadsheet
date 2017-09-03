@@ -6,7 +6,7 @@ var TypeConverter_1 = require("../Utilities/TypeConverter");
 var Filter_1 = require("../Utilities/Filter");
 /**
  * Returns an element from a list of choices based on index.
- * @param index - Which choice to return.
+ * @param index - Which choice to return. Index starts at 1.
  * @param values -  Array of potential value to return. Required. May be a reference to a cell or an individual value.
  * @constructor
  */

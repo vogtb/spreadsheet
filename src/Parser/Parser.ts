@@ -2,7 +2,6 @@ import {
   ObjectFromPairs
 } from "../Utilities/ObjectFromPairs";
 
-
 // Rules represent the Regular Expressions that will be used in sequence to match a given input to the Parser.
 const WHITE_SPACE_RULE = /^(?:\s+)/; // rule 0
 const DOUBLE_QUOTES_RULE = /^(?:"(\\["]|[^"])*")/; // rule 1
@@ -41,7 +40,6 @@ const EQUALS_SIGN_RULE = /^(?:=)/; // rule 33
 const PERCENT_SIGN_RULE = /^(?:%)/; // rule 34
 const HASH_SIGN_RULE = /^(?:[#])/; // rule 35
 const END_OF_STRING_RULE = /^(?:$)/; // rule 36
-
 
 // Sequential rules to use when parsing a given input.
 const RULES = [
@@ -235,28 +233,28 @@ let Parser = (function () {
     for (obj = obj || {}, l = k.length; l--; obj[k[l]] = v) {}
     return obj;
   };
-  const $V0 = [1, 4];
-  const $V1 = [1, 5];
-  const $V2 = [1, 7];
-  const $V3 = [1, 10];
-  const $V4 = [1, 8];
-  const $V5 = [1, 9];
-  const $V6 = [1, 11];
-  const $V7 = [1, 16];
-  const $V8 = [1, 17];
-  const $V9 = [1, 14];
-  const $Va = [1, 15];
-  const $Vb = [1, 18];
-  const $Vc = [1, 20];
-  const $Vd = [1, 21];
-  const $Ve = [1, 22];
-  const $Vf = [1, 23];
-  const $Vg = [1, 24];
-  const $Vh = [1, 25];
-  const $Vi = [1, 26];
-  const $Vj = [1, 27];
-  const $Vk = [1, 28];
-  const $Vl = [1, 29];
+  const $V0 = [LexActions.SHIFT, 4];
+  const $V1 = [LexActions.SHIFT, 5];
+  const $V2 = [LexActions.SHIFT, 7];
+  const $V3 = [LexActions.SHIFT, 10];
+  const $V4 = [LexActions.SHIFT, 8];
+  const $V5 = [LexActions.SHIFT, 9];
+  const $V6 = [LexActions.SHIFT, 11];
+  const $V7 = [LexActions.SHIFT, 16];
+  const $V8 = [LexActions.SHIFT, 17];
+  const $V9 = [LexActions.SHIFT, 14];
+  const $Va = [LexActions.SHIFT, 15];
+  const $Vb = [LexActions.SHIFT, 18];
+  const $Vc = [LexActions.SHIFT, 20];
+  const $Vd = [LexActions.SHIFT, 21];
+  const $Ve = [LexActions.SHIFT, 22];
+  const $Vf = [LexActions.SHIFT, 23];
+  const $Vg = [LexActions.SHIFT, 24];
+  const $Vh = [LexActions.SHIFT, 25];
+  const $Vi = [LexActions.SHIFT, 26];
+  const $Vj = [LexActions.SHIFT, 27];
+  const $Vk = [LexActions.SHIFT, 28];
+  const $Vl = [LexActions.SHIFT, 29];
   const $Vm = [
     5,
     11,
@@ -290,7 +288,7 @@ let Parser = (function () {
     31,
     33
   ];
-  const $Vo = [1, 38]; // index 38?
+  const $Vo = [LexActions.SHIFT, 38];
   const $Vp = [
     5,
     11,
@@ -307,7 +305,7 @@ let Parser = (function () {
     30,
     31,
     35,
-    38 // index 38?
+    38
   ];
   const $Vq = [
     5,
@@ -373,7 +371,7 @@ let Parser = (function () {
     Parser: undefined,
     trace: function trace() {},
     yy: {},
-    symbols_: {
+    symbols: {
       "error": 2,
       "expressions": 3,
       "expression": 4,
@@ -413,7 +411,7 @@ let Parser = (function () {
       "$accept": 0,
       "$end": 1
     },
-    terminals_: {
+    terminals: {
       5: "EOF",
       7: "TIME_AMPM",
       8: "TIME_24",
@@ -575,10 +573,6 @@ let Parser = (function () {
         case ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY:
           this.$ = [virtualStack[vsl]];
           break;
-        /**
-         * As far as I can tell, we don't use this rule, but I'm hesitant to delete it until I understand why it was
-         * initially written.
-         */
         case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
           this.$ = (sharedStateYY.handler.utils.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
           this.$.push(virtualStack[vsl]);
@@ -592,9 +586,6 @@ let Parser = (function () {
         case ReduceActions.REDUCE_PREV_AS_PERCENT:
           this.$ = virtualStack[vsl - 1] * 0.01;
           break;
-        /**
-         * I don't understand where these come from as well, but I want to know the intent behind them.
-         */
         case ReduceActions.REDUCE_LAST_THREE_A:
         case ReduceActions.REDUCE_LAST_THREE_B:
           this.$ = virtualStack[vsl - 2] + virtualStack[vsl - 1] + virtualStack[vsl];
@@ -944,14 +935,14 @@ let Parser = (function () {
         10, $V2,
         13, $V3,
         14, $V4,
-        15, [1, 58],
+        15, [LexActions.SHIFT, 58],
         19, $V5,
         23, $V6,
         24, 59,
         25, 12,
         26, $V7,
         28, $V8,
-        29, [1, 61],
+        29, [LexActions.SHIFT, 61],
         32, $V9,
         34, $Va,
         36, $Vb
@@ -1046,7 +1037,7 @@ let Parser = (function () {
         34, $Va,
         36, $Vb
       ]),
-      extendRules($Vr, [LexActions.REDUCE, 15], ObjectFromPairs.of([ //51
+      extendRules($Vr, [LexActions.REDUCE, 15], ObjectFromPairs.of([
         11, $Vc,
         13, $Ve,
         19, $Vi,
@@ -1100,7 +1091,7 @@ let Parser = (function () {
         22, $Vl
       ])),
       extendRules($Vt, [LexActions.REDUCE, 33]), ObjectFromPairs.of([
-        37, [LexActions.SHIFT, 73] // index 37?
+        37, [LexActions.SHIFT, 73]
       ]),
       extendRules($Vp, [LexActions.REDUCE, 39]),
       extendRules($Vm, [LexActions.REDUCE, 29]),
@@ -1131,10 +1122,8 @@ let Parser = (function () {
         22, $Vl
       ])),
       extendRules($Vm, [LexActions.REDUCE, 24]),
-      ObjectFromPairs.of([
+      ObjectFromPairs.of([ // 70
         2, 13,
-        // As far as I can tell, some of these higher values are lazy ways of indicating an out-of-bounds "production"
-        // index, forcing a default to len=1 when reducing values.
         4, 74,
         6, 3,
         7, $V0,
@@ -1267,7 +1256,7 @@ let Parser = (function () {
         let token = lexer.lex() || EOF;
         // if token isn't its numeric value, convert
         if (typeof token !== 'number') {
-          token = self.symbols_[token] || token;
+          token = self.symbols[token] || token;
         }
         return token;
       }
@@ -1331,25 +1320,30 @@ let Parser = (function () {
 
             // Report error
             expected = [];
+            let expectedIndexes = [];
+            let tableState = table[state];
             for (p in table[state]) {
-              if (this.terminals_[p] && p > TERROR) {
-                expected.push(this.terminals_[p]);
+              if (this.terminals[p] && p > TERROR) {
+                expected.push(this.terminals[p]);
+                expectedIndexes.push(p);
               }
             }
             if (lexer.showPosition) {
-              errStr = 'Parse error on line ' + (yylineno + 1) + ":\n" + lexer.showPosition() + "\nExpecting " + expected.join(', ') + ", got '" + (this.terminals_[symbol] || symbol) + "'";
+              errStr = 'Parse error on line ' + (yylineno + 1) + ":\n" + lexer.showPosition() + "\nExpecting " + expected.join(', ') + ", got '" + (this.terminals[symbol] || symbol) + "'";
             } else {
               errStr = 'Parse error on line ' + (yylineno + 1) + ": Unexpected " +
                 (symbol == EOF ? "end of input" :
-                  ("'" + (this.terminals_[symbol] || symbol) + "'"));
+                  ("'" + (this.terminals[symbol] || symbol) + "'"));
             }
             this.parseError(errStr, {
               text: lexer.match,
-              token: this.terminals_[symbol] || symbol,
+              token: this.terminals[symbol] || symbol,
               line: lexer.yylineno,
               loc: yyloc,
               expected: expected,
+              expectedIndexes: expectedIndexes,
               state: state,
+              tableState: tableState,
               recoverable: (error_rule_depth !== false)
             });
           } else if (preErrorSymbol !== EOF) {

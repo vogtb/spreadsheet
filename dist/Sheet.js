@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var Parser_1 = require("./Parser");
+var Parser_1 = require("./Parser/Parser");
 var Cell_1 = require("./Cell");
 var Errors_1 = require("./Errors");
 var Formulas_1 = require("./Formulas");
@@ -286,7 +286,9 @@ var Sheet = (function () {
         /**
          * Is the value a number or can the value be interpreted as a number
          */
-        number: TypeConverter_1.TypeConverter.valueToNumber,
+        number: function (x) {
+            return TypeConverter_1.TypeConverter.valueToNumber(x);
+        },
         string: function (str) {
             return str.substring(1, str.length - 1);
         },

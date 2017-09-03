@@ -124,7 +124,7 @@ function matchTimestampAndMutateMoment(timestampString, momentToMutate) {
     return momentToMutate;
 }
 /**
- * Static class of helpers used to convert various types to each other.
+ * Static class of helpers used to convert let ious types to each other.
  */
 var TypeConverter = (function () {
     function TypeConverter() {
@@ -335,7 +335,7 @@ var TypeConverter = (function () {
     };
     /**
      * Converts strings to numbers, returning undefined if string cannot be parsed to number. Examples: "100", "342424",
-     * "10%", "33.213131", "41.1231", "10e1", "10E1", "10.44E1", "-$9.29", "+$9.29", "1,000.1", "2000,000,000".
+     * "10%", "33.213131", "41.1231", "10e+1", "10E-1", "10.44E1", "-$9.29", "+$9.29", "1,000.1", "2000,000,000".
      * For reference see: https://regex101.com/r/PwghnF/9/
      * @param value to parse.
      * @returns {number} or undefined
@@ -347,7 +347,8 @@ var TypeConverter = (function () {
         function isDefined(x) {
             return x !== undefined;
         }
-        var NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\d*)? *(%)? *$/;
+        // var NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\d*)? *(%)? *$/;
+        var NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\+|\-)? *(\d*)? *(%)? *$/;
         var matches = value.match(NUMBER_REGEX);
         if (matches !== null) {
             var firstSign = matches[1];
@@ -357,21 +358,22 @@ var TypeConverter = (function () {
             var decimalPoint = matches[10];
             var decimalNumber = matches[11];
             var sciNotation = matches[12];
-            var sciNotationFactor = matches[13];
-            var percentageSign = matches[14];
+            var sciNotationSign = matches[13];
+            var sciNotationFactor = matches[14];
+            var percentageSign = matches[15];
             // Number is not valid if it is a currency and in scientific notation.
             if (isDefined(currency) && isDefined(sciNotation)) {
-                return undefined;
+                return;
             }
             // Number is not valid if there are two signs.
             if (isDefined(firstSign) && isDefined(secondSign)) {
-                return undefined;
+                return;
             }
             // Number is not valid if we have 'sciNotation' but no 'sciNotationFactor'
             if (isDefined(sciNotation) && isUndefined(sciNotationFactor)) {
-                return undefined;
+                return;
             }
-            var activeSign;
+            var activeSign = void 0;
             if (isUndefined(firstSign) && isUndefined(secondSign)) {
                 activeSign = "+";
             }
@@ -381,23 +383,22 @@ var TypeConverter = (function () {
             else {
                 activeSign = secondSign;
             }
-            var x;
+            var x = void 0;
             if (isDefined(wholeNumberWithCommas)) {
                 if (isDefined(decimalNumber) && isDefined(decimalNumber)) {
-                    // console.log("parsing:", value, activeSign + wholeNumberWithCommas.split(",").join("") + decimalPoint + decimalNumber);
                     x = parseFloat(activeSign + wholeNumberWithCommas.split(",").join("") + decimalPoint + decimalNumber);
                 }
                 else {
-                    // console.log("parsing:", value, activeSign + wholeNumberWithCommas.split(",").join(""))
                     x = parseFloat(activeSign + wholeNumberWithCommas.split(",").join(""));
                 }
             }
             else {
-                // console.log("parsing:", value, activeSign + "0" + decimalPoint + decimalNumber);
                 x = parseFloat(activeSign + "0" + decimalPoint + decimalNumber);
             }
             if (isDefined(sciNotation) && isDefined(sciNotationFactor)) {
-                x = x * Math.pow(10, parseInt(sciNotationFactor));
+                sciNotationSign = isDefined(sciNotationSign) ? sciNotationSign : "+";
+                // x + "e" + "-" + "10"
+                x = parseFloat(x.toString() + sciNotation.toString() + "" + sciNotationSign.toString() + sciNotationFactor.toString());
             }
             if (!isUndefined(percentageSign)) {
                 x = x * 0.01;
@@ -409,7 +410,7 @@ var TypeConverter = (function () {
                 return TypeConverter.stringToDateNumber(value);
             }
             catch (_) {
-                return undefined;
+                return;
             }
         }
     };
@@ -439,7 +440,7 @@ var TypeConverter = (function () {
             }
             var n = TypeConverter.stringToNumber(value);
             if (n === undefined) {
-                throw new Errors_1.ValueError("Function ____ expects number values, but is text and cannot be coerced to a number.");
+                throw new Errors_1.ValueError("Function expects number values, but is text and cannot be coerced to a number.");
             }
             return n;
         }

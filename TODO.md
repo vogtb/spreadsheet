@@ -9,10 +9,6 @@ Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells sho
 When entering raw values into cells, if the value is a string, the Sheet should automatically attempt to convert to a number. For example, `= 10e2` should be be evaluated with a RegEx and converted to a number. See `Sheet.helper.number`.
 
 
-### Parser should be able to detect arrays following numbers when passing in arguments.
-For example the CHOOSE formula can't be parsed: `=CHOOSE(2, [1, 2, 3])`.
-
-
 ### Cell.rawFormulaText does not get reset when updating a cell for the second time.
 
 

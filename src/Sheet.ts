@@ -532,8 +532,8 @@ let Sheet = (function () {
         });
         error = new RefError("Reference does not exist.");
       }
-    } catch (ex) {
-      error = ex;
+    } catch (e) {
+      error = e;
     }
 
     return {

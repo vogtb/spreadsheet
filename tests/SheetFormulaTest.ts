@@ -977,6 +977,9 @@ test("Sheet ERROR.TYPE", function(){
   // Divide by zero error should be caught by formula
   assertFormulaEquals('=ERROR.TYPE(1/0)', 2);
 
+  // NA error should also be caught by formula
+  assertFormulaEquals('=ERROR.TYPE(NA())', 7);
+
   // Parse error should bubble up to cell
   assertFormulaEqualsError('=ERROR.TYPE(10e)', PARSE_ERROR);
 });

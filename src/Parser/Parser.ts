@@ -1,7 +1,13 @@
 import {
   ObjectFromPairs
 } from "../Utilities/ObjectFromPairs";
-import {ParseError} from "../Errors";
+import {
+  PARSE_ERROR,
+  ParseError
+} from "../Errors";
+import {
+  Formulas
+} from "../Formulas";
 
 // Rules represent the Regular Expressions that will be used in sequence to match a given input to the Parser.
 const WHITE_SPACE_RULE = /^(?:\s+)/; // rule 0
@@ -455,142 +461,235 @@ let Parser = (function () {
      * @param reduceActionToPerform - the ReduceAction to perform with the current virtual stack. Since this function
      * is only called in one place, this should always be action[1] in that context.
      * @param virtualStack - Array of values to use in action.
+     * @param catchOnFailure - If we are performing an action that could result in a failure, and we cant to catch and
+     * assign the error thrown, this should be set to true.
      * @returns {number|boolean|string}
      */
-    performAction: function (rawValueOfReduceOriginToken, sharedStateYY, reduceActionToPerform, virtualStack : Array<any>) {
+    performAction: function (rawValueOfReduceOriginToken, sharedStateYY, reduceActionToPerform, virtualStack : Array<any>, catchOnFailure : boolean) {
       // For context, this function is only called with `apply`, so `this` is `yyval`.
 
       const vsl = virtualStack.length - 1;
-      switch (reduceActionToPerform) {
-        case ReduceActions.RETURN_LAST:
-          return virtualStack[vsl - 1];
-        case ReduceActions.CALL_VARIABLE:
-          this.$ = sharedStateYY.handler.helper.callVariable.call(this, virtualStack[vsl]);
-          break;
-        case ReduceActions.TIME_CALL_TRUE:
-          this.$ = sharedStateYY.handler.time.call(sharedStateYY.obj, virtualStack[vsl], true);
-          break;
-        case ReduceActions.TIME_CALL:
-          this.$ = sharedStateYY.handler.time.call(sharedStateYY.obj, virtualStack[vsl]);
-          break;
-        case ReduceActions.AS_NUMBER:
-          this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
-          break;
-        case ReduceActions.AS_STRING:
-          this.$ = sharedStateYY.handler.helper.string(virtualStack[vsl]);
-          break;
-        case ReduceActions.AMPERSAND:
-          this.$ = sharedStateYY.handler.helper.specialMatch('&', virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.EQUALS:
-          this.$ = sharedStateYY.handler.helper.logicMatch('=', virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.PLUS:
-          this.$ = sharedStateYY.handler.helper.mathMatch('+', virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.LAST_NUMBER:
-          this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl - 1]);
-          break;
-        case ReduceActions.LTE:
-          this.$ = sharedStateYY.handler.helper.logicMatch('<=', virtualStack[vsl - 3], virtualStack[vsl]);
-          break;
-        case ReduceActions.GTE:
-          this.$ = sharedStateYY.handler.helper.logicMatch('>=', virtualStack[vsl - 3], virtualStack[vsl]);
-          break;
-        case ReduceActions.NOT_EQ:
-          this.$ = sharedStateYY.handler.helper.logicMatch('<>', virtualStack[vsl - 3], virtualStack[vsl]);
-          break;
-        case ReduceActions.NOT:
-          this.$ = sharedStateYY.handler.helper.logicMatch('NOT', virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.GT:
-          this.$ = sharedStateYY.handler.helper.logicMatch('>', virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.LT:
-          this.$ = sharedStateYY.handler.helper.logicMatch('<', virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.MINUS:
-          this.$ = sharedStateYY.handler.helper.mathMatch('-', virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.MULTIPLY:
-          this.$ = sharedStateYY.handler.helper.mathMatch('*', virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.DIVIDE:
-          this.$ = sharedStateYY.handler.helper.mathMatch('/', virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.TO_POWER:
-          this.$ = sharedStateYY.handler.helper.mathMatch('^', virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.INVERT_NUM:
-          this.$ = sharedStateYY.handler.helper.numberInverted(virtualStack[vsl]);
-          if (isNaN(this.$)) {
-            this.$ = 0;
-          }
-          break;
-        case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
-          this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
-          if (isNaN(this.$)) {
-            this.$ = 0;
-          }
-          break;
-        case ReduceActions.CALL_FUNCTION_LAST_BLANK:
-          this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 2], '');
-          break;
-        case ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK:
-          this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 3], virtualStack[vsl - 1]);
-          break;
-        case ReduceActions.FIXED_CELL_VAL:
-          this.$ = sharedStateYY.handler.helper.fixedCellValue.call(sharedStateYY.obj, virtualStack[vsl]);
-          break;
-        case ReduceActions.FIXED_CELL_RANGE_VAL:
-          this.$ = sharedStateYY.handler.helper.fixedCellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.CELL_VALUE:
-          this.$ = sharedStateYY.handler.helper.cellValue.call(sharedStateYY.obj, virtualStack[vsl]);
-          break;
-        case ReduceActions.CELL_RANGE_VALUE:
-          this.$ = sharedStateYY.handler.helper.cellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
-          break;
-        case ReduceActions.ENSURE_IS_ARRAY:
-          if (sharedStateYY.handler.utils.isArray(virtualStack[vsl])) {
-            this.$ = virtualStack[vsl];
-          } else {
+      try {
+        switch (reduceActionToPerform) {
+          case ReduceActions.RETURN_LAST:
+            return virtualStack[vsl - 1];
+          case ReduceActions.CALL_VARIABLE:
+            this.$ = sharedStateYY.handler.helper.callVariable.call(this, virtualStack[vsl]);
+            break;
+          case ReduceActions.TIME_CALL_TRUE:
+            this.$ = sharedStateYY.handler.time.call(sharedStateYY.obj, virtualStack[vsl], true);
+            break;
+          case ReduceActions.TIME_CALL:
+            this.$ = sharedStateYY.handler.time.call(sharedStateYY.obj, virtualStack[vsl]);
+            break;
+          case ReduceActions.AS_NUMBER:
+            this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
+            break;
+          case ReduceActions.AS_STRING:
+            this.$ = sharedStateYY.handler.helper.string(virtualStack[vsl]);
+            break;
+          case ReduceActions.AMPERSAND:
+            this.$ = sharedStateYY.handler.helper.specialMatch('&', virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.EQUALS:
+            this.$ = sharedStateYY.handler.helper.logicMatch('=', virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.PLUS:
+            this.$ = sharedStateYY.handler.helper.mathMatch('+', virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.LAST_NUMBER:
+            this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl - 1]);
+            break;
+          case ReduceActions.LTE:
+            this.$ = sharedStateYY.handler.helper.logicMatch('<=', virtualStack[vsl - 3], virtualStack[vsl]);
+            break;
+          case ReduceActions.GTE:
+            this.$ = sharedStateYY.handler.helper.logicMatch('>=', virtualStack[vsl - 3], virtualStack[vsl]);
+            break;
+          case ReduceActions.NOT_EQ:
+            this.$ = sharedStateYY.handler.helper.logicMatch('<>', virtualStack[vsl - 3], virtualStack[vsl]);
+            break;
+          case ReduceActions.NOT:
+            this.$ = sharedStateYY.handler.helper.logicMatch('NOT', virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.GT:
+            this.$ = sharedStateYY.handler.helper.logicMatch('>', virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.LT:
+            this.$ = sharedStateYY.handler.helper.logicMatch('<', virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.MINUS:
+            this.$ = sharedStateYY.handler.helper.mathMatch('-', virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.MULTIPLY:
+            this.$ = sharedStateYY.handler.helper.mathMatch('*', virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.DIVIDE:
+            this.$ = sharedStateYY.handler.helper.mathMatch('/', virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.TO_POWER:
+            this.$ = sharedStateYY.handler.helper.mathMatch('^', virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.INVERT_NUM:
+            this.$ = sharedStateYY.handler.helper.numberInverted(virtualStack[vsl]);
+            if (isNaN(this.$)) {
+              this.$ = 0;
+            }
+            break;
+          case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
+            this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
+            if (isNaN(this.$)) {
+              this.$ = 0;
+            }
+            break;
+          case ReduceActions.CALL_FUNCTION_LAST_BLANK:
+            this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 2], '');
+            break;
+          case ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK:
+            this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 3], virtualStack[vsl - 1]);
+            break;
+          case ReduceActions.FIXED_CELL_VAL:
+            this.$ = sharedStateYY.handler.helper.fixedCellValue.call(sharedStateYY.obj, virtualStack[vsl]);
+            break;
+          case ReduceActions.FIXED_CELL_RANGE_VAL:
+            this.$ = sharedStateYY.handler.helper.fixedCellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.CELL_VALUE:
+            this.$ = sharedStateYY.handler.helper.cellValue.call(sharedStateYY.obj, virtualStack[vsl]);
+            break;
+          case ReduceActions.CELL_RANGE_VALUE:
+            this.$ = sharedStateYY.handler.helper.cellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
+            break;
+          case ReduceActions.ENSURE_IS_ARRAY:
+            if (sharedStateYY.handler.utils.isArray(virtualStack[vsl])) {
+              this.$ = virtualStack[vsl];
+            } else {
+              this.$ = [virtualStack[vsl]];
+            }
+            break;
+          case ReduceActions.ENSURE_YYTEXT_ARRAY:
+            let result = [],
+              arr = eval("[" + rawValueOfReduceOriginToken + "]");
+            arr.forEach(function (item) {
+              result.push(item);
+            });
+            this.$ = result;
+            break;
+          case ReduceActions.REDUCE_INT:
+          case ReduceActions.REDUCE_PERCENT:
+            virtualStack[vsl - 2].push(virtualStack[vsl]);
+            this.$ = virtualStack[vsl - 2];
+            break;
+          case ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY:
             this.$ = [virtualStack[vsl]];
+            break;
+          case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
+            this.$ = (sharedStateYY.handler.utils.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
+            this.$.push(virtualStack[vsl]);
+            break;
+          case ReduceActions.REFLEXIVE_REDUCE:
+            this.$ = virtualStack[vsl];
+            break;
+          case ReduceActions.REDUCE_FLOAT:
+            this.$ = parseFloat(virtualStack[vsl - 2] + '.' + virtualStack[vsl]);
+            break;
+          case ReduceActions.REDUCE_PREV_AS_PERCENT:
+            this.$ = virtualStack[vsl - 1] * 0.01;
+            break;
+          case ReduceActions.REDUCE_LAST_THREE_A:
+          case ReduceActions.REDUCE_LAST_THREE_B:
+            this.$ = virtualStack[vsl - 2] + virtualStack[vsl - 1] + virtualStack[vsl];
+            break;
+        }
+      } catch (e) {
+        if (catchOnFailure) {
+          // NOTE: I'm not sure if some of these ReduceAction map correctly in the case of an error.
+          switch (reduceActionToPerform) {
+            case ReduceActions.RETURN_LAST:
+              return virtualStack[vsl - 1];
+            case ReduceActions.CALL_VARIABLE:
+            case ReduceActions.TIME_CALL_TRUE:
+            case ReduceActions.TIME_CALL:
+            case ReduceActions.AS_NUMBER:
+            case ReduceActions.AS_STRING:
+            case ReduceActions.AMPERSAND:
+            case ReduceActions.EQUALS:
+            case ReduceActions.PLUS:
+            case ReduceActions.LAST_NUMBER:
+            case ReduceActions.LTE:
+            case ReduceActions.GTE:
+            case ReduceActions.NOT_EQ:
+            case ReduceActions.NOT:
+            case ReduceActions.GT:
+            case ReduceActions.LT:
+            case ReduceActions.MINUS:
+            case ReduceActions.MULTIPLY:
+            case ReduceActions.DIVIDE:
+            case ReduceActions.TO_POWER:
+            case ReduceActions.CALL_FUNCTION_LAST_BLANK:
+            case ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK:
+            case ReduceActions.FIXED_CELL_VAL:
+            case ReduceActions.FIXED_CELL_RANGE_VAL:
+            case ReduceActions.CELL_VALUE:
+            case ReduceActions.CELL_RANGE_VALUE:
+              this.$ = e;
+              break;
+            case ReduceActions.INVERT_NUM:
+              this.$ = e;
+              if (isNaN(this.$)) {
+                this.$ = 0;
+              }
+              break;
+            case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
+              this.$ = e;
+              if (isNaN(this.$)) {
+                this.$ = 0;
+              }
+              break;
+            case ReduceActions.ENSURE_IS_ARRAY:
+              if (sharedStateYY.handler.utils.isArray(virtualStack[vsl])) {
+                this.$ = virtualStack[vsl];
+              } else {
+                this.$ = [virtualStack[vsl]];
+              }
+              break;
+            case ReduceActions.ENSURE_YYTEXT_ARRAY:
+              let result = [],
+                arr = eval("[" + rawValueOfReduceOriginToken + "]");
+              arr.forEach(function (item) {
+                result.push(item);
+              });
+              this.$ = result;
+              break;
+            case ReduceActions.REDUCE_INT:
+            case ReduceActions.REDUCE_PERCENT:
+              virtualStack[vsl - 2].push(virtualStack[vsl]);
+              this.$ = virtualStack[vsl - 2];
+              break;
+            case ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY:
+              this.$ = [virtualStack[vsl]];
+              break;
+            case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
+              this.$ = (sharedStateYY.handler.utils.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
+              this.$.push(virtualStack[vsl]);
+              break;
+            case ReduceActions.REFLEXIVE_REDUCE:
+              this.$ = virtualStack[vsl];
+              break;
+            case ReduceActions.REDUCE_FLOAT:
+              this.$ = parseFloat(virtualStack[vsl - 2] + '.' + virtualStack[vsl]);
+              break;
+            case ReduceActions.REDUCE_PREV_AS_PERCENT:
+              this.$ = virtualStack[vsl - 1] * 0.01;
+              break;
+            case ReduceActions.REDUCE_LAST_THREE_A:
+            case ReduceActions.REDUCE_LAST_THREE_B:
+              this.$ = virtualStack[vsl - 2] + virtualStack[vsl - 1] + virtualStack[vsl];
+              break;
           }
-          break;
-        case ReduceActions.ENSURE_YYTEXT_ARRAY:
-          let result = [],
-            arr = eval("[" + rawValueOfReduceOriginToken + "]");
-          arr.forEach(function (item) {
-            result.push(item);
-          });
-          this.$ = result;
-          break;
-        case ReduceActions.REDUCE_INT:
-        case ReduceActions.REDUCE_PERCENT:
-          virtualStack[vsl - 2].push(virtualStack[vsl]);
-          this.$ = virtualStack[vsl - 2];
-          break;
-        case ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY:
-          this.$ = [virtualStack[vsl]];
-          break;
-        case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
-          this.$ = (sharedStateYY.handler.utils.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
-          this.$.push(virtualStack[vsl]);
-          break;
-        case ReduceActions.REFLEXIVE_REDUCE:
-          this.$ = virtualStack[vsl];
-          break;
-        case ReduceActions.REDUCE_FLOAT:
-          this.$ = parseFloat(virtualStack[vsl - 2] + '.' + virtualStack[vsl]);
-          break;
-        case ReduceActions.REDUCE_PREV_AS_PERCENT:
-          this.$ = virtualStack[vsl - 1] * 0.01;
-          break;
-        case ReduceActions.REDUCE_LAST_THREE_A:
-        case ReduceActions.REDUCE_LAST_THREE_B:
-          this.$ = virtualStack[vsl - 2] + virtualStack[vsl - 1] + virtualStack[vsl];
-          break;
+        } else {
+          throw e;
+        }
       }
     },
     /**
@@ -1194,7 +1293,7 @@ let Parser = (function () {
       if (hash.recoverable) {
         this.trace(str);
       } else {
-        throw new Error(str);
+        throw new ParseError(str);
       }
     },
     parse: function parse(input) {
@@ -1395,6 +1494,11 @@ let Parser = (function () {
             locationStack.push(lexer.yylloc);
             stack.push(action[1]); // push state
             symbol = null;
+
+            if (Formulas.isTryCatchFormula(lexer.yytext)) {
+              catchFailuresOn = true;
+            }
+
             if (!preErrorSymbol) { // normal execution/no error
               yyleng = lexer.yyleng;
               yytext = lexer.yytext;
@@ -1427,7 +1531,8 @@ let Parser = (function () {
             if (ranges) {
               yyval._$.range = [locationStack[locationStack.length - (lengthToReduceStackBy || 1)].range[0], locationStack[locationStack.length - 1].range[1]];
             }
-            result = this.performAction.apply(yyval, [yytext, sharedState.yy, action[1], semanticValueStack].concat(args));
+            // If we are inside of a formula that should catch errors, then catch and return them.
+            result = this.performAction.apply(yyval, [yytext, sharedState.yy, action[1], semanticValueStack, catchFailuresOn].concat(args));
 
             if (typeof result !== 'undefined') {
               return result;

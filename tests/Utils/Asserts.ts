@@ -46,7 +46,7 @@ function assertArrayEquals(actual: Array<any>, expected: Array<any>, ) {
     console.trace();
     return;
   }
-  for (var index in expected) {
+  for (let index in expected) {
     if (expected[index] != actual[index]) {
       console.log("expected: ", expected, " actual:", actual);
       console.trace();
@@ -60,7 +60,7 @@ function assertArrayEquals(actual: Array<any>, expected: Array<any>, ) {
  * @param expected error message
  */
 function catchAndAssertEquals(toExecute : Function, expected) {
-  var toThrow = null;
+  let toThrow = null;
   try {
     toExecute();
     toThrow = true;

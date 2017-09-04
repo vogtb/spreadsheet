@@ -1,3 +1,16 @@
+const CELL_ID_ERROR = "CELL_ID_ERROR";
+
+/**
+ * Represents a cell id error, and is thrown when a cells id does not conform to A1 notation.
+ */
+class CellIdError extends Error {
+  constructor(msg: string) {
+    super();
+    this.message = msg;
+    this.name = CELL_ID_ERROR;
+  }
+}
+
 /**
  * Cell represents a cell in the spreadsheet. It contains a nullable rawFormulaText, and a value, which is not nullable unless
  * the parsing of the rawFormulaText results in an error.
@@ -20,6 +33,9 @@ class Cell {
    * @param id key of the cell in A1-format.
    */
   constructor(id: string) {
+    if (!id.match(/^(?:[A-Za-z]+[0-9]+)$/)) {
+      throw new CellIdError("Cell id " + id + " not valid");
+    }
     let key = parseKey(id);
 
     this.id = id;
@@ -89,21 +105,12 @@ class Cell {
   }
 
   /**
-   * Set the value of this cell. If this cell has a primitive value (does not contain a rawFormulaText), it could be set to a
-   * value while the rawFormulaText field is still null.
-   * @param value to set
-   */
-  setValue(value: any) {
-    this.typedValue = value;
-  }
-
-  /**
    * Sets the value or rawFormulaText for this cell. If the input begins with =, then it is considered to be a rawFormulaText. If it
    * is not, then it is a value, and set as the raw value for this cell.
    * @param rawFormula
    */
-  setRawValue(rawFormula: string) {
-    if (rawFormula.charAt(0) === "=") {
+  setValue(rawFormula: string) {
+    if (typeof rawFormula === "string" && rawFormula.charAt(0) === "=") {
       this.rawFormulaText = rawFormula.substr(1);
     } else {
       this.typedValue = rawFormula;
@@ -111,7 +118,17 @@ class Cell {
   }
 
   /**
-   * Get the value of this cell. Since value could be null do to an error in the rawFormulaText, this could return null.
+   * Gets the rawFormulaText for this cell, which is either null or a string.
+   * @returns {string}
+   */
+  getRawFormulaText() : string | null {
+    return this.rawFormulaText;
+  }
+
+
+  /**
+   * Get the value of this cell if a value is present. If this cell was given a formula but not a value, this may return
+   * null.
    * @returns {any}
    */
   getValue() : any {
@@ -177,7 +194,7 @@ class Cell {
   /**
    * Build a cell with an id and value.
    * @param id - A1-notation id or key.
-   * @param value - value of the cell.
+   * @param value - value of the cell as a string
    * @returns {Cell}
    * @constructor
    */
@@ -211,5 +228,7 @@ function parseKey(cell) {
 }
 
 export {
-  Cell
+  Cell,
+  CellIdError,
+  CELL_ID_ERROR
 }

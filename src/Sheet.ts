@@ -161,7 +161,7 @@ let Sheet = (function () {
      */
     setCell(id: string, rawFormula: string) {
       let cell = new Cell(id);
-      cell.setRawValue(rawFormula);
+      cell.setValue(rawFormula);
       registerCellInMatrix(cell);
       recalculateCellDependencies(cell);
     }

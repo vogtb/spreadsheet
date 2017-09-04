@@ -1,5 +1,31 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 exports.__esModule = true;
+var CELL_ID_ERROR = "CELL_ID_ERROR";
+exports.CELL_ID_ERROR = CELL_ID_ERROR;
+/**
+ * Represents a cell id error, and is thrown when a cells id does not conform to A1 notation.
+ */
+var CellIdError = (function (_super) {
+    __extends(CellIdError, _super);
+    function CellIdError(msg) {
+        var _this = _super.call(this) || this;
+        _this.message = msg;
+        _this.name = CELL_ID_ERROR;
+        return _this;
+    }
+    return CellIdError;
+}(Error));
+exports.CellIdError = CellIdError;
 /**
  * Cell represents a cell in the spreadsheet. It contains a nullable rawFormulaText, and a value, which is not nullable unless
  * the parsing of the rawFormulaText results in an error.
@@ -18,6 +44,9 @@ var Cell = (function () {
         this.typedValue = null;
         this.dependencies = [];
         this.error = null;
+        if (!id.match(/^(?:[A-Za-z]+[0-9]+)$/)) {
+            throw new CellIdError("Cell id " + id + " not valid");
+        }
         var key = parseKey(id);
         this.id = id;
         this.row = key.y;
@@ -78,20 +107,12 @@ var Cell = (function () {
         return this.rawFormulaText !== null;
     };
     /**
-     * Set the value of this cell. If this cell has a primitive value (does not contain a rawFormulaText), it could be set to a
-     * value while the rawFormulaText field is still null.
-     * @param value to set
-     */
-    Cell.prototype.setValue = function (value) {
-        this.typedValue = value;
-    };
-    /**
      * Sets the value or rawFormulaText for this cell. If the input begins with =, then it is considered to be a rawFormulaText. If it
      * is not, then it is a value, and set as the raw value for this cell.
      * @param rawFormula
      */
-    Cell.prototype.setRawValue = function (rawFormula) {
-        if (rawFormula.charAt(0) === "=") {
+    Cell.prototype.setValue = function (rawFormula) {
+        if (typeof rawFormula === "string" && rawFormula.charAt(0) === "=") {
             this.rawFormulaText = rawFormula.substr(1);
         }
         else {
@@ -99,7 +120,15 @@ var Cell = (function () {
         }
     };
     /**
-     * Get the value of this cell. Since value could be null do to an error in the rawFormulaText, this could return null.
+     * Gets the rawFormulaText for this cell, which is either null or a string.
+     * @returns {string}
+     */
+    Cell.prototype.getRawFormulaText = function () {
+        return this.rawFormulaText;
+    };
+    /**
+     * Get the value of this cell if a value is present. If this cell was given a formula but not a value, this may return
+     * null.
      * @returns {any}
      */
     Cell.prototype.getValue = function () {
@@ -157,7 +186,7 @@ var Cell = (function () {
     /**
      * Build a cell with an id and value.
      * @param id - A1-notation id or key.
-     * @param value - value of the cell.
+     * @param value - value of the cell as a string
      * @returns {Cell}
      * @constructor
      */

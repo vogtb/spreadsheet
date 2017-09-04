@@ -135,7 +135,7 @@ var Sheet = (function () {
          */
         Matrix.prototype.setCell = function (id, rawFormula) {
             var cell = new Cell_1.Cell(id);
-            cell.setRawValue(rawFormula);
+            cell.setValue(rawFormula);
             registerCellInMatrix(cell);
             recalculateCellDependencies(cell);
         };

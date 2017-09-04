@@ -968,10 +968,17 @@ test("Sheet TO_TEXT", function(){
 });
 
 test("Sheet ERROR.TYPE", function(){
+
   let sheet = new Sheet();
   sheet.setCell("M1", "= 1/0");
   sheet.setCell("A1", "=ERROR.TYPE(M1)");
   assertEquals(sheet.getCell("A1").getValue(), 2);
+
+  // Divide by zero error should be caught by formula
+  assertFormulaEquals('=ERROR.TYPE(1/0)', 2);
+
+  // Parse error should bubble up to cell
+  assertFormulaEqualsError('=ERROR.TYPE(10e)', PARSE_ERROR);
 });
 
 test("Sheet parsing error", function(){

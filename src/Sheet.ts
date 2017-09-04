@@ -474,10 +474,10 @@ let Sheet = (function () {
           throw new RefError("Reference does not exist.");
         }
       }
-      // check if any error occurs
-      if (!cell.isBlank() && cell.getError()) {
-        throw cell.getError();
-      }
+      // // check if any error occurs
+      // if (!cell.isBlank() && cell.getError()) {
+      //   throw cell.getError();
+      // }
       return cell;
     },
 

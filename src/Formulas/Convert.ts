@@ -12,9 +12,9 @@ import {
  * @returns {any}
  * @constructor
  */
-var TO_DATE = function (value) {
+let TO_DATE = function (value) {
   ArgsChecker.checkLength(arguments, 1, "TO_DATE");
-  var v = TypeConverter.firstValue(value);
+  let v = TypeConverter.firstValue(value);
   if (typeof v === "number") {
     return TypeConverter.valueToDateNumber(v);
   }
@@ -28,20 +28,20 @@ var TO_DATE = function (value) {
  * @returns {any}
  * @constructor
  */
-var TO_DOLLARS = function (value) {
+let TO_DOLLARS = function (value) {
   ArgsChecker.checkLength(arguments, 1, "TO_DOLLAR");
   return TypeConverter.firstValue(value);
 };
 
 
 /**
- * Converts a number to a percent value where 1 = 100%
+ * Converts a number to a percent value where 1 = 100 percent.
  * @param value - Value to convert. If the input is a number, will return as a percent value. If value is non-numeric,
  * will return value unchanged.
  * @returns {any}
  * @constructor
  */
-var TO_PERCENT = function (value) {
+let TO_PERCENT = function (value) {
   ArgsChecker.checkLength(arguments, 1, "TO_PERCENT");
   return TypeConverter.firstValue(value);
 };
@@ -52,9 +52,9 @@ var TO_PERCENT = function (value) {
  * @returns {any}
  * @constructor
  */
-var TO_TEXT = function (value) {
+let TO_TEXT = function (value) {
   ArgsChecker.checkLength(arguments, 1, "TO_TEXT");
-  var v = TypeConverter.firstValue(value);
+  let v = TypeConverter.firstValue(value);
   return TypeConverter.valueToString(v);
 };
 

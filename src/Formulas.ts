@@ -1,6 +1,6 @@
 import * as AllFormulas from "./Formulas/AllFormulas";
 
-var Formulas = {
+let Formulas = {
   exists: function(fn: string) {
     return ((fn in AllFormulas) || (fn in AllFormulas.__COMPLEX));
   },

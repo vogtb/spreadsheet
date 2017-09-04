@@ -1,10 +1,10 @@
-var NULL_ERROR = "#NULL!";
-var DIV_ZERO_ERROR = "#DIV/0!";
-var VALUE_ERROR = "#VALUE!";
-var REF_ERROR = "#REF!";
-var NAME_ERROR = "#NAME!";
-var NUM_ERROR = "#NUM!";
-var NA_ERROR = "#N/A";
+let NULL_ERROR = "#NULL!";
+let DIV_ZERO_ERROR = "#DIV/0!";
+let VALUE_ERROR = "#VALUE!";
+let REF_ERROR = "#REF!";
+let NAME_ERROR = "#NAME!";
+let NUM_ERROR = "#NUM!";
+let NA_ERROR = "#N/A";
 
 class NullError extends Error {
   constructor(message: string) {

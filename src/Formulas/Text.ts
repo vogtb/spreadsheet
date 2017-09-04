@@ -17,12 +17,12 @@ import {
  * @returns {number} value in integer format
  * @constructor
  */
-var ARABIC = function (text?) {
+let ARABIC = function (text?) {
   ArgsChecker.checkLength(arguments, 1, "ARABIC");
   if (typeof text !== "string") {
     throw new ValueError('Invalid roman numeral in ARABIC evaluation.');
   }
-  var negative = false;
+  let negative = false;
   if (text[0] === "-") {
     negative = true;
     text = text.substr(1);
@@ -31,7 +31,7 @@ var ARABIC = function (text?) {
   if (!/^M*(?:D?C{0,3}|C[MD])(?:L?X{0,3}|X[CL])(?:V?I{0,3}|I[XV])$/.test(text)) {
     throw new ValueError('Invalid roman numeral in ARABIC evaluation.');
   }
-  var r = 0;
+  let r = 0;
   text.replace(/[MDLV]|C[MD]?|X[CL]?|I[XV]?/g, function (i) {
     r += {M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1}[i];
   });
@@ -47,9 +47,9 @@ var ARABIC = function (text?) {
  * @returns {string} character corresponding to Unicode number
  * @constructor
  */
-var CHAR = function (value) : string {
+let CHAR = function (value) : string {
   ArgsChecker.checkLength(arguments, 1, "CHAR");
-  var n = TypeConverter.firstValueAsNumber(value);
+  let n = TypeConverter.firstValueAsNumber(value);
   if (n < 1 || n > 1114112) { //limit
     throw new NumError("Function CHAR parameter 1 value " + n + " is out of range.");
   }
@@ -62,9 +62,9 @@ var CHAR = function (value) : string {
  * @returns {number} number of the first character's Unicode value
  * @constructor
  */
-var CODE = function (value) : number {
+let CODE = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "CODE");
-  var text = TypeConverter.firstValueAsString(value);
+  let text = TypeConverter.firstValueAsString(value);
   if (text === "") {
     throw new ValueError("Function CODE parameter 1 value should be non-empty.");
   }
@@ -81,17 +81,17 @@ var CODE = function (value) : number {
  * @constructor
  * TODO: At some point this needs to return a more complex type than Array. Needs to return a type that has a dimension.
  */
-var SPLIT = function (text, delimiter, splitByEach?) : Array<string> {
+let SPLIT = function (text, delimiter, splitByEach?) : Array<string> {
   ArgsChecker.checkLengthWithin(arguments, 2, 3, "SPLIT");
   text = TypeConverter.firstValueAsString(text);
   delimiter = TypeConverter.firstValueAsString(delimiter);
   splitByEach = splitByEach === undefined ? false : TypeConverter.firstValueAsBoolean(splitByEach);
   if (splitByEach) {
-    var result = [text];
-    for (var i = 0; i < delimiter.length; i++) {
-      var char = delimiter[i];
-      var subResult = [];
-      for (var x = 0; x < result.length; x++) {
+    let result = [text];
+    for (let i = 0; i < delimiter.length; i++) {
+      let char = delimiter[i];
+      let subResult = [];
+      for (let x = 0; x < result.length; x++) {
         subResult = subResult.concat(result[x].split(char));
       }
       result = subResult;
@@ -110,10 +110,10 @@ var SPLIT = function (text, delimiter, splitByEach?) : Array<string> {
  * @returns {string} concatenated string
  * @constructor
  */
-var CONCATENATE = function (...values) : string {
+let CONCATENATE = function (...values) : string {
   ArgsChecker.checkAtLeastLength(values, 1, "CONCATENATE");
-  var string = '';
-  for (var i = 0; i < values.length; i++) {
+  let string = '';
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new RefError("Reference does not exist.");
@@ -135,18 +135,18 @@ var CONCATENATE = function (...values) : string {
  * @constructor
  * TODO: Looking up units is not efficient at all. We should use an object instead of iterating through an array.
  */
-var CONVERT = function (value, startUnit, endUnit) {
+let CONVERT = function (value, startUnit, endUnit) {
   ArgsChecker.checkLength(arguments, 3, "CONVERT");
-  var n = TypeConverter.firstValueAsNumber(value);
-  var fromUnit = TypeConverter.firstValueAsString(startUnit);
-  var toUnit = TypeConverter.firstValueAsString(endUnit);
+  let n = TypeConverter.firstValueAsNumber(value);
+  let fromUnit = TypeConverter.firstValueAsString(startUnit);
+  let toUnit = TypeConverter.firstValueAsString(endUnit);
 
   // NOTE: A lot of the code for this method is from https://github.com/sutoiku/formula.js. I'm relying on them to have
   // gotten it right, but I'm spot checking some of their work against GS, MSE, LibreOffice, OpenOffice.
 
   // List of units supported by CONVERT and units defined by the International System of Units
   // [Name, Symbol, Alternate symbols, Quantity, ISU, CONVERT, Conversion ratio]
-  var units = [
+  let units = [
     ["a.u. of action", "?", null, "action", false, false, 1.05457168181818e-34],
     ["a.u. of charge", "e", null, "electric_charge", false, false, 1.60217653141414e-19],
     ["a.u. of energy", "Eh", null, "energy", false, false, 4.35974417757576e-18],
@@ -298,7 +298,7 @@ var CONVERT = function (value, startUnit, endUnit) {
 
   // Binary prefixes
   // [Name, Prefix power of 2 value, Previx value, Abbreviation, Derived from]
-  var binary_prefixes = {
+  let binary_prefixes = {
     Yi: ["yobi", 80, 1208925819614629174706176, "Yi", "yotta"],
     Zi: ["zebi", 70, 1180591620717411303424, "Zi", "zetta"],
     Ei: ["exbi", 60, 1152921504606846976, "Ei", "exa"],
@@ -311,7 +311,7 @@ var CONVERT = function (value, startUnit, endUnit) {
 
   // Unit prefixes
   // [Name, Multiplier, Abbreviation]
-  var unit_prefixes = {
+  let unit_prefixes = {
     Y: ["yotta", 1e+24, "Y"],
     Z: ["zetta", 1e+21, "Z"],
     E: ["exa", 1e+18, "E"],
@@ -335,16 +335,16 @@ var CONVERT = function (value, startUnit, endUnit) {
   };
 
   // Initialize units and multipliers
-  var from = null;
-  var to = null;
-  var base_from_unit = fromUnit;
-  var base_to_unit = toUnit;
-  var from_multiplier = 1;
-  var to_multiplier = 1;
-  var alt;
+  let from = null;
+  let to = null;
+  let base_from_unit = fromUnit;
+  let base_to_unit = toUnit;
+  let from_multiplier = 1;
+  let to_multiplier = 1;
+  let alt;
 
   // Lookup from and to units
-  for (var i = 0; i < units.length; i++) {
+  for (let i = 0; i < units.length; i++) {
     alt = (units[i][2] === null) ? [] : units[i][2];
     if (units[i][1] === base_from_unit || alt.indexOf(base_from_unit) >= 0) {
       from = units[i];
@@ -356,8 +356,8 @@ var CONVERT = function (value, startUnit, endUnit) {
 
   // Lookup from prefix
   if (from === null) {
-    var from_binary_prefix = binary_prefixes[fromUnit.substring(0, 2)];
-    var from_unit_prefix = unit_prefixes[fromUnit.substring(0, 1)];
+    let from_binary_prefix = binary_prefixes[fromUnit.substring(0, 2)];
+    let from_unit_prefix = unit_prefixes[fromUnit.substring(0, 1)];
 
     // Handle dekao unit prefix (only unit prefix with two characters)
     if (fromUnit.substring(0, 2) === 'da') {
@@ -374,7 +374,7 @@ var CONVERT = function (value, startUnit, endUnit) {
     }
 
     // Lookup from unit
-    for (var j = 0; j < units.length; j++) {
+    for (let j = 0; j < units.length; j++) {
       alt = (units[j][2] === null) ? [] : units[j][2];
       if (units[j][1] === base_from_unit || alt.indexOf(base_from_unit) >= 0) {
         from = units[j];
@@ -384,8 +384,8 @@ var CONVERT = function (value, startUnit, endUnit) {
 
   // Lookup to prefix
   if (to === null) {
-    var to_binary_prefix = binary_prefixes[toUnit.substring(0, 2)];
-    var to_unit_prefix = unit_prefixes[toUnit.substring(0, 1)];
+    let to_binary_prefix = binary_prefixes[toUnit.substring(0, 2)];
+    let to_unit_prefix = unit_prefixes[toUnit.substring(0, 1)];
 
     // Handle dekao unit prefix (only unit prefix with two characters)
     if (toUnit.substring(0, 2) === 'da') {
@@ -402,7 +402,7 @@ var CONVERT = function (value, startUnit, endUnit) {
     }
 
     // Lookup to unit
-    for (var k = 0; k < units.length; k++) {
+    for (let k = 0; k < units.length; k++) {
       alt = (units[k][2] === null) ? [] : units[k][2];
       if (units[k][1] === base_to_unit || alt.indexOf(base_to_unit) >= 0) {
         to = units[k];
@@ -432,9 +432,9 @@ var CONVERT = function (value, startUnit, endUnit) {
  * @returns {string}
  * @constructor
  */
-var TRIM = function (value) {
+let TRIM = function (value) {
   ArgsChecker.checkLength(arguments, 1, "TRIM");
-  var text = TypeConverter.firstValueAsString(value);
+  let text = TypeConverter.firstValueAsString(value);
   return text.trim();
 };
 
@@ -444,9 +444,9 @@ var TRIM = function (value) {
  * @param value - Text to convert.
  * @constructor
  */
-var LOWER =  function (value) {
+let LOWER =  function (value) {
   ArgsChecker.checkLength(arguments, 1, "LOWER");
-  var text = TypeConverter.firstValueAsString(value);
+  let text = TypeConverter.firstValueAsString(value);
   return text.toLowerCase();
 };
 
@@ -456,9 +456,9 @@ var LOWER =  function (value) {
  * @param value - Text to convert.
  * @constructor
  */
-var UPPER = function (value) {
+let UPPER = function (value) {
   ArgsChecker.checkLength(arguments, 1, "UPPER");
-  var text = TypeConverter.firstValueAsString(value);
+  let text = TypeConverter.firstValueAsString(value);
   return text.toUpperCase();
 };
 
@@ -468,9 +468,9 @@ var UPPER = function (value) {
  * @param value - Value to return.
  * @constructor
  */
-var T = function (value) {
+let T = function (value) {
   ArgsChecker.checkLength(arguments, 1, "T");
-  var v = TypeConverter.firstValue(value);
+  let v = TypeConverter.firstValue(value);
   if (typeof v === "string") {
     return v;
   }

@@ -6,14 +6,14 @@ import {
  * evaluated at x. For more information see http://jstat.github.io/special-functions.html#betacf
  */
 function betacf(x, a, b) {
-  var fpmin = 1e-30;
-  var m = 1;
-  var qab = a + b;
-  var qap = a + 1;
-  var qam = a - 1;
-  var c = 1;
-  var d = 1 - qab * x / qap;
-  var m2, aa, del, h;
+  let fpmin = 1e-30;
+  let m = 1;
+  let qab = a + b;
+  let qap = a + 1;
+  let qam = a - 1;
+  let c = 1;
+  let d = 1 - qab * x / qap;
+  let m2, aa, del, h;
 
   // These q's will be used in factors that occur in the coefficients
   if (Math.abs(d) < fpmin)
@@ -57,7 +57,7 @@ function betacf(x, a, b) {
  */
 function ibeta(x, a, b) : number {
   // Factors in front of the continued fraction.
-  var bt = (x === 0 || x === 1) ?  0 :
+  let bt = (x === 0 || x === 1) ?  0 :
     Math.exp(gammaln(a + b) - gammaln(a) -
       gammaln(b) + a * Math.log(x) + b *
       Math.log(1 - x));
@@ -77,11 +77,11 @@ function ibeta(x, a, b) : number {
  * http://jstat.github.io/special-functions.html#ibetainv
  */
 function ibetainv(p, a, b) {
-  var EPS = 1e-8;
-  var a1 = a - 1;
-  var b1 = b - 1;
-  var j = 0;
-  var lna, lnb, pp, t, u, err, x, al, h, w, afac;
+  let EPS = 1e-8;
+  let a1 = a - 1;
+  let b1 = b - 1;
+  let j = 0;
+  let lna, lnb, pp, t, u, err, x, al, h, w, afac;
   if (p <= 0)
     return 0;
   if (p >= 1)
@@ -159,8 +159,8 @@ function variance(arr, flag) {
  * Return the sum of a vector. See http://jstat.github.io/vector.html#sum for more information.
  */
 function sum(arr) {
-  var sum = 0;
-  var i = arr.length;
+  let sum = 0;
+  let i = arr.length;
   while (--i >= 0) {
     sum += arr[i];
   }
@@ -181,10 +181,10 @@ function mean(arr) {
  * more information.
  */
 function sumsqerr(arr) {
-  var m = mean(arr);
-  var sum = 0;
-  var i = arr.length;
-  var tmp;
+  let m = mean(arr);
+  let sum = 0;
+  let i = arr.length;
+  let tmp;
   while (--i >= 0) {
     tmp = arr[i] - m;
     sum += tmp * tmp;
@@ -196,11 +196,11 @@ function sumsqerr(arr) {
  * Return the covariance of two vectors. See http://jstat.github.io/vector.html#covariance for more information.
  */
 function covariance(arr1, arr2) {
-  var u = mean(arr1);
-  var v = mean(arr2);
-  var arr1Len = arr1.length;
-  var sq_dev = new Array(arr1Len);
-  for (var i = 0; i < arr1Len; i++) {
+  let u = mean(arr1);
+  let v = mean(arr2);
+  let arr1Len = arr1.length;
+  let sq_dev = new Array(arr1Len);
+  for (let i = 0; i < arr1Len; i++) {
     sq_dev[i] = (arr1[i] - u) * (arr2[i] - v);
   }
   if ((arr1Len - 1) === 0) {
@@ -214,13 +214,13 @@ function covariance(arr1, arr2) {
  * information.
  */
 function gammaln(x) {
-  var j = 0;
-  var cof = [
+  let j = 0;
+  let cof = [
     76.18009172947146, -86.50532032941677, 24.01409824083091,
     -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5
   ];
-  var ser = 1.000000000190015;
-  var xx, y, tmp;
+  let ser = 1.000000000190015;
+  let xx, y, tmp;
   tmp = (y = xx = x) + 5.5;
   tmp -= (xx + 0.5) * Math.log(tmp);
   for (; j < 6; j++)
@@ -233,19 +233,19 @@ function gammaln(x) {
  * http://jstat.github.io/special-functions.html#gammafn for more information.
  */
 function gammafn(x) {
-  var p = [-1.716185138865495, 24.76565080557592, -379.80425647094563,
+  let p = [-1.716185138865495, 24.76565080557592, -379.80425647094563,
     629.3311553128184, 866.9662027904133, -31451.272968848367,
     -36144.413418691176, 66456.14382024054
   ];
-  var q = [-30.8402300119739, 315.35062697960416, -1015.1563674902192,
+  let q = [-30.8402300119739, 315.35062697960416, -1015.1563674902192,
     -3107.771671572311, 22538.118420980151, 4755.8462775278811,
     -134659.9598649693, -115132.2596755535];
-  var fact;
-  var n = 0;
-  var xden = 0;
-  var xnum = 0;
-  var y = x;
-  var i, z, yi, res;
+  let fact;
+  let n = 0;
+  let xden = 0;
+  let xnum = 0;
+  let y = x;
+  let i, z, yi, res;
   if (y <= 0) {
     res = y % 1 + 3.6e-16;
     if (res) {
@@ -301,7 +301,7 @@ function cdf(x, df1, df2) {
  * @returns {number} error
  */
 function erf(x) {
-  var cof = [-1.3026537197817094, 6.4196979235649026e-1, 1.9476473204185836e-2,
+  let cof = [-1.3026537197817094, 6.4196979235649026e-1, 1.9476473204185836e-2,
     -9.561514786808631e-3, -9.46595344482036e-4, 3.66839497852761e-4,
     4.2523324806907e-5, -2.0278578112534e-5, -1.624290004647e-6,
     1.303655835580e-6, 1.5626441722e-8, -8.5238095915e-8,
@@ -311,11 +311,11 @@ function erf(x) {
     -1.12708e-13, 3.81e-16, 7.106e-15,
     -1.523e-15, -9.4e-17, 1.21e-16,
     -2.8e-17];
-  var j = cof.length - 1;
-  var isneg = false;
-  var d = 0;
-  var dd = 0;
-  var t, ty, tmp, res;
+  let j = cof.length - 1;
+  let isneg = false;
+  let d = 0;
+  let dd = 0;
+  let t, ty, tmp, res;
 
   if (x < 0) {
     x = -x;
@@ -367,7 +367,7 @@ function betafn(x, y) {
  * @returns {number} -  clean number
  */
 function cleanFloat(n) {
-  var power = Math.pow(10, 14);
+  let power = Math.pow(10, 14);
   return Math.round(n * power) / power;
 }
 

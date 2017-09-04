@@ -3,7 +3,7 @@
 ## Convert
 
 
-### DATE 
+### TO_DATE 
 
 ```
   Converts a number to a Date. 
@@ -12,7 +12,7 @@
 @constructor
 ```
 
-### DOLLARS 
+### TO_DOLLARS 
 
 ```
   Converts a number to a Dollar value. 
@@ -21,13 +21,13 @@
 @constructor
 ```
 
-### PERCENT 
+### TO_PERCENT 
 
 ```
   Converts a number to a percent value where 1 = 100
 ```
 
-### TEXT 
+### TO_TEXT 
 
 ```
   Converts a number to a text value 
@@ -204,7 +204,7 @@
 @constructor
 ```
 
-### TWORKDAYS 
+### NETWORKDAYS 
 
 ```
   Returns the number of net working days between two provided days. 
@@ -215,7 +215,7 @@
 @constructor
 ```
 
-### INTL 
+### TWORKDAYS$INTL 
 
 ```
   Returns the number of networking days between two provided days excluding specified weekend days and holidays. 
@@ -265,7 +265,7 @@
 @constructor
 ```
 
-### INTL 
+### WORKDAY$INTL 
 
 ```
   Calculates the date after a specified number of workdays excluding specified weekend days and holidays. 
@@ -1334,7 +1334,7 @@
 @constructor
 ```
 
-### NDBETWEEN 
+### RANDBETWEEN 
 
 ```
   Returns a uniformly random integer between two values, inclusive on high and low. Values with decimal parts may be used for low andor high; this will cause the least and greatest possible values to be the next integer greater than low andor the next integer less than high, respectively. 
@@ -1420,7 +1420,7 @@
 @constructor
 ```
 
-### UNTUNIQUE 
+### COUNTUNIQUE 
 
 ```
   Counts the number of unique values in a list of specified values and ranges. 
@@ -1429,7 +1429,7 @@
 @constructor
 ```
 
-### UMPRODUCT 
+### SUMPRODUCT 
 
 ```
   Calculates the sum of the products of corresponding entries in two equal-sized arrays or ranges. 
@@ -1494,7 +1494,7 @@
 @constructor
 ```
 
-### ACTDOUBLE 
+### FACTDOUBLE 
 
 ```
   Calculates the double-factorial of a number. 
@@ -1503,7 +1503,7 @@
 @constructor
 ```
 
-### PERCENT 
+### UNARY_PERCENT 
 
 ```
   Returns a value as a percentage where 100 is 1.0, and 0 is 0. 
@@ -1512,7 +1512,7 @@
 @constructor
 ```
 
-### LTINOMIAL 
+### MULTINOMIAL 
 
 ```
   Returns the factorial of the sum of the arguments divided by the product of the factorials of the arguments. 
@@ -1633,7 +1633,7 @@
 @constructor
 ```
 
-### EFTTAILED 
+### IST$LEFTTAILED 
 
 ```
   Calculates the left-tailed F probability distribution (degree of diversity) for two data sets with given input x. Alternately called Fisher-Snedecor distribution or Snecdor's F distribution. 
@@ -1739,7 +1739,7 @@
 @constructor
 ```
 
-### ERCENTILE 
+### PERCENTILE 
 
 ```
   Returns the value at a given percentile of a set of data. 
@@ -1813,7 +1813,7 @@
 @constructor
 ```
 
-### ANDARDIZE 
+### STANDARDIZE 
 
 ```
   Returns the normalized equivalent of a random variable given mean and standard deviation of the distribution. 
@@ -1883,7 +1883,7 @@
 @constructor
 ```
 
-### RCENTRANK 
+### PERCENTRANK 
 
 ```
   Returns the percentage rank (percentile) of the given value in a sample. Functions the same as PERCENTRANK.INC. 
@@ -1894,7 +1894,7 @@
 @constructor
 ```
 
-### EXC 
+### ERCENTRANK$EXC 
 
 ```
   Returns the percentage rank (percentile) from 0 to 1 exclusive for a value in a sample. 
@@ -1946,7 +1946,7 @@
 @constructor
 ```
 
-### BINOMDIST 
+### NEGBINOMDIST 
 
 ```
   Returns the negative binomial distribution. 
@@ -1975,7 +1975,7 @@
 @constructor
 ```
 
-### ONFIDENCE 
+### CONFIDENCE 
 
 ```
   Returns the (1-alpha) confidence interval for a normal distribution. 
@@ -2126,7 +2126,7 @@
 @constructor
 ```
 
-### AVG 
+### RANK$AVG 
 
 ```
   Returns the position of a given entry in the entire list, measured either from top to bottom or bottom to top. If more than one value exists in the same data-set, the average range of the values will be returned. 
@@ -2137,7 +2137,7 @@
 @constructor
 ```
 
-### EQ 
+### RANK$EQ 
 
 ```
   Returns the position of a given entry in the entire list, measured either from top to bottom or bottom to top. If there is more than one entry of the same value in the dataset, the top rank of the entries will be returned. 
@@ -2148,7 +2148,7 @@
 @constructor
 ```
 
-### GNORMDIST 
+### LOGNORMDIST 
 
 ```
   Returns the cumulative lognormal distribution for the given number. 
@@ -2210,7 +2210,7 @@
 @constructor TODO: At some point this needs to return a more complex type than Array. Needs to return a type that has a dimension.
 ```
 
-### NCATENATE 
+### CONCATENATE 
 
 ```
   Appends strings to one another. 

@@ -7,8 +7,7 @@ var Serializer = (function () {
     function Serializer() {
     }
     Serializer.serialize = function (value) {
-        var t = typeof value;
-        return "<" + t + ": " + value + ">";
+        return "<" + (typeof value) + ": " + value + ">";
     };
     return Serializer;
 }());

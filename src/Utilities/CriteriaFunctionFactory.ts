@@ -7,13 +7,13 @@
  * @returns {RegExp} resulting regex
  */
 function wildCardRegex(c: string) {
-  var a = c.split("~?");
-  for (var i = 0; i < a.length; i++) {
+  let a = c.split("~?");
+  for (let i = 0; i < a.length; i++) {
     a[i] = a[i].split("?").join(".{1}");
   }
-  var b = a.join("\\\?");
-  var d = b.split("~*");
-  for (var i = 0; i < d.length; i++) {
+  let b = a.join("\\\?");
+  let d = b.split("~*");
+  for (let i = 0; i < d.length; i++) {
     d[i] = d[i].split("*").join(".*");
   }
   return new RegExp("^"+d.join(".*")+"$", "g");
@@ -37,7 +37,7 @@ class CriteriaFunctionFactory {
    */
   static createCriteriaFunction(criteria: string) : Function {
     // Default criteria does nothing
-    var criteriaEvaluation = function (x) : boolean {
+    let criteriaEvaluation = function (x) : boolean {
       return false;
     };
 
@@ -46,7 +46,7 @@ class CriteriaFunctionFactory {
         return x === criteria;
       };
     } else if (typeof criteria === "string") {
-      var comparisonMatches = criteria.match(/^\s*(<=|>=|=|<>|>|<)\s*(-)?\s*(\$)?\s*([0-9]+([,.][0-9]+)?)\s*$/);
+      let comparisonMatches = criteria.match(/^\s*(<=|>=|=|<>|>|<)\s*(-)?\s*(\$)?\s*([0-9]+([,.][0-9]+)?)\s*$/);
       if (comparisonMatches !== null && comparisonMatches.length >= 6 && comparisonMatches[4] !== undefined) {
         criteriaEvaluation = function (x) : boolean {
           return eval(x + comparisonMatches[1] + (comparisonMatches[2] === undefined ? "" : "-") +  comparisonMatches[4]);
@@ -63,7 +63,7 @@ class CriteriaFunctionFactory {
         }
       } else if (criteria.match(/\*|\~\*|\?|\~\?/) !== null) {
         // Regular string
-        var matches = criteria.match(/\*|\~\*|\?|\~\?/);
+        let matches = criteria.match(/\*|\~\*|\?|\~\?/);
         if (matches !== null) {
           criteriaEvaluation = function (x) : boolean {
             try {

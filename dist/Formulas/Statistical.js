@@ -27,7 +27,7 @@ var DEVSQ = function () {
         count++;
     }
     var mean = result / count;
-    var result = 0;
+    result = 0;
     for (var i = 0; i < range.length; i++) {
         result += Math.pow((TypeConverter_1.TypeConverter.valueToNumber(range[i]) - mean), 2);
     }
@@ -75,9 +75,9 @@ var MEDIAN = function () {
         if (sortedArray.length === 2) {
             return AVERAGE(sortedArray[0], sortedArray[1]);
         }
-        var top = sortedArray[sortedArray.length / 2];
+        var top_1 = sortedArray[sortedArray.length / 2];
         var bottom = sortedArray[(sortedArray.length / 2) - 1];
-        return AVERAGE(top, bottom);
+        return AVERAGE(top_1, bottom);
     }
     else {
         // odd number of values
@@ -1380,12 +1380,12 @@ var CONFIDENCE = function (alpha, standDev, size) {
         return -1.41421356237309505 * std * _erfcinv(2 * p) + m;
     }
     function _sumsqerr(arr) {
-        var mean = mean(arr);
+        var m = MathHelpers_1.mean(arr);
         var sum = 0;
         var i = arr.length;
         var tmp;
         while (--i >= 0) {
-            tmp = arr[i] - mean;
+            tmp = arr[i] - m;
             sum += tmp * tmp;
         }
         return sum;
@@ -1489,7 +1489,7 @@ var COVAR = function (dataY, dataX) {
     dataY = Filter_1.Filter.flattenAndThrow(dataY).map(TypeConverter_1.TypeConverter.valueToNumber);
     dataX = Filter_1.Filter.flattenAndThrow(dataX).map(TypeConverter_1.TypeConverter.valueToNumber);
     if (dataX.length !== dataY.length) {
-        throw new Errors_1.NAError("COVAR has mismatched argument count " + dataY.length + " vs " + dataX.length + ".");
+        throw new Errors_1.NAError("COlet has mismatched argument count " + dataY.length + " vs " + dataX.length + ".");
     }
     var mean1 = MathHelpers_1.mean(dataY);
     var mean2 = MathHelpers_1.mean(dataX);
@@ -1647,7 +1647,7 @@ var VAR = function () {
     var range = Filter_1.Filter.flattenAndThrow(values).map(TypeConverter_1.TypeConverter.valueToNumber);
     var n = range.length;
     if (n < 2) {
-        throw new Errors_1.DivZeroError("Evaluation of function VAR caused a divide by zero error.");
+        throw new Errors_1.DivZeroError("Evaluation of function let caused a divide by zero error.");
     }
     var sigma = 0;
     var count = 0;

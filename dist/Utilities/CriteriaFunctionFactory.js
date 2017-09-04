@@ -46,19 +46,19 @@ var CriteriaFunctionFactory = (function () {
             };
         }
         else if (typeof criteria === "string") {
-            var comparisonMatches = criteria.match(/^\s*(<=|>=|=|<>|>|<)\s*(-)?\s*(\$)?\s*([0-9]+([,.][0-9]+)?)\s*$/);
-            if (comparisonMatches !== null && comparisonMatches.length >= 6 && comparisonMatches[4] !== undefined) {
+            var comparisonMatches_1 = criteria.match(/^\s*(<=|>=|=|<>|>|<)\s*(-)?\s*(\$)?\s*([0-9]+([,.][0-9]+)?)\s*$/);
+            if (comparisonMatches_1 !== null && comparisonMatches_1.length >= 6 && comparisonMatches_1[4] !== undefined) {
                 criteriaEvaluation = function (x) {
-                    return eval(x + comparisonMatches[1] + (comparisonMatches[2] === undefined ? "" : "-") + comparisonMatches[4]);
+                    return eval(x + comparisonMatches_1[1] + (comparisonMatches_1[2] === undefined ? "" : "-") + comparisonMatches_1[4]);
                 };
-                if (comparisonMatches[1] === "=") {
+                if (comparisonMatches_1[1] === "=") {
                     criteriaEvaluation = function (x) {
-                        return eval(x + "===" + (comparisonMatches[2] === undefined ? "" : "-") + comparisonMatches[4]);
+                        return eval(x + "===" + (comparisonMatches_1[2] === undefined ? "" : "-") + comparisonMatches_1[4]);
                     };
                 }
-                if (comparisonMatches[1] === "<>") {
+                if (comparisonMatches_1[1] === "<>") {
                     criteriaEvaluation = function (x) {
-                        return eval(x + "!==" + (comparisonMatches[2] === undefined ? "" : "-") + comparisonMatches[4]);
+                        return eval(x + "!==" + (comparisonMatches_1[2] === undefined ? "" : "-") + comparisonMatches_1[4]);
                     };
                 }
             }

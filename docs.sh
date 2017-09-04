@@ -50,7 +50,7 @@ function process_line() {
       CURRENT_BLOCK=$(printf "$CURRENT_BLOCK" | paste -sd " " - | sed -e $'s/@/\\\n@/g')
 
       # Grab the function name
-      FUNCTION_NAME=$(echo "$LINE" | grep -oE '[A-Z0-9]{1,9}\s')
+      FUNCTION_NAME=$(echo "$LINE" | grep -oE '[A-Z0-9_\$]{1,14}\s')
 
       # Build the finalized block
       FINALIZED_BLOCK="\n### ${FUNCTION_NAME}\n${FINALIZED_BLOCK}"

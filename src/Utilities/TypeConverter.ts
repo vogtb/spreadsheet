@@ -2,12 +2,15 @@
 import * as moment from "moment";
 import {
   RefError,
-  ValueError, DivZeroError
+  ValueError,
+  DivZeroError
 } from "../Errors";
 import {
   DateRegExBuilder
 } from "./DateRegExBuilder";
-import {Cell} from "../Cell";
+import {
+  Cell
+} from "../Cell";
 
 const YEAR_MONTHDIG_DAY = DateRegExBuilder.DateRegExBuilder()
   .start()
@@ -59,6 +62,13 @@ const TIMESTAMP = DateRegExBuilder.DateRegExBuilder()
 const FIRST_YEAR = 1900;
 // The year 2000.
 const Y2K_YEAR = 2000;
+
+function isUndefined(x) {
+  return x === undefined;
+}
+function isDefined(x) {
+  return x !== undefined;
+}
 
 /**
  * Matches a timestamp string, adding the units to the moment passed in.
@@ -351,16 +361,9 @@ class TypeConverter {
    * @returns {number} or undefined
    */
   public static stringToNumber(value: string) : number {
-    function isUndefined(x) {
-      return x === undefined;
-    }
-    function isDefined(x) {
-      return x !== undefined;
-    }
+    const NUMBER_REGEX = /^ *([\+/-])? *(\$)? *([\+/-])? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *([\+/-])? *(\d*)? *(%)? *$/;
 
-    // var NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\d*)? *(%)? *$/;
-    let NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\+|\-)? *(\d*)? *(%)? *$/;
-    var matches = value.match(NUMBER_REGEX);
+    let matches = value.match(NUMBER_REGEX);
     if (matches !== null) {
       let  firstSign = matches[1];
       let  currency = matches[2];

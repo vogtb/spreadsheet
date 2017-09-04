@@ -2,9 +2,9 @@
  * Static class for building objects using variables as keys. Mostly used in situations where we want to build objects
  * with similar key structures inside of arrays.
  * ```
- * var m = "key";
- * var n = "another"
- * var x = [
+ * let m = "key";
+ * let n = "another"
+ * let x = [
  *   ObjectFromPairs.of([
  *     m, 1,
  *     n, 2
@@ -23,8 +23,8 @@ class ObjectFromPairs {
    * @returns {{}}
    */
   static of(values : Array<any>) {
-    var o = {};
-    for (var i = 0; i < values.length - 1; i = i + 2) {
+    let o = {};
+    for (let i = 0; i < values.length - 1; i = i + 2) {
       if (i % 2 === 0) {
         o[values[i]] = values[i+1];
       }

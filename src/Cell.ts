@@ -20,7 +20,7 @@ class Cell {
    * @param id key of the cell in A1-format.
    */
   constructor(id: string) {
-    var key = parseKey(id);
+    let key = parseKey(id);
 
     this.id = id;
     this.row = key.y;
@@ -32,7 +32,7 @@ class Cell {
    * @param dependencies to merge with existing dependencies.
    */
   updateDependencies(dependencies: Array<string>) {
-    for (var index in dependencies) {
+    for (let index in dependencies) {
       if (this.dependencies.indexOf(dependencies[index]) === -1) {
         this.dependencies.push(dependencies[index]);
       }
@@ -182,7 +182,7 @@ class Cell {
    * @constructor
    */
   static BuildFrom(id: string, value: any) : Cell {
-    var cell = new Cell(id);
+    let cell = new Cell(id);
     cell.setValue(value);
     return cell;
   }
@@ -190,7 +190,7 @@ class Cell {
 
 function toNum(chr) {
   chr = chr.replace(/\$/g, '');
-  var base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', i, j, result = 0;
+  let base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', i, j, result = 0;
   for (i = 0, j = chr.length - 1; i < chr.length; i += 1, j -= 1) {
     result += Math.pow(base.length, j) * (base.indexOf(chr[i]) + 1);
   }
@@ -201,7 +201,7 @@ function toNum(chr) {
 }
 
 function parseKey(cell) {
-  var num = cell.match(/\d+$/),
+  let num = cell.match(/\d+$/),
     alpha = cell.replace(num, '');
 
   return {

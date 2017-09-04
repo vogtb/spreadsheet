@@ -55,6 +55,12 @@ var TIMESTAMP = DateRegExBuilder_1.DateRegExBuilder.DateRegExBuilder()
 var FIRST_YEAR = 1900;
 // The year 2000.
 var Y2K_YEAR = 2000;
+function isUndefined(x) {
+    return x === undefined;
+}
+function isDefined(x) {
+    return x !== undefined;
+}
 /**
  * Matches a timestamp string, adding the units to the moment passed in.
  * @param timestampString to parse. ok formats: "10am", "10:10", "10:10am", "10:10:10", "10:10:10am", etc.
@@ -341,14 +347,7 @@ var TypeConverter = (function () {
      * @returns {number} or undefined
      */
     TypeConverter.stringToNumber = function (value) {
-        function isUndefined(x) {
-            return x === undefined;
-        }
-        function isDefined(x) {
-            return x !== undefined;
-        }
-        // var NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\d*)? *(%)? *$/;
-        var NUMBER_REGEX = /^ *(\+|\-)? *(\$)? *(\+|\-)? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *(\+|\-)? *(\d*)? *(%)? *$/;
+        var NUMBER_REGEX = /^ *([\+/-])? *(\$)? *([\+/-])? *((\d+)?(,\d{3})?(,\d{3})?(,\d{3})?(,\d{3})?)? *(\.)? *(\d*)? *(e|E)? *([\+/-])? *(\d*)? *(%)? *$/;
         var matches = value.match(NUMBER_REGEX);
         if (matches !== null) {
             var firstSign = matches[1];

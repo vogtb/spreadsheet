@@ -17,10 +17,10 @@ import {
  * @returns {boolean} if all values are logically true.
  * @constructor
  */
-var AND = function (...values) {
+let AND = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 1, "AND");
-  var result = true;
-  for (var i = 0; i < values.length; i++) {
+  let result = true;
+  for (let i = 0; i < values.length; i++) {
     if (typeof values[i] === "string") {
       throw new ValueError("AND expects boolean values. But '" + values[i]
           + "' is a text and cannot be coerced to a boolean.")
@@ -44,7 +44,7 @@ var AND = function (...values) {
  * @returns {boolean}
  * @constructor
  */
-var EXACT = function (one, two) {
+let EXACT = function (one, two) {
   ArgsChecker.checkLength(arguments, 2, "EXACT");
   one = TypeConverter.firstValue(one);
   two = TypeConverter.firstValue(two);
@@ -56,7 +56,7 @@ var EXACT = function (one, two) {
  * @returns {boolean} true boolean
  * @constructor
  */
-var TRUE = function () : boolean {
+let TRUE = function () : boolean {
   ArgsChecker.checkLength(arguments, 0, "TRUE");
   return true;
 };
@@ -66,7 +66,7 @@ var TRUE = function () : boolean {
  * @returns {boolean} false boolean
  * @constructor
  */
-var FALSE = function () : boolean {
+let FALSE = function () : boolean {
   ArgsChecker.checkLength(arguments, 0, "FALSE");
   return false;
 };
@@ -77,7 +77,7 @@ var FALSE = function () : boolean {
  * @returns {boolean} opposite of a logical value input
  * @constructor
  */
-var NOT = function (value) : boolean {
+let NOT = function (value) : boolean {
   ArgsChecker.checkLength(arguments, 1, "NOT");
   if (typeof(value) === "boolean") {
     return !value;
@@ -108,9 +108,9 @@ var NOT = function (value) : boolean {
  * @returns {boolean}
  * @constructor
  */
-var OR = function (...values) {
+let OR = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 1, "OR");
-  for (var i = 0; i < values.length; i++) {
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new RefError("Reference does not exist.");
@@ -131,10 +131,10 @@ var OR = function (...values) {
  * @returns {boolean} returns true if only one input is considered logically true.
  * @constructor
  */
-var XOR = function (...values) {
+let XOR = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 1, "XOR");
-  var alreadyTruthy = false;
-  for (var i = 0; i < values.length; i++) {
+  let alreadyTruthy = false;
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new RefError("Reference does not exist.");

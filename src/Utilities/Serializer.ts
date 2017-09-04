@@ -3,8 +3,7 @@
  */
 class Serializer {
   static serialize(value: any) : string {
-    var t = typeof value;
-    return "<" +  t + ": " + value + ">";
+    return "<" +  (typeof value) + ": " + value + ">";
   }
 }
 

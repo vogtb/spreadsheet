@@ -251,7 +251,7 @@ import {
 } from "./Date"
 
 // Using alias to bind dot-notation function names.
-var __COMPLEX = {
+let __COMPLEX = {
   "F.DIST": FDIST$LEFTTAILED,
   "NETWORKDAYS.INTL": NETWORKDAYS$INTL,
   "WORKDAY.INTL": WORKDAY$INTL,

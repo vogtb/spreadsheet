@@ -815,7 +815,7 @@ var WORKDAY = function (startDate, numberOfDays, holidays) {
     ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 2, 3, "WORKDAY");
     startDate = TypeConverter_1.TypeConverter.firstValueAsDateNumber(startDate, true);
     numberOfDays = TypeConverter_1.TypeConverter.firstValueAsNumber(numberOfDays);
-    var hasHolidays = (cleanHolidays !== undefined);
+    var hasHolidays = (holidays !== undefined);
     var cleanHolidays = [];
     if (hasHolidays !== undefined) {
         if (holidays instanceof Array) {

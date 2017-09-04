@@ -39,18 +39,18 @@ import {
  * @returns {number} sum of squares of deviations
  * @constructor
  */
-var DEVSQ = function (...values) : number {
+let DEVSQ = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "DEVSQ");
-  var range = Filter.flattenAndThrow(values);
-  var result = 0;
-  var count = 0;
-  for (var i = 0; i < range.length; i++) {
+  let range = Filter.flattenAndThrow(values);
+  let result = 0;
+  let count = 0;
+  for (let i = 0; i < range.length; i++) {
     result = result + TypeConverter.valueToNumber(range[i]);
     count++;
   }
-  var mean = result / count;
-  var result = 0;
-  for (var i = 0; i < range.length; i++) {
+  let mean = result / count;
+  result = 0;
+  for (let i = 0; i < range.length; i++) {
     result += Math.pow((TypeConverter.valueToNumber(range[i]) - mean), 2);
   }
   return result;
@@ -62,23 +62,23 @@ var DEVSQ = function (...values) : number {
  * @returns {number} the median value of the dataset
  * @constructor
  */
-var MEDIAN = function (...values) : number {
+let MEDIAN = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "MEDIAN");
-  var sortedArray = [];
+  let sortedArray = [];
   values.forEach(function (currentValue) {
     if (currentValue instanceof Array) {
       if (currentValue.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      var filtered = Filter.filterOutStringValues(currentValue);
+      let filtered = Filter.filterOutStringValues(currentValue);
       sortedArray = sortedArray.concat(filtered);
     } else {
       sortedArray.push(TypeConverter.valueToNumber(currentValue));
     }
   });
   sortedArray = sortedArray.sort(function (a, b) {
-    var aN = TypeConverter.valueToNumber(a);
-    var bN = TypeConverter.valueToNumber(b);
+    let aN = TypeConverter.valueToNumber(a);
+    let bN = TypeConverter.valueToNumber(b);
     return aN - bN;
   });
   if (sortedArray.length === 1) {
@@ -92,8 +92,8 @@ var MEDIAN = function (...values) : number {
     if (sortedArray.length === 2) {
       return AVERAGE(sortedArray[0], sortedArray[1]);
     }
-    var top = sortedArray[sortedArray.length / 2];
-    var bottom = sortedArray[(sortedArray.length / 2) - 1];
+    let top = sortedArray[sortedArray.length / 2];
+    let bottom = sortedArray[(sortedArray.length / 2) - 1];
     return AVERAGE(top, bottom);
   } else {
     // odd number of values
@@ -107,16 +107,16 @@ var MEDIAN = function (...values) : number {
  * @returns {number} the average value of this dataset.
  * @constructor
  */
-var AVERAGE = function (...values) : number {
+let AVERAGE = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "AVERAGE");
-  var result = 0;
-  var count = 0;
-  for (var i = 0; i < values.length; i++) {
+  let result = 0;
+  let count = 0;
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      var filtered = Filter.filterOutStringValues(values[i]);
+      let filtered = Filter.filterOutStringValues(values[i]);
       result = result + SUM.apply(this, filtered);
       count += filtered.length;
     } else {
@@ -133,14 +133,14 @@ var AVERAGE = function (...values) : number {
  * @returns {number} average of the magnitudes of deviations of data from a dataset's mean
  * @constructor
  */
-var AVEDEV = function (...values) {
+let AVEDEV = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 1, "AVEDEV");
 
   // Sort to array-values, and non-array-values
-  var arrayValues = [];
-  var nonArrayValues = [];
-  for (var i = 0; i < values.length; i++) {
-    var X = values[i];
+  let arrayValues = [];
+  let nonArrayValues = [];
+  for (let i = 0; i < values.length; i++) {
+    let X = values[i];
     if (X instanceof Array) {
       if (X.length === 0) {
         throw new RefError("Reference does not exist.");
@@ -152,23 +152,23 @@ var AVEDEV = function (...values) {
   }
 
   // Remove string values from array-values, but not from non-array-values, and concat.
-  var flatValues = Filter.filterOutStringValues(Filter.flatten(arrayValues)).map(function (value) {
+  let flatValues = Filter.filterOutStringValues(Filter.flatten(arrayValues)).map(function (value) {
     return TypeConverter.valueToNumber(value);
   }).concat(nonArrayValues);
 
   // Calculating mean
-  var result = 0;
-  var count = 0;
-  for (var i = 0; i < flatValues.length; i++) {
+  let result = 0;
+  let count = 0;
+  for (let i = 0; i < flatValues.length; i++) {
     result = result + TypeConverter.valueToNumber(flatValues[i]);
     count++;
   }
   if (count === 0) {
     throw new DivZeroError("Evaluation of function AVEDEV caused a devide by zero error.");
   }
-  var mean = result / count;
+  let mean = result / count;
 
-  for (var i = 0; i < flatValues.length; i++) {
+  for (let i = 0; i < flatValues.length; i++) {
     flatValues[i] = ABS(TypeConverter.valueToNumber(flatValues[i]) - mean);
   }
   return SUM(flatValues) / flatValues.length;
@@ -180,16 +180,16 @@ var AVEDEV = function (...values) {
  * @returns {number} the numerical average value in a dataset
  * @constructor
  */
-var AVERAGEA = function (...values) {
+let AVERAGEA = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 1, "AVERAGEA");
-  var result = 0;
-  var count = 0;
-  for (var i = 0; i < values.length; i++) {
+  let result = 0;
+  let count = 0;
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      var filtered = Filter.stringValuesToZeros(values[i]);
+      let filtered = Filter.stringValuesToZeros(values[i]);
       result = result + SUM.apply(this, filtered);
       count += filtered.length;
     } else {
@@ -212,7 +212,7 @@ var AVERAGEA = function (...values) {
  * @returns {number} the Pearson product-moment correlation coefficient.
  * @constructor
  */
-var CORREL = function (dataY, dataX) : number {
+let CORREL = function (dataY, dataX) : number {
   ArgsChecker.checkLength(arguments, 2, "CORREL");
   if (!Array.isArray(dataY)) {
     dataY = [dataY];
@@ -223,10 +223,10 @@ var CORREL = function (dataY, dataX) : number {
   if (dataY.length !== dataX.length) {
     throw new NAError("CORREL has mismatched argument count " + dataY + " vs " + dataX + ".");
   }
-  var arr1 = Filter.filterOutNonNumberValues(Filter.flattenAndThrow(dataY));
-  var arr2 = Filter.filterOutNonNumberValues(Filter.flattenAndThrow(dataX));
-  var stdevArr1 = stdev(arr1, 1);
-  var stdevArr2 = stdev(arr2, 1);
+  let arr1 = Filter.filterOutNonNumberValues(Filter.flattenAndThrow(dataY));
+  let arr2 = Filter.filterOutNonNumberValues(Filter.flattenAndThrow(dataX));
+  let stdevArr1 = stdev(arr1, 1);
+  let stdevArr2 = stdev(arr2, 1);
   if (stdevArr1 === 0 || stdevArr2 === 0) {
     throw new DivZeroError("Evaluation of function CORREL caused a divide by zero error.");
   }
@@ -241,7 +241,7 @@ var CORREL = function (dataY, dataX) : number {
  * @returns {number} the Pearson product-moment correlation coefficient.
  * @constructor
  */
-var PEARSON = function (dataY, dataX) {
+let PEARSON = function (dataY, dataX) {
   ArgsChecker.checkLength(arguments, 2, "PEARSON");
   return CORREL.apply(this, [dataY, dataX]);
 };
@@ -255,7 +255,7 @@ var PEARSON = function (dataY, dataX) {
  * @returns {number} value of the exponential distribution function.
  * @constructor
  */
-var EXPONDIST = function (x, lambda, cumulative) : number {
+let EXPONDIST = function (x, lambda, cumulative) : number {
   ArgsChecker.checkLength(arguments, 3, "EXPONDIST");
   function cdf(x, rate) {
     return x < 0 ? 0 : 1 - Math.exp(-rate * x);
@@ -284,16 +284,16 @@ var EXPONDIST = function (x, lambda, cumulative) : number {
  * @constructor
  * TODO: This function should be stricter in its return type.
  */
-var FDIST$LEFTTAILED = function (x, degreesFreedom1, degreesFreedom2, cumulative) : number|undefined|boolean {
+let FDIST$LEFTTAILED = function (x, degreesFreedom1, degreesFreedom2, cumulative) : number|undefined|boolean {
   ArgsChecker.checkLength(arguments, 4, "FDIST$LEFTTAILED");
 
   x = TypeConverter.firstValueAsNumber(x);
   if (x < 0) {
     throw new NumError("Function F.DIST parameter 1 value is " + x + ". It should be greater than or equal to 0.");
   }
-  var d1 = TypeConverter.firstValueAsNumber(degreesFreedom1);
-  var d2 = TypeConverter.firstValueAsNumber(degreesFreedom2);
-  var cum = TypeConverter.firstValueAsBoolean(cumulative);
+  let d1 = TypeConverter.firstValueAsNumber(degreesFreedom1);
+  let d2 = TypeConverter.firstValueAsNumber(degreesFreedom2);
+  let cum = TypeConverter.firstValueAsBoolean(cumulative);
   return (cum) ? cdf(x, d1, d2) : pdf(x, d1, d2);
 };
 
@@ -307,7 +307,7 @@ var FDIST$LEFTTAILED = function (x, degreesFreedom1, degreesFreedom2, cumulative
  * @returns {number} inverse of the (right-tailed) F probability distribution
  * @constructor
  */
-var FINV = function (probability, degFreedom1, degFreedom2) : number {
+let FINV = function (probability, degFreedom1, degFreedom2) : number {
   ArgsChecker.checkLength(arguments, 3, "FINV");
 
   probability = TypeConverter.firstValueAsNumber(probability);
@@ -315,8 +315,8 @@ var FINV = function (probability, degFreedom1, degFreedom2) : number {
     throw new NumError("Function FINV parameter 1 value is " + probability
       + ". It should be greater than or equal to 0, and less than 1.")
   }
-  var d1 = TypeConverter.firstValueAsNumber(degFreedom1);
-  var d2 = TypeConverter.firstValueAsNumber(degFreedom2);
+  let d1 = TypeConverter.firstValueAsNumber(degFreedom1);
+  let d2 = TypeConverter.firstValueAsNumber(degFreedom2);
   return inv(1.0 - probability, d1, d2);
 };
 
@@ -326,9 +326,9 @@ var FINV = function (probability, degFreedom1, degFreedom2) : number {
  * @returns {number} Fisher transformation
  * @constructor
  */
-var FISHER = function (value) : number {
+let FISHER = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "FISHER");
-  var x = TypeConverter.firstValueAsNumber(value);
+  let x = TypeConverter.firstValueAsNumber(value);
   if (x <= -1 || x >= 1) {
     throw new NumError("Function FISHER parameter 1 value is " + x + ". Valid values are between -1 and 1 exclusive.");
   }
@@ -341,10 +341,10 @@ var FISHER = function (value) : number {
  * @returns {number} inverse Fisher transformation
  * @constructor
  */
-var FISHERINV = function (value) : number {
+let FISHERINV = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "FISHERINV");
-  var y = TypeConverter.firstValueAsNumber(value);
-  var e2y = Math.exp(2 * y);
+  let y = TypeConverter.firstValueAsNumber(value);
+  let e2y = Math.exp(2 * y);
   return (e2y - 1) / (e2y + 1);
 };
 
@@ -354,15 +354,15 @@ var FISHERINV = function (value) : number {
  * @returns {number} the maximum value of the dataset
  * @constructor
  */
-var MAX = function (...values) {
+let MAX = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 1, "MAX");
-  var maxSoFar = -Infinity;
-  for (var i = 0; i < values.length; i++) {
+  let maxSoFar = -Infinity;
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      var filtered = Filter.filterOutStringValues(values[i]);
+      let filtered = Filter.filterOutStringValues(values[i]);
       if (filtered.length !== 0) {
         maxSoFar = Math.max(MAX.apply(this, filtered), maxSoFar);
       }
@@ -379,16 +379,16 @@ var MAX = function (...values) {
  * @returns {number} maximum value of the dataset
  * @constructor
  */
-var MAXA = function (...values) : number {
+let MAXA = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "MAXA");
-  var maxSoFar = -Infinity;
-  var filteredValues = Filter.stringValuesToZeros(values);
-  for (var i = 0; i < filteredValues.length; i++) {
+  let maxSoFar = -Infinity;
+  let filteredValues = Filter.stringValuesToZeros(values);
+  for (let i = 0; i < filteredValues.length; i++) {
     if (filteredValues[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      var filtered = Filter.stringValuesToZeros(filteredValues[i]);
+      let filtered = Filter.stringValuesToZeros(filteredValues[i]);
       if (filtered.length !== 0) {
         maxSoFar = Math.max(MAXA.apply(this, filtered), maxSoFar);
       }
@@ -406,15 +406,15 @@ var MAXA = function (...values) : number {
  * @returns {number} the minimum value of the dataset
  * @constructor
  */
-var MIN = function (...values) {
+let MIN = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 1, "MIN");
-  var minSoFar = Infinity;
-  for (var i = 0; i < values.length; i++) {
+  let minSoFar = Infinity;
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      var filtered = Filter.filterOutStringValues(values[i]);
+      let filtered = Filter.filterOutStringValues(values[i]);
       if (filtered.length !== 0) {
         minSoFar = Math.min(MIN.apply(this, filtered), minSoFar);
       }
@@ -432,7 +432,7 @@ var MIN = function (...values) {
  * @returns {number} the minimum value in the dataset
  * @constructor
  */
-var MINA = function (...values) : number {
+let MINA = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "MINA");
   return MIN.apply(this, values);
 };
@@ -448,15 +448,15 @@ var MINA = function (...values) : number {
  * @constructor
  * TODO: This needs to also accept a third parameter "average_range"
  */
-var AVERAGEIF = function (criteriaRange, criterion, averageRange?) {
+let AVERAGEIF = function (criteriaRange, criterion, averageRange?) {
   ArgsChecker.checkLength(arguments, 2, "AVERAGEIF");
-  var range = Filter.flatten(criteriaRange);
-  var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criterion);
+  let range = Filter.flatten(criteriaRange);
+  let criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criterion);
 
-  var result = 0;
-  var count = 0;
-  for (var i = 0; i < range.length; i++) {
-    var val = TypeConverter.valueToNumber(range[i]);
+  let result = 0;
+  let count = 0;
+  for (let i = 0; i < range.length; i++) {
+    let val = TypeConverter.valueToNumber(range[i]);
     if (criteriaEvaluation(val)) {
       result = result + val;
       count++;
@@ -475,10 +475,10 @@ var AVERAGEIF = function (criteriaRange, criterion, averageRange?) {
  * @returns {number} number of numeric values in a dataset.
  * @constructor
  */
-var COUNT = function (...values) : number {
+let COUNT = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "COUNT");
-  var count = 0;
-  for (var i = 0; i < values.length; i++) {
+  let count = 0;
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length > 0) {
         count += COUNT.apply(this, values[i]);
@@ -496,10 +496,10 @@ var COUNT = function (...values) : number {
  * @returns {number} number of values in a dataset.
  * @constructor
  */
-var COUNTA = function (...values) : number {
+let COUNTA = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "COUNTA");
-  var count = 0;
-  for (var i = 0; i < values.length; i++) {
+  let count = 0;
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length > 0) {
         count += COUNTA.apply(this, values[i]);
@@ -521,21 +521,21 @@ var COUNTA = function (...values) : number {
  * @returns {number}
  * @constructor
  */
-var PERCENTILE =  function (data, percent) {
+let PERCENTILE =  function (data, percent) {
   ArgsChecker.checkLength(arguments, 2, "PERCENTILE");
-  var p = TypeConverter.firstValueAsNumber(percent);
+  let p = TypeConverter.firstValueAsNumber(percent);
   if (p < 0 || p > 1) {
     throw new NumError("Function PERCENTILE parameter 2 value " + p + " is out of range.");
   }
-  var range = Filter.flattenAndThrow(data).sort(function (a, b) {
+  let range = Filter.flattenAndThrow(data).sort(function (a, b) {
     return a - b;
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
   });
 
-  var n = range.length;
-  var l = p * (n - 1);
-  var fl = Math.floor(l);
+  let n = range.length;
+  let l = p * (n - 1);
+  let fl = Math.floor(l);
   return cleanFloat((l === fl) ? range[l] : range[fl] + (l - fl) * (range[fl + 1] - range[fl]));
 };
 
@@ -547,15 +547,15 @@ var PERCENTILE =  function (data, percent) {
  * percent mark, 3 returns 75 percent mark, 4 returns 100 percent mark.
  * @constructor
  */
-var QUARTILE = function (data, quartile) {
+let QUARTILE = function (data, quartile) {
   ArgsChecker.checkLength(arguments, 2, "QUARTILE");
-  var q = TypeConverter.firstValueAsNumber(quartile);
+  let q = TypeConverter.firstValueAsNumber(quartile);
   if (q < 0 || q > 4) {
     throw new NumError("Function QUARTILE parameter 2 value " + q + " is out of range.");
   }
 
 
-  var range = Filter.flattenAndThrow(data).sort(function (a, b) {
+  let range = Filter.flattenAndThrow(data).sort(function (a, b) {
     return a - b;
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
@@ -583,15 +583,15 @@ var QUARTILE = function (data, quartile) {
  * @returns {number}
  * @constructor
  */
-var STDEV = function (...values) {
+let STDEV = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "STDEV");
-  var range = Filter.flattenAndThrow(values);
-  var n = range.length;
-  var sigma = 0;
-  var count = 0;
-  var mean = AVERAGE(range);
-  for (var i = 0; i < n; i++) {
-    var value = TypeConverter.firstValue(range[i]);
+  let range = Filter.flattenAndThrow(values);
+  let n = range.length;
+  let sigma = 0;
+  let count = 0;
+  let mean = AVERAGE(range);
+  for (let i = 0; i < n; i++) {
+    let value = TypeConverter.firstValue(range[i]);
     if (typeof value !== "string") {
       sigma += Math.pow(TypeConverter.valueToNumber(value) - mean, 2);
       count++;
@@ -608,15 +608,15 @@ var STDEV = function (...values) {
  * @returns {number}
  * @constructor
  */
-var STDEVA = function (...values) {
+let STDEVA = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "STDEVA");
-  var range = Filter.flattenAndThrow(values).map(function (value) {
+  let range = Filter.flattenAndThrow(values).map(function (value) {
     return TypeConverter.firstValueAsNumber(value);
   });
-  var n = range.length;
-  var sigma = 0;
-  var m = mean(range);
-  for (var i = 0; i < n; i++) {
+  let n = range.length;
+  let sigma = 0;
+  let m = mean(range);
+  for (let i = 0; i < n; i++) {
     sigma += Math.pow(range[i] - m, 2);
   }
   return Math.sqrt(sigma / (n - 1));
@@ -630,15 +630,15 @@ var STDEVA = function (...values) {
  * @returns {number}
  * @constructor
  */
-var STDEVP = function (...values) {
+let STDEVP = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "STDEVP");
-  var range = Filter.flattenAndThrow(values);
-  var n = range.length;
-  var sigma = 0;
-  var count = 0;
-  var m = AVERAGE(range);
-  for (var i = 0; i < n; i++) {
-    var value = TypeConverter.firstValue(range[i]);
+  let range = Filter.flattenAndThrow(values);
+  let n = range.length;
+  let sigma = 0;
+  let count = 0;
+  let m = AVERAGE(range);
+  for (let i = 0; i < n; i++) {
+    let value = TypeConverter.firstValue(range[i]);
     if (typeof value !== "string") {
       sigma += Math.pow(value - m, 2);
       count++;
@@ -655,17 +655,17 @@ var STDEVP = function (...values) {
  * @returns {number}
  * @constructor
  */
-var STDEVPA = function (...values) {
+let STDEVPA = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "STDEVPA");
-  var range = Filter.flattenAndThrow(values).map(function (value) {
+  let range = Filter.flattenAndThrow(values).map(function (value) {
     return TypeConverter.firstValueAsNumber(value);
   });
-  var n = range.length;
-  var sigma = 0;
-  var count = 0;
-  var m = AVERAGE(range);
-  for (var i = 0; i < n; i++) {
-    var value = TypeConverter.firstValue(range[i]);
+  let n = range.length;
+  let sigma = 0;
+  let count = 0;
+  let m = AVERAGE(range);
+  for (let i = 0; i < n; i++) {
+    let value = TypeConverter.firstValue(range[i]);
     if (typeof value !== "string") {
       sigma += Math.pow(value - m, 2);
       count++;
@@ -682,16 +682,16 @@ var STDEVPA = function (...values) {
  * @returns {number}
  * @constructor
  */
-var TRIMMEAN = function (range, percent) {
+let TRIMMEAN = function (range, percent) {
   ArgsChecker.checkLength(arguments, 2, "TRIMMEAN");
-  var p = TypeConverter.firstValueAsNumber(percent);
+  let p = TypeConverter.firstValueAsNumber(percent);
   if (p < 0) {
     throw new NumError("Function TRIMMEAN parameter 2 value is " + p + ". It should be greater than or equal to 0.");
   }
   if (p >= 1) {
     throw new NumError("Function TRIMMEAN parameter 2 value is " + p + ". It should be less than 1.");
   }
-  var data = Filter.flattenAndThrow(range).sort(function (a, b) {
+  let data = Filter.flattenAndThrow(range).sort(function (a, b) {
     return a - b;
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
@@ -701,8 +701,8 @@ var TRIMMEAN = function (range, percent) {
     throw new RefError("TRIMMEAN has no valid input data.");
   }
 
-  var trim = FLOOR(data.length * p, 2) / 2;
-  var tmp = data.slice(trim, data.length);
+  let trim = FLOOR(data.length * p, 2) / 2;
+  let tmp = data.slice(trim, data.length);
   return mean(tmp.slice(0, tmp.length - trim));
 };
 
@@ -713,14 +713,14 @@ var TRIMMEAN = function (range, percent) {
  * @param rangeX - The range or array representing the independent data.
  * @constructor
  */
-var SLOPE = function (rangeY, rangeX) {
+let SLOPE = function (rangeY, rangeX) {
   ArgsChecker.checkLength(arguments, 2, "SLOPE");
-  var dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
+  let dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
     return typeof value !== "string";
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
   });
-  var dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
+  let dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
     return typeof value !== "string";
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
@@ -728,12 +728,12 @@ var SLOPE = function (rangeY, rangeX) {
   if (dataX.length !== dataY.length) {
     throw new NAError("SLOPE has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
   }
-  var xmean = mean(dataX);
-  var ymean = mean(dataY);
-  var n = dataX.length;
-  var num = 0;
-  var den = 0;
-  for (var i = 0; i < n; i++) {
+  let xmean = mean(dataX);
+  let ymean = mean(dataY);
+  let n = dataX.length;
+  let num = 0;
+  let den = 0;
+  for (let i = 0; i < n; i++) {
     num += (dataX[i] - xmean) * (dataY[i] - ymean);
     den += Math.pow(dataX[i] - xmean, 2);
   }
@@ -752,7 +752,7 @@ var SLOPE = function (rangeY, rangeX) {
  * @returns {number}
  * @constructor
  */
-var STANDARDIZE = function (value, meanValue, std) {
+let STANDARDIZE = function (value, meanValue, std) {
   ArgsChecker.checkLength(arguments, 3, "STANDARDIZE");
   value = TypeConverter.firstValueAsNumber(value);
   meanValue = TypeConverter.firstValueAsNumber(meanValue);
@@ -770,9 +770,9 @@ var STANDARDIZE = function (value, meanValue, std) {
  * @param n - N in 'Nth'.
  * @constructor
  */
-var SMALL =  function (range, n) {
+let SMALL =  function (range, n) {
   ArgsChecker.checkLength(arguments, 2, "SMALL");
-  var data = Filter.flattenAndThrow(range).filter(function (value) {
+  let data = Filter.flattenAndThrow(range).filter(function (value) {
     return typeof value != "string";
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
@@ -792,9 +792,9 @@ var SMALL =  function (range, n) {
  * @param n - N in 'Nth'.
  * @constructor
  */
-var LARGE =  function (range, n) {
+let LARGE =  function (range, n) {
   ArgsChecker.checkLength(arguments, 2, "LARGE");
-  var data = Filter.flattenAndThrow(range).filter(function (value) {
+  let data = Filter.flattenAndThrow(range).filter(function (value) {
     return typeof value != "string";
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
@@ -814,9 +814,9 @@ var LARGE =  function (range, n) {
  * @returns {number}
  * @constructor
  */
-var KURT = function (...values) {
+let KURT = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 4, "KURT");
-  var range = Filter.flattenAndThrow(values).filter(function (value) {
+  let range = Filter.flattenAndThrow(values).filter(function (value) {
     return typeof value !== "string";
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
@@ -824,10 +824,10 @@ var KURT = function (...values) {
   if (range.length < 4) {
     throw new DivZeroError("KURT requires more values in range. Expected: 4, found: " + range.length + ".");
   }
-  var m = mean(range);
-  var n = range.length;
-  var sigma = 0;
-  for (var i = 0; i < n; i++) {
+  let m = mean(range);
+  let n = range.length;
+  let sigma = 0;
+  for (let i = 0; i < n; i++) {
     sigma += Math.pow(range[i] - m, 4);
   }
   sigma = sigma / Math.pow(stdev(range, true), 4);
@@ -843,14 +843,14 @@ var KURT = function (...values) {
  * @returns {number}
  * @constructor
  */
-var INTERCEPT = function (rangeY, rangeX) {
+let INTERCEPT = function (rangeY, rangeX) {
   ArgsChecker.checkLength(arguments, 2, "INTERCEPT");
-  var dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
+  let dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
     return typeof value !== "string";
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
   });
-  var dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
+  let dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
     return typeof value !== "string";
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
@@ -860,19 +860,19 @@ var INTERCEPT = function (rangeY, rangeX) {
     throw new NAError("INTERCEPT has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
   }
 
-  var xMean = mean(dataX);
-  var yMean = mean(dataY);
-  var n = dataX.length;
-  var num = 0;
-  var den = 0;
-  for (var i = 0; i < n; i++) {
+  let xMean = mean(dataX);
+  let yMean = mean(dataY);
+  let n = dataX.length;
+  let num = 0;
+  let den = 0;
+  for (let i = 0; i < n; i++) {
     num += (dataX[i] - xMean) * (dataY[i] - yMean);
     den += Math.pow(dataX[i] - xMean, 2);
   }
   if (den === 0) {
     throw new DivZeroError("Evaluation of function INTERCEPT caused a divide by zero error.");
   }
-  var b = num / den;
+  let b = num / den;
   return yMean - b * xMean;
 };
 
@@ -887,15 +887,15 @@ var INTERCEPT = function (rangeY, rangeX) {
  * TODO: This formula will fail to parse since the first argument is followed by an argument that is an array.
  * TODO (continued) This is a known issue.
  */
-var FORECAST = function (x, rangeY, rangeX) {
+let FORECAST = function (x, rangeY, rangeX) {
   ArgsChecker.checkLength(arguments, 3, "FORECAST");
   x =  TypeConverter.firstValueAsNumber(x);
-  var dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
+  let dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
     return typeof value !== "string";
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
   });
-  var dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
+  let dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
     return typeof value !== "string";
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
@@ -905,20 +905,20 @@ var FORECAST = function (x, rangeY, rangeX) {
     throw new NAError("FORECAST has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
   }
 
-  var xMean = mean(dataX);
-  var yMean = mean(dataY);
-  var n = dataX.length;
-  var num = 0;
-  var den = 0;
-  for (var i = 0; i < n; i++) {
+  let xMean = mean(dataX);
+  let yMean = mean(dataY);
+  let n = dataX.length;
+  let num = 0;
+  let den = 0;
+  for (let i = 0; i < n; i++) {
     num += (dataX[i] - xMean) * (dataY[i] - yMean);
     den += Math.pow(dataX[i] - xMean, 2);
   }
   if (den === 0) {
     throw new DivZeroError("Evaluation of function FORECAST caused a divide by zero error.");
   }
-  var b = num / den;
-  var a = yMean - b * xMean;
+  let b = num / den;
+  let a = yMean - b * xMean;
   return a + b * x;
 };
 
@@ -931,7 +931,7 @@ var FORECAST = function (x, rangeY, rangeX) {
  * @returns {number}
  * @constructor
  */
-var POISSON = function (x, meanValue, cumulative?) {
+let POISSON = function (x, meanValue, cumulative?) {
   ArgsChecker.checkLengthWithin(arguments, 2, 3, "POISSON");
   x = TypeConverter.firstValueAsNumber(x);
   meanValue = TypeConverter.firstValueAsNumber(meanValue);
@@ -951,7 +951,7 @@ var POISSON = function (x, meanValue, cumulative?) {
     return Math.pow(l, k) * Math.exp(-l) / factorial(k);
   }
   function poissonCDF(x, l) {
-    var sumarr = [],
+    let sumarr = [],
       k = 0;
     if (x < 0) return 0;
     for (; k <= x; k++) {
@@ -972,15 +972,15 @@ var POISSON = function (x, meanValue, cumulative?) {
  * @returns {number}
  * @constructor
  */
-var PERCENTRANK = function (data, x, significance?) {
+let PERCENTRANK = function (data, x, significance?) {
   ArgsChecker.checkLengthWithin(arguments, 2, 3, "PERCENTRANK");
   data = Filter.flattenAndThrow(data).map(TypeConverter.valueToNumber).sort(function (a, b) {
     return a - b;
   });
   x = TypeConverter.firstValueAsNumber(x);
-  var uniques = Filter.unique(data);
-  var n = data.length;
-  var m = uniques.length;
+  let uniques = Filter.unique(data);
+  let n = data.length;
+  let m = uniques.length;
   if (x < uniques[0] || x > uniques[m - 1]) {
     throw new NAError("PERCENTRANK does not have valid input data.");
   }
@@ -988,10 +988,10 @@ var PERCENTRANK = function (data, x, significance?) {
     return 1;
   }
   significance = (typeof significance === 'undefined') ? 3 : TypeConverter.firstValueAsNumber(significance);
-  var power = Math.pow(10, significance);
-  var result = 0;
-  var match = false;
-  var i = 0;
+  let power = Math.pow(10, significance);
+  let result = 0;
+  let match = false;
+  let i = 0;
   while (!match && i < m) {
     if (x === uniques[i]) {
       result = data.indexOf(uniques[i]) / (n - 1);
@@ -1002,7 +1002,7 @@ var PERCENTRANK = function (data, x, significance?) {
     }
     i++;
   }
-  var v = Math.floor(result * power) / power;
+  let v = Math.floor(result * power) / power;
   if (isNaN(v)) {
     throw new NAError("PERCENTRANK does not have valid input data.");
   }
@@ -1018,15 +1018,15 @@ var PERCENTRANK = function (data, x, significance?) {
  * @returns {number}
  * @constructor
  */
-var PERCENTRANK$EXC = function (data, x, significance?) {
+let PERCENTRANK$EXC = function (data, x, significance?) {
   ArgsChecker.checkLengthWithin(arguments, 2, 3, "PERCENTRANK.EXC");
   data = Filter.flattenAndThrow(data).map(TypeConverter.valueToNumber).sort(function (a, b) {
     return a - b;
   });
   x = TypeConverter.firstValueAsNumber(x);
-  var uniques = Filter.unique(data);
-  var n = data.length;
-  var m = uniques.length;
+  let uniques = Filter.unique(data);
+  let n = data.length;
+  let m = uniques.length;
   if (x < uniques[0] || x > uniques[m - 1]) {
     throw new NAError("PERCENTRANK.EXC does not have valid input data.");
   }
@@ -1034,10 +1034,10 @@ var PERCENTRANK$EXC = function (data, x, significance?) {
     return 1;
   }
   significance = (typeof significance === 'undefined') ? 3 : TypeConverter.firstValueAsNumber(significance);
-  var power = Math.pow(10, significance);
-  var result = 0;
-  var match = false;
-  var i = 0;
+  let power = Math.pow(10, significance);
+  let result = 0;
+  let match = false;
+  let i = 0;
   while (!match && i < m) {
     if (x === uniques[i]) {
       result = (data.indexOf(uniques[i]) + 1) / (n + 1);
@@ -1048,7 +1048,7 @@ var PERCENTRANK$EXC = function (data, x, significance?) {
     }
     i++;
   }
-  var v = Math.floor(result * power) / power;
+  let v = Math.floor(result * power) / power;
   if (isNaN(v)) {
     throw new NAError("PERCENTRANK.EXC does not have valid input data.");
   }
@@ -1062,15 +1062,15 @@ var PERCENTRANK$EXC = function (data, x, significance?) {
  * @returns {number}
  * @constructor
  */
-var NORMSINV = function (probability) {
+let NORMSINV = function (probability) {
   ArgsChecker.checkLength(arguments, 1, "NORMSINV");
   probability =  TypeConverter.firstValueAsNumber(probability);
   function erfc(x) {
     return 1 - erf(x);
   }
   function erfcinv(p) {
-    var j = 0;
-    var x, err, t, pp;
+    let j = 0;
+    let x, err, t, pp;
     if (p >= 2)
       return -100;
     if (p <= 0)
@@ -1111,7 +1111,7 @@ function _pdf(x, meanVal, std) {
  * @returns {number}
  * @constructor
  */
-var NORMSDIST = function (z) {
+let NORMSDIST = function (z) {
   ArgsChecker.checkLength(arguments, 1, "NORMSDIST");
   z = TypeConverter.firstValueAsNumber(z);
   return _cdf(z, 0, 1);
@@ -1127,7 +1127,7 @@ var NORMSDIST = function (z) {
  * @returns {number}
  * @constructor
  */
-var NORMDIST =  function (x, meanValue, standDev, cumulative) {
+let NORMDIST =  function (x, meanValue, standDev, cumulative) {
   ArgsChecker.checkLength(arguments, 4, "NORMDIST");
   x = TypeConverter.firstValueAsNumber(x);
   meanValue = TypeConverter.firstValueAsNumber(meanValue);
@@ -1147,10 +1147,10 @@ var NORMDIST =  function (x, meanValue, standDev, cumulative) {
  * @returns {number}
  * @constructor
  */
-var NORMINV = function (probability, meanVal, standDev) {
+let NORMINV = function (probability, meanVal, standDev) {
   ArgsChecker.checkLength(arguments, 3, "NORMINV");
   function erf(x) {
-    var cof = [-1.3026537197817094, 6.4196979235649026e-1, 1.9476473204185836e-2,
+    let cof = [-1.3026537197817094, 6.4196979235649026e-1, 1.9476473204185836e-2,
       -9.561514786808631e-3, -9.46595344482036e-4, 3.66839497852761e-4,
       4.2523324806907e-5, -2.0278578112534e-5, -1.624290004647e-6,
       1.303655835580e-6, 1.5626441722e-8, -8.5238095915e-8,
@@ -1160,11 +1160,11 @@ var NORMINV = function (probability, meanVal, standDev) {
       -1.12708e-13, 3.81e-16, 7.106e-15,
       -1.523e-15, -9.4e-17, 1.21e-16,
       -2.8e-17];
-    var j = cof.length - 1;
-    var isneg = false;
-    var d = 0;
-    var dd = 0;
-    var t, ty, tmp, res;
+    let j = cof.length - 1;
+    let isneg = false;
+    let d = 0;
+    let dd = 0;
+    let t, ty, tmp, res;
 
     if (x < 0) {
       x = -x;
@@ -1187,8 +1187,8 @@ var NORMINV = function (probability, meanVal, standDev) {
     return 1 - erf(x);
   }
   function erfcinv(p) {
-    var j = 0;
-    var x, err, t, pp;
+    let j = 0;
+    let x, err, t, pp;
     if (p >= 2)
       return -100;
     if (p <= 0)
@@ -1228,16 +1228,16 @@ var NORMINV = function (probability, meanVal, standDev) {
  * @returns {number}
  * @constructor
  */
-var NEGBINOMDIST = function (k, r, p) {
+let NEGBINOMDIST = function (k, r, p) {
   ArgsChecker.checkLength(arguments, 3, "NEGBINOMDIST");
   function _gammaln(x) {
-    var j = 0;
-    var cof = [
+    let j = 0;
+    let cof = [
       76.18009172947146, -86.50532032941677, 24.01409824083091,
       -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5
     ];
-    var ser = 1.000000000190015;
-    var xx, y, tmp;
+    let ser = 1.000000000190015;
+    let xx, y, tmp;
     tmp = (y = xx = x) + 5.5;
     tmp -= (xx + 0.5) * Math.log(tmp);
     for (; j < 6; j++)
@@ -1288,11 +1288,11 @@ var NEGBINOMDIST = function (k, r, p) {
  * @returns {number}
  * @constructor
  */
-var GEOMEAN  = function (...values) {
+let GEOMEAN  = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "GEOMEAN");
   function _product(arr) {
-    var prod = 1;
-    var i = arr.length;
+    let prod = 1;
+    let i = arr.length;
     while (--i >= 0) {
       prod *= arr[i];
     }
@@ -1314,17 +1314,17 @@ var GEOMEAN  = function (...values) {
  * @returns {number}
  * @constructor
  */
-var HARMEAN = function (...values) {
+let HARMEAN = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "HARMEAN");
-  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber).map(function (value) {
+  let range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber).map(function (value) {
     if (value <=0) {
       throw new NumError("HARMEAN requires inputs greater than 0, but one of the values entered is " + value + ".");
     }
     return value;
   });
-  var n = range.length;
-  var den = 0;
-  for (var i = 0; i < n; i++) {
+  let n = range.length;
+  let den = 0;
+  for (let i = 0; i < n; i++) {
     den += 1 / range[i];
   }
   return n / den;
@@ -1339,7 +1339,7 @@ var HARMEAN = function (...values) {
  * @returns {number}
  * @constructor
  */
-var CONFIDENCE = function (alpha, standDev, size) {
+let CONFIDENCE = function (alpha, standDev, size) {
   ArgsChecker.checkLength(arguments, 3, "CONFIDENCE");
   alpha = TypeConverter.firstValueAsNumber(alpha);
   standDev = TypeConverter.firstValueAsNumber(standDev);
@@ -1358,8 +1358,8 @@ var CONFIDENCE = function (alpha, standDev, size) {
     return 1 - erf(x);
   }
   function _erfcinv(p) {
-    var j = 0;
-    var x, err, t, pp;
+    let j = 0;
+    let x, err, t, pp;
     if (p >= 2)
       return -100;
     if (p <= 0)
@@ -1378,12 +1378,12 @@ var CONFIDENCE = function (alpha, standDev, size) {
     return -1.41421356237309505 * std * _erfcinv(2 * p) + m;
   }
   function _sumsqerr(arr) {
-    var mean = mean(arr);
-    var sum = 0;
-    var i = arr.length;
-    var tmp;
+    let m = mean(arr);
+    let sum = 0;
+    let i = arr.length;
+    let tmp;
     while (--i >= 0) {
-      tmp = arr[i] - mean;
+      tmp = arr[i] - m;
       sum += tmp * tmp;
     }
     return sum;
@@ -1392,8 +1392,8 @@ var CONFIDENCE = function (alpha, standDev, size) {
     return _sumsqerr(arr) / (arr.length - (flag ? 1 : 0));
   }
   function _normalci(...values) {
-      var ans = new Array(2);
-      var change;
+      let ans = new Array(2);
+      let change;
     if (values.length === 4) {
       change = Math.abs(_normalInv(values[1] / 2, 0, 1) *
         values[2] / Math.sqrt(values[3]));
@@ -1418,14 +1418,14 @@ var CONFIDENCE = function (alpha, standDev, size) {
  * @returns {number}
  * @constructor
  */
-var BINOMDIST = function (successes, trials, probability, cumulative) {
+let BINOMDIST = function (successes, trials, probability, cumulative) {
   ArgsChecker.checkLength(arguments, 4, "BINOMDIST");
   successes = TypeConverter.firstValueAsNumber(successes);
   trials = TypeConverter.firstValueAsNumber(trials);
   probability = TypeConverter.firstValueAsNumber(probability);
   cumulative = TypeConverter.firstValueAsNumber(cumulative);
   function _binomialCDF(x, n, p) {
-    var binomarr = [],
+    let binomarr = [],
       k = 0;
     if (x < 0) {
       return 0;
@@ -1480,18 +1480,18 @@ var BINOMDIST = function (successes, trials, probability, cumulative) {
  * @returns {number}
  * @constructor
  */
-var COVAR = function (dataY, dataX) {
+let COVAR = function (dataY, dataX) {
   ArgsChecker.checkLength(arguments, 2, "COVAR");
   dataY = Filter.flattenAndThrow(dataY).map(TypeConverter.valueToNumber);
   dataX = Filter.flattenAndThrow(dataX).map(TypeConverter.valueToNumber);
   if (dataX.length !== dataY.length) {
-    throw new NAError("COVAR has mismatched argument count " + dataY.length + " vs " + dataX.length + ".");
+    throw new NAError("COlet has mismatched argument count " + dataY.length + " vs " + dataX.length + ".");
   }
-  var mean1 = mean(dataY);
-  var mean2 = mean(dataX);
-  var result = 0;
-  var n = dataY.length;
-  for (var i = 0; i < n; i++) {
+  let mean1 = mean(dataY);
+  let mean2 = mean(dataX);
+  let result = 0;
+  let n = dataY.length;
+  for (let i = 0; i < n; i++) {
     result += (dataY[i] - mean1) * (dataX[i] - mean2);
   }
   return result / n;
@@ -1508,7 +1508,7 @@ var COVAR = function (dataY, dataX) {
  * @returns {number}
  * @constructor
  */
-var WEIBULL = function (x, shape, scale, cumulative) {
+let WEIBULL = function (x, shape, scale, cumulative) {
   ArgsChecker.checkLength(arguments, 4, "WEIBULL");
   x = TypeConverter.firstValueAsNumber(x);
   if (x < 0) {
@@ -1534,18 +1534,18 @@ var WEIBULL = function (x, shape, scale, cumulative) {
  * @returns {number}
  * @constructor
  */
-var VARPA = function (...values) {
+let VARPA = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "VARPA");
-  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
-  var n = range.length;
+  let range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  let n = range.length;
   if (n < 2) {
     throw new DivZeroError("Evaluation of function VARP caused a divide by zero error.");
   }
-  var sigma = 0;
-  var count = 0;
-  var mean = AVERAGEA(range);
-  for (var i = 0; i < n; i++) {
-    var el = range[i];
+  let sigma = 0;
+  let count = 0;
+  let mean = AVERAGEA(range);
+  for (let i = 0; i < n; i++) {
+    let el = range[i];
     if (typeof el === 'number') {
       sigma += Math.pow(el - mean, 2);
     } else if (el === true) {
@@ -1568,17 +1568,17 @@ var VARPA = function (...values) {
  * @returns {number}
  * @constructor
  */
-var VARP =  function (...values) {
+let VARP =  function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "VARP");
-  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
-  var n = range.length;
+  let range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  let n = range.length;
   if (n < 2) {
     throw new DivZeroError("Evaluation of function VARP caused a divide by zero error.");
   }
-  var sigma = 0;
-  var count = 0;
-  var mean = AVERAGE(range);
-  for (var i = 0; i < n; i++) {
+  let sigma = 0;
+  let count = 0;
+  let mean = AVERAGE(range);
+  for (let i = 0; i < n; i++) {
     sigma += Math.pow(range[i] - mean, 2);
     count++;
   }
@@ -1592,18 +1592,18 @@ var VARP =  function (...values) {
  * @returns {number}
  * @constructor
  */
-var VARA = function (...values) {
+let VARA = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "VARA");
-  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
-  var n = range.length;
+  let range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  let n = range.length;
   if (n < 2) {
     throw new DivZeroError("Evaluation of function VARA caused a divide by zero error.");
   }
-  var sigma = 0;
-  var count = 0;
-  var mean = AVERAGEA(range);
-  for (var i = 0; i < n; i++) {
-    var el = range[i];
+  let sigma = 0;
+  let count = 0;
+  let mean = AVERAGEA(range);
+  for (let i = 0; i < n; i++) {
+    let el = range[i];
     if (typeof el === 'number') {
       sigma += Math.pow(el - mean, 2);
     } else if (el === true) {
@@ -1625,17 +1625,17 @@ var VARA = function (...values) {
  * @param values - Values in sample.
  * @constructor
  */
-var VAR = function (...values) {
+let VAR = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "VAR");
-  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
-  var n = range.length;
+  let range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  let n = range.length;
   if (n < 2) {
-    throw new DivZeroError("Evaluation of function VAR caused a divide by zero error.");
+    throw new DivZeroError("Evaluation of function let caused a divide by zero error.");
   }
-  var sigma = 0;
-  var count = 0;
-  var mean = AVERAGE(range);
-  for (var i = 0; i < n; i++) {
+  let sigma = 0;
+  let count = 0;
+  let mean = AVERAGE(range);
+  for (let i = 0; i < n; i++) {
     sigma += Math.pow(range[i] - mean, 2);
     count++;
   }
@@ -1650,7 +1650,7 @@ var VAR = function (...values) {
  * @returns {number}
  * @constructor
  */
-var PERMUT = function (total, objects) {
+let PERMUT = function (total, objects) {
   ArgsChecker.checkLength(arguments, 2, "PERMUT");
   total = TypeConverter.firstValueAsNumber(total);
   objects = TypeConverter.firstValueAsNumber(objects);
@@ -1658,9 +1658,9 @@ var PERMUT = function (total, objects) {
     throw new NumError("Function PERMUT parameter 2 value is " + objects +
         ", should be less than or equal to value of Function PERMUT parameter 1 of " + objects + ".");
   }
-  var memoizeFact = [];
+  let memoizeFact = [];
   function _fact(value) {
-    var n = Math.floor(value);
+    let n = Math.floor(value);
     if (n === 0 || n === 1) {
       return 1;
     } else if (memoizeFact[n] > 0) {
@@ -1681,7 +1681,7 @@ var PERMUT = function (total, objects) {
  * @returns {number}
  * @constructor
  */
-var RSQ = function (rangeY, rangeX) {
+let RSQ = function (rangeY, rangeX) {
   ArgsChecker.checkLength(arguments, 2, "RSQ");
   if (!Array.isArray(rangeY)) {
     rangeY = [rangeY];
@@ -1689,8 +1689,8 @@ var RSQ = function (rangeY, rangeX) {
   if (!Array.isArray(rangeX)) {
     rangeX = [rangeX];
   }
-  var dataX = Filter.flattenAndThrow(rangeX).map(TypeConverter.valueToNumber);
-  var dataY = Filter.flattenAndThrow(rangeY).map(TypeConverter.valueToNumber);
+  let dataX = Filter.flattenAndThrow(rangeX).map(TypeConverter.valueToNumber);
+  let dataY = Filter.flattenAndThrow(rangeY).map(TypeConverter.valueToNumber);
   if (dataX.length !== dataY.length) {
     throw new NAError("SLOPE has mismatched argument count " + dataX.length + " vs " + dataY.length + ".");
   }
@@ -1707,19 +1707,19 @@ var RSQ = function (rangeY, rangeX) {
  * @returns {number}
  * @constructor
  */
-var SKEW = function (...values) {
+let SKEW = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "SKEW");
-  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
-  var n = range.length;
+  let range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  let n = range.length;
   if (n < 3) {
     throw new DivZeroError("SKEW requires at least 3 data points.");
   }
-  var meanValue = mean(range);
-  var sigma = 0;
-  for (var i = 0; i < n; i++) {
+  let meanValue = mean(range);
+  let sigma = 0;
+  for (let i = 0; i < n; i++) {
     sigma += Math.pow(range[i] - meanValue, 3);
   }
-  var d = ((n - 1) * (n - 2) * Math.pow(stdev(range, true), 3));
+  let d = ((n - 1) * (n - 2) * Math.pow(stdev(range, true), 3));
   if (d === 0) {
     throw new DivZeroError("Evaluation of function SKEW caused a divide by zero error.");
   }
@@ -1734,7 +1734,7 @@ var SKEW = function (...values) {
  * @returns {number}
  * @constructor
  */
-var STEYX =  function (rangeY, rangeX) {
+let STEYX =  function (rangeY, rangeX) {
   ArgsChecker.checkLength(arguments, 2, "STEYX");
   if (!Array.isArray(rangeY)) {
     rangeY = [rangeY];
@@ -1742,10 +1742,10 @@ var STEYX =  function (rangeY, rangeX) {
   if (!Array.isArray(rangeX)) {
     rangeX = [rangeX];
   }
-  var dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
+  let dataX = Filter.flattenAndThrow(rangeX).filter(function (value) {
     return typeof value !== "string";
   }).map(TypeConverter.valueToNumber);
-  var dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
+  let dataY = Filter.flattenAndThrow(rangeY).filter(function (value) {
     return typeof value !== "string";
   }).map(TypeConverter.valueToNumber);
   if (dataX.length !== dataY.length) {
@@ -1754,13 +1754,13 @@ var STEYX =  function (rangeY, rangeX) {
   if (dataY.length === 2 && dataX.length === 2) {
     throw new DivZeroError("Evaluation of function STEYX caused a divide by zero error.");
   }
-  var xmean = mean(dataX);
-  var ymean = mean(dataY);
-  var n = dataX.length;
-  var lft = 0;
-  var num = 0;
-  var den = 0;
-  for (var i = 0; i < n; i++) {
+  let xmean = mean(dataX);
+  let ymean = mean(dataY);
+  let n = dataX.length;
+  let lft = 0;
+  let num = 0;
+  let den = 0;
+  for (let i = 0; i < n; i++) {
     lft += Math.pow(dataY[i] - ymean, 2);
     num += (dataX[i] - xmean) * (dataY[i] - ymean);
     den += Math.pow(dataX[i] - xmean, 2);
@@ -1780,14 +1780,14 @@ var STEYX =  function (rangeY, rangeX) {
  * @returns {number}
  * @constructor
  */
-var PROB =  function (range, probability, start, end?) {
+let PROB =  function (range, probability, start, end?) {
   ArgsChecker.checkLengthWithin(arguments, 3, 4, "PROB");
   range = Filter.flattenAndThrow(range);
   probability = Filter.flattenAndThrow(probability);
   if (range.length !== probability.length) {
     throw new NAError("PROB has mismatched argument count " + range.length + " vs " + probability.length + ".");
   }
-  var sum = SUM(probability);
+  let sum = SUM(probability);
   if (sum <=0 || sum > 1) {
     throw new ValueError("Function PROB parameter 2 should sum to 1, but sums to " + sum + ".");
   }
@@ -1796,12 +1796,12 @@ var PROB =  function (range, probability, start, end?) {
   if (start === end) {
     return (range.indexOf(start) >= 0) ? probability[range.indexOf(start)] : 0;
   }
-  var sorted = range.sort(function (a, b) {
+  let sorted = range.sort(function (a, b) {
     return a - b;
   });
-  var n = sorted.length;
-  var result = 0;
-  for (var i = 0; i < n; i++) {
+  let n = sorted.length;
+  let result = 0;
+  for (let i = 0; i < n; i++) {
     if (sorted[i] >= start && sorted[i] <= end) {
       result += probability[range.indexOf(sorted[i])];
     }
@@ -1816,15 +1816,15 @@ var PROB =  function (range, probability, start, end?) {
  * @returns {number}
  * @constructor
  */
-var MODE =  function (...values) {
+let MODE =  function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "MODE");
-  var range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
-  var n = range.length;
-  var count = {};
-  var maxItems = [];
-  var max = 0;
-  var currentItem;
-  for (var i = 0; i < n; i++) {
+  let range = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
+  let n = range.length;
+  let count = {};
+  let maxItems = [];
+  let max = 0;
+  let currentItem;
+  for (let i = 0; i < n; i++) {
     currentItem = range[i];
     count[currentItem] = count[currentItem] ? count[currentItem] + 1 : 1;
     if (count[currentItem] > max) {
@@ -1851,18 +1851,18 @@ var MODE =  function (...values) {
  * @returns {number}
  * @constructor
  */
-var RANK = function (value, data, isAscending?) {
+let RANK = function (value, data, isAscending?) {
   ArgsChecker.checkLengthWithin(arguments, 2, 3, "RANK");
   value = TypeConverter.firstValueAsNumber(value);
-  var range = Filter.flattenAndThrow(data).map(TypeConverter.valueToNumber);
+  let range = Filter.flattenAndThrow(data).map(TypeConverter.valueToNumber);
   isAscending = (typeof isAscending === 'undefined') ? false : isAscending;
-  var sort = (isAscending) ? function (a, b) {
+  let sort = (isAscending) ? function (a, b) {
     return a - b;
   } : function (a, b) {
     return b - a;
   };
   range = range.sort(sort);
-  var rangeIndex = range.indexOf(value);
+  let rangeIndex = range.indexOf(value);
   if (rangeIndex === -1) {
     throw new NAError("RANK can't produce a result because parameter 1 is not in the dataset.");
   }
@@ -1880,14 +1880,14 @@ var RANK = function (value, data, isAscending?) {
  * @returns {number}
  * @constructor
  */
-var RANK$AVG =  function (value, data, isAscending?) {
+let RANK$AVG =  function (value, data, isAscending?) {
   ArgsChecker.checkLengthWithin(arguments, 2, 3, "RANK.AVG");
   value = TypeConverter.firstValueAsNumber(value);
-  var range = Filter.flattenAndThrow(data).map(TypeConverter.valueToNumber)
+  let range = Filter.flattenAndThrow(data).map(TypeConverter.valueToNumber)
 
   function _countIn(range, value) {
-    var result = 0;
-    for (var i = 0; i < range.length; i++) {
+    let result = 0;
+    for (let i = 0; i < range.length; i++) {
       if (range[i] === value) {
         result++;
       }
@@ -1896,17 +1896,17 @@ var RANK$AVG =  function (value, data, isAscending?) {
   }
 
   isAscending = (typeof isAscending === 'undefined') ? false : isAscending;
-  var sort = (isAscending) ? function (a, b) {
+  let sort = (isAscending) ? function (a, b) {
     return a - b;
   } : function (a, b) {
     return b - a;
   };
   range = range.sort(sort);
-  var rangeIndex = range.indexOf(value);
+  let rangeIndex = range.indexOf(value);
   if (rangeIndex === -1) {
     throw new NAError("RANK.AVG can't produce a result because parameter 1 is not in the dataset.");
   }
-  var count = _countIn(range, value);
+  let count = _countIn(range, value);
   return (count > 1) ? (2 * rangeIndex + count + 1) / 2 : rangeIndex + 1;
 };
 
@@ -1921,18 +1921,18 @@ var RANK$AVG =  function (value, data, isAscending?) {
  * @returns {number}
  * @constructor
  */
-var RANK$EQ =  function (value, data, isAscending?) {
+let RANK$EQ =  function (value, data, isAscending?) {
   ArgsChecker.checkLengthWithin(arguments, 2, 3, "RANK.EQ");
   value = TypeConverter.firstValueAsNumber(value);
-  var range = Filter.flattenAndThrow(data).map(TypeConverter.valueToNumber);
+  let range = Filter.flattenAndThrow(data).map(TypeConverter.valueToNumber);
   isAscending = (typeof isAscending === 'undefined') ? false : isAscending;
-  var sort = (isAscending) ? function (a, b) {
+  let sort = (isAscending) ? function (a, b) {
     return a - b;
   } : function (a, b) {
     return b - a;
   };
   range = range.sort(sort);
-  var rangeIndex = range.indexOf(value);
+  let rangeIndex = range.indexOf(value);
   if (rangeIndex === -1) {
     throw new NAError("RANK.EQ can't produce a result because parameter 1 is not in the dataset.");
   }
@@ -1947,7 +1947,7 @@ var RANK$EQ =  function (value, data, isAscending?) {
  * @returns {number}
  * @constructor
  */
-var LOGNORMDIST = function (x, meanValue, standardDev) {
+let LOGNORMDIST = function (x, meanValue, standardDev) {
   ArgsChecker.checkLength(arguments, 3, "LOGNORMDIST");
   x = TypeConverter.firstValueAsNumber(x);
   meanValue = TypeConverter.firstValueAsNumber(meanValue);
@@ -1958,7 +1958,7 @@ var LOGNORMDIST = function (x, meanValue, standardDev) {
   if (standardDev <= 0) {
     throw new NumError("Function LOGNORMDIST parameter 3 value is " + standardDev + ", but should be greater than 0.");
   }
-  var a = (Math.log(x) - meanValue)/Math.sqrt(2 * standardDev * standardDev);
+  let a = (Math.log(x) - meanValue)/Math.sqrt(2 * standardDev * standardDev);
   return 0.5 + 0.5 * erf(a);
 };
 
@@ -1971,7 +1971,7 @@ var LOGNORMDIST = function (x, meanValue, standardDev) {
  * @returns {number}
  * @constructor
  */
-var TDIST = function (x, degreesOfFreedom, tails) {
+let TDIST = function (x, degreesOfFreedom, tails) {
   ArgsChecker.checkLength(arguments, 3, "TDIST");
   x = TypeConverter.firstValueAsNumber(x);
   degreesOfFreedom = TypeConverter.firstValueAsNumber(degreesOfFreedom);
@@ -1988,14 +1988,14 @@ var TDIST = function (x, degreesOfFreedom, tails) {
     throw new NumError("Function TDIST parameter 1 value is " + x + ", but it should be greater than or equal to 0.");
   }
   function _betacf(x, a, b) {
-    var fpmin = 1e-30;
-    var m = 1;
-    var qab = a + b;
-    var qap = a + 1;
-    var qam = a - 1;
-    var c = 1;
-    var d = 1 - qab * x / qap;
-    var m2, aa, del, h;
+    let fpmin = 1e-30;
+    let m = 1;
+    let qab = a + b;
+    let qap = a + 1;
+    let qam = a - 1;
+    let c = 1;
+    let d = 1 - qab * x / qap;
+    let m2, aa, del, h;
 
     if (Math.abs(d) < fpmin)
       d = fpmin;
@@ -2030,7 +2030,7 @@ var TDIST = function (x, degreesOfFreedom, tails) {
     return h;
   }
   function _ibeta(x, a, b) {
-    var bt = (x === 0 || x === 1) ?  0 :
+    let bt = (x === 0 || x === 1) ?  0 :
       Math.exp(gammaln(a + b) - gammaln(a) -
         gammaln(b) + a * Math.log(x) + b *
         Math.log(1 - x));
@@ -2041,7 +2041,7 @@ var TDIST = function (x, degreesOfFreedom, tails) {
     return 1 - bt * _betacf(1 - x, b, a) / b;
   }
   function _studenttCDF(x, dof) {
-    var dof2 = dof / 2;
+    let dof2 = dof / 2;
     return _ibeta((x + Math.sqrt(x * x + dof)) /
       (2 * Math.sqrt(x * x + dof)), dof2, dof2);
   }

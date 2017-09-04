@@ -102,7 +102,7 @@ var GROWTH = function (knownY, knownX, newX, shouldUseConstant) {
     var avg_y = 0;
     var avg_xy = 0;
     var avg_xx = 0;
-    for (i = 0; i < n; i++) {
+    for (var i = 0; i < n; i++) {
         var x = knownX[i];
         var y = Math.log(knownY[i]);
         avg_x += x;
@@ -127,7 +127,7 @@ var GROWTH = function (knownY, knownX, newX, shouldUseConstant) {
     }
     // Compute and return result array:
     var new_y = [];
-    for (i = 0; i < newX.length; i++) {
+    for (var i = 0; i < newX.length; i++) {
         new_y.push(Math.exp(alpha + beta * newX[i]));
     }
     return new_y;

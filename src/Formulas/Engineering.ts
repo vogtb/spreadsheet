@@ -17,12 +17,12 @@ import {
  * @returns {number}
  * @constructor
  */
-var BIN2DEC = function (signedBinaryNumber) : number {
+let BIN2DEC = function (signedBinaryNumber) : number {
   ArgsChecker.checkLength(arguments, 1, "BIN2DEC");
   if (typeof TypeConverter.firstValue(signedBinaryNumber) === "boolean") {
     throw new ValueError("Function BIN2DEC parameter 1 expects text values. But '" + signedBinaryNumber + "' is a boolean and cannot be coerced to a text.");
   }
-  var n = TypeConverter.firstValueAsString(signedBinaryNumber);
+  let n = TypeConverter.firstValueAsString(signedBinaryNumber);
   if (!(/^[01]{1,10}$/).test(n)) {
     throw new NumError("Input for BIN2DEC ('" + n + "') is not a valid binary representation.");
   }
@@ -43,13 +43,13 @@ var BIN2DEC = function (signedBinaryNumber) : number {
  * @returns {string} string representation of a signed hexadecimal
  * @constructor
  */
-var BIN2HEX = function (signedBinaryNumber, significantDigits?) : string {
+let BIN2HEX = function (signedBinaryNumber, significantDigits?) : string {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "BIN2HEX");
   if (typeof TypeConverter.firstValue(signedBinaryNumber) === "boolean") {
     throw new ValueError("Function BIN2HEX parameter 1 expects text values. But '" + signedBinaryNumber + "' is a boolean and cannot be coerced to a text.");
   }
-  var n = TypeConverter.firstValueAsString(signedBinaryNumber);
-  var p = 10;
+  let n = TypeConverter.firstValueAsString(signedBinaryNumber);
+  let p = 10;
   if (significantDigits !== undefined) {
     p = TypeConverter.firstValueAsNumber(significantDigits);
   }
@@ -66,12 +66,12 @@ var BIN2HEX = function (signedBinaryNumber, significantDigits?) : string {
   }
   p = Math.floor(p);
   // Convert decimal number to hexadecimal
-  var result = parseInt(n.toString(), 2).toString(16).toUpperCase();
+  let result = parseInt(n.toString(), 2).toString(16).toUpperCase();
   if (p === 10) {
     return result;
   }
-  var str = "";
-  for (var i = 0; i < p - result.length; i++) {
+  let str = "";
+  for (let i = 0; i < p - result.length; i++) {
     str += "0";
   }
   return str + result;
@@ -89,13 +89,13 @@ var BIN2HEX = function (signedBinaryNumber, significantDigits?) : string {
  * @returns {string} number in octal format
  * @constructor
  */
-var BIN2OCT = function (signedBinaryNumber, significantDigits?) : string {
+let BIN2OCT = function (signedBinaryNumber, significantDigits?) : string {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "BIN2OCT");
   if (typeof TypeConverter.firstValue(signedBinaryNumber) === "boolean") {
     throw new ValueError("Function BIN2OCT parameter 1 expects text values. But '" + signedBinaryNumber + "' is a boolean and cannot be coerced to a text.");
   }
-  var n = TypeConverter.firstValueAsString(signedBinaryNumber);
-  var p = 10;
+  let n = TypeConverter.firstValueAsString(signedBinaryNumber);
+  let p = 10;
   if (significantDigits !== undefined) {
     p = TypeConverter.firstValueAsNumber(significantDigits);
   }
@@ -111,13 +111,13 @@ var BIN2OCT = function (signedBinaryNumber, significantDigits?) : string {
     throw new NumError("Function BIN2OCT parameter 2 value is " + p + ". Valid values are between 1 and 10 inclusive.");
   }
   p = Math.floor(p);
-  var result = parseInt(n.toString(), 2).toString(8);
+  let result = parseInt(n.toString(), 2).toString(8);
   if (p === 10) {
     return result;
   }
   if (p >= result.length) {
-    var str = "";
-    for (var i = 0; i < p - result.length - 1; i++) {
+    let str = "";
+    for (let i = 0; i < p - result.length - 1; i++) {
       str += "0";
     }
     return str + result;
@@ -134,17 +134,17 @@ var BIN2OCT = function (signedBinaryNumber, significantDigits?) : string {
  * @returns {string} octal string representation of the decimal number
  * @constructor
  */
-var DEC2OCT = function (decimalDumber, significantDigits?) : string {
+let DEC2OCT = function (decimalDumber, significantDigits?) : string {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "DEC2OCT");
-  var n = TypeConverter.firstValueAsNumber(decimalDumber);
+  let n = TypeConverter.firstValueAsNumber(decimalDumber);
   if (n < 0) {
     n = Math.ceil(n);
   }
   if (n > 0) {
     n = Math.floor(n);
   }
-  var p = 10;
-  var placesPresent = false;
+  let p = 10;
+  let placesPresent = false;
   if (significantDigits !== undefined) {
     p = Math.floor(TypeConverter.firstValueAsNumber(significantDigits));
     placesPresent = true;
@@ -160,12 +160,12 @@ var DEC2OCT = function (decimalDumber, significantDigits?) : string {
   }
 
   // Convert decimal number to hexadecimal
-  var result = parseInt(n.toString(), 10).toString(8).toUpperCase();
+  let result = parseInt(n.toString(), 10).toString(8).toUpperCase();
   if (!placesPresent) {
     return result;
   }
-  var str = "";
-  for (var i = 0; i < p - result.length; i++) {
+  let str = "";
+  for (let i = 0; i < p - result.length; i++) {
     str += "0";
   }
   return str + result.toUpperCase();
@@ -182,17 +182,17 @@ var DEC2OCT = function (decimalDumber, significantDigits?) : string {
  * @returns {string} hexadecimal string representation of the decimal number
  * @constructor
  */
-var DEC2HEX = function (decimalDumber, significantDigits?) : string {
+let DEC2HEX = function (decimalDumber, significantDigits?) : string {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "DEC2HEX");
-  var n = TypeConverter.firstValueAsNumber(decimalDumber);
+  let n = TypeConverter.firstValueAsNumber(decimalDumber);
   if (n < 0) {
     n = Math.ceil(n);
   }
   if (n > 0) {
     n = Math.floor(n);
   }
-  var p = 10;
-  var placesPresent = false;
+  let p = 10;
+  let placesPresent = false;
   if (significantDigits !== undefined) {
     p = Math.floor(TypeConverter.firstValueAsNumber(significantDigits));
     placesPresent = true;
@@ -209,12 +209,12 @@ var DEC2HEX = function (decimalDumber, significantDigits?) : string {
   }
 
   // Convert decimal number to hexadecimal
-  var result = parseInt(n.toString(), 10).toString(16).toUpperCase();
+  let result = parseInt(n.toString(), 10).toString(16).toUpperCase();
   if (!placesPresent) {
     return result;
   }
-  var str = "";
-  for (var i = 0; i < p - result.length; i++) {
+  let str = "";
+  for (let i = 0; i < p - result.length; i++) {
     str += "0";
   }
   return str + result;
@@ -230,9 +230,9 @@ var DEC2HEX = function (decimalDumber, significantDigits?) : string {
  * @returns {string} signed binary string representation of the input decimal number.
  * @constructor
  */
-var DEC2BIN = function (decimalDumber, significantDigits?) : string {
+let DEC2BIN = function (decimalDumber, significantDigits?) : string {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "DEC2BIN");
-  var n = TypeConverter.firstValueAsNumber(decimalDumber);
+  let n = TypeConverter.firstValueAsNumber(decimalDumber);
   if (n < 0) {
     n = Math.ceil(n);
   }
@@ -242,8 +242,8 @@ var DEC2BIN = function (decimalDumber, significantDigits?) : string {
   if (n === 0 || n === 1) {
     return n.toString();
   }
-  var p = 10;
-  var placesPresent = false;
+  let p = 10;
+  let placesPresent = false;
   if (significantDigits !== undefined) {
     p = Math.floor(TypeConverter.firstValueAsNumber(significantDigits));
     placesPresent = true;
@@ -258,28 +258,28 @@ var DEC2BIN = function (decimalDumber, significantDigits?) : string {
 
   // Ignore places and return a 10-character binary number if number is negative
   if (n < 0) {
-    var count = (9 - (512 + n).toString(2).length);
-    var st = "";
-    for (var i = 0; i < count; i++) {
+    let count = (9 - (512 + n).toString(2).length);
+    let st = "";
+    for (let i = 0; i < count; i++) {
       st += "0";
     }
     return "1" + st + (512 + n).toString(2);
   }
 
   // Convert decimal number to binary
-  var result = parseInt(n.toString(), 10).toString(2);
+  let result = parseInt(n.toString(), 10).toString(2);
 
   // Pad return value with leading 0s (zeros) if necessary
   if (p >= result.length) {
-    var str = "";
-    for (var i = 0; i < (p - result.length); i++) {
+    let str = "";
+    for (let i = 0; i < (p - result.length); i++) {
       str += "0";
     }
-    var workingString = str + result;
+    let workingString = str + result;
     if (!placesPresent) {
-      var returnString = "";
-      for (var i = 0; i < workingString.length; i++) {
-        var char = workingString[i];
+      let returnString = "";
+      for (let i = 0; i < workingString.length; i++) {
+        let char = workingString[i];
         if (char === "1") {
           break;
         }
@@ -298,7 +298,7 @@ var DEC2BIN = function (decimalDumber, significantDigits?) : string {
  * @returns {number} 1 if they're equal, 0 if they're not equal.
  * @constructor
  */
-var DELTA = function (one, two?) : number {
+let DELTA = function (one, two?) : number {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "DELTA");
   if (two === undefined) {
     return TypeConverter.valueToNumber(one) === 0 ? 1 : 0;

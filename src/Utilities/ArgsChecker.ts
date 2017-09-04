@@ -14,7 +14,7 @@ class ArgsChecker {
    */
   static checkLength(args: Array<any> | IArguments, length: number, caller?: string) {
     if (args.length !== length) {
-      var functionName = caller !== undefined ? " to " + caller : "";
+      let functionName = caller !== undefined ? " to " + caller : "";
       throw new NAError("Wrong number of arguments" + functionName + ". Expected " + length
           + " arguments, but got " + args.length + " arguments.");
     }
@@ -28,7 +28,7 @@ class ArgsChecker {
    */
   static checkAtLeastLength(args: any, length: number, caller?: string) {
     if (args.length < length) {
-      var functionName = caller !== undefined ? " to " + caller : "";
+      let functionName = caller !== undefined ? " to " + caller : "";
       throw new NAError("Wrong number of arguments" + functionName + ". Expected " + length
         + " arguments, but got " + args.length + " arguments.");
     }
@@ -43,7 +43,7 @@ class ArgsChecker {
    */
   static checkLengthWithin(args: any, low: number, high: number, caller?: string) {
     if (args.length > high || args.length < low) {
-      var functionName = caller !== undefined ? " to " + caller : "";
+      let functionName = caller !== undefined ? " to " + caller : "";
       throw new NAError("Wrong number of arguments" + functionName + ". Expected between " + low
         + " and " + high + " arguments, but got " + args.length + " arguments.");
     }

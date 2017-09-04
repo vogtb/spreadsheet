@@ -23,7 +23,7 @@ import {
  * @constructor
  * TODO: Returns ColumnArray (values stacked in Y-direction)
  */
-var FREQUENCY = function (range, bins) : Array<number> {
+let FREQUENCY = function (range, bins) : Array<number> {
   ArgsChecker.checkLength(arguments, 2, "FREQUENCY");
   if (!Array.isArray(bins)) {
     bins = [bins];
@@ -42,12 +42,12 @@ var FREQUENCY = function (range, bins) : Array<number> {
     return a - b;
   });
 
-  var n = range.length;
-  var b = bins.length;
-  var r = [];
-  for (var i = 0; i <= b; i++) {
+  let n = range.length;
+  let b = bins.length;
+  let r = [];
+  for (let i = 0; i <= b; i++) {
     r[i] = 0;
-    for (var j = 0; j < n; j++) {
+    for (let j = 0; j < n; j++) {
       if (i === 0) {
         if (range[j] <= bins[0]) {
           r[0] += 1;
@@ -80,7 +80,7 @@ var FREQUENCY = function (range, bins) : Array<number> {
  * @constructor
  * TODO: Returns RowArray (values stacked in X-direction)
  */
-var GROWTH = function (knownY, knownX?, newX?, shouldUseConstant?) {
+let GROWTH = function (knownY, knownX?, newX?, shouldUseConstant?) {
   ArgsChecker.checkLengthWithin(arguments, 1, 4, "GROWTH");
   // Credits: Ilmari Karonen, FormulaJs (https://github.com/sutoiku/formula.js/)
 
@@ -95,13 +95,13 @@ var GROWTH = function (knownY, knownX?, newX?, shouldUseConstant?) {
   // Default values for optional parameters:
   if (arguments.length < 2) {
     knownX = [];
-    for (var i = 1; i <= knownY.length; i++) {
+    for (let i = 1; i <= knownY.length; i++) {
       knownX.push(i);
     }
   }
   if (arguments.length < 3) {
     newX = [];
-    for (var i = 1; i <= knownY.length; i++) {
+    for (let i = 1; i <= knownY.length; i++) {
       newX.push(i);
     }
   }
@@ -110,14 +110,14 @@ var GROWTH = function (knownY, knownX?, newX?, shouldUseConstant?) {
   }
 
   // Calculate sums over the data:
-  var n = knownY.length;
-  var avg_x = 0;
-  var avg_y = 0;
-  var avg_xy = 0;
-  var avg_xx = 0;
-  for (i = 0; i < n; i++) {
-    var x = knownX[i];
-    var y = Math.log(knownY[i]);
+  let n = knownY.length;
+  let avg_x = 0;
+  let avg_y = 0;
+  let avg_xy = 0;
+  let avg_xx = 0;
+  for (let i = 0; i < n; i++) {
+    let x = knownX[i];
+    let y = Math.log(knownY[i]);
     avg_x += x;
     avg_y += y;
     avg_xy += x * y;
@@ -129,8 +129,8 @@ var GROWTH = function (knownY, knownX?, newX?, shouldUseConstant?) {
   avg_xx /= n;
 
   // Compute linear regression coefficients:
-  var beta;
-  var alpha;
+  let beta;
+  let alpha;
   if (shouldUseConstant) {
     beta = (avg_xy - avg_x * avg_y) / (avg_xx - avg_x * avg_x);
     alpha = avg_y - beta * avg_x;
@@ -140,8 +140,8 @@ var GROWTH = function (knownY, knownX?, newX?, shouldUseConstant?) {
   }
 
   // Compute and return result array:
-  var new_y = [];
-  for (i = 0; i < newX.length; i++) {
+  let new_y = [];
+  for (let i = 0; i < newX.length; i++) {
     new_y.push(Math.exp(alpha + beta * newX[i]));
   }
   return new_y;
@@ -154,12 +154,12 @@ var GROWTH = function (knownY, knownX?, newX?, shouldUseConstant?) {
  * @returns {number[]}
  * @constructor
  */
-var LINEST = function (dataY, dataX) {
+let LINEST = function (dataY, dataX) {
   ArgsChecker.checkLength(arguments, 2, "LINEST");
-  var rangeY = Filter.flattenAndThrow(dataY).map(function (value) {
+  let rangeY = Filter.flattenAndThrow(dataY).map(function (value) {
     return TypeConverter.valueToNumber(value);
   });
-  var rangeX = Filter.flattenAndThrow(dataX).map(function (value) {
+  let rangeX = Filter.flattenAndThrow(dataX).map(function (value) {
     return TypeConverter.valueToNumber(value);
   });
 
@@ -170,17 +170,17 @@ var LINEST = function (dataY, dataX) {
     throw new NAError("LINEST requires more data points. Expected: 2, found: " + rangeY.length + ".");
   }
 
-  var xMean = mean(rangeX);
-  var yMean = mean(rangeY);
-  var n = rangeX.length;
-  var num = 0;
-  var den = 0;
-  for (var i = 0; i < n; i++) {
+  let xMean = mean(rangeX);
+  let yMean = mean(rangeY);
+  let n = rangeX.length;
+  let num = 0;
+  let den = 0;
+  for (let i = 0; i < n; i++) {
     num += (rangeX[i] - xMean) * (rangeY[i] - yMean);
     den += Math.pow(rangeX[i] - xMean, 2);
   }
-  var m = num / den;
-  var b = yMean - m * xMean;
+  let m = num / den;
+  let b = yMean - m * xMean;
   return [m, b];
 };
 

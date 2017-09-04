@@ -12,8 +12,8 @@ class Filter {
    * @returns {Array} array in which all string values have been converted to 0.
    */
   static stringValuesToZeros(arr: Array<any>) : Array<any> {
-    var toReturn = [];
-    for (var i = 0; i < arr.length; i++) {
+    let toReturn = [];
+    for (let i = 0; i < arr.length; i++) {
       if (typeof arr[i] === "string") {
         toReturn.push(0);
       } else {
@@ -57,8 +57,8 @@ class Filter {
    * @returns {Array} filtered array
    */
   static filterOutStringValues(arr: Array<any>) : Array<any> {
-    var toReturn = [];
-    for (var i = 0; i < arr.length; i++) {
+    let toReturn = [];
+    for (let i = 0; i < arr.length; i++) {
       if (typeof arr[i] !== "string") {
         toReturn.push(arr[i]);
       }
@@ -72,8 +72,8 @@ class Filter {
    * @returns {Array} filtered array
    */
   static filterOutNonNumberValues(arr: Array<any>) : Array<any> {
-    var toReturn = [];
-    for (var i = 0; i < arr.length; i++) {
+    let toReturn = [];
+    for (let i = 0; i < arr.length; i++) {
       if (typeof arr[i] !== "string" && typeof arr[i] !== "boolean") {
         toReturn.push(arr[i]);
       }
@@ -87,8 +87,8 @@ class Filter {
    * @returns {Array}
    */
   static unique(arr: Array<any>) : Array<any> {
-    var a = [];
-    for (var i = 0, l = arr.length; i < l; i++) {
+    let a = [];
+    for (let i = 0, l = arr.length; i < l; i++) {
       if (a.indexOf(arr[i]) === -1 && arr[i] !== '') {
         a.push(arr[i]);
       }

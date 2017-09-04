@@ -31,7 +31,7 @@ var TO_DOLLARS = function (value) {
 };
 exports.TO_DOLLARS = TO_DOLLARS;
 /**
- * Converts a number to a percent value where 1 = 100%
+ * Converts a number to a percent value where 1 = 100 percent.
  * @param value - Value to convert. If the input is a number, will return as a percent value. If value is non-numeric,
  * will return value unchanged.
  * @returns {any}

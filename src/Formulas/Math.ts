@@ -31,7 +31,7 @@ import {
  * @returns {number} greatest common divisor.
  * @constructor
  */
-var GCD = function (...values) {
+let GCD = function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "ABS");
   // Credits: Andrew Pociu
   for (var r, a, i = values.length - 1, result = values[i]; i;) {
@@ -49,10 +49,10 @@ var GCD = function (...values) {
  * @returns {number}
  * @constructor
  */
-var LCM =  function (...values) {
+let LCM =  function (...values) {
   ArgsChecker.checkAtLeastLength(arguments, 1, "LCM");
   // Credits: Jonas Raoni Soares Silva
-  var o = Filter.flatten(values);
+  let o = Filter.flatten(values);
   for (var i, j, n, d, r = 1; (n = o.pop()) !== undefined;) {
     while (n > 1) {
       if (n % 2) {
@@ -73,9 +73,9 @@ var LCM =  function (...values) {
  * @returns {number}
  * @constructor
  */
-var GAMMALN = function (value) {
+let GAMMALN = function (value) {
   ArgsChecker.checkLength(arguments, 1, "GAMMALN");
-  var x =  TypeConverter.firstValueAsNumber(value);
+  let x =  TypeConverter.firstValueAsNumber(value);
   if (x <= 0) {
     throw new NumError("Function GAMMALN parameter 1 value is " + x + ". It should be greater than 0.");
   }
@@ -88,9 +88,9 @@ var GAMMALN = function (value) {
  * @returns {number} absolute value
  * @constructor
  */
-var ABS = function (value) {
+let ABS = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ABS");
-  var v = TypeConverter.valueToNumber(value);
+  let v = TypeConverter.valueToNumber(value);
   return Math.abs(v);
 };
 
@@ -100,7 +100,7 @@ var ABS = function (value) {
  * @returns {number} inverse cosine of value
  * @constructor
  */
-var ACOS = function (value) {
+let ACOS = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ACOS");
   value = TypeConverter.valueToNumber(value);
   if (value === -1) {
@@ -117,7 +117,7 @@ var ACOS = function (value) {
  * @returns {number} to find the inverse hyperbolic cosine for.
  * @constructor
  */
-var ACOSH = function (value) {
+let ACOSH = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ACOSH");
   value = TypeConverter.valueToNumber(value);
   if (value < 1) {
@@ -132,7 +132,7 @@ var ACOSH = function (value) {
  * @returns {number} hyperbolic arc-cotangent
  * @constructor
  */
-var ACOTH = function (value) {
+let ACOTH = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ACOTH");
   value = TypeConverter.valueToNumber(value);
   if (value <= 1 && value >= -1) {
@@ -147,7 +147,7 @@ var ACOTH = function (value) {
  * @returns {number} inverse sine of input value
  * @constructor
  */
-var ASIN = function (value) {
+let ASIN = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ASIN");
   value = TypeConverter.valueToNumber(value);
   if (value === -1) {
@@ -164,7 +164,7 @@ var ASIN = function (value) {
  * @returns {number} inverse hyperbolic sine of input
  * @constructor
  */
-var ASINH = function (value) {
+let ASINH = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ASINH");
   value = TypeConverter.valueToNumber(value);
   return Math.log(value + Math.sqrt(value * value + 1));
@@ -177,7 +177,7 @@ var ASINH = function (value) {
  * @returns {number} inverse tangent of input value
  * @constructor
  */
-var ATAN = function (value) {
+let ATAN = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ATAN");
   value = TypeConverter.valueToNumber(value);
   if (value === -1) {
@@ -196,7 +196,7 @@ var ATAN = function (value) {
  * @returns {number} angle in radians
  * @constructor
  */
-var ATAN2 = function (x, y) {
+let ATAN2 = function (x, y) {
   ArgsChecker.checkLength(arguments, 2, "ATAN2");
   x = TypeConverter.valueToNumber(x);
   y = TypeConverter.valueToNumber(y);
@@ -213,7 +213,7 @@ var ATAN2 = function (x, y) {
  * @returns {number} inverse hyperbolic tangent of input
  * @constructor
  */
-var ATANH = function (value) : number {
+let ATANH = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "ATANH");
   value = TypeConverter.valueToNumber(value);
   if (value >= 1 || value <= -1) {
@@ -231,9 +231,9 @@ var ATANH = function (value) : number {
  * @returns {number} next greatest even number
  * @constructor
  */
-var EVEN = function (value) : number {
+let EVEN = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "EVEN");
-  var X = TypeConverter.firstValueAsNumber(value);
+  let X = TypeConverter.firstValueAsNumber(value);
   return X % 2 === 1 ? X + 1 : X;
 };
 
@@ -244,10 +244,10 @@ var EVEN = function (value) : number {
  * @returns {number}
  * @constructor
  */
-var MOD = function (dividend, divisor) : number {
+let MOD = function (dividend, divisor) : number {
   ArgsChecker.checkLength(arguments, 2, "MOD");
-  var oneN = TypeConverter.valueToNumber(dividend);
-  var twoN =  TypeConverter.valueToNumber(divisor);
+  let oneN = TypeConverter.valueToNumber(dividend);
+  let twoN =  TypeConverter.valueToNumber(divisor);
   if (twoN === 0) {
     throw new DivZeroError("Function MOD parameter 2 cannot be zero.");
   }
@@ -261,9 +261,9 @@ var MOD = function (dividend, divisor) : number {
  * @returns {number} value to round up to next greatest odd number.
  * @constructor
  */
-var ODD = function (value) : number {
+let ODD = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "ODD");
-  var X = TypeConverter.firstValueAsNumber(value);
+  let X = TypeConverter.firstValueAsNumber(value);
   return X % 2 === 1 ? X : X + 1;
 };
 
@@ -274,10 +274,10 @@ var ODD = function (value) : number {
  * @returns {number} resulting number
  * @constructor
  */
-var POWER = function (base, exponent) : number {
+let POWER = function (base, exponent) : number {
   ArgsChecker.checkLength(arguments, 2, "POWER");
-  var n = TypeConverter.firstValueAsNumber(base);
-  var p = TypeConverter.firstValueAsNumber(exponent);
+  let n = TypeConverter.firstValueAsNumber(base);
+  let p = TypeConverter.firstValueAsNumber(exponent);
   return Math.pow(n, p);
 };
 
@@ -287,10 +287,10 @@ var POWER = function (base, exponent) : number {
  * @returns {number} The sum of the series
  * @constructor
  */
-var SUM = function (...values) : number {
+let SUM = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "SUM");
-  var result = 0;
-  for (var i = 0; i < values.length; i++) {
+  let result = 0;
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       result = result + SUM.apply(this, values[i]);
     } else {
@@ -309,9 +309,9 @@ var SUM = function (...values) : number {
  * @returns {number} square root
  * @constructor
  */
-var SQRT = function (value) : number {
+let SQRT = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "SQRT");
-  var x = TypeConverter.firstValueAsNumber(value);
+  let x = TypeConverter.firstValueAsNumber(value);
   if (x < 0) {
     throw new ValueError("Function SQRT parameter 1 value is " + x + ". It should be greater than or equal to 0.");
   }
@@ -324,9 +324,9 @@ var SQRT = function (value) : number {
  * @returns {number} the positive square root of the product of Pi and the given positive number.
  * @constructor
  */
-var SQRTPI = function (value) : number{
+let SQRTPI = function (value) : number{
   ArgsChecker.checkLength(arguments, 1, "SQRTPI");
-  var n = TypeConverter.firstValueAsNumber(value);
+  let n = TypeConverter.firstValueAsNumber(value);
   if (n < 0) {
     throw new NumError("Function SQRTPI parameter 1 value is " + n + ". It should be greater than or equal to 0.");
   }
@@ -339,9 +339,9 @@ var SQRTPI = function (value) : number{
  * @returns {number} cosine of angle
  * @constructor
  */
-var COS = function (value) : number {
+let COS = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "COS");
-  var r = TypeConverter.firstValueAsNumber(value);
+  let r = TypeConverter.firstValueAsNumber(value);
   return Math.cos(r);
 };
 
@@ -351,9 +351,9 @@ var COS = function (value) : number {
  * @returns {number} the hyperbolic cosine of the input
  * @constructor
  */
-var COSH = function (value) : number {
+let COSH = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "COSH");
-  var r = TypeConverter.firstValueAsNumber(value);
+  let r = TypeConverter.firstValueAsNumber(value);
   return Math["cosh"](r);
 };
 
@@ -363,9 +363,9 @@ var COSH = function (value) : number {
  * @returns {number} cotangent
  * @constructor
  */
-var COT = function (value) : number {
+let COT = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "COT");
-  var x = TypeConverter.firstValueAsNumber(value);
+  let x = TypeConverter.firstValueAsNumber(value);
   if (x === 0) {
     throw new DivZeroError("Evaluation of function COT caused a divide by zero error.");
   }
@@ -378,9 +378,9 @@ var COT = function (value) : number {
  * @returns {number} hyperbolic cotangent
  * @constructor
  */
-var COTH = function (value) : number {
+let COTH = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "COTH");
-  var x = TypeConverter.firstValueAsNumber(value);
+  let x = TypeConverter.firstValueAsNumber(value);
   if (x === 0) {
     throw new DivZeroError("Evaluation of function COTH caused a divide by zero error.");
   }
@@ -393,9 +393,9 @@ var COTH = function (value) : number {
  * @returns {number} Rounded number
  * @constructor
  */
-var INT = function (value) : number {
+let INT = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "INT");
-  var x = TypeConverter.firstValueAsNumber(value);
+  let x = TypeConverter.firstValueAsNumber(value);
   return Math.floor(x);
 };
 
@@ -406,12 +406,12 @@ var INT = function (value) : number {
  * @returns {boolean} whether this value is even or not
  * @constructor
  */
-var ISEVEN = function (value) : boolean {
+let ISEVEN = function (value) : boolean {
   ArgsChecker.checkLength(arguments, 1, "ISEVEN");
   if (value === "") {
     throw new ValueError("Function ISEVEN parameter 1 expects boolean values. But '" + value + "' is a text and cannot be coerced to a boolean.");
   }
-  var x = TypeConverter.firstValueAsNumber(value);
+  let x = TypeConverter.firstValueAsNumber(value);
   return Math.floor(x) % 2 === 0;
 };
 
@@ -422,12 +422,12 @@ var ISEVEN = function (value) : boolean {
  * @returns {boolean} whether this value is odd or not
  * @constructor
  */
-var ISODD = function (value) : boolean {
+let ISODD = function (value) : boolean {
   ArgsChecker.checkLength(arguments, 1, "ISODD");
   if (value === "") {
     throw new ValueError("Function ISODD parameter 1 expects boolean values. But '" + value + "' is a text and cannot be coerced to a boolean.");
   }
-  var x = TypeConverter.firstValueAsNumber(value);
+  let x = TypeConverter.firstValueAsNumber(value);
   return Math.floor(x) % 2 === 1;
 };
 
@@ -437,9 +437,9 @@ var ISODD = function (value) : boolean {
  * @returns {number} Sine of angle.
  * @constructor
  */
-var SIN = function (value) {
+let SIN = function (value) {
   ArgsChecker.checkLength(arguments, 1, "SIN");
-  var rad = TypeConverter.firstValueAsNumber(value);
+  let rad = TypeConverter.firstValueAsNumber(value);
   return rad === Math.PI ? 0 : Math.sin(rad);
 };
 
@@ -449,9 +449,9 @@ var SIN = function (value) {
  * @returns {number} hyperbolic sine
  * @constructor
  */
-var SINH = function (value) : number {
+let SINH = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "SINH");
-  var rad = TypeConverter.firstValueAsNumber(value);
+  let rad = TypeConverter.firstValueAsNumber(value);
   return Math["sinh"](rad);
 };
 
@@ -460,7 +460,7 @@ var SINH = function (value) : number {
  * @returns {number} Pi.
  * @constructor
  */
-var PI = function () {
+let PI = function () {
   ArgsChecker.checkLength(arguments, 0, "SINH");
   return Math.PI;
 };
@@ -471,14 +471,14 @@ var PI = function () {
  * @returns {number} logarithm of the number, in base 10.
  * @constructor
  */
-var LOG10 = function (value) : number {
+let LOG10 = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "LOG10");
-  var n = TypeConverter.firstValueAsNumber(value);
+  let n = TypeConverter.firstValueAsNumber(value);
   if (n < 1) {
     throw new NumError("Function LOG10 parameter 1 value is " + n + ". It should be greater than 0.");
   }
-  var ln = Math.log(n);
-  var lb = Math.log(10);
+  let ln = Math.log(n);
+  let lb = Math.log(10);
   return ln / lb;
 };
 
@@ -489,18 +489,18 @@ var LOG10 = function (value) : number {
  * @returns {number}
  * @constructor
  */
-var LOG = function (value, base) : number {
+let LOG = function (value, base) : number {
   ArgsChecker.checkAtLeastLength(arguments, 2, "LOG");
-  var n = TypeConverter.firstValueAsNumber(value);
-  var b = TypeConverter.firstValueAsNumber(base);
+  let n = TypeConverter.firstValueAsNumber(value);
+  let b = TypeConverter.firstValueAsNumber(base);
   if (b < 1) {
     throw new NumError("Function LOG parameter 2 value is " + b + ". It should be greater than 0.");
   }
   if (b < 2) {
     throw new DivZeroError("Evaluation of function LOG caused a divide by zero error.");
   }
-  var ln = Math.log(n);
-  var lb = Math.log(b);
+  let ln = Math.log(n);
+  let lb = Math.log(b);
   if (lb === 0) {
     throw new DivZeroError("Evaluation of function LOG caused a divide by zero error.");
   }
@@ -513,9 +513,9 @@ var LOG = function (value, base) : number {
  * @returns {number} logarithm calculated
  * @constructor
  */
-var LN = function (value) : number {
+let LN = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "LN");
-  var n = TypeConverter.firstValueAsNumber(value);
+  let n = TypeConverter.firstValueAsNumber(value);
   if (n < 1) {
     throw new NumError("Function LN parameter 1 value is " + n + ". It should be greater than 0.");
   }
@@ -528,9 +528,9 @@ var LN = function (value) : number {
  * @returns {number} tangent in radians
  * @constructor
  */
-var TAN = function (value) : number {
+let TAN = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "TAN");
-  var rad = TypeConverter.firstValueAsNumber(value);
+  let rad = TypeConverter.firstValueAsNumber(value);
   return rad === Math.PI ? 0 : Math.tan(rad);
 };
 
@@ -540,9 +540,9 @@ var TAN = function (value) : number {
  * @returns {number} hyperbolic tangent
  * @constructor
  */
-var TANH = function (value) : number {
+let TANH = function (value) : number {
   ArgsChecker.checkLength(arguments, 1, "TANH");
-  var rad = TypeConverter.firstValueAsNumber(value);
+  let rad = TypeConverter.firstValueAsNumber(value);
   return Math["tanh"](rad);
 };
 
@@ -553,17 +553,17 @@ var TANH = function (value) : number {
  * @returns {number}
  * @constructor
  */
-var CEILING = function (value, factor?) : number {
+let CEILING = function (value, factor?) : number {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "CEILING");
-  var num = TypeConverter.firstValueAsNumber(value);
+  let num = TypeConverter.firstValueAsNumber(value);
   if (factor === undefined) {
     return Math.ceil(num);
   }
-  var significance = TypeConverter.firstValueAsNumber(factor);
+  let significance = TypeConverter.firstValueAsNumber(factor);
   if (significance === 0) {
     throw new DivZeroError("Function CEILING parameter 2 cannot be zero.");
   }
-  var precision = -Math.floor(Math.log(significance) / Math.log(10));
+  let precision = -Math.floor(Math.log(significance) / Math.log(10));
   if (num >= 0) {
     return ROUND(Math.ceil(num / significance) * significance, precision);
   } else {
@@ -578,18 +578,18 @@ var CEILING = function (value, factor?) : number {
  * @returns {number}
  * @constructor
  */
-var FLOOR = function (value, factor?) : number {
+let FLOOR = function (value, factor?) : number {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "FLOOR");
-  var num = TypeConverter.firstValueAsNumber(value);
+  let num = TypeConverter.firstValueAsNumber(value);
   if (factor === undefined) {
     return Math.floor(num);
   }
-  var significance = TypeConverter.firstValueAsNumber(factor);
+  let significance = TypeConverter.firstValueAsNumber(factor);
   if (significance === 0) {
     throw new DivZeroError("Function FLOOR parameter 2 cannot be zero.");
   }
   significance = significance ? Math.abs(significance) : 1;
-  var precision = -Math.floor(Math.log(significance) / Math.log(10));
+  let precision = -Math.floor(Math.log(significance) / Math.log(10));
   if (num >= 0) {
     return ROUND(Math.floor(num / significance) * significance, precision);
   }
@@ -604,7 +604,7 @@ var FLOOR = function (value, factor?) : number {
  * @returns one value if a logical expression is TRUE and another if it is FALSE.
  * @constructor
  */
-var IF = function (logicalExpression, valueIfTrue, valueIfFalse) : any {
+let IF = function (logicalExpression, valueIfTrue, valueIfFalse) : any {
   ArgsChecker.checkLength(arguments, 3, "IF");
   if (logicalExpression instanceof Array) {
     if (logicalExpression.length === 0) {
@@ -628,16 +628,16 @@ var IF = function (logicalExpression, valueIfTrue, valueIfFalse) : any {
  * @returns {number}
  * @constructor
  */
-var COUNTIF = function (range, criteria) {
+let COUNTIF = function (range, criteria) {
   ArgsChecker.checkLength(arguments, 2, "COUNTIF");
   if (!(range instanceof Array)) {
     range = [range];
   }
-  var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criteria);
+  let criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criteria);
 
-  var count = 0;
-  for (var i = 0; i < range.length; i++) {
-    var x = range[i];
+  let count = 0;
+  for (let i = 0; i < range.length; i++) {
+    let x = range[i];
     if (x instanceof Array) {
       count = count + COUNTIF.apply(this, [x, criteria]);
     } else if (criteriaEvaluation(x)) {
@@ -655,18 +655,18 @@ var COUNTIF = function (range, criteria) {
  * @returns {number} count
  * @constructor
  */
-var COUNTIFS = function (...values) {
+let COUNTIFS = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 2, "COUNTIFS");
-  var criteriaEvaluationFunctions = values.map(function (criteria, index) {
+  let criteriaEvaluationFunctions = values.map(function (criteria, index) {
     if (index % 2 === 1) {
       return CriteriaFunctionFactory.createCriteriaFunction(criteria);
     } else {
       return function () {return false;}
     }
   });
-  var filteredValues = [];
+  let filteredValues = [];
   // Flatten arrays/ranges
-  for (var x = 0; x < values.length; x++) {
+  for (let x = 0; x < values.length; x++) {
     // If this is an array/range parameter
     if (x % 2 === 0) {
       filteredValues.push(Filter.flatten(values[x]));
@@ -674,16 +674,16 @@ var COUNTIFS = function (...values) {
       filteredValues.push(values[x]);
     }
   }
-  var count = 0;
+  let count = 0;
   // For every value in the range
-  for (var i = 0; i < filteredValues[0].length; i++) {
+  for (let i = 0; i < filteredValues[0].length; i++) {
     // Check for criteria eval for other ranges and other criteria pairs.
-    var otherCriteriaEvaluationSuccessfulSoFar = true;
-    for (var x = 0; x < filteredValues.length; x += 2) {
+    let otherCriteriaEvaluationSuccessfulSoFar = true;
+    for (let x = 0; x < filteredValues.length; x += 2) {
       if (filteredValues[x].length < filteredValues[0].length) {
         throw new ValueError("Array arguments to COUNTIFS are of different size.");
       }
-      var criteriaEvaluation = criteriaEvaluationFunctions[x+1];
+      let criteriaEvaluation = criteriaEvaluationFunctions[x+1];
       if (otherCriteriaEvaluationSuccessfulSoFar) {
         if (!criteriaEvaluation(filteredValues[x][i])) { // evaluate THIS value with x+1 index, which is criteria.
           otherCriteriaEvaluationSuccessfulSoFar = false;
@@ -705,10 +705,10 @@ var COUNTIFS = function (...values) {
  * @returns {number}
  * @constructor
  */
-var ROUND = function (value, places) {
+let ROUND = function (value, places) {
   ArgsChecker.checkLength(arguments, 2, "ROUND");
-  var n = TypeConverter.firstValueAsNumber(value);
-  var d = TypeConverter.firstValueAsNumber(places);
+  let n = TypeConverter.firstValueAsNumber(value);
+  let d = TypeConverter.firstValueAsNumber(places);
   return Math.round(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
@@ -719,13 +719,13 @@ var ROUND = function (value, places) {
  * @returns {number}
  * @constructor
  */
-var ROUNDDOWN = function (value, places?) {
+let ROUNDDOWN = function (value, places?) {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "ROUNDDOWN");
-  var n = TypeConverter.firstValueAsNumber(value);
+  let n = TypeConverter.firstValueAsNumber(value);
   if (places === undefined) {
     return Math.floor(n);
   }
-  var d = TypeConverter.firstValueAsNumber(places);
+  let d = TypeConverter.firstValueAsNumber(places);
   return Math.floor(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
@@ -736,13 +736,13 @@ var ROUNDDOWN = function (value, places?) {
  * @returns {number}
  * @constructor
  */
-var ROUNDUP = function (value, places?) {
+let ROUNDUP = function (value, places?) {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "ROUNDUP");
-  var n = TypeConverter.firstValueAsNumber(value);
+  let n = TypeConverter.firstValueAsNumber(value);
   if (places === undefined) {
     return Math.ceil(n);
   }
-  var d = TypeConverter.firstValueAsNumber(places);
+  let d = TypeConverter.firstValueAsNumber(places);
   return Math.ceil(n * Math.pow(10, d)) / Math.pow(10, d);
 };
 
@@ -757,14 +757,14 @@ var ROUNDUP = function (value, places?) {
  * @returns {number}
  * @constructor
  */
-var SUMIF = function (range, criteria, sumRange?) {
+let SUMIF = function (range, criteria, sumRange?) {
   ArgsChecker.checkLengthWithin(arguments, 2, 3, "SUMIF");
 
-  var criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criteria);
+  let criteriaEvaluation = CriteriaFunctionFactory.createCriteriaFunction(criteria);
 
-  var sum = 0;
-  for (var i = 0; i < range.length; i++) {
-    var x = range[i];
+  let sum = 0;
+  for (let i = 0; i < range.length; i++) {
+    let x = range[i];
     if (x instanceof Array) {
       sum += SUMIF.apply(this, [x, criteria]);
     } else {
@@ -787,17 +787,17 @@ var SUMIF = function (range, criteria, sumRange?) {
  * @returns {number} the sum of the squares if the input.
  * @constructor
  */
-var SUMSQ = function (...values) {
+let SUMSQ = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 1, "SUMSQ");
-  var result = 0;
-  for (var i = 0; i < values.length; i++) {
+  let result = 0;
+  for (let i = 0; i < values.length; i++) {
     if (values[i] instanceof Array) {
       if (values[i].length === 0) {
         throw new RefError("Reference does not exist.");
       }
       result = result + SUMSQ.apply(this, Filter.filterOutNonNumberValues(values[i]));
     } else {
-      var n = TypeConverter.valueToNumber(values[i]);
+      let n = TypeConverter.valueToNumber(values[i]);
       result = result + (n * n);
     }
   }
@@ -811,10 +811,10 @@ var SUMSQ = function (...values) {
  * @param factor2 - The second multiplicand.
  * @constructor
  */
-var MULTIPLY = function (factor1, factor2) {
+let MULTIPLY = function (factor1, factor2) {
   ArgsChecker.checkLength(arguments, 2, "MULTIPLY");
-  var x = TypeConverter.firstValueAsNumber(factor1);
-  var y = TypeConverter.firstValueAsNumber(factor1);
+  let x = TypeConverter.firstValueAsNumber(factor1);
+  let y = TypeConverter.firstValueAsNumber(factor1);
   return x * y;
 };
 
@@ -826,10 +826,10 @@ var MULTIPLY = function (factor1, factor2) {
  * @returns {number}
  * @constructor
  */
-var MINUS = function (one, two) {
+let MINUS = function (one, two) {
   ArgsChecker.checkLength(arguments, 2, "MINUS");
-  var x = TypeConverter.firstValueAsNumber(one);
-  var y = TypeConverter.firstValueAsNumber(two);
+  let x = TypeConverter.firstValueAsNumber(one);
+  let y = TypeConverter.firstValueAsNumber(two);
   return x - y;
 };
 
@@ -841,10 +841,10 @@ var MINUS = function (one, two) {
  * @returns {boolean} true if values are equal, false if they are not equal.
  * @constructor
  */
-var EQ = function (one, two) {
+let EQ = function (one, two) {
   ArgsChecker.checkLength(arguments, 2, "EQ");
-  var x = TypeConverter.firstValue(one);
-  var y = TypeConverter.firstValue(two);
+  let x = TypeConverter.firstValue(one);
+  let y = TypeConverter.firstValue(two);
   return x === y;
 };
 
@@ -857,10 +857,10 @@ var EQ = function (one, two) {
  * @returns {boolean}
  * @constructor
  */
-var GT = function (one, two) {
+let GT = function (one, two) {
   ArgsChecker.checkLength(arguments, 2, "GT");
-  var x = TypeConverter.firstValue(one);
-  var y = TypeConverter.firstValue(two);
+  let x = TypeConverter.firstValue(one);
+  let y = TypeConverter.firstValue(two);
   return x > y;
 };
 
@@ -873,10 +873,10 @@ var GT = function (one, two) {
  * @returns {boolean}
  * @constructor
  */
-var GTE = function (one, two) {
+let GTE = function (one, two) {
   ArgsChecker.checkLength(arguments, 2, "GTE");
-  var x = TypeConverter.firstValue(one);
-  var y = TypeConverter.firstValue(two);
+  let x = TypeConverter.firstValue(one);
+  let y = TypeConverter.firstValue(two);
   return x >= y;
 };
 
@@ -889,10 +889,10 @@ var GTE = function (one, two) {
  * @returns {boolean}
  * @constructor
  */
-var LT = function (one, two) {
+let LT = function (one, two) {
   ArgsChecker.checkLength(arguments, 2, "LT");
-  var x = TypeConverter.firstValue(one);
-  var y = TypeConverter.firstValue(two);
+  let x = TypeConverter.firstValue(one);
+  let y = TypeConverter.firstValue(two);
   return x < y;
 };
 
@@ -904,10 +904,10 @@ var LT = function (one, two) {
  * @param two - The second value.
  * @constructor
  */
-var LTE = function (one, two) {
+let LTE = function (one, two) {
   ArgsChecker.checkLength(arguments, 2, "LTE");
-  var x = TypeConverter.firstValue(one);
-  var y = TypeConverter.firstValue(two);
+  let x = TypeConverter.firstValue(one);
+  let y = TypeConverter.firstValue(two);
   return x <= y;
 };
 
@@ -919,10 +919,10 @@ var LTE = function (one, two) {
  * @returns {boolean}
  * @constructor
  */
-var NE =  function (one, two) {
+let NE =  function (one, two) {
   ArgsChecker.checkLength(arguments, 2, "NE");
-  var x = TypeConverter.firstValue(one);
-  var y = TypeConverter.firstValue(two);
+  let x = TypeConverter.firstValue(one);
+  let y = TypeConverter.firstValue(two);
   return x !== y;
 };
 
@@ -934,10 +934,10 @@ var NE =  function (one, two) {
  * @returns {number} result of dividend / divisor.
  * @constructor
  */
-var DIVIDE = function (dividend, divisor) {
+let DIVIDE = function (dividend, divisor) {
   ArgsChecker.checkLength(arguments, 2, "DIVIDE");
-  var x = TypeConverter.firstValueAsNumber(dividend);
-  var y = TypeConverter.firstValueAsNumber(divisor);
+  let x = TypeConverter.firstValueAsNumber(dividend);
+  let y = TypeConverter.firstValueAsNumber(divisor);
   if (y < 0) {
     throw new DivZeroError("Function DIVIDE parameter 2 cannot be zero.");
   }
@@ -950,7 +950,7 @@ var DIVIDE = function (dividend, divisor) {
  * @returns {number}
  * @constructor
  */
-var RAND = function () {
+let RAND = function () {
   ArgsChecker.checkLength(arguments, 0, "RAND");
   return Math.random();
 };
@@ -965,7 +965,7 @@ var RAND = function () {
  * @returns {number} between low and high.
  * @constructor
  */
-var RANDBETWEEN = function (low, high) {
+let RANDBETWEEN = function (low, high) {
   ArgsChecker.checkLength(arguments, 2, "RAND");
   low = Math.floor(TypeConverter.firstValueAsNumber(low));
   high = Math.ceil(TypeConverter.firstValueAsNumber(high));
@@ -973,7 +973,7 @@ var RANDBETWEEN = function (low, high) {
     throw new NumError("Function RANDBETWEEN parameter 2 value is " + low + ". It should be greater than or equal to "
       + high + ".");
   }
-  var diff = Math.abs(low - high);
+  let diff = Math.abs(low - high);
   return Math.round(low + (Math.random() * diff));
 };
 
@@ -984,9 +984,9 @@ var RANDBETWEEN = function (low, high) {
  * @returns {number} `-1` if it is negative, `1` if positive, and `0` if it is zero.
  * @constructor
  */
-var SIGN =  function (value) {
+let SIGN =  function (value) {
   ArgsChecker.checkLength(arguments, 1, "SIGN");
-  var x = TypeConverter.firstValueAsNumber(value);
+  let x = TypeConverter.firstValueAsNumber(value);
   if (x === 0) {
     return 0;
   }
@@ -1005,14 +1005,14 @@ var SIGN =  function (value) {
  * @returns {number} after truncation
  * @constructor
  */
-var TRUNC = function (value, places?) : number {
+let TRUNC = function (value, places?) : number {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "TRUNC");
-  var n = TypeConverter.firstValueAsNumber(value);
-  var digits = 0;
+  let n = TypeConverter.firstValueAsNumber(value);
+  let digits = 0;
   if (places !== undefined) {
     digits = TypeConverter.firstValueAsNumber(places);
   }
-  var sign = (n > 0) ? 1 : -1;
+  let sign = (n > 0) ? 1 : -1;
   return sign * (Math.floor(Math.abs(n) * Math.pow(10, digits))) / Math.pow(10, digits);
 };
 
@@ -1023,9 +1023,9 @@ var TRUNC = function (value, places?) : number {
  * @returns {number} radians
  * @constructor
  */
-var RADIANS = function (angle) {
+let RADIANS = function (angle) {
   ArgsChecker.checkLength(arguments, 1, "RADIANS");
-  var d = TypeConverter.firstValueAsNumber(angle);
+  let d = TypeConverter.firstValueAsNumber(angle);
   return d * Math.PI / 180;
 };
 
@@ -1035,9 +1035,9 @@ var RADIANS = function (angle) {
  * @returns {number} degrees
  * @constructor
  */
-var DEGREES = function (angle) {
+let DEGREES = function (angle) {
   ArgsChecker.checkLength(arguments, 1, "DEGREES");
-  var r = TypeConverter.firstValueAsNumber(angle);
+  let r = TypeConverter.firstValueAsNumber(angle);
   return r * 180 / Math.PI;
 };
 
@@ -1048,9 +1048,9 @@ var DEGREES = function (angle) {
  * @returns {number} complementary Gauss error function of a value
  * @constructor
  */
-var ERFC = function (value) {
+let ERFC = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ERFC");
-  var v = TypeConverter.firstValueAsNumber(value);
+  let v = TypeConverter.firstValueAsNumber(value);
   return v === 0 ? 1 : 1 - erf(v);
 };
 
@@ -1063,10 +1063,10 @@ var ERFC = function (value) {
  * @returns {number} error function integrated between lower_limit and upper_limit
  * @constructor
  */
-var ERF = function (lowerLimit, upperLimit?) : number {
+let ERF = function (lowerLimit, upperLimit?) : number {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "ERF");
-  var lower = TypeConverter.firstValueAsNumber(lowerLimit);
-  var upper = upperLimit !== undefined ? TypeConverter.firstValueAsNumber(upperLimit) : 0;
+  let lower = TypeConverter.firstValueAsNumber(lowerLimit);
+  let upper = upperLimit !== undefined ? TypeConverter.firstValueAsNumber(upperLimit) : 0;
   return upperLimit === undefined ? erf(lower) : erf(upper) - erf(lower);
 };
 
@@ -1080,15 +1080,15 @@ var ERF = function (lowerLimit, upperLimit?) : number {
  * @returns {number} sum of the sums of the squares
  * @constructor
  */
-var SUMX2PY2 = function (arrayX, arrayY) : number {
+let SUMX2PY2 = function (arrayX, arrayY) : number {
   ArgsChecker.checkLength(arguments, 2, "SUMX2PY2");
-  var arrOne = Filter.flattenAndThrow(arrayX);
-  var arrTwo = Filter.flattenAndThrow(arrayY);
+  let arrOne = Filter.flattenAndThrow(arrayX);
+  let arrTwo = Filter.flattenAndThrow(arrayY);
   if (arrOne.length !== arrTwo.length) {
     throw new NAError("Array arguments to SUMX2PY2 are of different size.");
   }
-  var result = 0;
-  for (var i = 0; i < arrOne.length; i++) {
+  let result = 0;
+  for (let i = 0; i < arrOne.length; i++) {
     // If either values at this index are anything but numbers, skip them. This is the behavior in GS at least.
     if (typeof arrOne[i] === "number" && typeof arrTwo[i] === "number") {
       result += arrOne[i] * arrOne[i] + arrTwo[i] * arrTwo[i];
@@ -1106,15 +1106,15 @@ var SUMX2PY2 = function (arrayX, arrayY) : number {
  * @returns {number} sum of the differences of the squares
  * @constructor
  */
-var SUMX2MY2 = function (arrayX, arrayY) : number {
+let SUMX2MY2 = function (arrayX, arrayY) : number {
   ArgsChecker.checkLength(arguments, 2, "SUMX2MY2");
-  var arrOne = Filter.flattenAndThrow(arrayX);
-  var arrTwo = Filter.flattenAndThrow(arrayY);
+  let arrOne = Filter.flattenAndThrow(arrayX);
+  let arrTwo = Filter.flattenAndThrow(arrayY);
   if (arrOne.length !== arrTwo.length) {
     throw new NAError("Array arguments to SUMX2MY2 are of different size.");
   }
-  var result = 0;
-  for (var i = 0; i < arrOne.length; i++) {
+  let result = 0;
+  for (let i = 0; i < arrOne.length; i++) {
     // If either values at this index are anything but numbers, skip them. This is the behavior in GS at least.
     if (typeof arrOne[i] === "number" && typeof arrTwo[i] === "number") {
       result += arrOne[i] * arrOne[i] - arrTwo[i] * arrTwo[i];
@@ -1125,16 +1125,16 @@ var SUMX2MY2 = function (arrayX, arrayY) : number {
 
 
 // Private function that will recursively generate an array of the unique primitives
-var _countUnique = function (values: Array<any>) : Object {
-  var uniques = {};
-  for (var i = 0; i < values.length; i++) {
+let _countUnique = function (values: Array<any>) : Object {
+  let uniques = {};
+  for (let i = 0; i < values.length; i++) {
     if (Array.isArray(values[i])) {
       // For some reasons an empty range is converted to a range with a single empty string in it.
       if (values[i].length === 0) {
         values[i] = [""];
       }
-      var uniquesOfArray = _countUnique(values[i]);
-      for (var key in uniquesOfArray) {
+      let uniquesOfArray = _countUnique(values[i]);
+      for (let key in uniquesOfArray) {
         uniques[key] = true;
       }
     } else {
@@ -1151,10 +1151,10 @@ var _countUnique = function (values: Array<any>) : Object {
  * @returns {number} of unique values passed in.
  * @constructor
  */
-var COUNTUNIQUE = function (...values) : number {
+let COUNTUNIQUE = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "COUNTUNIQUE");
 
-  var uniques = _countUnique(values);
+  let uniques = _countUnique(values);
   return Object.keys(uniques).length;
 };
 
@@ -1166,18 +1166,18 @@ var COUNTUNIQUE = function (...values) : number {
  * @returns {number} sum of the products
  * @constructor
  */
-var SUMPRODUCT = function (...values) : number {
+let SUMPRODUCT = function (...values) : number {
   ArgsChecker.checkAtLeastLength(values, 1, "SUMPRODUCT");
   // Ensuring that all values are array values
-  for (var x = 0; x < values.length; x++) {
+  for (let x = 0; x < values.length; x++) {
     if (!Array.isArray(values[x])) {
       values[x] = [values[x]];
     }
   }
 
   // Flatten any nested ranges (arrays) and check for mismatched range sizes
-  var flattenedValues = [Filter.flattenAndThrow(values[0])];
-  for (var x = 1; x < values.length; x++) {
+  let flattenedValues = [Filter.flattenAndThrow(values[0])];
+  for (let x = 1; x < values.length; x++) {
     flattenedValues.push(Filter.flattenAndThrow(values[x]));
     if (flattenedValues[x].length !== flattenedValues[0].length) {
       throw new ValueError("SUMPRODUCT has mismatched range sizes. Expected count: "
@@ -1186,10 +1186,10 @@ var SUMPRODUCT = function (...values) : number {
   }
 
   // Do the actual math
-  var result = 0;
-  for (var i = 0; i < flattenedValues[0].length; i++) {
-    var product = 1;
-    for (var x = 0; x < flattenedValues.length; x++) {
+  let result = 0;
+  for (let i = 0; i < flattenedValues[0].length; i++) {
+    let product = 1;
+    for (let x = 0; x < flattenedValues.length; x++) {
       product *= TypeConverter.valueToNumberGracefully(flattenedValues[x][i]);
     }
     result += product;
@@ -1205,12 +1205,12 @@ var SUMPRODUCT = function (...values) : number {
  * @returns {number} number of ways
  * @constructor
  */
-var COMBIN = function (m, k) : number {
+let COMBIN = function (m, k) : number {
   ArgsChecker.checkLength(arguments, 2, "COMBIN");
 
-  var MEMOIZED_FACT = [];
+  let MEMOIZED_FACT = [];
   function fact(number) {
-    var n = Math.floor(number);
+    let n = Math.floor(number);
     if (n === 0 || n === 1) {
       return 1;
     } else if (MEMOIZED_FACT[n] > 0) {
@@ -1220,15 +1220,15 @@ var COMBIN = function (m, k) : number {
       return MEMOIZED_FACT[n];
     }
   }
-  var n = TypeConverter.firstValueAsNumber(m);
-  var c = TypeConverter.firstValueAsNumber(k);
+  let n = TypeConverter.firstValueAsNumber(m);
+  let c = TypeConverter.firstValueAsNumber(k);
   if (n < c) {
     throw new NumError("Function COMBIN parameter 2 value is "
       + c + ". It should be less than or equal to value of Function COMBIN parameter 1 with " + n + ".");
   }
   n = Math.floor(n);
   c = Math.floor(c);
-  var div = fact(c) * fact(n - c);
+  let div = fact(c) * fact(n - c);
   if (div === 0) {
     throw new DivZeroError("Evaluation of function COMBIN caused a divide by zero error.");
   }
@@ -1240,11 +1240,11 @@ var COMBIN = function (m, k) : number {
  * @param values - values or range of values to multiply by each other.
  * @constructor
  */
-var PRODUCT =  function (...values) {
+let PRODUCT =  function (...values) {
   ArgsChecker.checkAtLeastLength(values, 2, "PRODUCT");
-  var value = 1;
-  var numbers = Filter.flattenAndThrow(values);
-  for (var i = 0; i < numbers.length; i++) {
+  let value = 1;
+  let numbers = Filter.flattenAndThrow(values);
+  for (let i = 0; i < numbers.length; i++) {
     value *= TypeConverter.valueToNumber(numbers[i]);
   }
   return value;
@@ -1258,10 +1258,10 @@ var PRODUCT =  function (...values) {
  * @returns {number}
  * @constructor
  */
-var QUOTIENT = function (dividend, divisor) {
+let QUOTIENT = function (dividend, divisor) {
   ArgsChecker.checkLength(arguments, 2, "QUOTIENT");
-  var dv = TypeConverter.firstValueAsNumber(dividend);
-  var ds = TypeConverter.firstValueAsNumber(divisor);
+  let dv = TypeConverter.firstValueAsNumber(dividend);
+  let ds = TypeConverter.firstValueAsNumber(divisor);
   if (ds === 0) {
     throw new DivZeroError("Function QUOTIENT parameter 2 cannot be zero.");
   }
@@ -1275,7 +1275,7 @@ var QUOTIENT = function (dividend, divisor) {
  * @returns any value
  * @constructor
  */
-var UPLUS = function (value) : any {
+let UPLUS = function (value) : any {
   ArgsChecker.checkLength(arguments, 1, "UPLUS");
   return TypeConverter.firstValue(value);
 };
@@ -1287,9 +1287,9 @@ var UPLUS = function (value) : any {
  * @returns {number}
  * @constructor
  */
-var UMINUS = function (value) {
+let UMINUS = function (value) {
   ArgsChecker.checkLength(arguments, 1, "UMINUS");
-  var n = TypeConverter.firstValueAsNumber(value);
+  let n = TypeConverter.firstValueAsNumber(value);
   return n * -1;
 };
 
@@ -1301,10 +1301,10 @@ var UMINUS = function (value) {
  * @returns {number}
  * @constructor
  */
-var MROUND = function (value, factor) {
+let MROUND = function (value, factor) {
   ArgsChecker.checkLength(arguments, 2, "MROUND");
-  var v = TypeConverter.firstValueAsNumber(value);
-  var f = TypeConverter.firstValueAsNumber(factor);
+  let v = TypeConverter.firstValueAsNumber(value);
+  let f = TypeConverter.firstValueAsNumber(factor);
   if (v * f < 0) {
     throw new NumError("Parameters of MROUND must have same signs (both positive or both negative).");
   }
@@ -1321,9 +1321,9 @@ var MROUND = function (value, factor) {
  * @returns {number}
  * @constructor
  */
-var FACTDOUBLE = function (value) {
+let FACTDOUBLE = function (value) {
   ArgsChecker.checkLength(arguments, 1, "FACTDOUBLE");
-  var n = Math.floor(TypeConverter.firstValueAsNumber(value));
+  let n = Math.floor(TypeConverter.firstValueAsNumber(value));
   function factDoublePrivate(n) {
     if (n <= 0) {
       return 1;
@@ -1347,7 +1347,7 @@ var FACTDOUBLE = function (value) {
  * @returns {number}
  * @constructor
  */
-var UNARY_PERCENT = function (value) {
+let UNARY_PERCENT = function (value) {
   ArgsChecker.checkLength(arguments, 1, "UNARY_PERCENT");
   return TypeConverter.firstValueAsNumber(value) / 100;
 };
@@ -1359,12 +1359,12 @@ var UNARY_PERCENT = function (value) {
  * @returns {number}
  * @constructor
  */
-var MULTINOMIAL = function (...values) {
+let MULTINOMIAL = function (...values) {
   ArgsChecker.checkAtLeastLength(values, 1, "MULTINOMIAL");
   values = Filter.flattenAndThrow(values).map(TypeConverter.valueToNumber);
-  var memoizeFact = [];
+  let memoizeFact = [];
   function _fact(value) {
-    var n = Math.floor(value);
+    let n = Math.floor(value);
     if (n === 0 || n === 1) {
       return 1;
     } else if (memoizeFact[n] > 0) {
@@ -1374,9 +1374,9 @@ var MULTINOMIAL = function (...values) {
       return memoizeFact[n];
     }
   }
-  var sum = 0;
-  var divisor = 1;
-  for (var i = 0; i < values.length; i++) {
+  let sum = 0;
+  let divisor = 1;
+  for (let i = 0; i < values.length; i++) {
     sum += arguments[i];
     divisor *= _fact(values[i]);
   }

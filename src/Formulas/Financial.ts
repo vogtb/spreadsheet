@@ -25,7 +25,7 @@ import {Filter} from "../Utilities/Filter";
  * @returns {number} depreciation of an asset for a specified period
  * @constructor
  */
-var DDB = function (cost, salvage, life, period, factor?) : number {
+let DDB = function (cost, salvage, life, period, factor?) : number {
   ArgsChecker.checkLengthWithin(arguments, 4, 5, "DDB");
   cost = TypeConverter.firstValueAsNumber(cost);
   salvage = TypeConverter.firstValueAsNumber(salvage);
@@ -57,9 +57,9 @@ var DDB = function (cost, salvage, life, period, factor?) : number {
     return 0;
   }
 
-  var total = 0;
-  var current = 0;
-  for (var i = 1; i <= period; i++) {
+  let total = 0;
+  let current = 0;
+  for (let i = 1; i <= period; i++) {
     current = Math.min((cost - total) * (factor / checkForDevideByZero(life)), (cost - salvage - total));
     total += current;
   }
@@ -77,7 +77,7 @@ var DDB = function (cost, salvage, life, period, factor?) : number {
  * @returns {number} depreciated value
  * @constructor
  */
-var DB = function (cost, salvage, life, period, month) : number {
+let DB = function (cost, salvage, life, period, month) : number {
   ArgsChecker.checkLengthWithin(arguments, 4, 5, "DB");
   cost = TypeConverter.firstValueAsNumber(cost);
   salvage = TypeConverter.firstValueAsNumber(salvage);
@@ -114,12 +114,12 @@ var DB = function (cost, salvage, life, period, month) : number {
   if (cost === 0 && salvage !== 0) {
     throw new DivZeroError("Evaluation of function DB cause a divide by zero error.")
   }
-  var rate = (1 - Math.pow(salvage / cost, 1 / life));
-  var initial = cost * rate * month / 12;
-  var total = initial;
-  var current = 0;
-  var ceiling = (period === life) ? life - 1 : period;
-  for (var i = 2; i <= ceiling; i++) {
+  let rate = (1 - Math.pow(salvage / cost, 1 / life));
+  let initial = cost * rate * month / 12;
+  let total = initial;
+  let current = 0;
+  let ceiling = (period === life) ? life - 1 : period;
+  for (let i = 2; i <= ceiling; i++) {
     current = (cost - total) * rate;
     total += current;
   }
@@ -140,13 +140,13 @@ var DB = function (cost, salvage, life, period, month) : number {
  * @returns {number} dollars
  * @constructor
  */
-var DOLLAR = function (number, places?) : number {
+let DOLLAR = function (number, places?) : number {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "DOLLAR");
-  var v = TypeConverter.firstValueAsNumber(number);
+  let v = TypeConverter.firstValueAsNumber(number);
   places = places !== undefined ? TypeConverter.firstValueAsNumber(places) : 2;
-  var sign = (v > 0) ? 1 : -1;
-  var divisor = sign * (Math.floor(Math.abs(v) * Math.pow(10, places)));
-  var pow = Math.pow(10, places);
+  let sign = (v > 0) ? 1 : -1;
+  let divisor = sign * (Math.floor(Math.abs(v) * Math.pow(10, places)));
+  let pow = Math.pow(10, places);
   if (pow === 0 && divisor !== 0) {
     throw new DivZeroError("Evaluation of function DOLLAR cause a divide by zero error.")
   }
@@ -161,16 +161,16 @@ var DOLLAR = function (number, places?) : number {
  * @returns {number} decimal value.
  * @constructor
  */
-var DOLLARDE = function (fractionalPrice, unit) : number {
+let DOLLARDE = function (fractionalPrice, unit) : number {
   ArgsChecker.checkLength(arguments, 2, "DOLLARDE");
-  var dollar = TypeConverter.firstValueAsNumber(fractionalPrice);
-  var fraction = Math.floor(TypeConverter.firstValueAsNumber(unit));
+  let dollar = TypeConverter.firstValueAsNumber(fractionalPrice);
+  let fraction = Math.floor(TypeConverter.firstValueAsNumber(unit));
   if (fraction === 0) {
     throw new DivZeroError("Function DOLLARDE parameter 2 cannot be zero.");
   }
-  var result = parseInt(dollar.toString(), 10);
+  let result = parseInt(dollar.toString(), 10);
   result += (dollar % 1) * Math.pow(10, Math.ceil(Math.log(fraction) / Math.LN10)) / fraction;
-  var power = Math.pow(10, Math.ceil(Math.log(fraction) / Math.LN2) + 1);
+  let power = Math.pow(10, Math.ceil(Math.log(fraction) / Math.LN2) + 1);
   if (power === 0) {
     throw new DivZeroError("Evaluation of function DOLLARDE cause a divide by zero error.")
   }
@@ -186,14 +186,14 @@ var DOLLARDE = function (fractionalPrice, unit) : number {
  * @returns {number} price quotation as decimal fraction.
  * @constructor
  */
-var DOLLARFR = function (decimalPrice, unit) : number {
+let DOLLARFR = function (decimalPrice, unit) : number {
   ArgsChecker.checkLength(arguments, 2, "DOLLARFR");
   decimalPrice = TypeConverter.firstValueAsNumber(decimalPrice);
   unit = Math.floor(TypeConverter.firstValueAsNumber(unit));
   if (unit === 0) {
     throw new DivZeroError("Function DOLLARFR parameter 2 cannot be zero.");
   }
-  var result = parseInt(decimalPrice.toString(), 10);
+  let result = parseInt(decimalPrice.toString(), 10);
   result += (decimalPrice % 1) * Math.pow(10, -Math.ceil(Math.log(unit) / Math.LN10)) * unit;
   return result;
 };
@@ -206,10 +206,10 @@ var DOLLARFR = function (decimalPrice, unit) : number {
  * @returns {number} annual effective interest rate
  * @constructor
  */
-var EFFECT = function (nominalRate, periodsPerYear) : number {
+let EFFECT = function (nominalRate, periodsPerYear) : number {
   ArgsChecker.checkLength(arguments, 2, "EFFECT");
-  var rate = TypeConverter.firstValueAsNumber(nominalRate);
-  var periods = TypeConverter.firstValueAsNumber(periodsPerYear);
+  let rate = TypeConverter.firstValueAsNumber(nominalRate);
+  let periods = TypeConverter.firstValueAsNumber(periodsPerYear);
   if (rate <= 0) {
     throw new NumError("Function EFFECT parameter 1 value is " + rate + ". It should be greater than to 0");
   }
@@ -233,18 +233,18 @@ var EFFECT = function (nominalRate, periodsPerYear) : number {
  * @returns {number}
  * @constructor
  */
-var PMT = function (rate, periods, presentValue, futureValue?, endOrBeginning?) : number {
+let PMT = function (rate, periods, presentValue, futureValue?, endOrBeginning?) : number {
   ArgsChecker.checkLengthWithin(arguments, 3, 5, "PMT");
   rate = TypeConverter.firstValueAsNumber(rate);
   periods = TypeConverter.firstValueAsNumber(periods);
   presentValue = TypeConverter.firstValueAsNumber(presentValue);
   futureValue = futureValue ? TypeConverter.firstValueAsNumber(futureValue) : 0;
   endOrBeginning = endOrBeginning ? TypeConverter.firstValueAsNumber(endOrBeginning) : 0;
-  var result;
+  let result;
   if (rate === 0) {
     result = (presentValue + futureValue) / periods;
   } else {
-    var term = Math.pow(1 + rate, periods);
+    let term = Math.pow(1 + rate, periods);
     if (endOrBeginning) {
       result = (futureValue * rate / (term - 1) + presentValue * rate / (1 - 1 / term)) / (1 + rate);
     } else {
@@ -265,18 +265,18 @@ var PMT = function (rate, periods, presentValue, futureValue?, endOrBeginning?) 
  * @returns {number}
  * @constructor
  */
-var FV = function (rate, periods, payment, value?, type?) {
+let FV = function (rate, periods, payment, value?, type?) {
   ArgsChecker.checkLengthWithin(arguments, 3, 5, "FV");
   rate = TypeConverter.firstValueAsNumber(rate);
   periods = TypeConverter.firstValueAsNumber(periods);
   payment = TypeConverter.firstValueAsNumber(payment);
   value = (typeof value === 'undefined') ? 0 : TypeConverter.firstValueAsNumber(value);
   type = (typeof type === 'undefined') ? 0 : TypeConverter.firstValueAsNumber(type);
-  var result;
+  let result;
   if (rate === 0) {
     result = value + payment * periods;
   } else {
-    var term = Math.pow(1 + rate, periods);
+    let term = Math.pow(1 + rate, periods);
     if (type === 0) {
       result = value * term + payment * (term - 1) / rate;
     } else {
@@ -300,26 +300,26 @@ var FV = function (rate, periods, payment, value?, type?) {
  * @returns {number} cumulative principal
  * @constructor
  */
-var CUMPRINC = function (rate, numberOfPeriods, presentValue, firstPeriod, lastPeriod, endOrBeginning) : number {
+let CUMPRINC = function (rate, numberOfPeriods, presentValue, firstPeriod, lastPeriod, endOrBeginning) : number {
   ArgsChecker.checkLength(arguments, 6, "CUMPRINC");
   rate = TypeConverter.firstValueAsNumber(rate);
-  var periods = TypeConverter.firstValueAsNumber(numberOfPeriods);
-  var value = TypeConverter.firstValueAsNumber(presentValue);
-  var start = TypeConverter.firstValueAsNumber(firstPeriod);
+  let periods = TypeConverter.firstValueAsNumber(numberOfPeriods);
+  let value = TypeConverter.firstValueAsNumber(presentValue);
+  let start = TypeConverter.firstValueAsNumber(firstPeriod);
   if (start < 1) {
     throw new NumError("Function CUMPRINC parameter 4 value is " + start + ". It should be greater than or equal to 1.");
   }
-  var end = TypeConverter.firstValueAsNumber(lastPeriod);
+  let end = TypeConverter.firstValueAsNumber(lastPeriod);
   if (end < 1) {
     throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to 1.");
   }
   if (end < start) {
     throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to " + start + ".");
   }
-  var type = TypeConverter.firstValueAsBoolean(endOrBeginning);
+  let type = TypeConverter.firstValueAsBoolean(endOrBeginning);
 
-  var payment = PMT(rate, periods, value, 0, type);
-  var principal = 0;
+  let payment = PMT(rate, periods, value, 0, type);
+  let principal = 0;
   if (start === 1) {
     if (type) {
       principal = payment;
@@ -328,7 +328,7 @@ var CUMPRINC = function (rate, numberOfPeriods, presentValue, firstPeriod, lastP
     }
     start++;
   }
-  for (var i = start; i <= end; i++) {
+  for (let i = start; i <= end; i++) {
     if (type) {
       principal += payment - (FV(rate, i - 2, payment, value, 1) - payment) * rate;
     } else {
@@ -352,26 +352,26 @@ var CUMPRINC = function (rate, numberOfPeriods, presentValue, firstPeriod, lastP
  * @returns {number} cumulative interest
  * @constructor
  */
-var CUMIPMT = function (rate, numberOfPeriods, presentValue, firstPeriod, lastPeriod, endOrBeginning) : number {
+let CUMIPMT = function (rate, numberOfPeriods, presentValue, firstPeriod, lastPeriod, endOrBeginning) : number {
   ArgsChecker.checkLength(arguments, 6, "CUMIPMT");
   rate = TypeConverter.firstValueAsNumber(rate);
-  var periods = TypeConverter.firstValueAsNumber(numberOfPeriods);
-  var value = TypeConverter.firstValueAsNumber(presentValue);
-  var start = TypeConverter.firstValueAsNumber(firstPeriod);
+  let periods = TypeConverter.firstValueAsNumber(numberOfPeriods);
+  let value = TypeConverter.firstValueAsNumber(presentValue);
+  let start = TypeConverter.firstValueAsNumber(firstPeriod);
   if (start < 1) {
     throw new NumError("Function CUMPRINC parameter 4 value is " + start + ". It should be greater than or equal to 1.");
   }
-  var end = TypeConverter.firstValueAsNumber(lastPeriod);
+  let end = TypeConverter.firstValueAsNumber(lastPeriod);
   if (end < 1) {
     throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to 1.");
   }
   if (end < start) {
     throw new NumError("Function CUMPRINC parameter 5 value is " + end + ". It should be greater than or equal to " + start + ".");
   }
-  var type = TypeConverter.firstValueAsBoolean(endOrBeginning);
+  let type = TypeConverter.firstValueAsBoolean(endOrBeginning);
 
-  var payment = PMT(rate, periods, value, 0, type);
-  var interest = 0;
+  let payment = PMT(rate, periods, value, 0, type);
+  let interest = 0;
   if (start === 1) {
     if (!type) {
       interest = -value;
@@ -380,7 +380,7 @@ var CUMIPMT = function (rate, numberOfPeriods, presentValue, firstPeriod, lastPe
       start++;
     }
   }
-  for (var i = start; i <= end; i++) {
+  for (let i = start; i <= end; i++) {
     if (type) {
       interest += FV(rate, i - 2, payment, value, 1) - payment;
     } else {
@@ -411,7 +411,7 @@ var CUMIPMT = function (rate, numberOfPeriods, presentValue, firstPeriod, lastPe
  * TODO: This function is based off of the open-source versions I was able to dig up online. We should implement a
  * TODO:     second version that is closer to what MSExcel does and is named something like `ACCRINT.MS`.
  */
-var ACCRINT = function (issue, firstPayment, settlement, rate, redemption, frequency, dayCountConvention?) {
+let ACCRINT = function (issue, firstPayment, settlement, rate, redemption, frequency, dayCountConvention?) {
   ArgsChecker.checkLengthWithin(arguments, 6, 7, "ACCRINT");
   issue = TypeConverter.firstValueAsDateNumber(issue);
   // "firstPayment" param is only here to check for errors for GS implementation.
@@ -437,7 +437,7 @@ var ACCRINT = function (issue, firstPayment, settlement, rate, redemption, frequ
   frequency = TypeConverter.firstValueAsNumber(frequency);
   // dayCountConvention, aka "basis"
   dayCountConvention = dayCountConvention !== undefined ? TypeConverter.firstValueAsNumber(dayCountConvention) : 1;
-  var factor = YEARFRAC(issue, settlement, dayCountConvention);
+  let factor = YEARFRAC(issue, settlement, dayCountConvention);
   return redemption * rate * factor;
 };
 
@@ -453,7 +453,7 @@ var ACCRINT = function (issue, firstPayment, settlement, rate, redemption, frequ
  * @returns {number}
  * @constructor
  */
-var SYD = function (cost, salvage, life, period) {
+let SYD = function (cost, salvage, life, period) {
   ArgsChecker.checkLength(arguments, 4, "SYD");
   cost = TypeConverter.firstValueAsNumber(cost);
   salvage = TypeConverter.firstValueAsNumber(salvage);
@@ -482,7 +482,7 @@ var SYD = function (cost, salvage, life, period) {
  * @returns {number}
  * @constructor
  */
-var SLN = function (cost, salvage, life) {
+let SLN = function (cost, salvage, life) {
   ArgsChecker.checkLength(arguments, 3, "SYD");
   cost = TypeConverter.firstValueAsNumber(cost);
   salvage = TypeConverter.firstValueAsNumber(salvage);
@@ -502,9 +502,9 @@ var SLN = function (cost, salvage, life) {
  * @constructor
  * TODO: This function can return results that are prone to floating point precision errors.
  */
-var NPV = function (rate, ...values) {
+let NPV = function (rate, ...values) {
   ArgsChecker.checkAtLeastLength(arguments, 2, "NPV");
-  var range = Filter.flattenAndThrow(values).map(function (value) {
+  let range = Filter.flattenAndThrow(values).map(function (value) {
     try {
       return TypeConverter.valueToNumber(value);
     } catch (e) {
@@ -512,8 +512,8 @@ var NPV = function (rate, ...values) {
           + " and cannot be coerced to a number.")
     }
   });
-  var value = 0;
-  for (var i = 0; i < range.length; i++) {
+  let value = 0;
+  for (let i = 0; i < range.length; i++) {
     value += range[i] / Math.pow(1 + rate, i);
   }
   return value;
@@ -531,20 +531,20 @@ var NPV = function (rate, ...values) {
  * @returns {number}
  * @constructor
  */
-var NPER = function (rate, payment, present, future?, type?) {
+let NPER = function (rate, payment, present, future?, type?) {
   ArgsChecker.checkLengthWithin(arguments, 3, 5, "NPER");
   rate = TypeConverter.firstValueAsNumber(rate);
   payment = TypeConverter.firstValueAsNumber(payment);
   present = TypeConverter.firstValueAsNumber(present);
   type = (typeof type === 'undefined') ? 0 : TypeConverter.firstValueAsNumber(type);
   future = (typeof future === 'undefined') ? 0 : TypeConverter.firstValueAsNumber(future);
-  var num = payment * (1 + rate * type) - future * rate;
-  var den = (present * rate + payment * (1 + rate * type));
+  let num = payment * (1 + rate * type) - future * rate;
+  let den = (present * rate + payment * (1 + rate * type));
   if (den === 0) {
     throw new DivZeroError("Evaluation of function NPER cause a divide by zero error.");
   }
-  var div = Math.log(1 + rate);
-  var logNumDen = Math.log(num / den);
+  let div = Math.log(1 + rate);
+  let logNumDen = Math.log(num / den);
   if (isNaN(logNumDen)) {
     throw new NumError("Parameters given function NPER are not possible.");
   }
@@ -558,7 +558,7 @@ var NPER = function (rate, payment, present, future?, type?) {
  * @returns {number}
  * @constructor
  */
-var NOMINAL =  function (rate, periods) {
+let NOMINAL =  function (rate, periods) {
   ArgsChecker.checkLength(arguments, 2, "NOMINAL");
   rate = TypeConverter.firstValueAsNumber(rate);
   periods = Math.round(TypeConverter.firstValueAsNumber(periods));
@@ -579,18 +579,18 @@ var NOMINAL =  function (rate, periods) {
  * @constructor
  * TODO: This relies on NPV and will therefore be prone to floating-point errors.
  */
-var MIRR = function (values, financeRate, reinvestRate) {
+let MIRR = function (values, financeRate, reinvestRate) {
   ArgsChecker.checkLength(arguments, 3, "MIRR");
   values = Filter.flattenAndThrow(values).filter(function (value) {
     return (typeof value !== "string");
   }).map(function (value) {
     return TypeConverter.valueToNumber(value);
   });
-  var n = values.length;
+  let n = values.length;
 
-  var payments = [];
-  var incomes = [];
-  for (var i = 0; i < n; i++) {
+  let payments = [];
+  let incomes = [];
+  for (let i = 0; i < n; i++) {
     if (values[i] < 0) {
       payments.push(values[i]);
     } else {
@@ -601,8 +601,8 @@ var MIRR = function (values, financeRate, reinvestRate) {
     throw new DivZeroError("For MIRR, the values must include positive and negative numbers.");
   }
 
-  var num = -NPV(reinvestRate, incomes) * Math.pow(1 + reinvestRate, n - 1);
-  var den = NPV(financeRate, payments) * (1 + financeRate);
+  let num = -NPV(reinvestRate, incomes) * Math.pow(1 + reinvestRate, n - 1);
+  let den = NPV(financeRate, payments) * (1 + financeRate);
   return Math.pow(num / den, 1 / (n - 1)) - 1;
 };
 
@@ -618,7 +618,7 @@ var MIRR = function (values, financeRate, reinvestRate) {
  * @returns {number}
  * @constructor
  */
-var IRR =  function (values, guess?) {
+let IRR =  function (values, guess?) {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "IRR");
   values = Filter.flattenAndThrow(values).filter(function (value) {
     return (typeof value !== "string");
@@ -626,15 +626,15 @@ var IRR =  function (values, guess?) {
     return TypeConverter.valueToNumber(value);
   });
   guess = (guess === undefined) ? 0.1 : TypeConverter.firstValueAsNumber(guess);
-  var min = -1.0;
-  var max = 10.0;
-  var val;
-  var counter = 1;
+  let min = -1.0;
+  let max = 10.0;
+  let val;
+  let counter = 1;
   const MAX_ITERATIONS = 500000;
   do {
     guess = (min + max) / 2;
     val = 0;
-    for (var j = 0; j < values.length; j++) {
+    for (let j = 0; j < values.length; j++) {
       val += values[j] / Math.pow((1 + guess), j);
     }
     if (val > 0) {
@@ -659,7 +659,7 @@ var IRR =  function (values, guess?) {
  * @returns {number}
  * @constructor
  */
-var IPMT = function (rate, period, periods, present, future?, type?) {
+let IPMT = function (rate, period, periods, present, future?, type?) {
   ArgsChecker.checkLengthWithin(arguments, 4, 6, "IPMT");
   rate = TypeConverter.firstValueAsNumber(rate);
   period = TypeConverter.firstValueAsNumber(period);
@@ -667,8 +667,8 @@ var IPMT = function (rate, period, periods, present, future?, type?) {
   present = TypeConverter.firstValueAsNumber(present);
   future = (typeof future === 'undefined') ? 0 : TypeConverter.firstValueAsNumber(future);
   type = (typeof type === 'undefined') ? 0 : TypeConverter.firstValueAsNumber(type);
-  var payment = PMT(rate, periods, present, future, type);
-  var interest;
+  let payment = PMT(rate, periods, present, future, type);
+  let interest;
   if (period === 1) {
     if (type === 1) {
       interest = 0;
@@ -699,7 +699,7 @@ var IPMT = function (rate, period, periods, present, future?, type?) {
  * @returns {number}
  * @constructor
  */
-var PPMT = function (rate, period, periods, present, future?, type?) {
+let PPMT = function (rate, period, periods, present, future?, type?) {
   ArgsChecker.checkLengthWithin(arguments, 4, 6, "PPMT");
   rate = TypeConverter.firstValueAsNumber(rate);
   period = TypeConverter.firstValueAsNumber(period);

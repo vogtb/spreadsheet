@@ -18,7 +18,7 @@ import {Filter} from "../Utilities/Filter";
  * Returns the "value not available" error, "#N/A".
  * @constructor
  */
-var NA = function () {
+let NA = function () {
   ArgsChecker.checkLength(arguments, 1, "NA");
   throw new NAError("NA Error thrown.");
 };
@@ -30,7 +30,7 @@ var NA = function () {
  * @returns {boolean}.
  * @constructor
  */
-var ISTEXT =  function (value) {
+let ISTEXT =  function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISTEXT");
   return typeof TypeConverter.firstValue(value) === "string";
 };
@@ -42,7 +42,7 @@ var ISTEXT =  function (value) {
  * @returns {boolean}.
  * @constructor
  */
-var ISNONTEXT = function (value) {
+let ISNONTEXT = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISNONTEXT");
   return typeof TypeConverter.firstValue(value) !== "string";
 };
@@ -54,7 +54,7 @@ var ISNONTEXT = function (value) {
  * @returns {boolean}
  * @constructor
  */
-var ISLOGICAL = function (value) {
+let ISLOGICAL = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISLOGICAL");
   return typeof TypeConverter.firstValue(value) === "boolean";
 };
@@ -66,7 +66,7 @@ var ISLOGICAL = function (value) {
  * @returns {boolean}
  * @constructor
  */
-var ISNUMBER = function (value) {
+let ISNUMBER = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISNUMBER");
   return typeof TypeConverter.firstValue(value) === "number";
 };
@@ -79,7 +79,7 @@ var ISNUMBER = function (value) {
  * @returns {boolean}
  * @constructor
  */
-var ISEMAIL = function (value) {
+let ISEMAIL = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISEMAIL");
   if (typeof value !== "string") {
     return false;
@@ -95,10 +95,10 @@ var ISEMAIL = function (value) {
  * @returns {boolean}
  * @constructor
  */
-var ISURL = function (value) {
+let ISURL = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISURL");
   value = TypeConverter.firstValueAsString(value);
-  var matches = value.match(/(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*)(?:\?([^#]*))?(?:#(.*))?/);
+  let matches = value.match(/(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*)(?:\?([^#]*))?(?:#(.*))?/);
   if (/[^a-z0-9\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=\.\-\_\~\%]/i.test(value)) {
     return false;
   }
@@ -108,8 +108,8 @@ var ISURL = function (value) {
   if (/%[0-9a-f](:?[^0-9a-f]|$)/i.test(value)) {
     return false;
   }
-  var authority = matches[2];
-  var path = matches[3];
+  let authority = matches[2];
+  let path = matches[3];
   if (!(path.length >= 0)) {
     return false;
   }
@@ -131,7 +131,7 @@ var ISURL = function (value) {
  * @returns {number}
  * @constructor
  */
-var N = function (value) {
+let N = function (value) {
   ArgsChecker.checkLength(arguments, 1, "N");
   return TypeConverter.firstValueAsNumber(value);
 };
@@ -144,7 +144,7 @@ var N = function (value) {
  * @returns {boolean}
  * @constructor
  */
-var ISREF = function (value) {
+let ISREF = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISREF");
   return TypeConverter.firstValue(value) instanceof Cell;
 };
@@ -160,7 +160,7 @@ var ISREF = function (value) {
  * Parser/Sheet. Otherwise the errors thrown by nested formulas break through. Eg: `=ERRORTYPE(NA())`, NA bubbles up.
  * Once this is done, we should test it inside SheetFormulaTest.ts
  */
-var ERRORTYPE = function (value) {
+let ERRORTYPE = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ERRORTYPE");
   value = TypeConverter.firstValue(value);
   if (value instanceof Cell) {
@@ -203,7 +203,7 @@ var ERRORTYPE = function (value) {
  * @returns {boolean}
  * @constructor
  */
-var ISBLANK = function (value) {
+let ISBLANK = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISBLANK");
   if (value instanceof Cell) {
     return value.isBlank();
@@ -221,7 +221,7 @@ var ISBLANK = function (value) {
  * @constructor
  * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
-var ISERR = function (value) {
+let ISERR = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISERR");
   if (value instanceof Cell) {
     if (value.hasError()) {
@@ -243,7 +243,7 @@ var ISERR = function (value) {
  * @constructor
  * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
-var ISERROR = function (value) {
+let ISERROR = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISERROR");
   try {
     value = TypeConverter.firstValue(value);
@@ -265,7 +265,7 @@ var ISERROR = function (value) {
  * @constructor
  * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
-var ISNA = function (value) {
+let ISNA = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISNA");
   try {
     value = TypeConverter.firstValue(value);
@@ -293,7 +293,7 @@ var ISNA = function (value) {
  * @constructor
  * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
-var IFERROR = function (value, valueIfError?) {
+let IFERROR = function (value, valueIfError?) {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "IFERROR");
   if (value instanceof Cell && valueIfError === undefined) {
     return ISERROR(value) ? new Cell(value.getId()) : value;
@@ -309,7 +309,7 @@ var IFERROR = function (value, valueIfError?) {
  * @returns {number}
  * @constructor
  */
-var TYPE = function (value) {
+let TYPE = function (value) {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "TYPE");
   if (value instanceof Cell) {
     if (value.hasError()) {
@@ -344,7 +344,7 @@ var TYPE = function (value) {
  * @param cell - Cell, defaults to the cell calling this formula, when used in the context of a spreadsheet.
  * @constructor
  */
-var COLUMN =  function (cell) {
+let COLUMN =  function (cell) {
   ArgsChecker.checkLength(arguments, 1, "COLUMN");
   if (!(cell instanceof Cell)) {
     throw new NAError("Argument must be a range or reference.");
@@ -358,7 +358,7 @@ var COLUMN =  function (cell) {
  * @param cell - Cell, defaults to the cell calling this formula, when used in the context of a spreadsheet.
  * @constructor
  */
-var ROW =  function (cell) {
+let ROW =  function (cell) {
   ArgsChecker.checkLength(arguments, 1, "ROW");
   if (!(cell instanceof Cell)) {
     throw new NAError("Argument must be a range or reference.");

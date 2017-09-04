@@ -156,9 +156,6 @@ let ISREF = function (value) {
  * @param value - Contains either the address/reference of the cell in which the error occurs, or the error directly.
  * Eg: `=ERRORTYPE(NA())`
  * @constructor
- * TODO: This formula, while written correctly in javascript, needs to be called inside of a try-catch-block inside the
- * Parser/Sheet. Otherwise the errors thrown by nested formulas break through. Eg: `=ERRORTYPE(NA())`, NA bubbles up.
- * Once this is done, we should test it inside SheetFormulaTest.ts
  */
 let ERRORTYPE = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ERRORTYPE");

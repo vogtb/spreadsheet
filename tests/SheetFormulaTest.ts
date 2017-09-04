@@ -968,20 +968,24 @@ test("Sheet TO_TEXT", function(){
 });
 
 test("Sheet ERROR.TYPE", function(){
-
   let sheet = new Sheet();
   sheet.setCell("M1", "= 1/0");
   sheet.setCell("A1", "=ERROR.TYPE(M1)");
   assertEquals(sheet.getCell("A1").getValue(), 2);
-
   // Divide by zero error should be caught by formula
   assertFormulaEquals('=ERROR.TYPE(1/0)', 2);
-
   // NA error should also be caught by formula
   assertFormulaEquals('=ERROR.TYPE(NA())', 7);
-
+  // name error should also be caught by formula
+  assertFormulaEquals('=ERROR.TYPE(NOTAFUNCTION())', 5);
+  // num error should also be caught by formula
+  assertFormulaEquals('=ERROR.TYPE(ACOS(44))', 6);
   // Parse error should bubble up to cell
   assertFormulaEqualsError('=ERROR.TYPE(10e)', PARSE_ERROR);
+  // Ref to empty cell should bubble up to cell
+  assertFormulaEqualsError('=ERROR.TYPE(M8)', NA_ERROR);
+  // Non-error value passed in should cause NA_ERROR
+  assertFormulaEqualsError('=ERROR.TYPE(10)', NA_ERROR);
 });
 
 test("Sheet parsing error", function(){

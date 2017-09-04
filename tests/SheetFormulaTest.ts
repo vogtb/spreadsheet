@@ -8,49 +8,49 @@ import {
 import {
   DIV_ZERO_ERROR,
   VALUE_ERROR,
-  NA_ERROR
+  NA_ERROR, PARSE_ERROR
 } from "../src/Errors";
 
 function assertFormulaEqualsError(formula: string, errorString: string) {
-  var sheet  = new Sheet();
+  let sheet  = new Sheet();
   sheet.setCell("A1", formula);
-  var cell = sheet.getCell("A1");
+  let cell = sheet.getCell("A1");
   assertEquals(cell.getError().name, errorString);
   assertEquals(cell.getValue(), null);
 }
 
 function assertFormulaEquals(formula: string, expectation: any) {
-  var sheet  = new Sheet();
+  let sheet  = new Sheet();
   sheet.setCell("A1", formula);
-  var cell = sheet.getCell("A1");
+  let cell = sheet.getCell("A1");
   assertEquals(cell.getError(), null);
   assertEquals(cell.getValue(), expectation);
 }
 
 function assertFormulaEqualsDependsOnReference(refId: string, value: any, formula: string, expectation: any) {
-  var sheet  = new Sheet();
+  let sheet  = new Sheet();
   sheet.setCell(refId, value);
   sheet.setCell("A1", formula);
-  var cell = sheet.getCell("A1");
+  let cell = sheet.getCell("A1");
   assertEquals(cell.getError(), null);
   assertEquals(cell.getValue(), expectation);
 }
 
 function assertFormulaResultsInType(formula: string, type: string) {
-  var sheet  = new Sheet();
+  let sheet  = new Sheet();
   sheet.setCell("A1", formula);
-  var cell = sheet.getCell("A1");
+  let cell = sheet.getCell("A1");
   assertEquals(cell.getError(), null);
   assertEquals(typeof cell.getValue(), type);
 }
 
 function assertFormulaEqualsArray(formula: string, expectation: any) {
-  var sheet  = new Sheet();
+  let sheet  = new Sheet();
   sheet.setCell("A1", formula);
-  var cell = sheet.getCell("A1");
+  let cell = sheet.getCell("A1");
   assertEquals(null, cell.getError());
-  var values = cell.getValue();
-  for (var index in values) {
+  let values = cell.getValue();
+  for (let index in values) {
     assertEquals(values[index], expectation[index]);
   }
 }
@@ -965,6 +965,17 @@ test("Sheet TO_PERCENT", function(){
 
 test("Sheet TO_TEXT", function(){
   assertFormulaEquals('=TO_TEXT(false)', "FALSE");
+});
+
+test("Sheet ERROR.TYPE", function(){
+  let sheet = new Sheet();
+  sheet.setCell("M1", "= 1/0");
+  sheet.setCell("A1", "=ERROR.TYPE(M1)");
+  assertEquals(sheet.getCell("A1").getValue(), 2);
+});
+
+test("Sheet parsing error", function(){
+  assertFormulaEqualsError('= 10e', PARSE_ERROR);
 });
 
 test("Sheet *", function(){

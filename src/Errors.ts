@@ -5,6 +5,7 @@ let REF_ERROR = "#REF!";
 let NAME_ERROR = "#NAME!";
 let NUM_ERROR = "#NUM!";
 let NA_ERROR = "#N/A";
+let PARSE_ERROR = "#ERROR";
 
 class NullError extends Error {
   constructor(message: string) {
@@ -55,6 +56,13 @@ class NAError extends Error {
   }
 }
 
+class ParseError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = PARSE_ERROR;
+  }
+}
+
 export {
   DIV_ZERO_ERROR,
   NULL_ERROR,
@@ -63,11 +71,13 @@ export {
   NAME_ERROR,
   NUM_ERROR,
   NA_ERROR,
+  PARSE_ERROR,
   DivZeroError,
   NullError,
   ValueError,
   RefError,
   NameError,
   NumError,
-  NAError
+  NAError,
+  ParseError
 }

@@ -251,7 +251,7 @@ import {
 } from "./Date"
 
 // Using alias to bind dot-notation function names.
-let __COMPLEX = {
+const __COMPLEX = {
   "F.DIST": FDIST$LEFTTAILED,
   "NETWORKDAYS.INTL": NETWORKDAYS$INTL,
   "WORKDAY.INTL": WORKDAY$INTL,
@@ -263,8 +263,14 @@ let __COMPLEX = {
   "RANK.EQ": RANK$EQ
 };
 
+const __TRY_CATCH_FORMULAS : Object = {
+  "ERROR.TYPE": ERRORTYPE,
+  "ERRORTYPE": ERRORTYPE,
+};
+
 export {
   __COMPLEX,
+  __TRY_CATCH_FORMULAS,
 
   ABS,
   ACOS,

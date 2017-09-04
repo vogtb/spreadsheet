@@ -1,6 +1,7 @@
 import {
   ObjectFromPairs
 } from "../Utilities/ObjectFromPairs";
+import {ParseError} from "../Errors";
 
 // Rules represent the Regular Expressions that will be used in sequence to match a given input to the Parser.
 const WHITE_SPACE_RULE = /^(?:\s+)/; // rule 0
@@ -1272,7 +1273,8 @@ let Parser = (function () {
         },
         p,
         newState,
-        expected;
+        expected,
+        catchFailuresOn = false;
       while (true) {
         // retrieve state number from top of stack
         state = stack[stack.length - 1];
@@ -1353,7 +1355,7 @@ let Parser = (function () {
           // just recovered from another error
           if (recovering == 3) {
             if (symbol === EOF || preErrorSymbol === EOF) {
-              throw new Error(errStr || 'Parsing halted while starting to recover from another error.');
+              throw new ParseError(errStr || 'Parsing halted while starting to recover from another error.');
             }
 
             // discard current lookahead and grab another
@@ -1366,7 +1368,7 @@ let Parser = (function () {
 
           // try to recover from error
           if (error_rule_depth === false) {
-            throw new Error(errStr || 'Parsing halted. No suitable error recovery rule available.');
+            throw new ParseError(errStr || 'Parsing halted. No suitable error recovery rule available.');
           }
           popStack(error_rule_depth);
 
@@ -1379,7 +1381,7 @@ let Parser = (function () {
 
         // this shouldn't happen, unless resolve defaults are off
         if (action[0] instanceof Array && action.length > 1) {
-          throw new Error('Parse Error: multiple actions possible at state: ' + state + ', token: ' + symbol);
+          throw new ParseError('Parse Error: multiple actions possible at state: ' + state + ', token: ' + symbol);
         }
 
         // LexActions are always:
@@ -1463,7 +1465,7 @@ let Parser = (function () {
         if (this.yy.parser) {
           this.yy.parser.parseError(str, hash);
         } else {
-          throw new Error(str);
+          throw new ParseError(str);
         }
       },
 

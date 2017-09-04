@@ -141,7 +141,7 @@ test("ISREF", function(){
 });
 
 test("ERRORTYPE", function(){
-  var errorCell = new Cell("A1");
+  let errorCell = new Cell("A1");
   errorCell.setError(new NAError("error"));
   assertEquals(ERRORTYPE(new NullError("error")), 1);
   assertEquals(ERRORTYPE(new DivZeroError("error")), 2);
@@ -173,7 +173,7 @@ test("ISBLANK", function(){
 
 
 test("ISERR", function(){
-  var errorCell = new Cell("A1");
+  let errorCell = new Cell("A1");
   errorCell.setError(new DivZeroError("err"));
   assertEquals(ISERR(errorCell), true);
   assertEquals(ISERR(Cell.BuildFrom("A1", 10)), false);
@@ -190,7 +190,7 @@ test("ISERR", function(){
 
 
 test("ISERROR", function(){
-  var errorCell = new Cell("A1");
+  let errorCell = new Cell("A1");
   errorCell.setError(new DivZeroError("err"));
   assertEquals(ISERROR(errorCell), true);
   assertEquals(ISERROR(Cell.BuildFrom("A1", 10)), false);
@@ -209,7 +209,7 @@ test("ISERROR", function(){
 
 
 test("ISNA", function(){
-  var errorCell = new Cell("A1");
+  let errorCell = new Cell("A1");
   errorCell.setError(new NAError("err"));
   assertEquals(ISNA(errorCell), true);
   assertEquals(ISNA(Cell.BuildFrom("A1", 10)), false);
@@ -228,7 +228,7 @@ test("ISNA", function(){
 
 
 test("IFERROR", function(){
-  var errorCell = new Cell("A1");
+  let errorCell = new Cell("A1");
   errorCell.setError(new NAError("err"));
   assertEquals(IFERROR(errorCell, 10), 10);
   assertEquals(IFERROR(10), 10);
@@ -246,7 +246,7 @@ test("TYPE", function(){
   assertEquals(TYPE(false), 4);
   assertEquals(TYPE(new NAError("err")), 16);
   assertEquals(TYPE([1, 2, 3]), 64);
-  var errorCell = new Cell("A1");
+  let errorCell = new Cell("A1");
   errorCell.setError(new NAError("err"));
   assertEquals(TYPE(errorCell), 16);
   assertEquals(TYPE(Cell.BuildFrom("A1", 1)), 1);

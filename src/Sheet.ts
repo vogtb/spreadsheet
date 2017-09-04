@@ -7,7 +7,7 @@ import {
 import {
   DivZeroError,
   RefError,
-  NameError
+  NameError, ParseError
 } from "./Errors";
 import {
   Formulas
@@ -55,11 +55,11 @@ let Sheet = (function () {
     };
 
     newParser.yy.parseError = function (str, hash) {
-      throw {
+      throw new ParseError(JSON.stringify({
         name: 'Parser error',
         message: str,
         prop: hash
-      }
+      }));
     };
 
     newParser.yy.handler = handler;
@@ -463,12 +463,9 @@ let Sheet = (function () {
     },
 
     cellValue: function (cellId) {
-      let value,
-        origin = this,
+      let origin = this,
         cell = instance.matrix.getCell(cellId);
 
-      // get value, defaulting to undefined
-      value = cell.isBlank() ? undefined : cell.getValue();
       //update dependencies
       instance.matrix.getCell(origin).updateDependencies([cellId]);
       // check references error
@@ -479,7 +476,7 @@ let Sheet = (function () {
       }
       // check if any error occurs
       if (!cell.isBlank() && cell.getError()) {
-        throw cell.getError()
+        throw cell.getError();
       }
       return cell;
     },
@@ -533,7 +530,7 @@ let Sheet = (function () {
           instance.matrix.getCell(id).setError(new RefError("Reference does not exist"));
           instance.matrix.getCell(id).clearValue();
         });
-        throw new RefError("Reference does not exist.");
+        error = new RefError("Reference does not exist.");
       }
     } catch (ex) {
       error = ex;

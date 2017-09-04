@@ -1,4 +1,7 @@
 import * as AllFormulas from "./Formulas/AllFormulas";
+import {
+  __TRY_CATCH_FORMULAS
+} from "./Formulas/AllFormulas";
 
 let Formulas = {
   exists: function(fn: string) {
@@ -11,6 +14,9 @@ let Formulas = {
     if (fn in AllFormulas.__COMPLEX) {
       return AllFormulas.__COMPLEX[fn];
     }
+  },
+  isTryCatchFormula: function (fn: string) : boolean {
+    return __TRY_CATCH_FORMULAS[fn] !== undefined;
   }
 };
 

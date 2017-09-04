@@ -178,7 +178,7 @@ test("ISERR", function(){
   assertEquals(ISERR(errorCell), true);
   assertEquals(ISERR(Cell.BuildFrom("A1", 10)), false);
   assertEquals(ISERR(10), false);
-  assertEquals(ISERR([]), false);
+  assertEquals(ISERR([]), true);
   assertEquals(ISERR(new NAError("error")), false);
   assertEquals(ISERR(new DivZeroError("error")), true);
   assertEquals(ISERR(new NameError("error")), true);

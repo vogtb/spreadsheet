@@ -852,15 +852,35 @@ test("Sheet ISBLANK", function(){
 
 test("Sheet ISERR", function(){
   assertFormulaEquals('=ISERR(10)', false);
+  assertFormulaEquals('=ISERR(1/0)', true);
+  assertFormulaEquals('=ISERR(NA())', false);
+  assertFormulaEquals('=ISERR(M7)', false);
+  assertFormulaEquals('=ISERR([])', true);
+  assertFormulaEquals('=ISERR(NOTAFUNCTION())', true);
+  assertFormulaEquals('=ISERR(ACOS(44))', true);
+  assertFormulaEqualsError('=ISERR(10e)', PARSE_ERROR);
 });
 
 test("Sheet ISERROR", function(){
   assertFormulaEquals('=ISERROR(10)', false);
+  assertFormulaEquals('=ISERROR(1/0)', true);
+  assertFormulaEquals('=ISERROR(NA())', true);
+  assertFormulaEquals('=ISERROR(M7)', false);
+  assertFormulaEquals('=ISERROR([])', true);
+  assertFormulaEquals('=ISERROR(NOTAFUNCTION())', true);
+  assertFormulaEquals('=ISERROR(ACOS(44))', true);
+  assertFormulaEqualsError('=ISERROR(10e)', PARSE_ERROR);
 });
 
 test("Sheet ISNA", function(){
   assertFormulaEquals('=ISNA(10)', false);
-});
+  assertFormulaEquals('=ISNA(1/0)', false);
+  assertFormulaEquals('=ISNA(NA())', true);
+  assertFormulaEquals('=ISNA(M7)', false);
+  assertFormulaEquals('=ISNA([])', false);
+  assertFormulaEquals('=ISNA(NOTAFUNCTION())', false);
+  assertFormulaEquals('=ISNA(ACOS(44))', false);
+  assertFormulaEqualsError('=ISNA(10e)', PARSE_ERROR);});
 
 test("Sheet IFERROR", function(){
   assertFormulaEquals('=IFERROR(10)', 10);
@@ -972,6 +992,8 @@ test("Sheet ERROR.TYPE", function(){
   sheet.setCell("M1", "= 1/0");
   sheet.setCell("A1", "=ERROR.TYPE(M1)");
   assertEquals(sheet.getCell("A1").getValue(), 2);
+  // Empty range is a ref error, and should be caught by formula
+  assertFormulaEquals('=ERROR.TYPE([])', 4);
   // Divide by zero error should be caught by formula
   assertFormulaEquals('=ERROR.TYPE(1/0)', 2);
   // NA error should also be caught by formula

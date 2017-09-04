@@ -266,6 +266,9 @@ const __COMPLEX = {
 const __TRY_CATCH_FORMULAS : Object = {
   "ERROR.TYPE": ERRORTYPE,
   "ERRORTYPE": ERRORTYPE,
+  "ISERR": ISERR,
+  "ISERROR": ISERROR,
+  "ISNA": ISNA
 };
 
 export {

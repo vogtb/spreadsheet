@@ -159,7 +159,11 @@ let ISREF = function (value) {
  */
 let ERRORTYPE = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ERRORTYPE");
-  value = TypeConverter.firstValue(value);
+  try {
+    value = TypeConverter.firstValue(value);
+  } catch (e) {
+    value = e;
+  }
   if (value instanceof Cell) {
     if (value.hasError()) {
       value = value.getError();
@@ -216,10 +220,14 @@ let ISBLANK = function (value) {
  * #N/A is present.
  * @returns {boolean}
  * @constructor
- * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 let ISERR = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISERR");
+  try {
+    value = TypeConverter.firstValue(value);
+  } catch (e) {
+    return true;
+  }
   if (value instanceof Cell) {
     if (value.hasError()) {
       return value.getError().name !== NA_ERROR;
@@ -238,7 +246,6 @@ let ISERR = function (value) {
  * @param value - is any value where a test is performed to determine whether it is an error value.
  * @returns {boolean}
  * @constructor
- * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 let ISERROR = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISERROR");
@@ -260,7 +267,6 @@ let ISERROR = function (value) {
  * @param value - The value or expression to be tested.
  * @returns {boolean}
  * @constructor
- * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 let ISNA = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ISNA");

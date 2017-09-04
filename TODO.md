@@ -20,11 +20,14 @@ We could give each function a type-array that matches the arguments, and could b
 ### Fix documentation regular expression, it is butchering URLs.
 
 
-### ISERR, ISERROR, ISNA need to be called inside a try-catch-block inside the Parser or Sheet.
+### ISERROR, ISNA need to be called inside a try-catch-block inside the Parser or Sheet.
 
 
 ### Cells/Sheet/Parser should be able to parse raw errors in the format `#N/A`
 All errors should be able to be input/thrown in this way.
+
+
+### Parser/Sheet should be able to be initialized with js range notation (`[]`) or regular range notation (`{}`)
 
 
 ### Meta-Formulas to write

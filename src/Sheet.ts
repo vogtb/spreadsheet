@@ -217,14 +217,6 @@ let Sheet = (function () {
       return value instanceof Function;
     },
 
-    isNull: function (value) {
-      return value === null;
-    },
-
-    isSet: function (value) {
-      return !utils.isNull(value);
-    },
-
     toNum: function (chr) {
       chr = utils.clearFormula(chr);
       let base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', i, j, result = 0;

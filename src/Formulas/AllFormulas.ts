@@ -268,7 +268,8 @@ const __TRY_CATCH_FORMULAS : Object = {
   "ERRORTYPE": ERRORTYPE,
   "ISERR": ISERR,
   "ISERROR": ISERROR,
-  "ISNA": ISNA
+  "ISNA": ISNA,
+  "IFERROR": IFERROR
 };
 
 export {

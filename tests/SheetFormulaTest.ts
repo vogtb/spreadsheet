@@ -884,6 +884,7 @@ test("Sheet ISNA", function(){
 
 test("Sheet IFERROR", function(){
   assertFormulaEquals('=IFERROR(10)', 10);
+  assertFormulaEquals('=IFERROR(NA())', undefined);
 });
 
 test("Sheet TYPE", function(){

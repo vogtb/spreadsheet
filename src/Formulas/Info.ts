@@ -19,7 +19,7 @@ import {Filter} from "../Utilities/Filter";
  * @constructor
  */
 let NA = function () {
-  ArgsChecker.checkLength(arguments, 1, "NA");
+  ArgsChecker.checkLength(arguments, 0, "NA");
   throw new NAError("NA Error thrown.");
 };
 
@@ -257,7 +257,7 @@ let ISERROR = function (value) {
   if (value instanceof Cell) {
     return value.hasError();
   }
-  return value instanceof Error;
+  return (value instanceof Error);
 };
 
 
@@ -294,14 +294,19 @@ let ISNA = function (value) {
  * @param valueIfError - [OPTIONAL] - Value to return if no error is present in the first argument.
  * @returns {any}
  * @constructor
- * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 let IFERROR = function (value, valueIfError?) {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "IFERROR");
-  if (value instanceof Cell && valueIfError === undefined) {
-    return ISERROR(value) ? new Cell(value.getId()) : value;
+  if (value instanceof Cell) {
+    if (value.hasError()) {
+      return;
+    }
+    return value;
   }
-  return ISERROR(value) ? valueIfError : value;
+  if (!ISERROR(value)) {
+    return value;
+  }
+  return;
 };
 
 

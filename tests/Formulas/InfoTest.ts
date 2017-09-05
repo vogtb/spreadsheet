@@ -230,7 +230,8 @@ test("ISNA", function(){
 test("IFERROR", function(){
   let errorCell = new Cell("A1");
   errorCell.setError(new NAError("err"));
-  assertEquals(IFERROR(errorCell, 10), 10);
+  assertEquals(IFERROR(errorCell, 10), undefined);
+  assertEquals(IFERROR(new NAError("err")), undefined);
   assertEquals(IFERROR(10), 10);
   assertEquals(IFERROR(Cell.BuildFrom("A1", 10), "abc"), Cell.BuildFrom("A1", 10));
   assertEquals(IFERROR(new Cell("A1")), new Cell("A1"));

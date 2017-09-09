@@ -1240,7 +1240,7 @@ let Parser = (function () {
         32, $V9,
         34, $Va,
         36, $Vb,
-        12, $Vd,
+        12, $Vd
       ]),
       ObjectFromPairs.of([
         2, 13,
@@ -1261,6 +1261,9 @@ let Parser = (function () {
         34, $Va,
         36, $Vb,
         12, $Vd,
+        // NOTE: Ben this is where you are. When the parser captures an entire array, it should be able to reduce the
+        // array, and continue on parsing normally. So we should have [LexActions.REDUCE, X]
+        29, [LexActions.REDUCE, 1]
       ]),
       extendRules($Vu, [LexActions.REDUCE, 42]),
       extendRules($Vt, [LexActions.REDUCE, 34], ObjectFromPairs.of([

@@ -1383,6 +1383,31 @@ let MULTINOMIAL = function (...values) {
   return _fact(sum) / divisor;
 };
 
+
+/**
+ * Returns a sum of powers of the number x in accordance with the following formula.
+ * @param x - The number as an independent variable.
+ * @param n - The starting power.
+ * @param m - The number to increment by
+ * @param coefficients - A series of coefficients. For each coefficient the series sum is extended by one section. You
+ * can only enter coefficients using cell references.
+ * @returns {number}
+ * @constructor
+ */
+let SERIESSUM = function (x, n, m, coefficients) {
+  ArgsChecker.checkLength(arguments, 4, "SERIESSUM");
+  x = TypeConverter.firstValueAsNumber(x);
+  n = TypeConverter.firstValueAsNumber(n);
+  m = TypeConverter.firstValueAsNumber(m);
+  coefficients =  Filter.flattenAndThrow(coefficients).map(TypeConverter.valueToNumber);
+  let result = coefficients[0] * Math.pow(x, n);
+  for (let i = 1; i < coefficients.length; i++) {
+    result += coefficients[i] * Math.pow(x, n + i * m);
+  }
+  return result;
+};
+
+
 export {
   ABS,
   ACOS,
@@ -1457,5 +1482,6 @@ export {
   MROUND,
   FACTDOUBLE,
   UNARY_PERCENT,
-  MULTINOMIAL
+  MULTINOMIAL,
+  SERIESSUM
 }

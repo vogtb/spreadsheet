@@ -16,6 +16,10 @@ For example `=#N/A` should force an error to be thrown inside the cell.
 ### Parser/Sheet should be able to be initialized with js range notation (`[]`) or regular range notation (`{}`)
 
 
+### Parser should be able to parse arrays without `eval`
+Right now, arrays and reference literals in a formula are parsed using JS `eval`. This means, if we have references inside, or non-JS parsing values like TRUE or FALSE, they will cause ReferenceErrors. For example, `=SUM([M1, 10])` would throw `[ReferenceError: M1 is not defined]` because M1 is not a variables. Instead of using `eval`, we should parse the opening of an array, and the closeing of an array, and use recursion to see how deep we are, evaluating the tokens inside in the sam way we parse formulas and functions.
+
+
 ### Meta-Formulas to write
 Many of these formulas can be written by allowing the Sheet and Parser to return Cell objects in addition to primitive types. There are some memory issues with doing this. If a user calls something like `ISNA(A1:A99999)` we really only need the first cell. So we should return cell objects in some cases, but it would be easier in most cases to have context aware formulas, so if they need a cell, or a reference, we simply skip looking up a reference, and instead return a reference, or just a single cell. One way to do this would be to have formula functions, and then on the side have formula args. So before we lookup a large range of cells, we can check to see if it needs all of them, or if it just cares about the first one. So for `ISNA` we could look at `FormulaArgs.ISNA[0]` to get `Value` so we know that it needs only a single argument that is not an array, so if we call it with `ISNA(A1:A99999)`, it would really only lookup `A1`. This might be premature optimization however.
 
@@ -31,7 +35,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 
 
 ### Formulas to write
-* SERIESSUM
 * SUBTOTAL
 * CRITBINOM
 * F.DIST.RT

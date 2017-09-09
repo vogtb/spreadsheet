@@ -1046,6 +1046,10 @@ test("Sheet ROWS", function(){
   assertFormulaEquals('=ROWS(B1:M44)', 44);
 });
 
+test("Sheet SERIESSUM", function(){
+  assertFormulaEquals('=SERIESSUM(1, 0, 1, [4, 5, 6])', 15);
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

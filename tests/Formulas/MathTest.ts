@@ -72,7 +72,8 @@ import {
   MROUND,
   FACTDOUBLE,
   UNARY_PERCENT,
-  MULTINOMIAL
+  MULTINOMIAL,
+  SERIESSUM
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1512,5 +1513,20 @@ test("MULTINOMIAL", function(){
   assertEquals(MULTINOMIAL(3), 1);
   catchAndAssertEquals(function() {
     MULTINOMIAL.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("SERIESSUM", function(){
+  assertEquals(SERIESSUM(1, 0, 1, [4, 5, 6]), 15);
+  assertEquals(SERIESSUM(1, 0, 1, [4, 5, 6, 10, 22]), 47);
+  assertEquals(SERIESSUM(3, 0, 2, [4, 5, 6]), 535);
+  assertEquals(SERIESSUM(3, 0, 2, [4, 5, 6, 10]), 7825);
+  assertEquals(SERIESSUM(3, 2, 2, [4, 5, 6, 10]), 70425);
+  catchAndAssertEquals(function() {
+    SERIESSUM.apply(this, [1, 0, 1, [4, 5, 6], 10])
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    SERIESSUM.apply(this, [1, 0, 1])
   }, ERRORS.NA_ERROR);
 });

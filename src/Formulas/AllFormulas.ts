@@ -72,7 +72,8 @@ import {
   MROUND,
   FACTDOUBLE,
   UNARY_PERCENT,
-  MULTINOMIAL
+  MULTINOMIAL,
+  SERIESSUM
 } from "./Math";
 import {
   FREQUENCY,
@@ -511,5 +512,6 @@ export {
   ISFORMULA,
   ADDRESS,
   COLUMNS,
-  ROWS
+  ROWS,
+  SERIESSUM
 }

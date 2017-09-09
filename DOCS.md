@@ -679,7 +679,7 @@
 ```
   Returns the number corresponding to an error value occurring in a different cell. With the aid of this number, an error message text can be generated. If an error occurs, the function returns a logical or numerical value. 
 @param value - Contains either the addrereference of the cell in which the error occurs, or the error directly. Eg: `=ERRORTYPE(NA())` 
-@constructor TODO: This formula, while written correctly in javascript, needs to be called inside of a try-catch-block inside the ParserSheet. Otherwise the errors thrown by nested formulas break through. Eg: `=ERRORTYPE(NA())`, NA bubbles up. Once this is done, we should test it inside SheetFormulaTest.ts
+@constructor
 ```
 
 ### ISBLANK 
@@ -697,7 +697,7 @@
   Returns TRUE if the value refers to any error value except #NA. You can use this function to control error values in certain cells. If an error occurs, the function returns a logical or numerical value. 
 @param value - Any value or expression in which a test is performed to determine whether an error value not equal to #NA is present. 
 @returns {boolean} 
-@constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
+@constructor
 ```
 
 ### ISERROR 
@@ -706,7 +706,7 @@
   Tests if the cells contain general error values. ISERROR recognizes the #NA error value. If an error occurs, the function returns a logical or numerical value. 
 @param value - is any value where a test is performed to determine whether it is an error value. 
 @returns {boolean} 
-@constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
+@constructor
 ```
 
 ### ISNA 
@@ -715,17 +715,17 @@
   Returns TRUE if a cell contains the #NA (value not available) error value. If an error occurs, the function returns a logical or numerical value. 
 @param value - The value or expression to be tested. 
 @returns {boolean} 
-@constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
+@constructor
 ```
 
 ### IFERROR 
 
 ```
-  Returns the first argument if no error value is present, otherwise returns the second argument if provided, or a blank if the second argument is absent. 
+  Returns the first argument if no error value is present, otherwise returns the second argument if provided, or a blank if the second argument is absent. Blank value is `null`. 
 @param value - Value to check for error. 
 @param valueIfError - [OPTIONAL] - Value to return if no error is present in the first argument. 
 @returns {any} 
-@constructor TODO: This formula needs to be called from inside a try-catch-block in the SheetParser, like ERROR.TYPE.
+@constructor
 ```
 
 ### TYPE 
@@ -750,6 +750,15 @@
 ```
   Returns the row number of a specified cell, starting with row 1 for A1. 
 @param cell - Cell, defaults to the cell calling this formula, when used in the context of a spreadsheet. 
+@constructor
+```
+
+### ISFORMULA 
+
+```
+  Returns TRUE if a cell is a formula cell. Must be given a reference. 
+@param value - To check. 
+@returns {boolean} 
 @constructor
 ```
 ## Logical

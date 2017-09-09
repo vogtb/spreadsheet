@@ -16,7 +16,8 @@ import {
   IFERROR,
   TYPE,
   COLUMN,
-  ROW
+  ROW,
+  ISFORMULA
 } from "../../src/Formulas/Info";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -230,13 +231,13 @@ test("ISNA", function(){
 test("IFERROR", function(){
   let errorCell = new Cell("A1");
   errorCell.setError(new NAError("err"));
-  assertEquals(IFERROR(errorCell, 10), undefined);
-  assertEquals(IFERROR(new NAError("err")), undefined);
+  assertEquals(IFERROR(errorCell, 10), null);
+  assertEquals(IFERROR(new NAError("err")), null);
   assertEquals(IFERROR(10), 10);
   assertEquals(IFERROR(Cell.BuildFrom("A1", 10), "abc"), Cell.BuildFrom("A1", 10));
   assertEquals(IFERROR(new Cell("A1")), new Cell("A1"));
   catchAndAssertEquals(function() {
-    IFERROR.apply(this, [])
+    IFERROR.apply(this, []);
   }, ERRORS.NA_ERROR);
 });
 
@@ -283,5 +284,27 @@ test("ROW", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     ROW.apply(this, [])
+  }, ERRORS.NA_ERROR);
+});
+
+test("ISFORMULA", function(){
+  let c = new Cell("A1");
+  c.setValue("=SUM(10, 10)");
+  assertEquals(ISFORMULA(c), true);
+  assertEquals(ISFORMULA(new Cell("M5")), false);
+  catchAndAssertEquals(function() {
+    ISFORMULA.apply(this, [])
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    ISFORMULA(10);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    ISFORMULA("str");
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    ISFORMULA([]);
+  }, ERRORS.REF_ERROR);
+  catchAndAssertEquals(function() {
+    ISFORMULA(false);
   }, ERRORS.NA_ERROR);
 });

@@ -98,6 +98,7 @@ exports.IFERROR = Info_1.IFERROR;
 exports.TYPE = Info_1.TYPE;
 exports.COLUMN = Info_1.COLUMN;
 exports.ROW = Info_1.ROW;
+exports.ISFORMULA = Info_1.ISFORMULA;
 var Lookup_1 = require("./Lookup");
 exports.CHOOSE = Lookup_1.CHOOSE;
 var Convert_1 = require("./Convert");
@@ -252,3 +253,12 @@ var __COMPLEX = {
     "RANK.EQ": Statistical_1.RANK$EQ
 };
 exports.__COMPLEX = __COMPLEX;
+var __TRY_CATCH_FORMULAS = {
+    "ERROR.TYPE": Info_1.ERRORTYPE,
+    "ERRORTYPE": Info_1.ERRORTYPE,
+    "ISERR": Info_1.ISERR,
+    "ISERROR": Info_1.ISERROR,
+    "ISNA": Info_1.ISNA,
+    "IFERROR": Info_1.IFERROR
+};
+exports.__TRY_CATCH_FORMULAS = __TRY_CATCH_FORMULAS;

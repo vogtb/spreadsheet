@@ -24,6 +24,8 @@ var NUM_ERROR = "#NUM!";
 exports.NUM_ERROR = NUM_ERROR;
 var NA_ERROR = "#N/A";
 exports.NA_ERROR = NA_ERROR;
+var PARSE_ERROR = "#ERROR";
+exports.PARSE_ERROR = PARSE_ERROR;
 var NullError = (function (_super) {
     __extends(NullError, _super);
     function NullError(message) {
@@ -94,3 +96,13 @@ var NAError = (function (_super) {
     return NAError;
 }(Error));
 exports.NAError = NAError;
+var ParseError = (function (_super) {
+    __extends(ParseError, _super);
+    function ParseError(message) {
+        var _this = _super.call(this, message) || this;
+        _this.name = PARSE_ERROR;
+        return _this;
+    }
+    return ParseError;
+}(Error));
+exports.ParseError = ParseError;

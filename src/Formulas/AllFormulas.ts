@@ -97,7 +97,8 @@ import {
   IFERROR,
   TYPE,
   COLUMN,
-  ROW
+  ROW,
+  ISFORMULA
 } from "./Info";
 import {
   CHOOSE
@@ -503,5 +504,6 @@ export {
   TO_DATE,
   TO_DOLLARS,
   TO_PERCENT,
-  TO_TEXT
+  TO_TEXT,
+  ISFORMULA
 }

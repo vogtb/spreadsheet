@@ -289,7 +289,7 @@ let ISNA = function (value) {
 
 /**
  * Returns the first argument if no error value is present, otherwise returns the second argument if provided, or a
- * blank if the second argument is absent.
+ * blank if the second argument is absent. Blank value is `null`.
  * @param value - Value to check for error.
  * @param valueIfError - [OPTIONAL] - Value to return if no error is present in the first argument.
  * @returns {any}
@@ -299,14 +299,14 @@ let IFERROR = function (value, valueIfError?) {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "IFERROR");
   if (value instanceof Cell) {
     if (value.hasError()) {
-      return;
+      return null;
     }
     return value;
   }
   if (!ISERROR(value)) {
     return value;
   }
-  return;
+  return null;
 };
 
 
@@ -375,6 +375,26 @@ let ROW =  function (cell) {
 };
 
 
+/**
+ * Returns TRUE if a cell is a formula cell. Must be given a reference.
+ * @param value - To check.
+ * @returns {boolean}
+ * @constructor
+ */
+let ISFORMULA = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ISFORMULA");
+  if (value instanceof Array) {
+    if (value.length === 0) {
+      throw new RefError("Reference does not exist.");
+    }
+  }
+  if (!(value instanceof Cell)) {
+    throw new NAError("Argument must be a range");
+  }
+  return value.hasFormula();
+};
+
+
 export {
   NA,
   ISTEXT,
@@ -393,5 +413,6 @@ export {
   IFERROR,
   TYPE,
   COLUMN,
-  ROW
+  ROW,
+  ISFORMULA
 }

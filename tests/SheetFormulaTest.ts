@@ -8,8 +8,11 @@ import {
 import {
   DIV_ZERO_ERROR,
   VALUE_ERROR,
-  NA_ERROR, PARSE_ERROR
+  NA_ERROR, PARSE_ERROR, REF_ERROR
 } from "../src/Errors";
+import {
+  Cell
+} from "../src/Cell";
 
 function assertFormulaEqualsError(formula: string, errorString: string) {
   let sheet  = new Sheet();
@@ -884,7 +887,21 @@ test("Sheet ISNA", function(){
 
 test("Sheet IFERROR", function(){
   assertFormulaEquals('=IFERROR(10)', 10);
-  assertFormulaEquals('=IFERROR(NA())', undefined);
+  assertFormulaEquals('=IFERROR(NA())', null);
+  assertFormulaEquals('=IFERROR(NOTAFUNCTION())', null);
+  assertFormulaEquals('=IFERROR(1/0)', null);
+  assertFormulaEquals('=IFERROR(M7)', new Cell("M7"));
+  assertFormulaEquals('=IFERROR([])', null);
+});
+
+test("Sheet ISFORMULA", function(){
+  assertFormulaEqualsError('=ISFORMULA(10)', NA_ERROR);
+  assertFormulaEqualsError('=ISFORMULA(false)', NA_ERROR);
+  assertFormulaEqualsError('=ISFORMULA("str")', NA_ERROR);
+  assertFormulaEqualsError('=ISFORMULA([])', REF_ERROR);
+  assertFormulaEqualsError('=ISFORMULA([10])', NA_ERROR);
+  assertFormulaEqualsDependsOnReference('D1', "=SUM(10, 5)", '=ISFORMULA(D1)', true);
+  assertFormulaEquals('=ISFORMULA(M7)', false);
 });
 
 test("Sheet TYPE", function(){

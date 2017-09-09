@@ -9,7 +9,7 @@ var Cell_1 = require("../Cell");
  * @constructor
  */
 var NA = function () {
-    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "NA");
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 0, "NA");
     throw new Errors_1.NAError("NA Error thrown.");
 };
 exports.NA = NA;
@@ -139,13 +139,15 @@ exports.ISREF = ISREF;
  * @param value - Contains either the address/reference of the cell in which the error occurs, or the error directly.
  * Eg: `=ERRORTYPE(NA())`
  * @constructor
- * TODO: This formula, while written correctly in javascript, needs to be called inside of a try-catch-block inside the
- * Parser/Sheet. Otherwise the errors thrown by nested formulas break through. Eg: `=ERRORTYPE(NA())`, NA bubbles up.
- * Once this is done, we should test it inside SheetFormulaTest.ts
  */
 var ERRORTYPE = function (value) {
     ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ERRORTYPE");
-    value = TypeConverter_1.TypeConverter.firstValue(value);
+    try {
+        value = TypeConverter_1.TypeConverter.firstValue(value);
+    }
+    catch (e) {
+        value = e;
+    }
     if (value instanceof Cell_1.Cell) {
         if (value.hasError()) {
             value = value.getError();
@@ -202,10 +204,15 @@ exports.ISBLANK = ISBLANK;
  * #N/A is present.
  * @returns {boolean}
  * @constructor
- * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 var ISERR = function (value) {
     ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ISERR");
+    try {
+        value = TypeConverter_1.TypeConverter.firstValue(value);
+    }
+    catch (e) {
+        return true;
+    }
     if (value instanceof Cell_1.Cell) {
         if (value.hasError()) {
             return value.getError().name !== Errors_1.NA_ERROR;
@@ -224,7 +231,6 @@ exports.ISERR = ISERR;
  * @param value - is any value where a test is performed to determine whether it is an error value.
  * @returns {boolean}
  * @constructor
- * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 var ISERROR = function (value) {
     ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ISERROR");
@@ -237,7 +243,7 @@ var ISERROR = function (value) {
     if (value instanceof Cell_1.Cell) {
         return value.hasError();
     }
-    return value instanceof Error;
+    return (value instanceof Error);
 };
 exports.ISERROR = ISERROR;
 /**
@@ -246,7 +252,6 @@ exports.ISERROR = ISERROR;
  * @param value - The value or expression to be tested.
  * @returns {boolean}
  * @constructor
- * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 var ISNA = function (value) {
     ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ISNA");
@@ -269,19 +274,24 @@ var ISNA = function (value) {
 exports.ISNA = ISNA;
 /**
  * Returns the first argument if no error value is present, otherwise returns the second argument if provided, or a
- * blank if the second argument is absent.
+ * blank if the second argument is absent. Blank value is `null`.
  * @param value - Value to check for error.
  * @param valueIfError - [OPTIONAL] - Value to return if no error is present in the first argument.
  * @returns {any}
  * @constructor
- * TODO: This formula needs to be called from inside a try-catch-block in the Sheet/Parser, like ERROR.TYPE.
  */
 var IFERROR = function (value, valueIfError) {
     ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 1, 2, "IFERROR");
-    if (value instanceof Cell_1.Cell && valueIfError === undefined) {
-        return ISERROR(value) ? new Cell_1.Cell(value.getId()) : value;
+    if (value instanceof Cell_1.Cell) {
+        if (value.hasError()) {
+            return null;
+        }
+        return value;
     }
-    return ISERROR(value) ? valueIfError : value;
+    if (!ISERROR(value)) {
+        return value;
+    }
+    return null;
 };
 exports.IFERROR = IFERROR;
 /**
@@ -346,3 +356,22 @@ var ROW = function (cell) {
     return cell.getRow() + 1;
 };
 exports.ROW = ROW;
+/**
+ * Returns TRUE if a cell is a formula cell. Must be given a reference.
+ * @param value - To check.
+ * @returns {boolean}
+ * @constructor
+ */
+var ISFORMULA = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ISFORMULA");
+    if (value instanceof Array) {
+        if (value.length === 0) {
+            throw new Errors_1.RefError("Reference does not exist.");
+        }
+    }
+    if (!(value instanceof Cell_1.Cell)) {
+        throw new Errors_1.NAError("Argument must be a range");
+    }
+    return value.hasFormula();
+};
+exports.ISFORMULA = ISFORMULA;

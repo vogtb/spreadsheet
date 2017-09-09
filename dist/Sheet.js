@@ -39,11 +39,11 @@ var Sheet = (function () {
             newParser.yy.obj = obj;
         };
         newParser.yy.parseError = function (str, hash) {
-            throw {
+            throw new Errors_1.ParseError(JSON.stringify({
                 name: 'Parser error',
                 message: str,
                 prop: hash
-            };
+            }));
         };
         newParser.yy.handler = handler;
         return newParser;
@@ -182,12 +182,6 @@ var Sheet = (function () {
         },
         isFunction: function (value) {
             return value instanceof Function;
-        },
-        isNull: function (value) {
-            return value === null;
-        },
-        isSet: function (value) {
-            return !utils.isNull(value);
         },
         toNum: function (chr) {
             chr = utils.clearFormula(chr);
@@ -386,9 +380,7 @@ var Sheet = (function () {
             throw new Errors_1.NameError("Unknown variable: '" + str + "'.");
         },
         cellValue: function (cellId) {
-            var value, origin = this, cell = instance.matrix.getCell(cellId);
-            // get value, defaulting to undefined
-            value = cell.isBlank() ? undefined : cell.getValue();
+            var origin = this, cell = instance.matrix.getCell(cellId);
             //update dependencies
             instance.matrix.getCell(origin).updateDependencies([cellId]);
             // check references error
@@ -396,10 +388,6 @@ var Sheet = (function () {
                 if (cell.getDependencies().indexOf(cellId) !== -1) {
                     throw new Errors_1.RefError("Reference does not exist.");
                 }
-            }
-            // check if any error occurs
-            if (!cell.isBlank() && cell.getError()) {
-                throw cell.getError();
             }
             return cell;
         },
@@ -441,11 +429,17 @@ var Sheet = (function () {
                     instance.matrix.getCell(id).setError(new Errors_1.RefError("Reference does not exist"));
                     instance.matrix.getCell(id).clearValue();
                 });
-                throw new Errors_1.RefError("Reference does not exist.");
+                error = new Errors_1.RefError("Reference does not exist.");
             }
         }
-        catch (ex) {
-            error = ex;
+        catch (e) {
+            error = e;
+        }
+        if (result instanceof Error) {
+            return {
+                error: result,
+                result: null
+            };
         }
         return {
             error: error,

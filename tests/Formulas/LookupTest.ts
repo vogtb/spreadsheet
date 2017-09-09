@@ -1,6 +1,7 @@
 import {
   CHOOSE,
-  ADDRESS
+  ADDRESS,
+  COLUMNS
 } from "../../src/Formulas/Lookup";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -8,6 +9,9 @@ import {
   test,
   assertEquals
 } from "../Utils/Asserts";
+import {
+  Cell
+} from "../../src/Cell";
 
 
 test("CHOOSE", function(){
@@ -62,4 +66,58 @@ test("ADDRESS", function(){
   catchAndAssertEquals(function() {
     ADDRESS(1, -2, 1);
   }, ERRORS.VALUE_ERROR);
+});
+
+
+test("COLUMNS", function(){
+  assertEquals(COLUMNS(1), 1);
+  assertEquals(COLUMNS("str"), 1);
+  assertEquals(COLUMNS(false), 1);
+  assertEquals(COLUMNS(Cell.BuildFrom("A1", "str")), 1);
+  assertEquals(COLUMNS([
+    Cell.BuildFrom("A1", "str"),
+    Cell.BuildFrom("A2", "str"),
+    Cell.BuildFrom("A3", "str"),
+    Cell.BuildFrom("A4", "str"),
+    Cell.BuildFrom("A5", "str"),
+    Cell.BuildFrom("A6", "str"),
+    Cell.BuildFrom("A7", "str"),
+    Cell.BuildFrom("A8", "str"),
+    Cell.BuildFrom("B1", "str"),
+    Cell.BuildFrom("B2", "str"),
+    Cell.BuildFrom("B3", "str"),
+    Cell.BuildFrom("B4", "str"),
+    Cell.BuildFrom("B5", "str"),
+    Cell.BuildFrom("B6", "str"),
+    Cell.BuildFrom("B7", "str"),
+    Cell.BuildFrom("B8", "str"),
+    Cell.BuildFrom("C1", "str"),
+    Cell.BuildFrom("C2", "str"),
+    Cell.BuildFrom("C3", "str"),
+    Cell.BuildFrom("C4", "str"),
+    Cell.BuildFrom("C5", "str")
+  ]), 3);
+  assertEquals(COLUMNS([
+    Cell.BuildFrom("A1", "str"),
+    Cell.BuildFrom("A2", "str"),
+    Cell.BuildFrom("A3", "str"),
+    Cell.BuildFrom("A4", "str"),
+    Cell.BuildFrom("A5", "str"),
+    Cell.BuildFrom("A6", "str"),
+    Cell.BuildFrom("A7", "str"),
+    Cell.BuildFrom("A8", "str"),
+    Cell.BuildFrom("B1", "str")
+  ]), 2);
+  assertEquals(COLUMNS([
+    Cell.BuildFrom("A1", "str"),
+    Cell.BuildFrom("A2", "str"),
+    Cell.BuildFrom("A3", "str")
+  ]), 1);
+  assertEquals(COLUMNS([1, 2, 3, 4]), 4);
+  catchAndAssertEquals(function() {
+    COLUMNS.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    COLUMNS([]);
+  }, ERRORS.REF_ERROR);
 });

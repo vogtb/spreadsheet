@@ -1032,8 +1032,16 @@ test("Sheet ADDRESS", function(){
   assertFormulaEquals('=ADDRESS(2170, 2, 4, true, "SheetOne")', "SheetOne!B2170");
 });
 
+test("Sheet COLUMNS", function(){
+  assertFormulaEquals('=COLUMNS(1)', 1);
+  assertFormulaEquals('=COLUMNS([1, 2, 3, 4])', 4);
+  assertFormulaEquals('=COLUMNS(M1)', 1);
+  assertFormulaEquals('=COLUMNS(B1:M44)', 12);
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
+  assertFormulaEqualsError('= SUM(', PARSE_ERROR);
 });
 
 test("Sheet *", function(){

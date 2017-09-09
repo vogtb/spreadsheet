@@ -102,6 +102,7 @@ exports.ISFORMULA = Info_1.ISFORMULA;
 var Lookup_1 = require("./Lookup");
 exports.CHOOSE = Lookup_1.CHOOSE;
 exports.ADDRESS = Lookup_1.ADDRESS;
+exports.COLUMNS = Lookup_1.COLUMNS;
 var Convert_1 = require("./Convert");
 exports.TO_DATE = Convert_1.TO_DATE;
 exports.TO_DOLLARS = Convert_1.TO_DOLLARS;

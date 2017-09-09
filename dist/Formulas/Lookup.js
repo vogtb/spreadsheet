@@ -4,6 +4,7 @@ var ArgsChecker_1 = require("../Utilities/ArgsChecker");
 var Errors_1 = require("../Errors");
 var TypeConverter_1 = require("../Utilities/TypeConverter");
 var Filter_1 = require("../Utilities/Filter");
+var Cell_1 = require("../Cell");
 /**
  * Returns an element from a list of choices based on index.
  * @param index - Which choice to return. Index starts at 1.
@@ -25,6 +26,18 @@ var CHOOSE = function (index) {
     return data[i - 1];
 };
 exports.CHOOSE = CHOOSE;
+/**
+ * Returns a text representation of a cell address based on the row, column, and sheet.
+ * @param row - Row of cell address.
+ * @param column - Column of cell address
+ * @param {number} absoluteVsRelativeMode - [OPTIONAL - default is 1] Should return a relative(A1, vs $A$1) or absolute address. 1 is row and
+ * column absolute (e.g. $A$1), 2 is row absolute and column relative (e.g. A$1), 3 is row relative and column absolute
+ * (e.g. $A1), 4 is row and column relative (e.g. A1).
+ * @param {boolean} useA1Notation - [OPTIONAL - default is TRUE] Should use A1 notation.
+ * @param sheet - [OPTIONAL] Sheet name to use in address.
+ * @returns {string}
+ * @constructor
+ */
 var ADDRESS = function (row, column, absoluteVsRelativeMode, useA1Notation, sheet) {
     if (absoluteVsRelativeMode === void 0) { absoluteVsRelativeMode = 1; }
     if (useA1Notation === void 0) { useA1Notation = true; }
@@ -114,3 +127,33 @@ var ADDRESS = function (row, column, absoluteVsRelativeMode, useA1Notation, shee
     }
 };
 exports.ADDRESS = ADDRESS;
+/**
+ * Gets the number of columns in a specified array or range.
+ * @param value - The array of range to consider.
+ * @returns {number}
+ * @constructor
+ */
+var COLUMNS = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "COLUMNS");
+    if (value instanceof Array) {
+        if (value.length === 0) {
+            throw new Errors_1.RefError("Reference does not exist.");
+        }
+        else if (value.length === 1) {
+            return 1;
+        }
+        if (value[0] instanceof Cell_1.Cell) {
+            var start = value[0];
+            var end = value[value.length - 1];
+            return end.getColumn() - start.getColumn() + 1; // counting columns inclusively
+        }
+        else {
+            // if the array passed in is just values, assume that each value is a column.
+            return value.length;
+        }
+    }
+    else {
+        return 1;
+    }
+};
+exports.COLUMNS = COLUMNS;

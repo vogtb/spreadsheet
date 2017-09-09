@@ -102,7 +102,8 @@ import {
 } from "./Info";
 import {
   CHOOSE,
-  ADDRESS
+  ADDRESS,
+  COLUMNS
 } from "./Lookup";
 import {
   TO_DATE,
@@ -507,5 +508,6 @@ export {
   TO_PERCENT,
   TO_TEXT,
   ISFORMULA,
-  ADDRESS
+  ADDRESS,
+  COLUMNS
 }

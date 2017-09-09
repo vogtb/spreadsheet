@@ -21,7 +21,7 @@ function start_block() {
 
 function add_to_block() {
   LINE="$1"
-  LINE=$(echo "$LINE" | sed 's/\*\**//g' | sed 's/\s*\/\s*//g' | sed "s/^[ \s]*//")
+  LINE=$(echo "$LINE" | sed 's/\*\**//g' | sed 's/^\s*\/\s*//g' | sed 's/\s*\/\s*$//g' | sed "s/^[ \s]*//")
   CURRENT_BLOCK="${CURRENT_BLOCK}\n""$LINE"
 }
 

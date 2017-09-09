@@ -57,7 +57,7 @@
 ```
   Converts a provided date string in a known format to a date value. 
 @param dateString - The string representing the date. Understood formats include any date format which is normally auto-converted when entered, without quotation marks, directly into a cell. Understood formats may depend on region and language settings. 
-@returns {number} of days since 190011, inclusively. 
+@returns {number} of days since 1900/1/1, inclusively. 
 @constructor
 ```
 
@@ -163,7 +163,7 @@
 ### YEARFRAC 
 
 ```
-  Returns the number of years, including fractional years, between two dates using a specified day count convention.  Further reading:  http:christian-fries.deblogfile2013-yearfrac.html  http:finmath.netfinmath-lib  
+  Returns the number of years, including fractional years, between two dates using a specified day count convention.  Further reading:  http://christian-fries.de/blog/files/2013-yearfrac.html  http://finmath.net/finmath-lib  
 @param startDate - The start date to consider in the calculation. Must be a reference to a cell containing a date, a function returning a date type, or a number. 
 @param endDate - The end date to consider in the calculation. Must be a reference to a cell containing a date, a function returning a date type, or a number. 
 @param dayCountConvention - [ OPTIONAL - 0 by default ] - An indicator of what day count method to use. 
@@ -184,7 +184,7 @@
 
 ```
   Returns the hour component of a specific time, in numeric format. 
-@param time - The time from which to calculate the hour component. Must be a reference to a cell containing a datetime, a function returning a datetime type, or a number. 
+@param time - The time from which to calculate the hour component. Must be a reference to a cell containing a date/time, a function returning a date/time type, or a number. 
 @returns {number} 
 @constructor
 ```
@@ -193,7 +193,7 @@
 
 ```
   Returns the minute component of a specific time, in numeric format. 
-@param time - The time from which to calculate the minute component. Must be a reference to a cell containing a datetime, a function returning a datetime type, or a number. 
+@param time - The time from which to calculate the minute component. Must be a reference to a cell containing a date/time, a function returning a date/time type, or a number. 
 @returns {number} minute of the time passed in. 
 @constructor
 ```
@@ -202,7 +202,7 @@
 
 ```
   Returns the second component of a specific time, in numeric format. 
-@param time - The time from which to calculate the second component. Must be a reference to a cell containing a datetime, a function returning a datetime type, or a number. 
+@param time - The time from which to calculate the second component. Must be a reference to a cell containing a date/time, a function returning a date/time type, or a number. 
 @returns {number} second component of a specific time. 
 @constructor
 ```
@@ -224,7 +224,7 @@
   Returns the number of networking days between two provided days excluding specified weekend days and holidays. 
 @param startDate - The start date of the period from which to calculate the number of net working days. 
 @param endDate - The end date of the period from which to calculate the number of net working days. 
-@param weekend - [ OPTIONAL - 1 by default ] - A number or string representing which days of the week are considered weekends. String method: weekends can be specified using seven 0’s and 1’s, where the first number in the et represents Monday and the last number is for Sunday. A zero means that the day is a work day, a 1 means that the day is a weekend. For example, “0000011” would mean Saturday and Sunday are weekends. Number method: instead of using the string method above, a single number can be used. 1 = SaturdaySunday are weekends, 2 = SundayMonday, and this pattern repeats until 7 = FridaySaturday. 11 = Sunday is the only weekend, 12 = Monday is the only weekend, and this pattern repeats until 17 = Saturday is the only weekend. 
+@param weekend - [ OPTIONAL - 1 by default ] - A number or string representing which days of the week are considered weekends. String method: weekends can be specified using seven 0’s and 1’s, where the first number in the et represents Monday and the last number is for Sunday. A zero means that the day is a work day, a 1 means that the day is a weekend. For example, “0000011” would mean Saturday and Sunday are weekends. Number method: instead of using the string method above, a single number can be used. 1 = Saturday/Sunday are weekends, 2 = Sunday/Monday, and this pattern repeats until 7 = Friday/Saturday. 11 = Sunday is the only weekend, 12 = Monday is the only weekend, and this pattern repeats until 17 = Saturday is the only weekend. 
 @param holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider as holidays. The values provided within an array for holidays must be date serial number values, as returned by N or date values, as returned by DATE, DATEVALUE or TO_DATE. Values specified by a range should be standard date values or date serial numbers. 
 @returns {number} of networking days between two provided days 
 @constructor
@@ -274,7 +274,7 @@
   Calculates the date after a specified number of workdays excluding specified weekend days and holidays. 
 @param startDate - The date from which to begin counting. 
 @param numberOfDays - The number of working days to advance from start_date. If negative, counts backwards. 
-@param weekend - [ OPTIONAL - 1 by default ] - A number or string representing which days of the week are considered weekends. String method: weekends can be specified using seven 0’s and 1’s, where the first number in the et represents Monday and the last number is for Sunday. A zero means that the day is a work day, a 1 means that the day is a weekend. For example, “0000011” would mean Saturday and Sunday are weekends. Number method: instead of using the string method above, a single number can be used. 1 = SaturdaySunday are weekends, 2 = SundayMonday, and this pattern repeats until 7 = FridaySaturday. 11 = Sunday is the only weekend, 12 = Monday is the only weekend, and this pattern repeats until 17 = Saturday is the only weekend. 
+@param weekend - [ OPTIONAL - 1 by default ] - A number or string representing which days of the week are considered weekends. String method: weekends can be specified using seven 0’s and 1’s, where the first number in the et represents Monday and the last number is for Sunday. A zero means that the day is a work day, a 1 means that the day is a weekend. For example, “0000011” would mean Saturday and Sunday are weekends. Number method: instead of using the string method above, a single number can be used. 1 = Saturday/Sunday are weekends, 2 = Sunday/Monday, and this pattern repeats until 7 = Friday/Saturday. 11 = Sunday is the only weekend, 12 = Monday is the only weekend, and this pattern repeats until 17 = Saturday is the only weekend. 
 @param holidays - [ OPTIONAL ] - A range or array constant containing the dates to consider holidays. 
 @returns {number} 
 @constructor
@@ -394,7 +394,7 @@
 ```
   Converts a price quotation given as a decimal fraction into a decimal value. 
 @param fractionalPrice - The price quotation given using fractional decimal conventions. 
-@param unit - The units of the fraction, e.g. 8 for 18ths or 32 for 132nds. 
+@param unit - The units of the fraction, e.g. 8 for 1/8ths or 32 for 1/32nds. 
 @returns {number} decimal value. 
 @constructor
 ```
@@ -404,7 +404,7 @@
 ```
   Converts a price quotation given as a decimal value into a decimal fraction. 
 @param decimalPrice - The price quotation given as a decimal value. 
-@param unit - The units of the desired fraction, e.g. 8 for 18ths or 32 for 132nds 
+@param unit - The units of the desired fraction, e.g. 8 for 1/8ths or 32 for 1/32nds 
 @returns {number} price quotation as decimal fraction. 
 @constructor
 ```
@@ -476,14 +476,14 @@
 ### ACCRINT 
 
 ```
-  Calculates the accrued interest of a security that has periodic payments. WARNING: This function has been implemented to specifications as outlined in Google Spreadsheets, LibreOffice, and OpenOffice. It functions much the same as MSExcel's ACCRINT, but there are several key differences. Below are links to illustrate the differences. Please see the source code for more information on differences. Links: https:quant.stackexchange.comquestion7040whats-the-algorithm-behind-excels-accrint, https:upport.office.comen-uarticleACCRINT-function-fe45d089-6722-4fb3-9379-e1f911d8dc74, https:quant.stackexchange.comquestion7040whats-the-algorithm-behind-excels-accrint, https:upport.google.comdocanswer3093200 . 
+  Calculates the accrued interest of a security that has periodic payments. WARNING: This function has been implemented to specifications as outlined in Google Spreadsheets, LibreOffice, and OpenOffice. It functions much the same as MSExcel's ACCRINT, but there are several key differences. Below are links to illustrate the differences. Please see the source code for more information on differences. Links: https://quant.stackexchange.com/questions/7040/whats-the-algorithm-behind-excels-accrint, https://support.office.com/en-us/article/ACCRINT-function-fe45d089-6722-4fb3-9379-e1f911d8dc74, https://quant.stackexchange.com/questions/7040/whats-the-algorithm-behind-excels-accrint, https://support.google.com/docs/answer/3093200 . 
 @param issue - The date the security was initially issued. 
 @param firstPayment - The first date interest will be paid. 
 @param settlement - The settlement date of the security, the date after issuance when the security is delivered to the buyer. Is the maturity date of the security if it is held until maturity rather than sold. 
 @param rate - The annualized rate of interest. 
 @param redemption - The redemption amount per 100 face value, or par. 
 @param frequency - The number of coupon payments per year. For annual payments, frequency = 1; for emiannual, frequency = 2; for quarterly, frequency = 4. 
-@param dayCountConvention - [ OPTIONAL - 0 by default ] - An indicator of what day count method to use. 0 or omitted = US (NASD) 30360, 1 = Actualactual, 2 = Actual360, 3 = Actual365, 4 = European 30360. 
+@param dayCountConvention - [ OPTIONAL - 0 by default ] - An indicator of what day count method to use. 0 or omitted = US (NASD) 30/360, 1 = Actual/actual, 2 = Actual/360, 3 = Actual/365, 4 = European 30/360. 
 @returns {number} 
 @constructor TODO: This function is based off of the open-source versions I was able to dig up online. We should implement a TODO:     second version that is closer to what MSExcel does and is named something like `ACCRINT.MS`.
 ```
@@ -558,7 +558,7 @@
 ### IRR 
 
 ```
-  Calculates the internal rate of return for an investment. The values represent cash flow values at regular intervals; at least one value must be negative (payments), and at least one value must be positive (income).  Relevant StackOverflow discussion: https:tackoverflow.comquestion15089151javascript-irr-internal-rate-of-return-formula-accuracy  
+  Calculates the internal rate of return for an investment. The values represent cash flow values at regular intervals; at least one value must be negative (payments), and at least one value must be positive (income).  Relevant StackOverflow discussion: https://stackoverflow.com/questions/15089151/javascript-irr-internal-rate-of-return-formula-accuracy  
 @param values - Range containing values. Ignores text values. 
 @param guess - [OPTIONAL] - The estimated value. Defaults to 0.01. 
 @returns {number} 
@@ -598,7 +598,7 @@
 ### NA 
 
 ```
-  Returns the "value not available" error, "#NA". 
+  Returns the "value not available" error, "#N/A". 
 @constructor
 ```
 
@@ -678,7 +678,7 @@
 
 ```
   Returns the number corresponding to an error value occurring in a different cell. With the aid of this number, an error message text can be generated. If an error occurs, the function returns a logical or numerical value. 
-@param value - Contains either the addrereference of the cell in which the error occurs, or the error directly. Eg: `=ERRORTYPE(NA())` 
+@param value - Contains either the address/reference of the cell in which the error occurs, or the error directly. Eg: `=ERRORTYPE(NA())` 
 @constructor
 ```
 
@@ -694,8 +694,8 @@
 ### ISERR 
 
 ```
-  Returns TRUE if the value refers to any error value except #NA. You can use this function to control error values in certain cells. If an error occurs, the function returns a logical or numerical value. 
-@param value - Any value or expression in which a test is performed to determine whether an error value not equal to #NA is present. 
+  Returns TRUE if the value refers to any error value except #N/A. You can use this function to control error values in certain cells. If an error occurs, the function returns a logical or numerical value. 
+@param value - Any value or expression in which a test is performed to determine whether an error value not equal to #N/A is present. 
 @returns {boolean} 
 @constructor
 ```
@@ -703,7 +703,7 @@
 ### ISERROR 
 
 ```
-  Tests if the cells contain general error values. ISERROR recognizes the #NA error value. If an error occurs, the function returns a logical or numerical value. 
+  Tests if the cells contain general error values. ISERROR recognizes the #N/A error value. If an error occurs, the function returns a logical or numerical value. 
 @param value - is any value where a test is performed to determine whether it is an error value. 
 @returns {boolean} 
 @constructor
@@ -712,7 +712,7 @@
 ### ISNA 
 
 ```
-  Returns TRUE if a cell contains the #NA (value not available) error value. If an error occurs, the function returns a logical or numerical value. 
+  Returns TRUE if a cell contains the #N/A (value not available) error value. If an error occurs, the function returns a logical or numerical value. 
 @param value - The value or expression to be tested. 
 @returns {boolean} 
 @constructor
@@ -731,7 +731,7 @@
 ### TYPE 
 
 ```
-  Returns a number corresponding to the type of data passed into the function. 1 = number, 2 = text, 4 = boolean, 16 = error, 64 = arrayrange, 128 = any other type of cell. 
+  Returns a number corresponding to the type of data passed into the function. 1 = number, 2 = text, 4 = boolean, 16 = error, 64 = array/range, 128 = any other type of cell. 
 @param value - Value for which the type will be determined. 
 @returns {number} 
 @constructor
@@ -1011,7 +1011,7 @@
 ### SUM 
 
 ```
-  Returns the sum of a series of numbers andor cells. 
+  Returns the sum of a series of numbers and/or cells. 
 @param values The first number or range to add together. 
 @returns {number} The sum of the series 
 @constructor
@@ -1056,7 +1056,7 @@
 ### COT 
 
 ```
-  Returns the cotangent of any real number. Defined as cot(x) = 1  tan(x). 
+  Returns the cotangent of any real number. Defined as cot(x) = 1 / tan(x). 
 @param value - number to calculate the cotangent for 
 @returns {number} cotangent 
 @constructor
@@ -1065,7 +1065,7 @@
 ### COTH 
 
 ```
-  Return the hyperbolic cotangent of a value, defined as coth(x) = 1  tanh(x). 
+  Return the hyperbolic cotangent of a value, defined as coth(x) = 1 / tanh(x). 
 @param value - value to calculate the hyperbolic cotangent value of 
 @returns {number} hyperbolic cotangent 
 @constructor
@@ -1266,7 +1266,7 @@
 ### SUMSQ 
 
 ```
-  Returns the sum of the squares of a series of numbers andor cells. 
+  Returns the sum of the squares of a series of numbers and/or cells. 
 @param values  The values or range(s) whose squares to add together. 
 @returns {number} the sum of the squares if the input. 
 @constructor
@@ -1353,10 +1353,10 @@
 ### DIVIDE 
 
 ```
-  Returns one number divided by another. Equivalent to the `` operator. 
+  Returns one number divided by another. Equivalent to the `/` operator. 
 @param dividend - The number to be divided. 
 @param divisor - The number to divide by, cannot be 0. 
-@returns {number} result of dividend  divisor. 
+@returns {number} result of dividend / divisor. 
 @constructor
 ```
 
@@ -1371,7 +1371,7 @@
 ### RANDBETWEEN 
 
 ```
-  Returns a uniformly random integer between two values, inclusive on high and low. Values with decimal parts may be used for low andor high; this will cause the least and greatest possible values to be the next integer greater than low andor the next integer less than high, respectively. 
+  Returns a uniformly random integer between two values, inclusive on high and low. Values with decimal parts may be used for low and/or high; this will cause the least and greatest possible values to be the next integer greater than low and/or the next integer less than high, respectively. 
 @param low - lowest value 
 @param high - highest value 
 @returns {number} between low and high. 
@@ -1570,7 +1570,7 @@
 ### GROWTH 
 
 ```
-  Given partial data with exponential growth, fits and ideal exponential growth trend, and predicts future values. For more information see: https:xkcd.com1102 
+  Given partial data with exponential growth, fits and ideal exponential growth trend, and predicts future values. For more information see: https://xkcd.com/1102 
 @param knownY - The range or array containing the dependent, y, values that are known, and will be used to fit an ideal exponential growth curve. 
 @param knownX - OPTIONAL - The range or values of the independent variables that correspond to knownY. 
 @param newX - OPTIONAL - The range, values, or data-points to return the y-values on the ideal curve fit. 

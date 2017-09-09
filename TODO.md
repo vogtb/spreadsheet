@@ -13,9 +13,6 @@ For example 64 tbs to a qt.
 For example `=#N/A` should force an error to be thrown inside the cell.
 
 
-### Fix documentation regular expression, it is butchering URLs.
-
-
 ### Parser/Sheet should be able to be initialized with js range notation (`[]`) or regular range notation (`{}`)
 
 

@@ -1028,6 +1028,10 @@ test("Sheet ERROR.TYPE", function(){
   assertFormulaEqualsError('=ERROR.TYPE(10)', NA_ERROR);
 });
 
+test("Sheet ADDRESS", function(){
+  assertFormulaEquals('=ADDRESS(2170, 2, 4, true, "SheetOne")', "SheetOne!B2170");
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
 });

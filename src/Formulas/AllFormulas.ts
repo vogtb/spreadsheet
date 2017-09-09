@@ -101,7 +101,8 @@ import {
   ISFORMULA
 } from "./Info";
 import {
-  CHOOSE
+  CHOOSE,
+  ADDRESS
 } from "./Lookup";
 import {
   TO_DATE,
@@ -505,5 +506,6 @@ export {
   TO_DOLLARS,
   TO_PERCENT,
   TO_TEXT,
-  ISFORMULA
+  ISFORMULA,
+  ADDRESS
 }

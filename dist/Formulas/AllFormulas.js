@@ -103,6 +103,7 @@ var Lookup_1 = require("./Lookup");
 exports.CHOOSE = Lookup_1.CHOOSE;
 exports.ADDRESS = Lookup_1.ADDRESS;
 exports.COLUMNS = Lookup_1.COLUMNS;
+exports.ROWS = Lookup_1.ROWS;
 var Convert_1 = require("./Convert");
 exports.TO_DATE = Convert_1.TO_DATE;
 exports.TO_DOLLARS = Convert_1.TO_DOLLARS;

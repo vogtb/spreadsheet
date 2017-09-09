@@ -157,3 +157,24 @@ var COLUMNS = function (value) {
     }
 };
 exports.COLUMNS = COLUMNS;
+var ROWS = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "ROWS");
+    if (value instanceof Array) {
+        if (value.length === 0) {
+            throw new Errors_1.RefError("Reference does not exist.");
+        }
+        if (value[0] instanceof Cell_1.Cell) {
+            var start = value[0];
+            var end = value[value.length - 1];
+            return end.getRow() - start.getRow() + 1; // counting columns inclusively
+        }
+        else {
+            // if the array passed in is just values, array is considered to be a single row
+            return 1;
+        }
+    }
+    else {
+        return 1;
+    }
+};
+exports.ROWS = ROWS;

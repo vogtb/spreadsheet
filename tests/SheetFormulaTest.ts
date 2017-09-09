@@ -1039,6 +1039,13 @@ test("Sheet COLUMNS", function(){
   assertFormulaEquals('=COLUMNS(B1:M44)', 12);
 });
 
+test("Sheet ROWS", function(){
+  assertFormulaEquals('=ROWS(1)', 1);
+  assertFormulaEquals('=ROWS([1, 2, 3, 4])', 1);
+  assertFormulaEquals('=ROWS(M1)', 1);
+  assertFormulaEquals('=ROWS(B1:M44)', 44);
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

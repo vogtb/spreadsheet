@@ -1,7 +1,8 @@
 import {
   CHOOSE,
   ADDRESS,
-  COLUMNS
+  COLUMNS,
+  ROWS
 } from "../../src/Formulas/Lookup";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -119,5 +120,58 @@ test("COLUMNS", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     COLUMNS([]);
+  }, ERRORS.REF_ERROR);
+});
+
+
+test("ROWS", function(){
+  assertEquals(ROWS(1), 1);
+  assertEquals(ROWS("str"), 1);
+  assertEquals(ROWS(false), 1);
+  assertEquals(ROWS(Cell.BuildFrom("A1", "str")), 1);
+  assertEquals(ROWS([1]), 1);
+  assertEquals(ROWS([1, 2, 3, 4]), 1);
+  //A1:C5
+  assertEquals(ROWS([
+    Cell.BuildFrom("A1", "str"),
+    Cell.BuildFrom("A2", "str"),
+    Cell.BuildFrom("A3", "str"),
+    Cell.BuildFrom("A4", "str"),
+    Cell.BuildFrom("A5", "str"),
+    Cell.BuildFrom("B1", "str"),
+    Cell.BuildFrom("B2", "str"),
+    Cell.BuildFrom("B3", "str"),
+    Cell.BuildFrom("B4", "str"),
+    Cell.BuildFrom("B5", "str"),
+    Cell.BuildFrom("C1", "str"),
+    Cell.BuildFrom("C2", "str"),
+    Cell.BuildFrom("C3", "str"),
+    Cell.BuildFrom("C4", "str"),
+    Cell.BuildFrom("C5", "str"),
+  ]), 5);
+  //A5:C5
+  assertEquals(ROWS([
+    Cell.BuildFrom("A5", "str"),
+    Cell.BuildFrom("B5", "str"),
+    Cell.BuildFrom("C5", "str"),
+  ]), 1);
+  //A1:B2
+  assertEquals(ROWS([
+    Cell.BuildFrom("A1", "str"),
+    Cell.BuildFrom("A2", "str"),
+    Cell.BuildFrom("B1", "str"),
+    Cell.BuildFrom("B2", "str")
+  ]), 2);
+  //A1:A3
+  assertEquals(ROWS([
+    Cell.BuildFrom("A1", "str"),
+    Cell.BuildFrom("A2", "str"),
+    Cell.BuildFrom("A3", "str")
+  ]), 3);
+  catchAndAssertEquals(function() {
+    ROWS.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    ROWS([]);
   }, ERRORS.REF_ERROR);
 });

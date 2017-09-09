@@ -103,7 +103,8 @@ import {
 import {
   CHOOSE,
   ADDRESS,
-  COLUMNS
+  COLUMNS,
+  ROWS
 } from "./Lookup";
 import {
   TO_DATE,
@@ -509,5 +510,6 @@ export {
   TO_TEXT,
   ISFORMULA,
   ADDRESS,
-  COLUMNS
+  COLUMNS,
+  ROWS
 }

@@ -1,8 +1,4 @@
 import {
-  ObjectFromPairs
-} from "../Utilities/ObjectFromPairs";
-import {
-  PARSE_ERROR,
   ParseError
 } from "../Errors";
 import {
@@ -93,56 +89,54 @@ const RULES = [
  * Actions to take when processing tokens one by one. We're always either taking the next token, reducing our current
  * tokens, or accepting and returning.
  */
-const enum LexActions {
-  SHIFT = 1,
-  REDUCE,
-  ACCEPT
-}
+const SHIFT = 1;
+const REDUCE = 2;
+const ACCEPT = 3;
 
 const enum ReduceActions {
   NO_ACTION = 0,
-  RETURN_LAST,
-  CALL_VARIABLE,
-  TIME_CALL_TRUE,
-  TIME_CALL,
-  AS_NUMBER,
-  AS_STRING,
-  AMPERSAND,
-  EQUALS,
-  PLUS,
-  LAST_NUMBER,
-  LTE,
-  GTE,
-  NOT_EQ,
-  NOT,
-  GT,
-  LT,
-  MINUS,
-  MULTIPLY,
-  DIVIDE,
-  TO_POWER,
-  INVERT_NUM,
-  TO_NUMBER_NAN_AS_ZERO,
-  CALL_FUNCTION_LAST_BLANK,
-  CALL_FUNCTION_LAST_TWO_IN_STACK,
-  I25,
-  I26,
-  I27,
-  FIXED_CELL_VAL,
-  FIXED_CELL_RANGE_VAL,
-  CELL_VALUE,
-  CELL_RANGE_VALUE,
-  ENSURE_IS_ARRAY,
-  ENSURE_YYTEXT_ARRAY,
-  REDUCE_INT,
-  REDUCE_PERCENT,
-  WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY,
-  ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH,
-  REFLEXIVE_REDUCE,
-  REDUCE_FLOAT,
-  REDUCE_PREV_AS_PERCENT,
-  REDUCE_LAST_THREE_A,
-  REDUCE_LAST_THREE_B
+  RETURN_LAST = 1,
+  CALL_VARIABLE = 2,
+  TIME_CALL_TRUE = 3,
+  TIME_CALL = 4,
+  AS_NUMBER = 5,
+  AS_STRING = 6,
+  AMPERSAND = 7,
+  EQUALS = 8,
+  PLUS = 9,
+  LAST_NUMBER = 10,
+  LTE = 11,
+  GTE = 12,
+  NOT_EQ = 13,
+  NOT = 14,
+  GT = 15,
+  LT = 16,
+  MINUS = 17,
+  MULTIPLY = 18,
+  DIVIDE = 19,
+  TO_POWER = 20,
+  INVERT_NUM = 21,
+  TO_NUMBER_NAN_AS_ZERO = 22,
+  CALL_FUNCTION_LAST_BLANK = 23,
+  CALL_FUNCTION_LAST_TWO_IN_STACK = 24,
+  I25 = 25,
+  I26 = 26,
+  I27 = 27,
+  FIXED_CELL_VAL = 28,
+  FIXED_CELL_RANGE_VAL = 29,
+  CELL_VALUE = 30,
+  CELL_RANGE_VALUE = 31,
+  ENSURE_IS_ARRAY = 32,
+  ENSURE_YYTEXT_ARRAY = 33,
+  REDUCE_INT = 34,
+  REDUCE_PERCENT = 35,
+  WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY = 36,
+  ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH = 37,
+  REFLEXIVE_REDUCE = 38,
+  REDUCE_FLOAT = 39,
+  REDUCE_PREV_AS_PERCENT = 40,
+  REDUCE_LAST_THREE_A = 41,
+  REDUCE_LAST_THREE_B = 42
 }
 
 /**
@@ -224,754 +218,1183 @@ productions[ReduceActions.REDUCE_LAST_THREE_A] = new ReductionPair(2, 3);
 productions[ReduceActions.REDUCE_LAST_THREE_B] = new ReductionPair(2, 4);
 const PRODUCTIONS = productions;
 
-/**
- * Extend object obj by keys k, and values v for each k.
- * @param k - keys to extend object by.
- * @param v - value set for each key k.
- * @param obj - object to extend.
- * @param l
- * @returns {Object}
- */
-const extendRules = function (k, v, obj?, l?) {
-  for (obj = obj || {}, l = k.length; l--; obj[k[l]] = v) {}
-  return obj;
+const SYMBOL_NAME_TO_INDEX = {
+  "error": 2,
+  "expressions": 3,
+  "expression": 4,
+  "EOF": 5,
+  "variableSequence": 6,
+  "TIME_AMPM": 7,
+  "TIME_24": 8,
+  "number": 9,
+  "STRING": 10,
+  "&": 11,
+  "=": 12,
+  "+": 13,
+  "(": 14,
+  ")": 15,
+  "<": 16,
+  ">": 17,
+  "NOT": 18,
+  "-": 19,
+  "*": 20,
+  "/": 21,
+  "^": 22,
+  "FUNCTION": 23,
+  "expseq": 24,
+  "cell": 25,
+  "FIXEDCELL": 26,
+  ":": 27,
+  "CELL": 28,
+  "ARRAY": 29,
+  ";": 30,
+  ",": 31,
+  "VARIABLE": 32,
+  "DECIMAL": 33,
+  "NUMBER": 34,
+  "%": 35,
+  "#": 36,
+  "!": 37,
+  "$accept": 0,
+  "$end": 1
 };
-const $V0 = [LexActions.SHIFT, 4];
-const $V1 = [LexActions.SHIFT, 5];
-const $V2 = [LexActions.SHIFT, 7];
-const $V3 = [LexActions.SHIFT, 10];
-const $V4 = [LexActions.SHIFT, 8];
-const $V5 = [LexActions.SHIFT, 9];
-const $V6 = [LexActions.SHIFT, 11];
-const $V7 = [LexActions.SHIFT, 16];
-const $V8 = [LexActions.SHIFT, 17];
-const $V9 = [LexActions.SHIFT, 14];
-const $Va = [LexActions.SHIFT, 15];
-const $Vb = [LexActions.SHIFT, 18];
-const $Vc = [LexActions.SHIFT, 20];
-const $Vd = [LexActions.SHIFT, 21];
-const $Ve = [LexActions.SHIFT, 22];
-const $Vf = [LexActions.SHIFT, 23];
-const $Vg = [LexActions.SHIFT, 24];
-const $Vh = [LexActions.SHIFT, 25];
-const $Vi = [LexActions.SHIFT, 26];
-const $Vj = [LexActions.SHIFT, 27];
-const $Vk = [LexActions.SHIFT, 28];
-const $Vl = [LexActions.SHIFT, 29];
-const $Vm = [
-  5,
-  11,
-  12,
-  13,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  30,
-  31
-];
-const $Vn = [
-  5,
-  11,
-  12,
-  13,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  30,
-  31,
-  33
-];
-const $Vo = [LexActions.SHIFT, 38];
-const $Vp = [
-  5,
-  11,
-  12,
-  13,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  30,
-  31,
-  35,
-  38
-];
-const $Vq = [
-  5,
-  12,
-  13,
-  15,
-  16,
-  17,
-  18,
-  19,
-  30,
-  31
-];
-const $Vr = [
-  5,
-  12,
-  15,
-  16,
-  17,
-  18,
-  30,
-  31
-];
-const $Vs = [
-  5,
-  12,
-  13,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  30,
-  31
-];
-const $Vt = [
-  15,
-  30,
-  31
-];
-const $Vu = [
-  5,
-  11,
-  12,
-  13,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  30,
-  31,
-  32,
-  36
-];
+const SYMBOL_INDEX_TO_NAME = {
+  5: "EOF",
+  7: "TIME_AMPM",
+  8: "TIME_24",
+  10: "STRING",
+  11: "&",
+  12: "=",
+  13: "+",
+  14: "(",
+  15: ")",
+  16: "<",
+  17: ">",
+  18: "NOT",
+  19: "-",
+  20: "*",
+  21: "/",
+  22: "^",
+  23: "FUNCTION",
+  26: "FIXEDCELL",
+  27: ":",
+  28: "CELL",
+  29: "ARRAY",
+  30: ";",
+  31: ",",
+  32: "VARIABLE",
+  33: "DECIMAL",
+  34: "NUMBER",
+  35: "%",
+  36: "#",
+  37: "!"
+};
 
 
 /**
- * Array of to map rules to to LexActions and other rules.
+ * Array of to map rules to to LexActions and other rules. A single index in the object (e.g. `{2: 13}`) indicates the
+ * rule object to follow for the next token, while an array (e.g. `{23: [1, 11]}`) indicates the action to be taken,
+ * and the rule object to follow after the action.
  */
 let table = [];
-table[0] = ObjectFromPairs.of([
-  2, 13,
-  3, 1,
-  4, 2,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[1] = ObjectFromPairs.of([
-  1, [3]
-]);
-table[2] = ObjectFromPairs.of([
-  5, [LexActions.SHIFT, 19],
-  11, $Vc,
-  12, $Vd,
-  13, $Ve,
-  16, $Vf,
-  17, $Vg,
-  18, $Vh,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]);
-table[3] = extendRules($Vm, [LexActions.REDUCE, 2], ObjectFromPairs.of([33, [LexActions.SHIFT, 30]]));
-table[4] = extendRules($Vm, [LexActions.REDUCE, 3]);
-table[5] = extendRules($Vm, [LexActions.REDUCE, 4]);
-table[6] = extendRules($Vm, [LexActions.REDUCE, 5], ObjectFromPairs.of([35, [LexActions.SHIFT, 31]]));
-table[7] = extendRules($Vm, [LexActions.REDUCE, 6]);
-table[8] = ObjectFromPairs.of([
-  2, 13,
-  4, 32,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[9] = ObjectFromPairs.of([
-  2, 13,
-  4, 33,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[10] = ObjectFromPairs.of([
-  2, 13,
-  4, 34,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[11] =  ObjectFromPairs.of([
-  14, [LexActions.SHIFT, 35]
-]);
-table[12] = extendRules($Vm, [LexActions.REDUCE, 25]);
-table[13] = extendRules($Vm, [LexActions.REDUCE, 26], ObjectFromPairs.of([LexActions.REDUCE, 36, 32, [LexActions.SHIFT, 37], 36, $Vb]));
-table[14] = extendRules($Vn, [LexActions.REDUCE, 36], ObjectFromPairs.of([36, $Vo]));
-table[15] = extendRules($Vp, [LexActions.REDUCE, 38], ObjectFromPairs.of([33, [LexActions.SHIFT, 39]]));
-table[16] = extendRules($Vm, [LexActions.REDUCE, 28], ObjectFromPairs.of([27, [LexActions.SHIFT, 40]]));
-table[17] = extendRules($Vm, [LexActions.REDUCE, 30], ObjectFromPairs.of([27, [LexActions.SHIFT, 41]]));
-table[18] = ObjectFromPairs.of([32, [LexActions.SHIFT, 42]]);
-table[19] = ObjectFromPairs.of([1, [LexActions.ACCEPT, 1]]);
-table[20] = ObjectFromPairs.of([
-  2, 13,
-  4, 43,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[21] = ObjectFromPairs.of([
-  2, 13,
-  4, 44,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[22] = ObjectFromPairs.of([
-  2, 13,
-  4, 45,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[23] = ObjectFromPairs.of([
-  2, 13,
-  4, 48,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  12, [1, 46],
-  13, $V3,
-  14, $V4,
-  17, [1, 47],
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[24] = ObjectFromPairs.of([
-  2, 13,
-  4, 50,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  12, [1, 49],
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[25] = ObjectFromPairs.of([
-  2, 13,
-  4, 51,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[26] = ObjectFromPairs.of([
-  2, 13,
-  4, 52,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[27] = ObjectFromPairs.of([
-  2, 13,
-  4, 53,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[28] = ObjectFromPairs.of([
-  2, 13,
-  4, 54,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[29] = ObjectFromPairs.of([
-  2, 13,
-  4, 55,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[30] = ObjectFromPairs.of([ [LexActions.SHIFT, 56]]);
-table[31] = extendRules($Vp, [LexActions.REDUCE, 40]);
-table[32] = ObjectFromPairs.of([
-  11, $Vc,
-  12, $Vd,
-  13, $Ve,
-  15, [LexActions.SHIFT, 57],
-  16, $Vf,
-  17, $Vg,
-  18, $Vh,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]);
-table[33] = extendRules($Vq, [LexActions.REDUCE, 21], ObjectFromPairs.of([
-  11, $Vc,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[34] = extendRules($Vq, [LexActions.REDUCE, 22], ObjectFromPairs.of([
-  11, $Vc,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl])
-);
-table[35] = ObjectFromPairs.of([
-  2, 13,
-  4, 60,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  15, [LexActions.SHIFT, 58],
-  19, $V5,
-  23, $V6,
-  24, 59,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  29, [LexActions.SHIFT, 61],
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[36] = extendRules($Vm, [LexActions.REDUCE, 27]);
-table[37] = ObjectFromPairs.of([36, $Vo]);
-table[38] = ObjectFromPairs.of([32, [LexActions.SHIFT, 62]]);
-table[39] = ObjectFromPairs.of([34, [LexActions.SHIFT, 63]]);
-table[40] = ObjectFromPairs.of([26, [LexActions.SHIFT, 64]]);
-table[41] = ObjectFromPairs.of([28, [LexActions.SHIFT, 65]]);
-table[42] = ObjectFromPairs.of([37, [LexActions.SHIFT, 66]]);
-table[43] = extendRules($Vm, [LexActions.REDUCE, 7]);
-table[44] = extendRules([5, 12, 15, 30, 31], [LexActions.REDUCE, 8], ObjectFromPairs.of([
-  11, $Vc,
-  13, $Ve,
-  16, $Vf,
-  17, $Vg,
-  18, $Vh,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[45] = extendRules($Vq, [LexActions.REDUCE, 9], ObjectFromPairs.of([
-  11, $Vc,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[46] = ObjectFromPairs.of([
-  2, 13,
-  4, 67,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[47] = ObjectFromPairs.of([
-  2, 13,
-  4, 68,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[48] = extendRules($Vr, [LexActions.REDUCE, 16], ObjectFromPairs.of([
-  11, $Vc,
-  13, $Ve,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[49] = ObjectFromPairs.of([
-  2, 13,
-  4, 69,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb
-]);
-table[50] = extendRules($Vr, [LexActions.REDUCE, 15], ObjectFromPairs.of([
-  11, $Vc,
-  13, $Ve,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[51] = extendRules([5, 12, 15, 18, 30, 31], [LexActions.REDUCE, 14], ObjectFromPairs.of([
-  11, $Vc,
-  13, $Ve,
-  16, $Vf,
-  17, $Vg,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[52] = extendRules($Vq, [LexActions.REDUCE, 17], ObjectFromPairs.of([
-  11, $Vc,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[53] = extendRules($Vs, [LexActions.REDUCE, 18], ObjectFromPairs.of([
-  11, $Vc,
-  22, $Vl
-]));
-table[54] = extendRules($Vs, [LexActions.REDUCE, 19], ObjectFromPairs.of([
-  11, $Vc,
-  22, $Vl
-]));
-table[55] = extendRules([5, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31], [LexActions.REDUCE, 20], ObjectFromPairs.of([11, $Vc]));
-table[56] = extendRules($Vn, [LexActions.REDUCE, 37]);
-table[57] = extendRules($Vm, [LexActions.REDUCE, 10]);
-table[58] = extendRules($Vm, [LexActions.REDUCE, 23]);
-table[59] = ObjectFromPairs.of([
-  15, [LexActions.SHIFT, 70],
-  30, [LexActions.SHIFT, 71],
-  31, [LexActions.SHIFT, 72]
-]);
-table[60] = extendRules($Vt, [LexActions.REDUCE, 32], ObjectFromPairs.of([
-  11, $Vc,
-  12, $Vd,
-  13, $Ve,
-  16, $Vf,
-  17, $Vg,
-  18, $Vh,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[61] = extendRules($Vt, [LexActions.REDUCE, 33]);
-table[62] = ObjectFromPairs.of([
-  37, [LexActions.SHIFT, 73]
-]);
-table[63] = extendRules($Vp, [LexActions.REDUCE, 39]);
-table[64] = extendRules($Vm, [LexActions.REDUCE, 29]);
-table[65] = extendRules($Vm, [LexActions.REDUCE, 31]);
-table[66] = extendRules($Vu, [LexActions.REDUCE, 41]);
-table[67] = extendRules($Vr, [LexActions.REDUCE, 11], ObjectFromPairs.of([
-  11, $Vc,
-  13, $Ve,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[68] = extendRules($Vr, [LexActions.REDUCE, 13], ObjectFromPairs.of([
-  11, $Vc,
-  13, $Ve,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[69] = extendRules($Vr, [LexActions.REDUCE, 12], ObjectFromPairs.of([
-  11, $Vc,
-  13, $Ve,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[70] = extendRules($Vm, [LexActions.REDUCE, 24]);
-table[71] = ObjectFromPairs.of([
-  2, 13,
-  4, 74,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb,
-  12, $Vd
-]);
-table[72] = ObjectFromPairs.of([
-  2, 13,
-  4, 75,
-  6, 3,
-  7, $V0,
-  8, $V1,
-  9, 6,
-  10, $V2,
-  13, $V3,
-  14, $V4,
-  19, $V5,
-  23, $V6,
-  25, 12,
-  26, $V7,
-  28, $V8,
-  32, $V9,
-  34, $Va,
-  36, $Vb,
-  12, $Vd
-  // // NOTE: Ben this is where you are. When the parser captures an entire array, it should be able to reduce the
-  // // array, and continue on parsing normally. So we should have [LexActions.REDUCE, X]
-  // 29, [LexActions.REDUCE, 1]
-]);
-table[73] = extendRules($Vu, [LexActions.REDUCE, 42]);
-table[74] = extendRules($Vt, [LexActions.REDUCE, 34], ObjectFromPairs.of([
-  11, $Vc,
-  12, $Vd,
-  13, $Ve,
-  16, $Vf,
-  17, $Vg,
-  18, $Vh,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
-table[75] = extendRules($Vt, [LexActions.REDUCE, 35], ObjectFromPairs.of([
-  11, $Vc,
-  12, $Vd,
-  13, $Ve,
-  16, $Vf,
-  17, $Vg,
-  18, $Vh,
-  19, $Vi,
-  20, $Vj,
-  21, $Vk,
-  22, $Vl
-]));
+table[0] = {
+  2: 13,
+  3: 1,
+  4: 2,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[1] = {
+  1: [3]
+};
+table[2] = {
+  5: [SHIFT, 19],
+  11: [SHIFT, 20],
+  12: [SHIFT, 21],
+  13: [SHIFT, 22],
+  16: [SHIFT, 23],
+  17: [SHIFT, 24],
+  18: [SHIFT, 25],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29]
+};
+table[3] = {
+  5: [REDUCE, 2],
+  11: [REDUCE, 2],
+  12: [REDUCE, 2],
+  13: [REDUCE, 2],
+  15: [REDUCE, 2],
+  16: [REDUCE, 2],
+  17: [REDUCE, 2],
+  18: [REDUCE, 2],
+  19: [REDUCE, 2],
+  20: [REDUCE, 2],
+  21: [REDUCE, 2],
+  22: [REDUCE, 2],
+  30: [REDUCE, 2],
+  31: [REDUCE, 2],
+  33: [SHIFT, 30]
+};
+table[4] = {
+  5: [REDUCE, 3],
+  11: [REDUCE, 3],
+  12: [REDUCE, 3],
+  13: [REDUCE, 3],
+  15: [REDUCE, 3],
+  16: [REDUCE, 3],
+  17: [REDUCE, 3],
+  18: [REDUCE, 3],
+  19: [REDUCE, 3],
+  20: [REDUCE, 3],
+  21: [REDUCE, 3],
+  22: [REDUCE, 3],
+  30: [REDUCE, 3],
+  31: [REDUCE, 3]
+};
+table[5] = {
+  5: [REDUCE, 4],
+  11: [REDUCE, 4],
+  12: [REDUCE, 4],
+  13: [REDUCE, 4],
+  15: [REDUCE, 4],
+  16: [REDUCE, 4],
+  17: [REDUCE, 4],
+  18: [REDUCE, 4],
+  19: [REDUCE, 4],
+  20: [REDUCE, 4],
+  21: [REDUCE, 4],
+  22: [REDUCE, 4],
+  30: [REDUCE, 4],
+  31: [REDUCE, 4]
+};
+table[6] = {
+  5: [REDUCE, 5],
+  11: [REDUCE, 5],
+  12: [REDUCE, 5],
+  13: [REDUCE, 5],
+  15: [REDUCE, 5],
+  16: [REDUCE, 5],
+  17: [REDUCE, 5],
+  18: [REDUCE, 5],
+  19: [REDUCE, 5],
+  20: [REDUCE, 5],
+  21: [REDUCE, 5],
+  22: [REDUCE, 5],
+  30: [REDUCE, 5],
+  31: [REDUCE, 5],
+  35: [SHIFT, 31]
+};
+table[7] = {
+  5: [REDUCE, 6],
+  11: [REDUCE, 6],
+  12: [REDUCE, 6],
+  13: [REDUCE, 6],
+  15: [REDUCE, 6],
+  16: [REDUCE, 6],
+  17: [REDUCE, 6],
+  18: [REDUCE, 6],
+  19: [REDUCE, 6],
+  20: [REDUCE, 6],
+  21: [REDUCE, 6],
+  22: [REDUCE, 6],
+  30: [REDUCE, 6],
+  31: [REDUCE, 6]
+};
+table[8] = {
+  2: 13,
+  4: 32,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[9] = {
+  2: 13,
+  4: 33,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[10] = {
+  2: 13,
+  4: 34,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[11] = {
+  14: [SHIFT, 35]
+};
+table[12] = {
+  5: [REDUCE, 25],
+  11: [REDUCE, 25],
+  12: [REDUCE, 25],
+  13: [REDUCE, 25],
+  15: [REDUCE, 25],
+  16: [REDUCE, 25],
+  17: [REDUCE, 25],
+  18: [REDUCE, 25],
+  19: [REDUCE, 25],
+  20: [REDUCE, 25],
+  21: [REDUCE, 25],
+  22: [REDUCE, 25],
+  30: [REDUCE, 25],
+  31: [REDUCE, 25]
+};
+table[13] = {
+  2: 36,
+  5: [REDUCE, 26],
+  11: [REDUCE, 26],
+  12: [REDUCE, 26],
+  13: [REDUCE, 26],
+  15: [REDUCE, 26],
+  16: [REDUCE, 26],
+  17: [REDUCE, 26],
+  18: [REDUCE, 26],
+  19: [REDUCE, 26],
+  20: [REDUCE, 26],
+  21: [REDUCE, 26],
+  22: [REDUCE, 26],
+  30: [REDUCE, 26],
+  31: [REDUCE, 26],
+  32: [SHIFT, 37],
+  36: [SHIFT, 18]
+};
+table[14] = {
+  5: [REDUCE, 36],
+  11: [REDUCE, 36],
+  12: [REDUCE, 36],
+  13: [REDUCE, 36],
+  15: [REDUCE, 36],
+  16: [REDUCE, 36],
+  17: [REDUCE, 36],
+  18: [REDUCE, 36],
+  19: [REDUCE, 36],
+  20: [REDUCE, 36],
+  21: [REDUCE, 36],
+  22: [REDUCE, 36],
+  30: [REDUCE, 36],
+  31: [REDUCE, 36],
+  33: [REDUCE, 36],
+  36: [SHIFT, 38]
+};
+table[15] = {
+  5: [REDUCE, 38],
+  11: [REDUCE, 38],
+  12: [REDUCE, 38],
+  13: [REDUCE, 38],
+  15: [REDUCE, 38],
+  16: [REDUCE, 38],
+  17: [REDUCE, 38],
+  18: [REDUCE, 38],
+  19: [REDUCE, 38],
+  20: [REDUCE, 38],
+  21: [REDUCE, 38],
+  22: [REDUCE, 38],
+  30: [REDUCE, 38],
+  31: [REDUCE, 38],
+  33: [SHIFT, 39],
+  35: [REDUCE, 38],
+  38: [REDUCE, 38]
+};
+table[16] = {
+  5: [REDUCE, 28],
+  11: [REDUCE, 28],
+  12: [REDUCE, 28],
+  13: [REDUCE, 28],
+  15: [REDUCE, 28],
+  16: [REDUCE, 28],
+  17: [REDUCE, 28],
+  18: [REDUCE, 28],
+  19: [REDUCE, 28],
+  20: [REDUCE, 28],
+  21: [REDUCE, 28],
+  22: [REDUCE, 28],
+  27: [SHIFT, 40],
+  30: [REDUCE, 28],
+  31: [REDUCE, 28]
+};
+table[17] = {
+  5: [REDUCE, 30],
+  11: [REDUCE, 30],
+  12: [REDUCE, 30],
+  13: [REDUCE, 30],
+  15: [REDUCE, 30],
+  16: [REDUCE, 30],
+  17: [REDUCE, 30],
+  18: [REDUCE, 30],
+  19: [REDUCE, 30],
+  20: [REDUCE, 30],
+  21: [REDUCE, 30],
+  22: [REDUCE, 30],
+  27: [SHIFT, 41],
+  30: [REDUCE, 30],
+  31: [REDUCE, 30]
+};
+table[18] = {
+  32: [SHIFT, 42]
+};
+table[19] = {
+  1: [ACCEPT, 1]
+};
+table[20] = {
+  2: 13,
+  4: 43,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[21] = {
+  2: 13,
+  4: 44,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[22] = {
+  2: 13,
+  4: 45,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[23] = {
+  2: 13,
+  4: 48,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  12: [SHIFT, 46],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  17: [SHIFT, 47],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[24] = {
+  2: 13,
+  4: 50,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  12: [SHIFT, 49],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[25] = {
+  2: 13,
+  4: 51,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[26] = {
+  2: 13,
+  4: 52,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[27] = {
+  2: 13,
+  4: 53,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[28] = {
+  2: 13,
+  4: 54,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[29] = {
+  2: 13,
+  4: 55,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[30] = {
+  32: [SHIFT, 56]
+};
+table[31] = {
+  5: [REDUCE, 40],
+  11: [REDUCE, 40],
+  12: [REDUCE, 40],
+  13: [REDUCE, 40],
+  15: [REDUCE, 40],
+  16: [REDUCE, 40],
+  17: [REDUCE, 40],
+  18: [REDUCE, 40],
+  19: [REDUCE, 40],
+  20: [REDUCE, 40],
+  21: [REDUCE, 40],
+  22: [REDUCE, 40],
+  30: [REDUCE, 40],
+  31: [REDUCE, 40],
+  35: [REDUCE, 40],
+  38: [REDUCE, 40]
+};
+table[32] = {
+  11: [SHIFT, 20],
+  12: [SHIFT, 21],
+  13: [SHIFT, 22],
+  15: [SHIFT, 57],
+  16: [SHIFT, 23],
+  17: [SHIFT, 24],
+  18: [SHIFT, 25],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29]
+};
+table[33] = {
+  5: [REDUCE, 21],
+  11: [SHIFT, 20],
+  12: [REDUCE, 21],
+  13: [REDUCE, 21],
+  15: [REDUCE, 21],
+  16: [REDUCE, 21],
+  17: [REDUCE, 21],
+  18: [REDUCE, 21],
+  19: [REDUCE, 21],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 21],
+  31: [REDUCE, 21]
+};
+table[34] = {
+  5: [REDUCE, 22],
+  11: [SHIFT, 20],
+  12: [REDUCE, 22],
+  13: [REDUCE, 22],
+  15: [REDUCE, 22],
+  16: [REDUCE, 22],
+  17: [REDUCE, 22],
+  18: [REDUCE, 22],
+  19: [REDUCE, 22],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 22],
+  31: [REDUCE, 22]
+};
+table[35] = {
+  2: 13,
+  4: 60,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  15: [SHIFT, 58],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  24: 59,
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  29: [SHIFT, 61],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[36] = {
+  5: [REDUCE, 27],
+  11: [REDUCE, 27],
+  12: [REDUCE, 27],
+  13: [REDUCE, 27],
+  15: [REDUCE, 27],
+  16: [REDUCE, 27],
+  17: [REDUCE, 27],
+  18: [REDUCE, 27],
+  19: [REDUCE, 27],
+  20: [REDUCE, 27],
+  21: [REDUCE, 27],
+  22: [REDUCE, 27],
+  30: [REDUCE, 27],
+  31: [REDUCE, 27]
+};
+table[37] = {36: [SHIFT, 38]};
+table[38] = {32: [SHIFT, 62]};
+table[39] = {34: [SHIFT, 63]};
+table[40] = {26: [SHIFT, 64]};
+table[41] = {28: [SHIFT, 65]};
+table[42] = {37: [SHIFT, 66]};
+table[43] = {
+  5: [REDUCE, 7],
+  11: [REDUCE, 7],
+  12: [REDUCE, 7],
+  13: [REDUCE, 7],
+  15: [REDUCE, 7],
+  16: [REDUCE, 7],
+  17: [REDUCE, 7],
+  18: [REDUCE, 7],
+  19: [REDUCE, 7],
+  20: [REDUCE, 7],
+  21: [REDUCE, 7],
+  22: [REDUCE, 7],
+  30: [REDUCE, 7],
+  31: [REDUCE, 7]
+};
+table[44] = {
+  5: [REDUCE, 8],
+  11: [SHIFT, 20],
+  12: [REDUCE, 8],
+  13: [SHIFT, 22],
+  15: [REDUCE, 8],
+  16: [SHIFT, 23],
+  17: [SHIFT, 24],
+  18: [SHIFT, 25],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 8],
+  31: [REDUCE, 8]
+};
+table[45] = {
+  5: [REDUCE, 9],
+  11: [SHIFT, 20],
+  12: [REDUCE, 9],
+  13: [REDUCE, 9],
+  15: [REDUCE, 9],
+  16: [REDUCE, 9],
+  17: [REDUCE, 9],
+  18: [REDUCE, 9],
+  19: [REDUCE, 9],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 9],
+  31: [REDUCE, 9]
+};
+table[46] = {
+  2: 13,
+  4: 67,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[47] = {
+  2: 13,
+  4: 68,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[48] = {
+  5: [REDUCE, 16],
+  11: [SHIFT, 20],
+  12: [REDUCE, 16],
+  13: [SHIFT, 22],
+  15: [REDUCE, 16],
+  16: [REDUCE, 16],
+  17: [REDUCE, 16],
+  18: [REDUCE, 16],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 16],
+  31: [REDUCE, 16]
+};
+table[49] = {
+  2: 13,
+  4: 69,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[50] = {
+  5: [REDUCE, 15],
+  11: [SHIFT, 20],
+  12: [REDUCE, 15],
+  13: [SHIFT, 22],
+  15: [REDUCE, 15],
+  16: [REDUCE, 15],
+  17: [REDUCE, 15],
+  18: [REDUCE, 15],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 15],
+  31: [REDUCE, 15]
+};
+table[51] = {
+  5: [REDUCE, 14],
+  11: [SHIFT, 20],
+  12: [REDUCE, 14],
+  13: [SHIFT, 22],
+  15: [REDUCE, 14],
+  16: [SHIFT, 23],
+  17: [SHIFT, 24],
+  18: [REDUCE, 14],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 14],
+  31: [REDUCE, 14]
+};
+table[52] = {
+  5: [REDUCE, 17],
+  11: [SHIFT, 20],
+  12: [REDUCE, 17],
+  13: [REDUCE, 17],
+  15: [REDUCE, 17],
+  16: [REDUCE, 17],
+  17: [REDUCE, 17],
+  18: [REDUCE, 17],
+  19: [REDUCE, 17],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 17],
+  31: [REDUCE, 17]
+};
+table[53] = {
+  5: [REDUCE, 18],
+  11: [SHIFT, 20],
+  12: [REDUCE, 18],
+  13: [REDUCE, 18],
+  15: [REDUCE, 18],
+  16: [REDUCE, 18],
+  17: [REDUCE, 18],
+  18: [REDUCE, 18],
+  19: [REDUCE, 18],
+  20: [REDUCE, 18],
+  21: [REDUCE, 18],
+  22: [SHIFT, 29],
+  30: [REDUCE, 18],
+  31: [REDUCE, 18]
+};
+table[54] = {
+  5: [REDUCE, 19],
+  11: [SHIFT, 20],
+  12: [REDUCE, 19],
+  13: [REDUCE, 19],
+  15: [REDUCE, 19],
+  16: [REDUCE, 19],
+  17: [REDUCE, 19],
+  18: [REDUCE, 19],
+  19: [REDUCE, 19],
+  20: [REDUCE, 19],
+  21: [REDUCE, 19],
+  22: [SHIFT, 29],
+  30: [REDUCE, 19],
+  31: [REDUCE, 19]
+};
+table[55] = {
+  5: [REDUCE, 20],
+  11: [SHIFT, 20],
+  12: [REDUCE, 20],
+  13: [REDUCE, 20],
+  15: [REDUCE, 20],
+  16: [REDUCE, 20],
+  17: [REDUCE, 20],
+  18: [REDUCE, 20],
+  19: [REDUCE, 20],
+  20: [REDUCE, 20],
+  21: [REDUCE, 20],
+  22: [REDUCE, 20],
+  30: [REDUCE, 20],
+  31: [REDUCE, 20]
+};
+table[56] = {
+  5: [REDUCE, 37],
+  11: [REDUCE, 37],
+  12: [REDUCE, 37],
+  13: [REDUCE, 37],
+  15: [REDUCE, 37],
+  16: [REDUCE, 37],
+  17: [REDUCE, 37],
+  18: [REDUCE, 37],
+  19: [REDUCE, 37],
+  20: [REDUCE, 37],
+  21: [REDUCE, 37],
+  22: [REDUCE, 37],
+  30: [REDUCE, 37],
+  31: [REDUCE, 37],
+  33: [REDUCE, 37]
+};
+table[57] = {
+  5: [REDUCE, 10],
+  11: [REDUCE, 10],
+  12: [REDUCE, 10],
+  13: [REDUCE, 10],
+  15: [REDUCE, 10],
+  16: [REDUCE, 10],
+  17: [REDUCE, 10],
+  18: [REDUCE, 10],
+  19: [REDUCE, 10],
+  20: [REDUCE, 10],
+  21: [REDUCE, 10],
+  22: [REDUCE, 10],
+  30: [REDUCE, 10],
+  31: [REDUCE, 10]
+};
+table[58] = {
+  5: [REDUCE, 23],
+  11: [REDUCE, 23],
+  12: [REDUCE, 23],
+  13: [REDUCE, 23],
+  15: [REDUCE, 23],
+  16: [REDUCE, 23],
+  17: [REDUCE, 23],
+  18: [REDUCE, 23],
+  19: [REDUCE, 23],
+  20: [REDUCE, 23],
+  21: [REDUCE, 23],
+  22: [REDUCE, 23],
+  30: [REDUCE, 23],
+  31: [REDUCE, 23]
+};
+table[59] = {15: [SHIFT, 70], 30: [SHIFT, 71], 31: [SHIFT, 72]};
+table[60] = {
+  11: [SHIFT, 20],
+  12: [SHIFT, 21],
+  13: [SHIFT, 22],
+  15: [REDUCE, 32],
+  16: [SHIFT, 23],
+  17: [SHIFT, 24],
+  18: [SHIFT, 25],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 32],
+  31: [REDUCE, 32]
+};
+table[61] = {15: [REDUCE, 33], 30: [REDUCE, 33], 31: [REDUCE, 33]};
+table[62] = {37: [SHIFT, 73]};
+table[63] = {
+  5: [REDUCE, 39],
+  11: [REDUCE, 39],
+  12: [REDUCE, 39],
+  13: [REDUCE, 39],
+  15: [REDUCE, 39],
+  16: [REDUCE, 39],
+  17: [REDUCE, 39],
+  18: [REDUCE, 39],
+  19: [REDUCE, 39],
+  20: [REDUCE, 39],
+  21: [REDUCE, 39],
+  22: [REDUCE, 39],
+  30: [REDUCE, 39],
+  31: [REDUCE, 39],
+  35: [REDUCE, 39],
+  38: [REDUCE, 39]
+};
+table[64] = {
+  5: [REDUCE, 29],
+  11: [REDUCE, 29],
+  12: [REDUCE, 29],
+  13: [REDUCE, 29],
+  15: [REDUCE, 29],
+  16: [REDUCE, 29],
+  17: [REDUCE, 29],
+  18: [REDUCE, 29],
+  19: [REDUCE, 29],
+  20: [REDUCE, 29],
+  21: [REDUCE, 29],
+  22: [REDUCE, 29],
+  30: [REDUCE, 29],
+  31: [REDUCE, 29]
+};
+table[65] = {
+  5: [REDUCE, 31],
+  11: [REDUCE, 31],
+  12: [REDUCE, 31],
+  13: [REDUCE, 31],
+  15: [REDUCE, 31],
+  16: [REDUCE, 31],
+  17: [REDUCE, 31],
+  18: [REDUCE, 31],
+  19: [REDUCE, 31],
+  20: [REDUCE, 31],
+  21: [REDUCE, 31],
+  22: [REDUCE, 31],
+  30: [REDUCE, 31],
+  31: [REDUCE, 31]
+};
+table[66] = {
+  5: [REDUCE, 41],
+  11: [REDUCE, 41],
+  12: [REDUCE, 41],
+  13: [REDUCE, 41],
+  15: [REDUCE, 41],
+  16: [REDUCE, 41],
+  17: [REDUCE, 41],
+  18: [REDUCE, 41],
+  19: [REDUCE, 41],
+  20: [REDUCE, 41],
+  21: [REDUCE, 41],
+  22: [REDUCE, 41],
+  30: [REDUCE, 41],
+  31: [REDUCE, 41],
+  32: [REDUCE, 41],
+  36: [REDUCE, 41]
+};
+table[67] = {
+  5: [REDUCE, 11],
+  11: [SHIFT, 20],
+  12: [REDUCE, 11],
+  13: [SHIFT, 22],
+  15: [REDUCE, 11],
+  16: [REDUCE, 11],
+  17: [REDUCE, 11],
+  18: [REDUCE, 11],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 11],
+  31: [REDUCE, 11]
+};
+table[68] = {
+  5: [REDUCE, 13],
+  11: [SHIFT, 20],
+  12: [REDUCE, 13],
+  13: [SHIFT, 22],
+  15: [REDUCE, 13],
+  16: [REDUCE, 13],
+  17: [REDUCE, 13],
+  18: [REDUCE, 13],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 13],
+  31: [REDUCE, 13]
+};
+table[69] = {
+  5: [REDUCE, 12],
+  11: [SHIFT, 20],
+  12: [REDUCE, 12],
+  13: [SHIFT, 22],
+  15: [REDUCE, 12],
+  16: [REDUCE, 12],
+  17: [REDUCE, 12],
+  18: [REDUCE, 12],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 12],
+  31: [REDUCE, 12]
+};
+table[70] = {
+  5: [REDUCE, 24],
+  11: [REDUCE, 24],
+  12: [REDUCE, 24],
+  13: [REDUCE, 24],
+  15: [REDUCE, 24],
+  16: [REDUCE, 24],
+  17: [REDUCE, 24],
+  18: [REDUCE, 24],
+  19: [REDUCE, 24],
+  20: [REDUCE, 24],
+  21: [REDUCE, 24],
+  22: [REDUCE, 24],
+  30: [REDUCE, 24],
+  31: [REDUCE, 24]
+};
+table[71] = {
+  2: 13,
+  4: 74,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  12: [SHIFT, 21],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[72] = {
+  2: 13,
+  4: 75,
+  6: 3,
+  7: [SHIFT, 4],
+  8: [SHIFT, 5],
+  9: 6,
+  10: [SHIFT, 7],
+  12: [SHIFT, 21],
+  13: [SHIFT, 10],
+  14: [SHIFT, 8],
+  19: [SHIFT, 9],
+  23: [SHIFT, 11],
+  25: 12,
+  26: [SHIFT, 16],
+  28: [SHIFT, 17],
+  32: [SHIFT, 14],
+  34: [SHIFT, 15],
+  36: [SHIFT, 18]
+};
+table[73] = {
+  5: [REDUCE, 42],
+  11: [REDUCE, 42],
+  12: [REDUCE, 42],
+  13: [REDUCE, 42],
+  15: [REDUCE, 42],
+  16: [REDUCE, 42],
+  17: [REDUCE, 42],
+  18: [REDUCE, 42],
+  19: [REDUCE, 42],
+  20: [REDUCE, 42],
+  21: [REDUCE, 42],
+  22: [REDUCE, 42],
+  30: [REDUCE, 42],
+  31: [REDUCE, 42],
+  32: [REDUCE, 42],
+  36: [REDUCE, 42]
+};
+table[74] = {
+  11: [SHIFT, 20],
+  12: [SHIFT, 21],
+  13: [SHIFT, 22],
+  15: [REDUCE, 34],
+  16: [SHIFT, 23],
+  17: [SHIFT, 24],
+  18: [SHIFT, 25],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 34],
+  31: [REDUCE, 34]
+};
+table[75] = {
+  11: [SHIFT, 20],
+  12: [SHIFT, 21],
+  13: [SHIFT, 22],
+  15: [REDUCE, 35],
+  16: [SHIFT, 23],
+  17: [SHIFT, 24],
+  18: [SHIFT, 25],
+  19: [SHIFT, 26],
+  20: [SHIFT, 27],
+  21: [SHIFT, 28],
+  22: [SHIFT, 29],
+  30: [REDUCE, 35],
+  31: [REDUCE, 35]
+};
 const ACTION_TABLE = table;
-
 
 
 let Parser = (function () {
@@ -980,77 +1403,6 @@ let Parser = (function () {
     Parser: undefined,
     trace: function trace() {},
     yy: {},
-    symbols: {
-      "error": 2,
-      "expressions": 3,
-      "expression": 4,
-      "EOF": 5,
-      "variableSequence": 6,
-      "TIME_AMPM": 7,
-      "TIME_24": 8,
-      "number": 9,
-      "STRING": 10,
-      "&": 11,
-      "=": 12,
-      "+": 13,
-      "(": 14,
-      ")": 15,
-      "<": 16,
-      ">": 17,
-      "NOT": 18,
-      "-": 19,
-      "*": 20,
-      "/": 21,
-      "^": 22,
-      "FUNCTION": 23,
-      "expseq": 24,
-      "cell": 25,
-      "FIXEDCELL": 26,
-      ":": 27,
-      "CELL": 28,
-      "ARRAY": 29,
-      ";": 30,
-      ",": 31,
-      "VARIABLE": 32,
-      "DECIMAL": 33,
-      "NUMBER": 34,
-      "%": 35,
-      "#": 36,
-      "!": 37,
-      "$accept": 0,
-      "$end": 1
-    },
-    terminals: {
-      5: "EOF",
-      7: "TIME_AMPM",
-      8: "TIME_24",
-      10: "STRING",
-      11: "&",
-      12: "=",
-      13: "+",
-      14: "(",
-      15: ")",
-      16: "<",
-      17: ">",
-      18: "NOT",
-      19: "-",
-      20: "*",
-      21: "/",
-      22: "^",
-      23: "FUNCTION",
-      26: "FIXEDCELL",
-      27: ":",
-      28: "CELL",
-      29: "ARRAY",
-      30: ";",
-      31: ",",
-      32: "VARIABLE",
-      33: "DECIMAL",
-      34: "NUMBER",
-      35: "%",
-      36: "#",
-      37: "!"
-    },
     /**
      * Maps a ProductionRule to the appropriate number of previous tokens to use in a reduction action.
      */
@@ -1295,7 +1647,7 @@ let Parser = (function () {
       }
     },
     table: ACTION_TABLE,
-    defaultActions: ObjectFromPairs.of([19, [LexActions.REDUCE, 1]]),
+    defaultActions: {19: [REDUCE, 1]},
     parseError: function parseError(str, hash) {
       if (hash.recoverable) {
         this.trace(str);
@@ -1363,7 +1715,7 @@ let Parser = (function () {
         let token = lexer.lex() || EOF;
         // if token isn't its numeric value, convert
         if (typeof token !== 'number') {
-          token = self.symbols[token] || token;
+          token = SYMBOL_NAME_TO_INDEX[token] || token;
         }
         return token;
       }
@@ -1431,21 +1783,21 @@ let Parser = (function () {
             let expectedIndexes = [];
             let tableState = table[state];
             for (p in table[state]) {
-              if (this.terminals[p] && p > TERROR) {
-                expected.push(this.terminals[p]);
+              if (SYMBOL_INDEX_TO_NAME[p] && p > TERROR) {
+                expected.push(SYMBOL_INDEX_TO_NAME[p]);
                 expectedIndexes.push(p);
               }
             }
             if (lexer.showPosition) {
-              errStr = 'Parse error on line ' + (yylineno + 1) + ":\n" + lexer.showPosition() + "\nExpecting " + expected.join(', ') + ", got '" + (this.terminals[symbol] || symbol) + "'";
+              errStr = 'Parse error on line ' + (yylineno + 1) + ":\n" + lexer.showPosition() + "\nExpecting " + expected.join(', ') + ", got '" + (SYMBOL_INDEX_TO_NAME[symbol] || symbol) + "'";
             } else {
               errStr = 'Parse error on line ' + (yylineno + 1) + ": Unexpected " +
                 (symbol == EOF ? "end of input" :
-                  ("'" + (this.terminals[symbol] || symbol) + "'"));
+                  ("'" + (SYMBOL_INDEX_TO_NAME[symbol] || symbol) + "'"));
             }
             this.parseError(errStr, {
               text: lexer.match,
-              token: this.terminals[symbol] || symbol,
+              token: SYMBOL_INDEX_TO_NAME[symbol] || symbol,
               line: lexer.yylineno,
               loc: yyloc,
               expected: expected,
@@ -1495,7 +1847,7 @@ let Parser = (function () {
         //   Reduce: enough tokens have been gathered to reduce input through evaluation.
         //   Accept: return.
         switch (action[0]) {
-          case LexActions.SHIFT: // Shift
+          case SHIFT: // Shift
             stack.push(symbol);
             semanticValueStack.push(lexer.yytext);
             locationStack.push(lexer.yylloc);
@@ -1521,7 +1873,7 @@ let Parser = (function () {
             }
             break;
 
-          case LexActions.REDUCE: // Reduce
+          case REDUCE: // Reduce
             let currentProduction : ReductionPair = this.productions[action[1]];
 
             let lengthToReduceStackBy = currentProduction.getLengthToReduceStackBy();
@@ -1560,7 +1912,7 @@ let Parser = (function () {
             stack.push(newState);
             break;
 
-          case LexActions.ACCEPT:
+          case ACCEPT:
             // Accept
             return true;
         }

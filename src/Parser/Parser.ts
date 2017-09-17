@@ -171,6 +171,8 @@ class ReductionPair {
  * Productions is used to look up both the number to use when reducing the stack (productions[x][1]) and the semantic
  * value that will replace the tokens in the stack (productions[x][0]).
  * @type {Array<ReductionPair>}
+ *
+ * Maps a ProductionRule to the appropriate number of previous tokens to use in a reduction action.
  */
 let productions : Array<ReductionPair> = [];
 productions[ReduceActions.NO_ACTION] = null;
@@ -219,6 +221,8 @@ productions[ReduceActions.REDUCE_LAST_THREE_B] = new ReductionPair(2, 4);
 const PRODUCTIONS = productions;
 
 const SYMBOL_NAME_TO_INDEX = {
+  "$accept": 0,
+  "$end": 1,
   "error": 2,
   "expressions": 3,
   "expression": 4,
@@ -254,9 +258,7 @@ const SYMBOL_NAME_TO_INDEX = {
   "NUMBER": 34,
   "%": 35,
   "#": 36,
-  "!": 37,
-  "$accept": 0,
-  "$end": 1
+  "!": 37
 };
 const SYMBOL_INDEX_TO_NAME = {
   5: "EOF",
@@ -1404,10 +1406,6 @@ let Parser = (function () {
     trace: function trace() {},
     yy: {},
     /**
-     * Maps a ProductionRule to the appropriate number of previous tokens to use in a reduction action.
-     */
-    productions: PRODUCTIONS,
-    /**
      * Perform a reduce action on the given virtual stack. Basically, fetching, deriving, or calculating a value.
      * @param rawValueOfReduceOriginToken - Some actions require the origin token to perform a reduce action. For
      * example, when reducing the cell reference A1 to it's actual value this value would be "A1".
@@ -1646,7 +1644,6 @@ let Parser = (function () {
         }
       }
     },
-    table: ACTION_TABLE,
     defaultActions: {19: [REDUCE, 1]},
     parseError: function parseError(str, hash) {
       if (hash.recoverable) {
@@ -1656,11 +1653,9 @@ let Parser = (function () {
       }
     },
     parse: function parse(input) {
-      let self = this,
-        stack = [0],
+      let stack = [0],
         semanticValueStack = [null],
         locationStack = [],
-        table = this.table,
         yytext = '',
         yylineno = 0,
         yyleng = 0,
@@ -1745,7 +1740,7 @@ let Parser = (function () {
             symbol = lex();
           }
           // read action for current state and first input
-          action = table[state] && table[state][symbol];
+          action = ACTION_TABLE[state] && ACTION_TABLE[state][symbol];
         }
 
         // handle parse error
@@ -1762,7 +1757,7 @@ let Parser = (function () {
             // try to recover from error
             for (; ;) {
               // check for error recovery rule in this state
-              if ((TERROR.toString()) in table[state]) {
+              if ((TERROR.toString()) in ACTION_TABLE[state]) {
                 return depth;
               }
               if (state === 0 || stack_probe < 2) {
@@ -1781,8 +1776,8 @@ let Parser = (function () {
             // Report error
             expected = [];
             let expectedIndexes = [];
-            let tableState = table[state];
-            for (p in table[state]) {
+            let tableState = ACTION_TABLE[state];
+            for (p in ACTION_TABLE[state]) {
               if (SYMBOL_INDEX_TO_NAME[p] && p > TERROR) {
                 expected.push(SYMBOL_INDEX_TO_NAME[p]);
                 expectedIndexes.push(p);
@@ -1833,7 +1828,7 @@ let Parser = (function () {
           preErrorSymbol = (symbol == TERROR ? null : symbol); // save the lookahead token
           symbol = TERROR;         // insert generic error symbol as new lookahead
           state = stack[stack.length - 1];
-          action = table[state] && table[state][TERROR];
+          action = ACTION_TABLE[state] && ACTION_TABLE[state][TERROR];
           recovering = 3; // allow 3 real symbols to be shifted before reporting a new error
         }
 
@@ -1874,7 +1869,7 @@ let Parser = (function () {
             break;
 
           case REDUCE: // Reduce
-            let currentProduction : ReductionPair = this.productions[action[1]];
+            let currentProduction : ReductionPair = PRODUCTIONS[action[1]];
 
             let lengthToReduceStackBy = currentProduction.getLengthToReduceStackBy();
 
@@ -1908,7 +1903,7 @@ let Parser = (function () {
             stack.push(currentProduction.getReplacementTokenIndex());
             semanticValueStack.push(yyval.$);
             locationStack.push(yyval._$);
-            newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
+            newState = ACTION_TABLE[stack[stack.length - 2]][stack[stack.length - 1]];
             stack.push(newState);
             break;
 

@@ -220,78 +220,134 @@ productions[ReduceActions.REDUCE_LAST_THREE_A] = new ReductionPair(2, 3);
 productions[ReduceActions.REDUCE_LAST_THREE_B] = new ReductionPair(2, 4);
 const PRODUCTIONS = productions;
 
-const SYMBOL_NAME_TO_INDEX = {
-  "$accept": 0,
-  "$end": 1,
-  "error": 2,
-  "expressions": 3,
-  "expression": 4,
-  "EOF": 5,
-  "variableSequence": 6,
-  "TIME_AMPM": 7,
-  "TIME_24": 8,
-  "number": 9,
-  "STRING": 10,
-  "&": 11,
-  "=": 12,
-  "+": 13,
-  "(": 14,
-  ")": 15,
-  "<": 16,
-  ">": 17,
-  "NOT": 18,
-  "-": 19,
-  "*": 20,
-  "/": 21,
-  "^": 22,
-  "FUNCTION": 23,
-  "expseq": 24,
-  "cell": 25,
-  "FIXEDCELL": 26,
-  ":": 27,
-  "CELL": 28,
-  "ARRAY": 29,
-  ";": 30,
-  ",": 31,
-  "VARIABLE": 32,
-  "DECIMAL": 33,
-  "NUMBER": 34,
-  "%": 35,
-  "#": 36,
-  "!": 37
-};
-const SYMBOL_INDEX_TO_NAME = {
-  5: "EOF",
-  7: "TIME_AMPM",
-  8: "TIME_24",
-  10: "STRING",
-  11: "&",
-  12: "=",
-  13: "+",
-  14: "(",
-  15: ")",
-  16: "<",
-  17: ">",
-  18: "NOT",
-  19: "-",
-  20: "*",
-  21: "/",
-  22: "^",
-  23: "FUNCTION",
-  26: "FIXEDCELL",
-  27: ":",
-  28: "CELL",
-  29: "ARRAY",
-  30: ";",
-  31: ",",
-  32: "VARIABLE",
-  33: "DECIMAL",
-  34: "NUMBER",
-  35: "%",
-  36: "#",
-  37: "!"
-};
+enum Symbol {
+  ACCEPT = 0,
+  END = 1,
+  ERROR = 2,
+  EXPRESSIONS = 3,
+  EXPRESSION = 4,
+  EOF = 5,
+  VARIABLE_SEQUENCE = 6,
+  TIME_AMPM = 7,
+  TIME_24 = 8,
+  NUMBER = 9,
+  STRING = 10,
+  AMPERSAND = 11,
+  EQUALS = 12,
+  PLUS = 13,
+  LEFT_PAREN = 14,
+  RIGHT_PAREN = 15,
+  LESS_THAN = 16,
+  GREATER_THAN = 17,
+  NOT = 18,
+  MINUS = 19,
+  ASTERISK = 20,
+  DIVIDE = 21,
+  CARROT = 22,
+  FUNCTION = 23,
+  EXP_SEQ = 24,
+  CELL = 25,
+  FIXEDCELL = 26,
+  COLON = 27,
+  CELL_UPPER = 28,
+  ARRAY = 29,
+  SEMI_COLON = 30,
+  COMMA = 31,
+  VARIABLE = 32,
+  DECIMAL = 33,
+  NUMBER_UPPER = 34,
+  PERCENT = 35,
+  POUND = 36,
+  EXCLAMATION_POINT = 37
+}
 
+const SYMBOL_NAME_TO_INDEX = {
+  "$accept": Symbol.ACCEPT,
+  "$end": Symbol.END,
+  "error": Symbol.ERROR,
+  "expressions": Symbol.EXPRESSIONS,
+  "expression": Symbol.EXPRESSION,
+  "EOF": Symbol.EOF,
+  "variableSequence": Symbol.VARIABLE_SEQUENCE,
+  "TIME_AMPM": Symbol.TIME_AMPM,
+  "TIME_24": Symbol.TIME_24,
+  "number": Symbol.NUMBER,
+  "STRING": Symbol.STRING,
+  "&": Symbol.AMPERSAND,
+  "=": Symbol.EQUALS,
+  "+": Symbol.PLUS,
+  "(": Symbol.LEFT_PAREN,
+  ")": Symbol.RIGHT_PAREN,
+  "<": Symbol.LESS_THAN,
+  ">": Symbol.GREATER_THAN,
+  "NOT": Symbol.NOT,
+  "-": Symbol.MINUS,
+  "*": Symbol.ASTERISK,
+  "/": Symbol.DIVIDE,
+  "^": Symbol.CARROT,
+  "FUNCTION": Symbol.FUNCTION,
+  "expseq": Symbol.EXP_SEQ,
+  "cell": Symbol.CELL,
+  "FIXEDCELL": Symbol.FIXEDCELL,
+  ":": Symbol.COLON,
+  "CELL": Symbol.CELL_UPPER,
+  "ARRAY": Symbol.ARRAY,
+  ";": Symbol.SEMI_COLON,
+  ",": Symbol.COMMA,
+  "VARIABLE": Symbol.VARIABLE,
+  "DECIMAL": Symbol.DECIMAL,
+  "NUMBER": Symbol.NUMBER_UPPER,
+  "%": Symbol.PERCENT,
+  "#": Symbol.POUND,
+  "!": Symbol.EXCLAMATION_POINT
+};
+let symbolIndexToName = {};
+symbolIndexToName[Symbol.EOF] = "EOF";
+symbolIndexToName[Symbol.TIME_AMPM] = "TIME_AMPM";
+symbolIndexToName[Symbol.TIME_24] = "TIME_24";
+symbolIndexToName[Symbol.STRING] = "STRING";
+symbolIndexToName[Symbol.AMPERSAND] = "&";
+symbolIndexToName[Symbol.EQUALS] = "=";
+symbolIndexToName[Symbol.PLUS] = "+";
+symbolIndexToName[Symbol.LEFT_PAREN] = "(";
+symbolIndexToName[Symbol.RIGHT_PAREN] = ")";
+symbolIndexToName[Symbol.LESS_THAN] = "<";
+symbolIndexToName[Symbol.GREATER_THAN] = ">";
+symbolIndexToName[Symbol.NOT] = "NOTE";
+symbolIndexToName[Symbol.MINUS] = "-";
+symbolIndexToName[Symbol.ASTERISK] = "*";
+symbolIndexToName[Symbol.DIVIDE] = "/";
+symbolIndexToName[Symbol.CARROT] = "^";
+symbolIndexToName[Symbol.FUNCTION] = "FUNCTION";
+symbolIndexToName[Symbol.FIXEDCELL] = "FIXEDCELL";
+symbolIndexToName[Symbol.COLON] = ";";
+symbolIndexToName[Symbol.COMMA] = ",";
+symbolIndexToName[Symbol.VARIABLE] = "VARIABLE";
+symbolIndexToName[Symbol.DECIMAL] = "DECIMAL";
+symbolIndexToName[Symbol.NUMBER_UPPER] = "NUMBER";
+symbolIndexToName[Symbol.PERCENT] = "%";
+symbolIndexToName[Symbol.POUND] = "#";
+symbolIndexToName[Symbol.EXCLAMATION_POINT] = "!";
+const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
+
+
+
+class ObjectBuilder {
+  public o : Object = {};
+
+  public static add(k, v) : ObjectBuilder {
+    let m = new ObjectBuilder();
+    m.o[k.toString()] = v;
+    return m;
+  }
+  public add(k, v) : ObjectBuilder {
+    this.o[k.toString()] = v;
+    return this;
+  }
+  public build() : Object {
+    return this.o;
+  }
+}
 
 /**
  * Array of to map rules to to LexActions and other rules. A single index in the object (e.g. `{2: 13}`) indicates the
@@ -299,1103 +355,1130 @@ const SYMBOL_INDEX_TO_NAME = {
  * and the rule object to follow after the action.
  */
 let table = [];
-table[0] = {
-  2: 13,
-  3: 1,
-  4: 2,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[1] = {
-  1: [3]
-};
-table[2] = {
-  5: [SHIFT, 19],
-  11: [SHIFT, 20],
-  12: [SHIFT, 21],
-  13: [SHIFT, 22],
-  16: [SHIFT, 23],
-  17: [SHIFT, 24],
-  18: [SHIFT, 25],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29]
-};
-table[3] = {
-  5: [REDUCE, 2],
-  11: [REDUCE, 2],
-  12: [REDUCE, 2],
-  13: [REDUCE, 2],
-  15: [REDUCE, 2],
-  16: [REDUCE, 2],
-  17: [REDUCE, 2],
-  18: [REDUCE, 2],
-  19: [REDUCE, 2],
-  20: [REDUCE, 2],
-  21: [REDUCE, 2],
-  22: [REDUCE, 2],
-  30: [REDUCE, 2],
-  31: [REDUCE, 2],
-  33: [SHIFT, 30]
-};
-table[4] = {
-  5: [REDUCE, 3],
-  11: [REDUCE, 3],
-  12: [REDUCE, 3],
-  13: [REDUCE, 3],
-  15: [REDUCE, 3],
-  16: [REDUCE, 3],
-  17: [REDUCE, 3],
-  18: [REDUCE, 3],
-  19: [REDUCE, 3],
-  20: [REDUCE, 3],
-  21: [REDUCE, 3],
-  22: [REDUCE, 3],
-  30: [REDUCE, 3],
-  31: [REDUCE, 3]
-};
-table[5] = {
-  5: [REDUCE, 4],
-  11: [REDUCE, 4],
-  12: [REDUCE, 4],
-  13: [REDUCE, 4],
-  15: [REDUCE, 4],
-  16: [REDUCE, 4],
-  17: [REDUCE, 4],
-  18: [REDUCE, 4],
-  19: [REDUCE, 4],
-  20: [REDUCE, 4],
-  21: [REDUCE, 4],
-  22: [REDUCE, 4],
-  30: [REDUCE, 4],
-  31: [REDUCE, 4]
-};
-table[6] = {
-  5: [REDUCE, 5],
-  11: [REDUCE, 5],
-  12: [REDUCE, 5],
-  13: [REDUCE, 5],
-  15: [REDUCE, 5],
-  16: [REDUCE, 5],
-  17: [REDUCE, 5],
-  18: [REDUCE, 5],
-  19: [REDUCE, 5],
-  20: [REDUCE, 5],
-  21: [REDUCE, 5],
-  22: [REDUCE, 5],
-  30: [REDUCE, 5],
-  31: [REDUCE, 5],
-  35: [SHIFT, 31]
-};
-table[7] = {
-  5: [REDUCE, 6],
-  11: [REDUCE, 6],
-  12: [REDUCE, 6],
-  13: [REDUCE, 6],
-  15: [REDUCE, 6],
-  16: [REDUCE, 6],
-  17: [REDUCE, 6],
-  18: [REDUCE, 6],
-  19: [REDUCE, 6],
-  20: [REDUCE, 6],
-  21: [REDUCE, 6],
-  22: [REDUCE, 6],
-  30: [REDUCE, 6],
-  31: [REDUCE, 6]
-};
-table[8] = {
-  2: 13,
-  4: 32,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[9] = {
-  2: 13,
-  4: 33,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[10] = {
-  2: 13,
-  4: 34,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[11] = {
-  14: [SHIFT, 35]
-};
-table[12] = {
-  5: [REDUCE, 25],
-  11: [REDUCE, 25],
-  12: [REDUCE, 25],
-  13: [REDUCE, 25],
-  15: [REDUCE, 25],
-  16: [REDUCE, 25],
-  17: [REDUCE, 25],
-  18: [REDUCE, 25],
-  19: [REDUCE, 25],
-  20: [REDUCE, 25],
-  21: [REDUCE, 25],
-  22: [REDUCE, 25],
-  30: [REDUCE, 25],
-  31: [REDUCE, 25]
-};
-table[13] = {
-  2: 36,
-  5: [REDUCE, 26],
-  11: [REDUCE, 26],
-  12: [REDUCE, 26],
-  13: [REDUCE, 26],
-  15: [REDUCE, 26],
-  16: [REDUCE, 26],
-  17: [REDUCE, 26],
-  18: [REDUCE, 26],
-  19: [REDUCE, 26],
-  20: [REDUCE, 26],
-  21: [REDUCE, 26],
-  22: [REDUCE, 26],
-  30: [REDUCE, 26],
-  31: [REDUCE, 26],
-  32: [SHIFT, 37],
-  36: [SHIFT, 18]
-};
-table[14] = {
-  5: [REDUCE, 36],
-  11: [REDUCE, 36],
-  12: [REDUCE, 36],
-  13: [REDUCE, 36],
-  15: [REDUCE, 36],
-  16: [REDUCE, 36],
-  17: [REDUCE, 36],
-  18: [REDUCE, 36],
-  19: [REDUCE, 36],
-  20: [REDUCE, 36],
-  21: [REDUCE, 36],
-  22: [REDUCE, 36],
-  30: [REDUCE, 36],
-  31: [REDUCE, 36],
-  33: [REDUCE, 36],
-  36: [SHIFT, 38]
-};
-table[15] = {
-  5: [REDUCE, 38],
-  11: [REDUCE, 38],
-  12: [REDUCE, 38],
-  13: [REDUCE, 38],
-  15: [REDUCE, 38],
-  16: [REDUCE, 38],
-  17: [REDUCE, 38],
-  18: [REDUCE, 38],
-  19: [REDUCE, 38],
-  20: [REDUCE, 38],
-  21: [REDUCE, 38],
-  22: [REDUCE, 38],
-  30: [REDUCE, 38],
-  31: [REDUCE, 38],
-  33: [SHIFT, 39],
-  35: [REDUCE, 38],
-  38: [REDUCE, 38]
-};
-table[16] = {
-  5: [REDUCE, 28],
-  11: [REDUCE, 28],
-  12: [REDUCE, 28],
-  13: [REDUCE, 28],
-  15: [REDUCE, 28],
-  16: [REDUCE, 28],
-  17: [REDUCE, 28],
-  18: [REDUCE, 28],
-  19: [REDUCE, 28],
-  20: [REDUCE, 28],
-  21: [REDUCE, 28],
-  22: [REDUCE, 28],
-  27: [SHIFT, 40],
-  30: [REDUCE, 28],
-  31: [REDUCE, 28]
-};
-table[17] = {
-  5: [REDUCE, 30],
-  11: [REDUCE, 30],
-  12: [REDUCE, 30],
-  13: [REDUCE, 30],
-  15: [REDUCE, 30],
-  16: [REDUCE, 30],
-  17: [REDUCE, 30],
-  18: [REDUCE, 30],
-  19: [REDUCE, 30],
-  20: [REDUCE, 30],
-  21: [REDUCE, 30],
-  22: [REDUCE, 30],
-  27: [SHIFT, 41],
-  30: [REDUCE, 30],
-  31: [REDUCE, 30]
-};
-table[18] = {
-  32: [SHIFT, 42]
-};
-table[19] = {
-  1: [ACCEPT, 1]
-};
-table[20] = {
-  2: 13,
-  4: 43,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[21] = {
-  2: 13,
-  4: 44,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[22] = {
-  2: 13,
-  4: 45,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[23] = {
-  2: 13,
-  4: 48,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  12: [SHIFT, 46],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  17: [SHIFT, 47],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[24] = {
-  2: 13,
-  4: 50,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  12: [SHIFT, 49],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[25] = {
-  2: 13,
-  4: 51,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[26] = {
-  2: 13,
-  4: 52,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[27] = {
-  2: 13,
-  4: 53,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[28] = {
-  2: 13,
-  4: 54,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[29] = {
-  2: 13,
-  4: 55,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[30] = {
-  32: [SHIFT, 56]
-};
-table[31] = {
-  5: [REDUCE, 40],
-  11: [REDUCE, 40],
-  12: [REDUCE, 40],
-  13: [REDUCE, 40],
-  15: [REDUCE, 40],
-  16: [REDUCE, 40],
-  17: [REDUCE, 40],
-  18: [REDUCE, 40],
-  19: [REDUCE, 40],
-  20: [REDUCE, 40],
-  21: [REDUCE, 40],
-  22: [REDUCE, 40],
-  30: [REDUCE, 40],
-  31: [REDUCE, 40],
-  35: [REDUCE, 40],
-  38: [REDUCE, 40]
-};
-table[32] = {
-  11: [SHIFT, 20],
-  12: [SHIFT, 21],
-  13: [SHIFT, 22],
-  15: [SHIFT, 57],
-  16: [SHIFT, 23],
-  17: [SHIFT, 24],
-  18: [SHIFT, 25],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29]
-};
-table[33] = {
-  5: [REDUCE, 21],
-  11: [SHIFT, 20],
-  12: [REDUCE, 21],
-  13: [REDUCE, 21],
-  15: [REDUCE, 21],
-  16: [REDUCE, 21],
-  17: [REDUCE, 21],
-  18: [REDUCE, 21],
-  19: [REDUCE, 21],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 21],
-  31: [REDUCE, 21]
-};
-table[34] = {
-  5: [REDUCE, 22],
-  11: [SHIFT, 20],
-  12: [REDUCE, 22],
-  13: [REDUCE, 22],
-  15: [REDUCE, 22],
-  16: [REDUCE, 22],
-  17: [REDUCE, 22],
-  18: [REDUCE, 22],
-  19: [REDUCE, 22],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 22],
-  31: [REDUCE, 22]
-};
-table[35] = {
-  2: 13,
-  4: 60,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  15: [SHIFT, 58],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  24: 59,
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  29: [SHIFT, 61],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[36] = {
-  5: [REDUCE, 27],
-  11: [REDUCE, 27],
-  12: [REDUCE, 27],
-  13: [REDUCE, 27],
-  15: [REDUCE, 27],
-  16: [REDUCE, 27],
-  17: [REDUCE, 27],
-  18: [REDUCE, 27],
-  19: [REDUCE, 27],
-  20: [REDUCE, 27],
-  21: [REDUCE, 27],
-  22: [REDUCE, 27],
-  30: [REDUCE, 27],
-  31: [REDUCE, 27]
-};
-table[37] = {36: [SHIFT, 38]};
-table[38] = {32: [SHIFT, 62]};
-table[39] = {34: [SHIFT, 63]};
-table[40] = {26: [SHIFT, 64]};
-table[41] = {28: [SHIFT, 65]};
-table[42] = {37: [SHIFT, 66]};
-table[43] = {
-  5: [REDUCE, 7],
-  11: [REDUCE, 7],
-  12: [REDUCE, 7],
-  13: [REDUCE, 7],
-  15: [REDUCE, 7],
-  16: [REDUCE, 7],
-  17: [REDUCE, 7],
-  18: [REDUCE, 7],
-  19: [REDUCE, 7],
-  20: [REDUCE, 7],
-  21: [REDUCE, 7],
-  22: [REDUCE, 7],
-  30: [REDUCE, 7],
-  31: [REDUCE, 7]
-};
-table[44] = {
-  5: [REDUCE, 8],
-  11: [SHIFT, 20],
-  12: [REDUCE, 8],
-  13: [SHIFT, 22],
-  15: [REDUCE, 8],
-  16: [SHIFT, 23],
-  17: [SHIFT, 24],
-  18: [SHIFT, 25],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 8],
-  31: [REDUCE, 8]
-};
-table[45] = {
-  5: [REDUCE, 9],
-  11: [SHIFT, 20],
-  12: [REDUCE, 9],
-  13: [REDUCE, 9],
-  15: [REDUCE, 9],
-  16: [REDUCE, 9],
-  17: [REDUCE, 9],
-  18: [REDUCE, 9],
-  19: [REDUCE, 9],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 9],
-  31: [REDUCE, 9]
-};
-table[46] = {
-  2: 13,
-  4: 67,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[47] = {
-  2: 13,
-  4: 68,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[48] = {
-  5: [REDUCE, 16],
-  11: [SHIFT, 20],
-  12: [REDUCE, 16],
-  13: [SHIFT, 22],
-  15: [REDUCE, 16],
-  16: [REDUCE, 16],
-  17: [REDUCE, 16],
-  18: [REDUCE, 16],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 16],
-  31: [REDUCE, 16]
-};
-table[49] = {
-  2: 13,
-  4: 69,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[50] = {
-  5: [REDUCE, 15],
-  11: [SHIFT, 20],
-  12: [REDUCE, 15],
-  13: [SHIFT, 22],
-  15: [REDUCE, 15],
-  16: [REDUCE, 15],
-  17: [REDUCE, 15],
-  18: [REDUCE, 15],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 15],
-  31: [REDUCE, 15]
-};
-table[51] = {
-  5: [REDUCE, 14],
-  11: [SHIFT, 20],
-  12: [REDUCE, 14],
-  13: [SHIFT, 22],
-  15: [REDUCE, 14],
-  16: [SHIFT, 23],
-  17: [SHIFT, 24],
-  18: [REDUCE, 14],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 14],
-  31: [REDUCE, 14]
-};
-table[52] = {
-  5: [REDUCE, 17],
-  11: [SHIFT, 20],
-  12: [REDUCE, 17],
-  13: [REDUCE, 17],
-  15: [REDUCE, 17],
-  16: [REDUCE, 17],
-  17: [REDUCE, 17],
-  18: [REDUCE, 17],
-  19: [REDUCE, 17],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 17],
-  31: [REDUCE, 17]
-};
-table[53] = {
-  5: [REDUCE, 18],
-  11: [SHIFT, 20],
-  12: [REDUCE, 18],
-  13: [REDUCE, 18],
-  15: [REDUCE, 18],
-  16: [REDUCE, 18],
-  17: [REDUCE, 18],
-  18: [REDUCE, 18],
-  19: [REDUCE, 18],
-  20: [REDUCE, 18],
-  21: [REDUCE, 18],
-  22: [SHIFT, 29],
-  30: [REDUCE, 18],
-  31: [REDUCE, 18]
-};
-table[54] = {
-  5: [REDUCE, 19],
-  11: [SHIFT, 20],
-  12: [REDUCE, 19],
-  13: [REDUCE, 19],
-  15: [REDUCE, 19],
-  16: [REDUCE, 19],
-  17: [REDUCE, 19],
-  18: [REDUCE, 19],
-  19: [REDUCE, 19],
-  20: [REDUCE, 19],
-  21: [REDUCE, 19],
-  22: [SHIFT, 29],
-  30: [REDUCE, 19],
-  31: [REDUCE, 19]
-};
-table[55] = {
-  5: [REDUCE, 20],
-  11: [SHIFT, 20],
-  12: [REDUCE, 20],
-  13: [REDUCE, 20],
-  15: [REDUCE, 20],
-  16: [REDUCE, 20],
-  17: [REDUCE, 20],
-  18: [REDUCE, 20],
-  19: [REDUCE, 20],
-  20: [REDUCE, 20],
-  21: [REDUCE, 20],
-  22: [REDUCE, 20],
-  30: [REDUCE, 20],
-  31: [REDUCE, 20]
-};
-table[56] = {
-  5: [REDUCE, 37],
-  11: [REDUCE, 37],
-  12: [REDUCE, 37],
-  13: [REDUCE, 37],
-  15: [REDUCE, 37],
-  16: [REDUCE, 37],
-  17: [REDUCE, 37],
-  18: [REDUCE, 37],
-  19: [REDUCE, 37],
-  20: [REDUCE, 37],
-  21: [REDUCE, 37],
-  22: [REDUCE, 37],
-  30: [REDUCE, 37],
-  31: [REDUCE, 37],
-  33: [REDUCE, 37]
-};
-table[57] = {
-  5: [REDUCE, 10],
-  11: [REDUCE, 10],
-  12: [REDUCE, 10],
-  13: [REDUCE, 10],
-  15: [REDUCE, 10],
-  16: [REDUCE, 10],
-  17: [REDUCE, 10],
-  18: [REDUCE, 10],
-  19: [REDUCE, 10],
-  20: [REDUCE, 10],
-  21: [REDUCE, 10],
-  22: [REDUCE, 10],
-  30: [REDUCE, 10],
-  31: [REDUCE, 10]
-};
-table[58] = {
-  5: [REDUCE, 23],
-  11: [REDUCE, 23],
-  12: [REDUCE, 23],
-  13: [REDUCE, 23],
-  15: [REDUCE, 23],
-  16: [REDUCE, 23],
-  17: [REDUCE, 23],
-  18: [REDUCE, 23],
-  19: [REDUCE, 23],
-  20: [REDUCE, 23],
-  21: [REDUCE, 23],
-  22: [REDUCE, 23],
-  30: [REDUCE, 23],
-  31: [REDUCE, 23]
-};
-table[59] = {15: [SHIFT, 70], 30: [SHIFT, 71], 31: [SHIFT, 72]};
-table[60] = {
-  11: [SHIFT, 20],
-  12: [SHIFT, 21],
-  13: [SHIFT, 22],
-  15: [REDUCE, 32],
-  16: [SHIFT, 23],
-  17: [SHIFT, 24],
-  18: [SHIFT, 25],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 32],
-  31: [REDUCE, 32]
-};
-table[61] = {15: [REDUCE, 33], 30: [REDUCE, 33], 31: [REDUCE, 33]};
-table[62] = {37: [SHIFT, 73]};
-table[63] = {
-  5: [REDUCE, 39],
-  11: [REDUCE, 39],
-  12: [REDUCE, 39],
-  13: [REDUCE, 39],
-  15: [REDUCE, 39],
-  16: [REDUCE, 39],
-  17: [REDUCE, 39],
-  18: [REDUCE, 39],
-  19: [REDUCE, 39],
-  20: [REDUCE, 39],
-  21: [REDUCE, 39],
-  22: [REDUCE, 39],
-  30: [REDUCE, 39],
-  31: [REDUCE, 39],
-  35: [REDUCE, 39],
-  38: [REDUCE, 39]
-};
-table[64] = {
-  5: [REDUCE, 29],
-  11: [REDUCE, 29],
-  12: [REDUCE, 29],
-  13: [REDUCE, 29],
-  15: [REDUCE, 29],
-  16: [REDUCE, 29],
-  17: [REDUCE, 29],
-  18: [REDUCE, 29],
-  19: [REDUCE, 29],
-  20: [REDUCE, 29],
-  21: [REDUCE, 29],
-  22: [REDUCE, 29],
-  30: [REDUCE, 29],
-  31: [REDUCE, 29]
-};
-table[65] = {
-  5: [REDUCE, 31],
-  11: [REDUCE, 31],
-  12: [REDUCE, 31],
-  13: [REDUCE, 31],
-  15: [REDUCE, 31],
-  16: [REDUCE, 31],
-  17: [REDUCE, 31],
-  18: [REDUCE, 31],
-  19: [REDUCE, 31],
-  20: [REDUCE, 31],
-  21: [REDUCE, 31],
-  22: [REDUCE, 31],
-  30: [REDUCE, 31],
-  31: [REDUCE, 31]
-};
-table[66] = {
-  5: [REDUCE, 41],
-  11: [REDUCE, 41],
-  12: [REDUCE, 41],
-  13: [REDUCE, 41],
-  15: [REDUCE, 41],
-  16: [REDUCE, 41],
-  17: [REDUCE, 41],
-  18: [REDUCE, 41],
-  19: [REDUCE, 41],
-  20: [REDUCE, 41],
-  21: [REDUCE, 41],
-  22: [REDUCE, 41],
-  30: [REDUCE, 41],
-  31: [REDUCE, 41],
-  32: [REDUCE, 41],
-  36: [REDUCE, 41]
-};
-table[67] = {
-  5: [REDUCE, 11],
-  11: [SHIFT, 20],
-  12: [REDUCE, 11],
-  13: [SHIFT, 22],
-  15: [REDUCE, 11],
-  16: [REDUCE, 11],
-  17: [REDUCE, 11],
-  18: [REDUCE, 11],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 11],
-  31: [REDUCE, 11]
-};
-table[68] = {
-  5: [REDUCE, 13],
-  11: [SHIFT, 20],
-  12: [REDUCE, 13],
-  13: [SHIFT, 22],
-  15: [REDUCE, 13],
-  16: [REDUCE, 13],
-  17: [REDUCE, 13],
-  18: [REDUCE, 13],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 13],
-  31: [REDUCE, 13]
-};
-table[69] = {
-  5: [REDUCE, 12],
-  11: [SHIFT, 20],
-  12: [REDUCE, 12],
-  13: [SHIFT, 22],
-  15: [REDUCE, 12],
-  16: [REDUCE, 12],
-  17: [REDUCE, 12],
-  18: [REDUCE, 12],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 12],
-  31: [REDUCE, 12]
-};
-table[70] = {
-  5: [REDUCE, 24],
-  11: [REDUCE, 24],
-  12: [REDUCE, 24],
-  13: [REDUCE, 24],
-  15: [REDUCE, 24],
-  16: [REDUCE, 24],
-  17: [REDUCE, 24],
-  18: [REDUCE, 24],
-  19: [REDUCE, 24],
-  20: [REDUCE, 24],
-  21: [REDUCE, 24],
-  22: [REDUCE, 24],
-  30: [REDUCE, 24],
-  31: [REDUCE, 24]
-};
-table[71] = {
-  2: 13,
-  4: 74,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  12: [SHIFT, 21],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[72] = {
-  2: 13,
-  4: 75,
-  6: 3,
-  7: [SHIFT, 4],
-  8: [SHIFT, 5],
-  9: 6,
-  10: [SHIFT, 7],
-  12: [SHIFT, 21],
-  13: [SHIFT, 10],
-  14: [SHIFT, 8],
-  19: [SHIFT, 9],
-  23: [SHIFT, 11],
-  25: 12,
-  26: [SHIFT, 16],
-  28: [SHIFT, 17],
-  32: [SHIFT, 14],
-  34: [SHIFT, 15],
-  36: [SHIFT, 18]
-};
-table[73] = {
-  5: [REDUCE, 42],
-  11: [REDUCE, 42],
-  12: [REDUCE, 42],
-  13: [REDUCE, 42],
-  15: [REDUCE, 42],
-  16: [REDUCE, 42],
-  17: [REDUCE, 42],
-  18: [REDUCE, 42],
-  19: [REDUCE, 42],
-  20: [REDUCE, 42],
-  21: [REDUCE, 42],
-  22: [REDUCE, 42],
-  30: [REDUCE, 42],
-  31: [REDUCE, 42],
-  32: [REDUCE, 42],
-  36: [REDUCE, 42]
-};
-table[74] = {
-  11: [SHIFT, 20],
-  12: [SHIFT, 21],
-  13: [SHIFT, 22],
-  15: [REDUCE, 34],
-  16: [SHIFT, 23],
-  17: [SHIFT, 24],
-  18: [SHIFT, 25],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 34],
-  31: [REDUCE, 34]
-};
-table[75] = {
-  11: [SHIFT, 20],
-  12: [SHIFT, 21],
-  13: [SHIFT, 22],
-  15: [REDUCE, 35],
-  16: [SHIFT, 23],
-  17: [SHIFT, 24],
-  18: [SHIFT, 25],
-  19: [SHIFT, 26],
-  20: [SHIFT, 27],
-  21: [SHIFT, 28],
-  22: [SHIFT, 29],
-  30: [REDUCE, 35],
-  31: [REDUCE, 35]
-};
+// All functions in the spreadsheet start with a 0-token.
+table[0] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSIONS, 1)
+  .add(Symbol.EXPRESSION, 2)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[1] = ObjectBuilder
+  .add(Symbol.END, [3])
+  .build();
+table[2] = ObjectBuilder
+  .add(Symbol.EOF, [SHIFT, 19])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.LESS_THAN, [SHIFT, 23])
+  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.NOT, [SHIFT, 25])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .build();
+table[3] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 2])
+  .add(Symbol.AMPERSAND, [REDUCE, 2])
+  .add(Symbol.EQUALS, [REDUCE, 2])
+  .add(Symbol.PLUS, [REDUCE, 2])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 2])
+  .add(Symbol.LESS_THAN, [REDUCE, 2])
+  .add(Symbol.GREATER_THAN, [REDUCE, 2])
+  .add(Symbol.NOT, [REDUCE, 2])
+  .add(Symbol.MINUS, [REDUCE, 2])
+  .add(Symbol.ASTERISK, [REDUCE, 2])
+  .add(Symbol.DIVIDE, [REDUCE, 2])
+  .add(Symbol.CARROT, [REDUCE, 2])
+  .add(Symbol.SEMI_COLON, [REDUCE, 2])
+  .add(Symbol.COMMA, [REDUCE, 2])
+  .add(33, [SHIFT, 30])
+  .build();
+table[3] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 2])
+  .add(Symbol.AMPERSAND, [REDUCE, 2])
+  .add(Symbol.EQUALS, [REDUCE, 2])
+  .add(Symbol.PLUS, [REDUCE, 2])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 2])
+  .add(Symbol.LESS_THAN, [REDUCE, 2])
+  .add(Symbol.GREATER_THAN, [REDUCE, 2])
+  .add(Symbol.NOT, [REDUCE, 2])
+  .add(Symbol.MINUS, [REDUCE, 2])
+  .add(Symbol.ASTERISK, [REDUCE, 2])
+  .add(Symbol.DIVIDE, [REDUCE, 2])
+  .add(Symbol.CARROT, [REDUCE, 2])
+  .add(Symbol.SEMI_COLON, [REDUCE, 2])
+  .add(Symbol.COMMA, [REDUCE, 2])
+  .add(33, [SHIFT, 30])
+  .build();
+table[4] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 3])
+  .add(Symbol.AMPERSAND, [REDUCE, 3])
+  .add(Symbol.EQUALS, [REDUCE, 3])
+  .add(Symbol.PLUS, [REDUCE, 3])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 3])
+  .add(Symbol.LESS_THAN, [REDUCE, 3])
+  .add(Symbol.GREATER_THAN, [REDUCE, 3])
+  .add(Symbol.NOT, [REDUCE, 3])
+  .add(Symbol.MINUS, [REDUCE, 3])
+  .add(Symbol.ASTERISK, [REDUCE, 3])
+  .add(Symbol.DIVIDE, [REDUCE, 3])
+  .add(Symbol.CARROT, [REDUCE, 3])
+  .add(Symbol.SEMI_COLON, [REDUCE, 3])
+  .add(Symbol.COMMA, [REDUCE, 3])
+  .build();
+table[5] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 4])
+  .add(Symbol.AMPERSAND, [REDUCE, 4])
+  .add(Symbol.EQUALS, [REDUCE, 4])
+  .add(Symbol.PLUS, [REDUCE, 4])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 4])
+  .add(Symbol.LESS_THAN, [REDUCE, 4])
+  .add(Symbol.GREATER_THAN, [REDUCE, 4])
+  .add(Symbol.NOT, [REDUCE, 4])
+  .add(Symbol.MINUS, [REDUCE, 4])
+  .add(Symbol.ASTERISK, [REDUCE, 4])
+  .add(Symbol.DIVIDE, [REDUCE, 4])
+  .add(Symbol.CARROT, [REDUCE, 4])
+  .add(Symbol.SEMI_COLON, [REDUCE, 4])
+  .add(Symbol.COMMA, [REDUCE, 4])
+  .build();
+table[6] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 5])
+  .add(Symbol.AMPERSAND, [REDUCE, 5])
+  .add(Symbol.EQUALS, [REDUCE, 5])
+  .add(Symbol.PLUS, [REDUCE, 5])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 5])
+  .add(Symbol.LESS_THAN, [REDUCE, 5])
+  .add(Symbol.GREATER_THAN, [REDUCE, 5])
+  .add(Symbol.NOT, [REDUCE, 5])
+  .add(Symbol.MINUS, [REDUCE, 5])
+  .add(Symbol.ASTERISK, [REDUCE, 5])
+  .add(Symbol.DIVIDE, [REDUCE, 5])
+  .add(Symbol.CARROT, [REDUCE, 5])
+  .add(Symbol.SEMI_COLON, [REDUCE, 5])
+  .add(Symbol.COMMA, [REDUCE, 5])
+  .add(Symbol.PERCENT, [SHIFT, 31])
+  .build();
+table[7] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 6])
+  .add(Symbol.AMPERSAND, [REDUCE, 6])
+  .add(Symbol.EQUALS, [REDUCE, 6])
+  .add(Symbol.PLUS, [REDUCE, 6])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 6])
+  .add(Symbol.LESS_THAN, [REDUCE, 6])
+  .add(Symbol.GREATER_THAN, [REDUCE, 6])
+  .add(Symbol.NOT, [REDUCE, 6])
+  .add(Symbol.MINUS, [REDUCE, 6])
+  .add(Symbol.ASTERISK, [REDUCE, 6])
+  .add(Symbol.DIVIDE, [REDUCE, 6])
+  .add(Symbol.CARROT, [REDUCE, 6])
+  .add(Symbol.SEMI_COLON, [REDUCE, 6])
+  .add(Symbol.COMMA, [REDUCE, 6])
+  .build();
+table[8] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 32)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[9] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 33)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[10] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 34)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[11] = ObjectBuilder
+  .add(Symbol.LEFT_PAREN, [SHIFT, 35])
+  .build();
+table[12] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 25])
+  .add(Symbol.AMPERSAND, [REDUCE, 25])
+  .add(Symbol.EQUALS, [REDUCE, 25])
+  .add(Symbol.PLUS, [REDUCE, 25])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 25])
+  .add(Symbol.LESS_THAN, [REDUCE, 25])
+  .add(Symbol.GREATER_THAN, [REDUCE, 25])
+  .add(Symbol.NOT, [REDUCE, 25])
+  .add(Symbol.MINUS, [REDUCE, 25])
+  .add(Symbol.ASTERISK, [REDUCE, 25])
+  .add(Symbol.DIVIDE, [REDUCE, 25])
+  .add(Symbol.CARROT, [REDUCE, 25])
+  .add(Symbol.SEMI_COLON, [REDUCE, 25])
+  .add(Symbol.COMMA, [REDUCE, 25])
+  .build();
+table[13] = ObjectBuilder
+  .add(Symbol.ERROR, 36)
+  .add(Symbol.EOF, [REDUCE, 26])
+  .add(Symbol.AMPERSAND, [REDUCE, 26])
+  .add(Symbol.EQUALS, [REDUCE, 26])
+  .add(Symbol.PLUS, [REDUCE, 26])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 26])
+  .add(Symbol.LESS_THAN, [REDUCE, 26])
+  .add(Symbol.GREATER_THAN, [REDUCE, 26])
+  .add(Symbol.NOT, [REDUCE, 26])
+  .add(Symbol.MINUS, [REDUCE, 26])
+  .add(Symbol.ASTERISK, [REDUCE, 26])
+  .add(Symbol.DIVIDE, [REDUCE, 26])
+  .add(Symbol.CARROT, [REDUCE, 26])
+  .add(Symbol.SEMI_COLON, [REDUCE, 26])
+  .add(Symbol.COMMA, [REDUCE, 26])
+  .add(Symbol.VARIABLE, [SHIFT, 37])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[14] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 36])
+  .add(Symbol.AMPERSAND, [REDUCE, 36])
+  .add(Symbol.EQUALS, [REDUCE, 36])
+  .add(Symbol.PLUS, [REDUCE, 36])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 36])
+  .add(Symbol.LESS_THAN, [REDUCE, 36])
+  .add(Symbol.GREATER_THAN, [REDUCE, 36])
+  .add(Symbol.NOT, [REDUCE, 36])
+  .add(Symbol.MINUS, [REDUCE, 36])
+  .add(Symbol.ASTERISK, [REDUCE, 36])
+  .add(Symbol.DIVIDE, [REDUCE, 36])
+  .add(Symbol.CARROT, [REDUCE, 36])
+  .add(Symbol.SEMI_COLON, [REDUCE, 36])
+  .add(Symbol.COMMA, [REDUCE, 36])
+  .add(33, [REDUCE, 36])
+  .add(Symbol.POUND, [SHIFT, 38])
+  .build();
+table[15] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 38])
+  .add(Symbol.AMPERSAND, [REDUCE, 38])
+  .add(Symbol.EQUALS, [REDUCE, 38])
+  .add(Symbol.PLUS, [REDUCE, 38])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 38])
+  .add(Symbol.LESS_THAN, [REDUCE, 38])
+  .add(Symbol.GREATER_THAN, [REDUCE, 38])
+  .add(Symbol.NOT, [REDUCE, 38])
+  .add(Symbol.MINUS, [REDUCE, 38])
+  .add(Symbol.ASTERISK, [REDUCE, 38])
+  .add(Symbol.DIVIDE, [REDUCE, 38])
+  .add(Symbol.CARROT, [REDUCE, 38])
+  .add(Symbol.SEMI_COLON, [REDUCE, 38])
+  .add(Symbol.COMMA, [REDUCE, 38])
+  .add(33, [SHIFT, 39])
+  .add(Symbol.PERCENT, [REDUCE, 38])
+  .add(38, [REDUCE, 38])
+  .build();
+table[16] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 28])
+  .add(Symbol.AMPERSAND, [REDUCE, 28])
+  .add(Symbol.EQUALS, [REDUCE, 28])
+  .add(Symbol.PLUS, [REDUCE, 28])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 28])
+  .add(Symbol.LESS_THAN, [REDUCE, 28])
+  .add(Symbol.GREATER_THAN, [REDUCE, 28])
+  .add(Symbol.NOT, [REDUCE, 28])
+  .add(Symbol.MINUS, [REDUCE, 28])
+  .add(Symbol.ASTERISK, [REDUCE, 28])
+  .add(Symbol.DIVIDE, [REDUCE, 28])
+  .add(Symbol.CARROT, [REDUCE, 28])
+  .add(Symbol.COLON, [SHIFT, 40])
+  .add(Symbol.SEMI_COLON, [REDUCE, 28])
+  .add(Symbol.COMMA, [REDUCE, 28])
+  .build();
+table[17] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 30])
+  .add(Symbol.AMPERSAND, [REDUCE, 30])
+  .add(Symbol.EQUALS, [REDUCE, 30])
+  .add(Symbol.PLUS, [REDUCE, 30])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 30])
+  .add(Symbol.LESS_THAN, [REDUCE, 30])
+  .add(Symbol.GREATER_THAN, [REDUCE, 30])
+  .add(Symbol.NOT, [REDUCE, 30])
+  .add(Symbol.MINUS, [REDUCE, 30])
+  .add(Symbol.ASTERISK, [REDUCE, 30])
+  .add(Symbol.DIVIDE, [REDUCE, 30])
+  .add(Symbol.CARROT, [REDUCE, 30])
+  .add(Symbol.COLON, [SHIFT, 41])
+  .add(Symbol.SEMI_COLON, [REDUCE, 30])
+  .add(Symbol.COMMA, [REDUCE, 30])
+  .build();
+table[18] = ObjectBuilder
+  .add(Symbol.VARIABLE, [SHIFT, 42])
+  .build();
+table[19] = ObjectBuilder
+  .add(Symbol.END, [ACCEPT, 1])
+  .build();
+table[20] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 43)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[21] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 44)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[22] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 45)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[23] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 48)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.EQUALS, [SHIFT, 46])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.GREATER_THAN, [SHIFT, 47])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[24] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 50)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.EQUALS, [SHIFT, 49])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[25] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 51)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[26] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 52)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[27] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 53)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[28] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 54)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[29] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 55)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[30] = ObjectBuilder
+  .add(Symbol.VARIABLE, [SHIFT, 56])
+  .build();
+table[31] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 40])
+  .add(Symbol.AMPERSAND, [REDUCE, 40])
+  .add(Symbol.EQUALS, [REDUCE, 40])
+  .add(Symbol.PLUS, [REDUCE, 40])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 40])
+  .add(Symbol.LESS_THAN, [REDUCE, 40])
+  .add(Symbol.GREATER_THAN, [REDUCE, 40])
+  .add(Symbol.NOT, [REDUCE, 40])
+  .add(Symbol.MINUS, [REDUCE, 40])
+  .add(Symbol.ASTERISK, [REDUCE, 40])
+  .add(Symbol.DIVIDE, [REDUCE, 40])
+  .add(Symbol.CARROT, [REDUCE, 40])
+  .add(Symbol.SEMI_COLON, [REDUCE, 40])
+  .add(Symbol.COMMA, [REDUCE, 40])
+  .add(Symbol.PERCENT, [REDUCE, 40])
+  .add(38, [REDUCE, 40])
+  .build();
+table[32] = ObjectBuilder
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [SHIFT, 57])
+  .add(Symbol.LESS_THAN, [SHIFT, 23])
+  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.NOT, [SHIFT, 25])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .build();
+table[33] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 21])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 21])
+  .add(Symbol.PLUS, [REDUCE, 21])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 21])
+  .add(Symbol.LESS_THAN, [REDUCE, 21])
+  .add(Symbol.GREATER_THAN, [REDUCE, 21])
+  .add(Symbol.NOT, [REDUCE, 21])
+  .add(Symbol.MINUS, [REDUCE, 21])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 21])
+  .add(Symbol.COMMA, [REDUCE, 21])
+  .build();
+table[34] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 22])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 22])
+  .add(Symbol.PLUS, [REDUCE, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 22])
+  .add(Symbol.LESS_THAN, [REDUCE, 22])
+  .add(Symbol.GREATER_THAN, [REDUCE, 22])
+  .add(Symbol.NOT, [REDUCE, 22])
+  .add(Symbol.MINUS, [REDUCE, 22])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 22])
+  .add(Symbol.COMMA, [REDUCE, 22])
+  .build();
+table[35] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 60)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.RIGHT_PAREN, [SHIFT, 58])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.EXP_SEQ, 59)
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.ARRAY, [SHIFT, 61])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[36] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 27])
+  .add(Symbol.AMPERSAND, [REDUCE, 27])
+  .add(Symbol.EQUALS, [REDUCE, 27])
+  .add(Symbol.PLUS, [REDUCE, 27])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 27])
+  .add(Symbol.LESS_THAN, [REDUCE, 27])
+  .add(Symbol.GREATER_THAN, [REDUCE, 27])
+  .add(Symbol.NOT, [REDUCE, 27])
+  .add(Symbol.MINUS, [REDUCE, 27])
+  .add(Symbol.ASTERISK, [REDUCE, 27])
+  .add(Symbol.DIVIDE, [REDUCE, 27])
+  .add(Symbol.CARROT, [REDUCE, 27])
+  .add(Symbol.SEMI_COLON, [REDUCE, 27])
+  .add(Symbol.COMMA, [REDUCE, 27])
+  .build();
+table[37] = ObjectBuilder
+  .add(Symbol.POUND, [SHIFT, 38])
+  .build();
+table[38] = ObjectBuilder
+  .add(Symbol.VARIABLE, [SHIFT, 62])
+  .build();
+table[39] = ObjectBuilder
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 63])
+  .build();
+table[40] = ObjectBuilder
+  .add(Symbol.FIXEDCELL, [SHIFT, 64])
+  .build();
+table[41] = ObjectBuilder
+  .add(Symbol.CELL_UPPER, [SHIFT, 65])
+  .build();
+table[42] = ObjectBuilder
+  .add(Symbol.EXCLAMATION_POINT, [SHIFT, 66])
+  .build();
+table[43] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 7])
+  .add(Symbol.AMPERSAND, [REDUCE, 7])
+  .add(Symbol.EQUALS, [REDUCE, 7])
+  .add(Symbol.PLUS, [REDUCE, 7])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 7])
+  .add(Symbol.LESS_THAN, [REDUCE, 7])
+  .add(Symbol.GREATER_THAN, [REDUCE, 7])
+  .add(Symbol.NOT, [REDUCE, 7])
+  .add(Symbol.MINUS, [REDUCE, 7])
+  .add(Symbol.ASTERISK, [REDUCE, 7])
+  .add(Symbol.DIVIDE, [REDUCE, 7])
+  .add(Symbol.CARROT, [REDUCE, 7])
+  .add(Symbol.SEMI_COLON, [REDUCE, 7])
+  .add(Symbol.COMMA, [REDUCE, 7])
+  .build();
+table[44] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 8])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 8])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 8])
+  .add(Symbol.LESS_THAN, [SHIFT, 23])
+  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.NOT, [SHIFT, 25])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 8])
+  .add(Symbol.COMMA, [REDUCE, 8])
+  .build();
+table[45] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 9])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 9])
+  .add(Symbol.PLUS, [REDUCE, 9])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 9])
+  .add(Symbol.LESS_THAN, [REDUCE, 9])
+  .add(Symbol.GREATER_THAN, [REDUCE, 9])
+  .add(Symbol.NOT, [REDUCE, 9])
+  .add(Symbol.MINUS, [REDUCE, 9])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 9])
+  .add(Symbol.COMMA, [REDUCE, 9])
+  .build();
+table[46] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 67)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[47] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 68)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[48] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 16])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 16])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 16])
+  .add(Symbol.LESS_THAN, [REDUCE, 16])
+  .add(Symbol.GREATER_THAN, [REDUCE, 16])
+  .add(Symbol.NOT, [REDUCE, 16])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 16])
+  .add(Symbol.COMMA, [REDUCE, 16])
+  .build();
+table[49] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 69)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18])
+  .build();
+table[50] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 15])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 15])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 15])
+  .add(Symbol.LESS_THAN, [REDUCE, 15])
+  .add(Symbol.GREATER_THAN, [REDUCE, 15])
+  .add(Symbol.NOT, [REDUCE, 15])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 15])
+  .add(Symbol.COMMA, [REDUCE, 15])
+  .build();
+table[51] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 14])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 14])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 14])
+  .add(Symbol.LESS_THAN, [SHIFT, 23])
+  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.NOT, [REDUCE, 14])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 14])
+  .add(Symbol.COMMA, [REDUCE, 14])
+  .build();
+table[52] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 17])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 17])
+  .add(Symbol.PLUS, [REDUCE, 17])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 17])
+  .add(Symbol.LESS_THAN, [REDUCE, 17])
+  .add(Symbol.GREATER_THAN, [REDUCE, 17])
+  .add(Symbol.NOT, [REDUCE, 17])
+  .add(Symbol.MINUS, [REDUCE, 17])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 17])
+  .add(Symbol.COMMA, [REDUCE, 17])
+  .build();
+table[53] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 18])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 18])
+  .add(Symbol.PLUS, [REDUCE, 18])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 18])
+  .add(Symbol.LESS_THAN, [REDUCE, 18])
+  .add(Symbol.GREATER_THAN, [REDUCE, 18])
+  .add(Symbol.NOT, [REDUCE, 18])
+  .add(Symbol.MINUS, [REDUCE, 18])
+  .add(Symbol.ASTERISK, [REDUCE, 18])
+  .add(Symbol.DIVIDE, [REDUCE, 18])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 18])
+  .add(Symbol.COMMA, [REDUCE, 18])
+  .build();
+table[54] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 19])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 19])
+  .add(Symbol.PLUS, [REDUCE, 19])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 19])
+  .add(Symbol.LESS_THAN, [REDUCE, 19])
+  .add(Symbol.GREATER_THAN, [REDUCE, 19])
+  .add(Symbol.NOT, [REDUCE, 19])
+  .add(Symbol.MINUS, [REDUCE, 19])
+  .add(Symbol.ASTERISK, [REDUCE, 19])
+  .add(Symbol.DIVIDE, [REDUCE, 19])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 19])
+  .add(Symbol.COMMA, [REDUCE, 19])
+  .build();
+table[55] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 20])
+  .add(Symbol.PLUS, [REDUCE, 20])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 20])
+  .add(Symbol.LESS_THAN, [REDUCE, 20])
+  .add(Symbol.GREATER_THAN, [REDUCE, 20])
+  .add(Symbol.NOT, [REDUCE, 20])
+  .add(Symbol.MINUS, [REDUCE, 20])
+  .add(Symbol.ASTERISK, [REDUCE, 20])
+  .add(Symbol.DIVIDE, [REDUCE, 20])
+  .add(Symbol.CARROT, [REDUCE, 20])
+  .add(Symbol.SEMI_COLON, [REDUCE, 20])
+  .add(Symbol.COMMA, [REDUCE, 20])
+  .build();
+table[56] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 37])
+  .add(Symbol.AMPERSAND, [REDUCE, 37])
+  .add(Symbol.EQUALS, [REDUCE, 37])
+  .add(Symbol.PLUS, [REDUCE, 37])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 37])
+  .add(Symbol.LESS_THAN, [REDUCE, 37])
+  .add(Symbol.GREATER_THAN, [REDUCE, 37])
+  .add(Symbol.NOT, [REDUCE, 37])
+  .add(Symbol.MINUS, [REDUCE, 37])
+  .add(Symbol.ASTERISK, [REDUCE, 37])
+  .add(Symbol.DIVIDE, [REDUCE, 37])
+  .add(Symbol.CARROT, [REDUCE, 37])
+  .add(Symbol.SEMI_COLON, [REDUCE, 37])
+  .add(Symbol.COMMA, [REDUCE, 37])
+  .add(33, [REDUCE, 37])
+  .build();
+table[57] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 10])
+  .add(Symbol.AMPERSAND, [REDUCE, 10])
+  .add(Symbol.EQUALS, [REDUCE, 10])
+  .add(Symbol.PLUS, [REDUCE, 10])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 10])
+  .add(Symbol.LESS_THAN, [REDUCE, 10])
+  .add(Symbol.GREATER_THAN, [REDUCE, 10])
+  .add(Symbol.NOT, [REDUCE, 10])
+  .add(Symbol.MINUS, [REDUCE, 10])
+  .add(Symbol.ASTERISK, [REDUCE, 10])
+  .add(Symbol.DIVIDE, [REDUCE, 10])
+  .add(Symbol.CARROT, [REDUCE, 10])
+  .add(Symbol.SEMI_COLON, [REDUCE, 10])
+  .add(Symbol.COMMA, [REDUCE, 10])
+  .build();
+table[58] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 23])
+  .add(Symbol.AMPERSAND, [REDUCE, 23])
+  .add(Symbol.EQUALS, [REDUCE, 23])
+  .add(Symbol.PLUS, [REDUCE, 23])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 23])
+  .add(Symbol.LESS_THAN, [REDUCE, 23])
+  .add(Symbol.GREATER_THAN, [REDUCE, 23])
+  .add(Symbol.NOT, [REDUCE, 23])
+  .add(Symbol.MINUS, [REDUCE, 23])
+  .add(Symbol.ASTERISK, [REDUCE, 23])
+  .add(Symbol.DIVIDE, [REDUCE, 23])
+  .add(Symbol.CARROT, [REDUCE, 23])
+  .add(Symbol.SEMI_COLON, [REDUCE, 23])
+  .add(Symbol.COMMA, [REDUCE, 23])
+  .build();
+table[59] = ObjectBuilder
+  .add(Symbol.RIGHT_PAREN, [SHIFT, 70])
+  .add(Symbol.SEMI_COLON, [SHIFT, 71])
+  .add(Symbol.COMMA, [SHIFT, 72])
+  .build();
+table[60] = ObjectBuilder
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 32])
+  .add(Symbol.LESS_THAN, [SHIFT, 23])
+  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.NOT, [SHIFT, 25])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 32])
+  .add(Symbol.COMMA, [REDUCE, 32])
+  .build();
+table[61] = ObjectBuilder
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 33])
+  .add(Symbol.SEMI_COLON, [REDUCE, 33])
+  .add(Symbol.COMMA, [REDUCE, 33])
+  .build();
+table[62] = ObjectBuilder
+  .add(Symbol.EXCLAMATION_POINT, [SHIFT, 73])
+  .build();
+table[63] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 39])
+  .add(Symbol.AMPERSAND, [REDUCE, 39])
+  .add(Symbol.EQUALS, [REDUCE, 39])
+  .add(Symbol.PLUS, [REDUCE, 39])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 39])
+  .add(Symbol.LESS_THAN, [REDUCE, 39])
+  .add(Symbol.GREATER_THAN, [REDUCE, 39])
+  .add(Symbol.NOT, [REDUCE, 39])
+  .add(Symbol.MINUS, [REDUCE, 39])
+  .add(Symbol.ASTERISK, [REDUCE, 39])
+  .add(Symbol.DIVIDE, [REDUCE, 39])
+  .add(Symbol.CARROT, [REDUCE, 39])
+  .add(Symbol.SEMI_COLON, [REDUCE, 39])
+  .add(Symbol.COMMA, [REDUCE, 39])
+  .add(Symbol.PERCENT, [REDUCE, 39])
+  .add(38, [REDUCE, 39]).build();
+table[64] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 29])
+  .add(Symbol.AMPERSAND, [REDUCE, 29])
+  .add(Symbol.EQUALS, [REDUCE, 29])
+  .add(Symbol.PLUS, [REDUCE, 29])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 29])
+  .add(Symbol.LESS_THAN, [REDUCE, 29])
+  .add(Symbol.GREATER_THAN, [REDUCE, 29])
+  .add(Symbol.NOT, [REDUCE, 29])
+  .add(Symbol.MINUS, [REDUCE, 29])
+  .add(Symbol.ASTERISK, [REDUCE, 29])
+  .add(Symbol.DIVIDE, [REDUCE, 29])
+  .add(Symbol.CARROT, [REDUCE, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 29])
+  .add(Symbol.COMMA, [REDUCE, 29]).build();
+table[65] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 31])
+  .add(Symbol.AMPERSAND, [REDUCE, 31])
+  .add(Symbol.EQUALS, [REDUCE, 31])
+  .add(Symbol.PLUS, [REDUCE, 31])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 31])
+  .add(Symbol.LESS_THAN, [REDUCE, 31])
+  .add(Symbol.GREATER_THAN, [REDUCE, 31])
+  .add(Symbol.NOT, [REDUCE, 31])
+  .add(Symbol.MINUS, [REDUCE, 31])
+  .add(Symbol.ASTERISK, [REDUCE, 31])
+  .add(Symbol.DIVIDE, [REDUCE, 31])
+  .add(Symbol.CARROT, [REDUCE, 31])
+  .add(Symbol.SEMI_COLON, [REDUCE, 31])
+  .add(Symbol.COMMA, [REDUCE, 31]).build();
+table[66] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 41])
+  .add(Symbol.AMPERSAND, [REDUCE, 41])
+  .add(Symbol.EQUALS, [REDUCE, 41])
+  .add(Symbol.PLUS, [REDUCE, 41])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 41])
+  .add(Symbol.LESS_THAN, [REDUCE, 41])
+  .add(Symbol.GREATER_THAN, [REDUCE, 41])
+  .add(Symbol.NOT, [REDUCE, 41])
+  .add(Symbol.MINUS, [REDUCE, 41])
+  .add(Symbol.ASTERISK, [REDUCE, 41])
+  .add(Symbol.DIVIDE, [REDUCE, 41])
+  .add(Symbol.CARROT, [REDUCE, 41])
+  .add(Symbol.SEMI_COLON, [REDUCE, 41])
+  .add(Symbol.COMMA, [REDUCE, 41])
+  .add(Symbol.VARIABLE, [REDUCE, 41])
+  .add(Symbol.POUND, [REDUCE, 41]).build();
+table[67] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 11])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 11])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 11])
+  .add(Symbol.LESS_THAN, [REDUCE, 11])
+  .add(Symbol.GREATER_THAN, [REDUCE, 11])
+  .add(Symbol.NOT, [REDUCE, 11])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 11])
+  .add(Symbol.COMMA, [REDUCE, 11]).build();
+table[68] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 13])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 13])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 13])
+  .add(Symbol.LESS_THAN, [REDUCE, 13])
+  .add(Symbol.GREATER_THAN, [REDUCE, 13])
+  .add(Symbol.NOT, [REDUCE, 13])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 13])
+  .add(Symbol.COMMA, [REDUCE, 13]).build();
+table[69] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 12])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [REDUCE, 12])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 12])
+  .add(Symbol.LESS_THAN, [REDUCE, 12])
+  .add(Symbol.GREATER_THAN, [REDUCE, 12])
+  .add(Symbol.NOT, [REDUCE, 12])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 12])
+  .add(Symbol.COMMA, [REDUCE, 12]).build();
+table[70] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 24])
+  .add(Symbol.AMPERSAND, [REDUCE, 24])
+  .add(Symbol.EQUALS, [REDUCE, 24])
+  .add(Symbol.PLUS, [REDUCE, 24])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 24])
+  .add(Symbol.LESS_THAN, [REDUCE, 24])
+  .add(Symbol.GREATER_THAN, [REDUCE, 24])
+  .add(Symbol.NOT, [REDUCE, 24])
+  .add(Symbol.MINUS, [REDUCE, 24])
+  .add(Symbol.ASTERISK, [REDUCE, 24])
+  .add(Symbol.DIVIDE, [REDUCE, 24])
+  .add(Symbol.CARROT, [REDUCE, 24])
+  .add(Symbol.SEMI_COLON, [REDUCE, 24])
+  .add(Symbol.COMMA, [REDUCE, 24]).build();
+table[71] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 74)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18]).build();
+table[72] = ObjectBuilder
+  .add(Symbol.ERROR, 13)
+  .add(Symbol.EXPRESSION, 75)
+  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.TIME_AMPM, [SHIFT, 4])
+  .add(Symbol.TIME_24, [SHIFT, 5])
+  .add(Symbol.NUMBER, 6)
+  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.MINUS, [SHIFT, 9])
+  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.CELL, 12)
+  .add(Symbol.FIXEDCELL, [SHIFT, 16])
+  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.VARIABLE, [SHIFT, 14])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.POUND, [SHIFT, 18]).build();
+table[73] = ObjectBuilder
+  .add(Symbol.EOF, [REDUCE, 42])
+  .add(Symbol.AMPERSAND, [REDUCE, 42])
+  .add(Symbol.EQUALS, [REDUCE, 42])
+  .add(Symbol.PLUS, [REDUCE, 42])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 42])
+  .add(Symbol.LESS_THAN, [REDUCE, 42])
+  .add(Symbol.GREATER_THAN, [REDUCE, 42])
+  .add(Symbol.NOT, [REDUCE, 42])
+  .add(Symbol.MINUS, [REDUCE, 42])
+  .add(Symbol.ASTERISK, [REDUCE, 42])
+  .add(Symbol.DIVIDE, [REDUCE, 42])
+  .add(Symbol.CARROT, [REDUCE, 42])
+  .add(Symbol.SEMI_COLON, [REDUCE, 42])
+  .add(Symbol.COMMA, [REDUCE, 42])
+  .add(Symbol.VARIABLE, [REDUCE, 42])
+  .add(Symbol.POUND, [REDUCE, 42]).build();
+table[74] = ObjectBuilder
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 34])
+  .add(Symbol.LESS_THAN, [SHIFT, 23])
+  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.NOT, [SHIFT, 25])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 34])
+  .add(Symbol.COMMA, [REDUCE, 34]).build();
+table[75] = ObjectBuilder
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, 35])
+  .add(Symbol.LESS_THAN, [SHIFT, 23])
+  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.NOT, [SHIFT, 25])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.SEMI_COLON, [REDUCE, 35])
+  .add(Symbol.COMMA, [REDUCE, 35]).build();
 const ACTION_TABLE = table;
 
 
@@ -1837,7 +1920,7 @@ let Parser = (function () {
           throw new ParseError('Parse Error: multiple actions possible at state: ' + state + ', token: ' + symbol);
         }
 
-        // LexActions are always:
+        // Available actions:
         //   Shift: continue to process tokens.
         //   Reduce: enough tokens have been gathered to reduce input through evaluation.
         //   Accept: return.
@@ -1847,6 +1930,8 @@ let Parser = (function () {
             semanticValueStack.push(lexer.yytext);
             locationStack.push(lexer.yylloc);
             stack.push(action[1]); // push state
+            // console.log("SHIFT", "literal", lexer.yytext, "   symbol", symbol, "   symbol name", SYMBOL_INDEX_TO_NAME[symbol], "   action", action,
+            //     "   stack", stack, "   semanticValueStack", semanticValueStack);
             symbol = null;
 
             if (Formulas.isTryCatchFormula(lexer.yytext)) {
@@ -1869,6 +1954,8 @@ let Parser = (function () {
             break;
 
           case REDUCE: // Reduce
+            // console.log("REDUCE", "literal", lexer.yytext, "   symbol", symbol, "   symbol name", SYMBOL_INDEX_TO_NAME[symbol], "   action", action,
+            //     "   stack", stack, "   semanticValueStack", semanticValueStack);
             let currentProduction : ReductionPair = PRODUCTIONS[action[1]];
 
             let lengthToReduceStackBy = currentProduction.getLengthToReduceStackBy();
@@ -2146,7 +2233,7 @@ let Parser = (function () {
         }
         let rules = this._currentRules();
         for (let i = 0; i < rules.length; i++) {
-          tempMatch = this._input.match(this.rules[rules[i]]);
+          tempMatch = this._input.match(RULES[rules[i]]);
           if (tempMatch && (!match || tempMatch[0].length > match[0].length)) {
             match = tempMatch;
             index = i;
@@ -2196,27 +2283,12 @@ let Parser = (function () {
         }
       },
 
-      // activates a new lexer condition state (pushes the new lexer condition state onto the condition stack)
-      begin: function begin(condition) {
-        this.conditionStack.push(condition);
-      },
-
-      // pop the previously active lexer condition state off the condition stack
-      popState: function popState() {
-        let n = this.conditionStack.length - 1;
-        if (n > 0) {
-          return this.conditionStack.pop();
-        } else {
-          return this.conditionStack[0];
-        }
-      },
-
       // produce the lexer rule set which is active for the currently active lexer condition state
       _currentRules: function _currentRules() {
         if (this.conditionStack.length && this.conditionStack[this.conditionStack.length - 1]) {
           return this.conditions[this.conditionStack[this.conditionStack.length - 1]].rules;
         } else {
-          return this.conditions["INITIAL"].rules;
+          return this.conditions.INITIAL.rules;
         }
       },
 
@@ -2306,10 +2378,9 @@ let Parser = (function () {
             return ReduceActions.AS_NUMBER;
         }
       },
-      rules: RULES,
       conditions: {
-        "INITIAL": {
-          "rules": [
+        INITIAL: {
+          rules: [
             0,
             1,
             2,

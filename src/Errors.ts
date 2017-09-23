@@ -63,6 +63,35 @@ class ParseError extends Error {
   }
 }
 
+/**
+ * Constructs an error by error name.
+ * @param {string} name - Name of error. If not one of DIV_ZERO_ERROR, NULL_ERROR, VALUE_ERROR, REF_ERROR, NAME_ERROR,
+ * NUM_ERROR,NA_ERROR, or PARSE_ERROR, will default to ParseError.
+ * @param {string} msg - Message for error, will default to empty string.
+ * @returns {Error}
+ */
+function constructErrorByName(name : string, msg? : string) : Error {
+  msg = msg || "";
+  switch (name) {
+    case DIV_ZERO_ERROR:
+      return new DivZeroError(msg);
+    case NULL_ERROR:
+      return new NullError(msg);
+    case VALUE_ERROR:
+      return new ValueError(msg);
+    case REF_ERROR:
+      return new RefError(msg);
+    case NAME_ERROR:
+      return new NameError(msg);
+    case NA_ERROR:
+      return new NAError(msg);
+    case NUM_ERROR:
+      return new NumError(msg);
+    default:
+      return new ParseError(msg);
+  }
+}
+
 export {
   DIV_ZERO_ERROR,
   NULL_ERROR,
@@ -79,5 +108,6 @@ export {
   NameError,
   NumError,
   NAError,
-  ParseError
+  ParseError,
+  constructErrorByName
 }

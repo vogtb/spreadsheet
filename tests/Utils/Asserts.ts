@@ -1,4 +1,10 @@
-import {Cell} from "../../src/Cell";
+import {
+  Cell
+} from "../../src/Cell";
+
+import {
+  Sheet
+} from "../../src/Sheet";
 /**
  * Assert two params are equal using strict equality testing.
  * @param actual value
@@ -82,10 +88,60 @@ function test(description: string, toRun: Function) {
 }
 
 
+function assertFormulaEqualsError(formula: string, errorString: string) {
+  let sheet  = new Sheet();
+  sheet.setCell("A1", formula);
+  let cell = sheet.getCell("A1");
+  assertEquals(cell.getError().name, errorString);
+  assertEquals(cell.getValue(), null);
+}
+
+function assertFormulaEquals(formula: string, expectation: any) {
+  let sheet  = new Sheet();
+  sheet.setCell("A1", formula);
+  let cell = sheet.getCell("A1");
+  assertEquals(cell.getError(), null);
+  assertEquals(cell.getValue(), expectation);
+}
+
+function assertFormulaEqualsDependsOnReference(refId: string, value: any, formula: string, expectation: any) {
+  let sheet  = new Sheet();
+  sheet.setCell(refId, value);
+  sheet.setCell("A1", formula);
+  let cell = sheet.getCell("A1");
+  assertEquals(cell.getError(), null);
+  assertEquals(cell.getValue(), expectation);
+}
+
+function assertFormulaResultsInType(formula: string, type: string) {
+  let sheet  = new Sheet();
+  sheet.setCell("A1", formula);
+  let cell = sheet.getCell("A1");
+  assertEquals(cell.getError(), null);
+  assertEquals(typeof cell.getValue(), type);
+}
+
+function assertFormulaEqualsArray(formula: string, expectation: any) {
+  let sheet  = new Sheet();
+  sheet.setCell("A1", formula);
+  let cell = sheet.getCell("A1");
+  assertEquals(null, cell.getError());
+  let values = cell.getValue();
+  for (let index in values) {
+    assertEquals(values[index], expectation[index]);
+  }
+}
+
+
 export {
   assertIsNull,
   assertEquals,
   assertArrayEquals,
+  assertFormulaEquals,
+  assertFormulaResultsInType,
+  assertFormulaEqualsArray,
+  assertFormulaEqualsError,
+  assertFormulaEqualsDependsOnReference,
   catchAndAssertEquals,
   test
 }

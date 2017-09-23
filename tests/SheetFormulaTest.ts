@@ -3,60 +3,23 @@ import {
 } from "../src/Sheet";
 import {
   assertEquals,
+  assertFormulaEquals,
+  assertFormulaResultsInType,
+  assertFormulaEqualsArray,
+  assertFormulaEqualsError,
+  assertFormulaEqualsDependsOnReference,
   test
 } from "./Utils/Asserts";
 import {
   DIV_ZERO_ERROR,
   VALUE_ERROR,
-  NA_ERROR, PARSE_ERROR, REF_ERROR
+  NA_ERROR,
+  PARSE_ERROR,
+  REF_ERROR
 } from "../src/Errors";
 import {
   Cell
 } from "../src/Cell";
-
-function assertFormulaEqualsError(formula: string, errorString: string) {
-  let sheet  = new Sheet();
-  sheet.setCell("A1", formula);
-  let cell = sheet.getCell("A1");
-  assertEquals(cell.getError().name, errorString);
-  assertEquals(cell.getValue(), null);
-}
-
-function assertFormulaEquals(formula: string, expectation: any) {
-  let sheet  = new Sheet();
-  sheet.setCell("A1", formula);
-  let cell = sheet.getCell("A1");
-  assertEquals(cell.getError(), null);
-  assertEquals(cell.getValue(), expectation);
-}
-
-function assertFormulaEqualsDependsOnReference(refId: string, value: any, formula: string, expectation: any) {
-  let sheet  = new Sheet();
-  sheet.setCell(refId, value);
-  sheet.setCell("A1", formula);
-  let cell = sheet.getCell("A1");
-  assertEquals(cell.getError(), null);
-  assertEquals(cell.getValue(), expectation);
-}
-
-function assertFormulaResultsInType(formula: string, type: string) {
-  let sheet  = new Sheet();
-  sheet.setCell("A1", formula);
-  let cell = sheet.getCell("A1");
-  assertEquals(cell.getError(), null);
-  assertEquals(typeof cell.getValue(), type);
-}
-
-function assertFormulaEqualsArray(formula: string, expectation: any) {
-  let sheet  = new Sheet();
-  sheet.setCell("A1", formula);
-  let cell = sheet.getCell("A1");
-  assertEquals(null, cell.getError());
-  let values = cell.getValue();
-  for (let index in values) {
-    assertEquals(values[index], expectation[index]);
-  }
-}
 
 test("Sheet ABS", function(){
   assertFormulaEquals("=ABS(-10)", 10);

@@ -296,17 +296,18 @@ let ISNA = function (value) {
  * @constructor
  */
 let IFERROR = function (value, valueIfError?) {
+  valueIfError = valueIfError || null;
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "IFERROR");
   if (value instanceof Cell) {
     if (value.hasError()) {
-      return null;
+      return valueIfError;
     }
     return value;
   }
-  if (!ISERROR(value)) {
-    return value;
+  if (ISERROR(value)) {
+    return valueIfError;
   }
-  return null;
+  return value;
 };
 
 

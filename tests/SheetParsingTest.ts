@@ -41,13 +41,26 @@ test("Sheet ^", function(){
 
 test("Sheet throw error literal", function () {
   assertFormulaEqualsError('=#N/A', NA_ERROR);
-  // assertFormulaEqualsError('=ISNA(#N/A)', NA_ERROR);
   assertFormulaEqualsError('=#NUM!', NUM_ERROR);
   assertFormulaEqualsError('=#REF!', REF_ERROR);
   assertFormulaEqualsError('=#NULL!', NULL_ERROR);
   assertFormulaEqualsError('=#ERROR', PARSE_ERROR);
   assertFormulaEqualsError('=#DIV/0!', DIV_ZERO_ERROR);
   assertFormulaEqualsError('=#VALUE!', VALUE_ERROR);
+  assertFormulaEquals('=ISERROR(#N/A)', true);
+  assertFormulaEquals('=ISERROR(#NUM!)', true);
+  assertFormulaEquals('=ISERROR(#REF!)', true);
+  assertFormulaEquals('=ISERROR(#NULL!)', true);
+  assertFormulaEquals('=ISERROR(#ERROR)', true);
+  assertFormulaEquals('=ISERROR(#DIV/0!)', true);
+  assertFormulaEquals('=ISERROR(#VALUE!)', true);
+  assertFormulaEquals('=IFERROR(#N/A, 10)', 10);
+  assertFormulaEquals('=IFERROR(#NUM!, 10)', 10);
+  assertFormulaEquals('=IFERROR(#REF!, 10)', 10);
+  assertFormulaEquals('=IFERROR(#NULL!, 10)', 10);
+  assertFormulaEquals('=IFERROR(#ERROR, 10)', 10);
+  assertFormulaEquals('=IFERROR(#DIV/0!, 10)', 10);
+  assertFormulaEquals('=IFERROR(#VALUE!, 10)', 10);
 });
 
 test("Sheet numbers/math", function(){

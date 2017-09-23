@@ -9,15 +9,11 @@ Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells sho
 For example 64 tbs to a qt.
 
 
-### Raw input of errors should be allowed.
-For example `=#N/A` should force an error to be thrown inside the cell.
-
-
 ### Parser/Sheet should be able to be initialized with js range notation (`[]`) or regular range notation (`{}`)
 
 
 ### Parser should be able to parse arrays without `eval`
-Right now, arrays and reference literals in a formula are parsed using JS `eval`. This means, if we have references inside, or non-JS parsing values like TRUE or FALSE, they will cause ReferenceErrors. For example, `=SUM([M1, 10])` would throw `[ReferenceError: M1 is not defined]` because M1 is not a variables. Instead of using `eval`, we should parse the opening of an array, and the closeing of an array, and use recursion to see how deep we are, evaluating the tokens inside in the sam way we parse formulas and functions.
+Right now, arrays and reference literals in a formula are parsed using JS `eval`. This means, if we have references inside, or non-JS parsing values like TRUE or FALSE, they will cause ReferenceErrors. For example, `=SUM([M1, 10])` would throw `[ReferenceError: M1 is not defined]` because M1 is not a variable. Instead of using `eval`, we should parse the opening of an array, and the closeing of an array, and use recursion to see how deep we are, evaluating the tokens inside in the sam way we parse formulas and functions.
 
 
 ### Meta-Formulas to write

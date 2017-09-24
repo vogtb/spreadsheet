@@ -132,6 +132,17 @@ function assertFormulaEqualsArray(formula: string, expectation: any) {
   }
 }
 
+// WARNING: Locking in Date by overriding prototypes.
+function lockDate(year, month, day, hour, minute, second)  {
+  let d = new Date(year, month, day, hour, minute, second);
+  Date.prototype.constructor = function () {
+    return d;
+  };
+  Date.now = function () {
+    return +(d);
+  };
+}
+
 
 export {
   assertIsNull,
@@ -143,5 +154,6 @@ export {
   assertFormulaEqualsError,
   assertFormulaEqualsDependsOnReference,
   catchAndAssertEquals,
-  test
+  test,
+  lockDate
 }

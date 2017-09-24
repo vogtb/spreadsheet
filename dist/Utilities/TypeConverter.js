@@ -5,6 +5,11 @@ var moment = require("moment");
 var Errors_1 = require("../Errors");
 var DateRegExBuilder_1 = require("./DateRegExBuilder");
 var Cell_1 = require("../Cell");
+var MONTHDIG_DAYDIG = DateRegExBuilder_1.DateRegExBuilder.DateRegExBuilder()
+    .start()
+    .MM().FLEX_DELIMITER().DD_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+    .end()
+    .build();
 var YEAR_MONTHDIG_DAY = DateRegExBuilder_1.DateRegExBuilder.DateRegExBuilder()
     .start()
     .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY().FLEX_DELIMITER_LOOSEDOT().MM().FLEX_DELIMITER_LOOSEDOT().DD_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
@@ -136,6 +141,18 @@ var TypeConverter = (function () {
     function TypeConverter() {
     }
     /**
+     * Converts a datetime string to a moment object. Will return undefined if the string can't be converted.
+     * @param {string} timeString - string to parse and convert.
+     * @returns {moment.Moment}
+     */
+    TypeConverter.stringToMoment = function (timeString) {
+        var m = TypeConverter.parseStringToMoment(timeString);
+        if (m === undefined || !m.isValid()) {
+            return undefined;
+        }
+        return m;
+    };
+    /**
      * Converts a time-formatted string to a number between 0 and 1, exclusive on 1.
      * @param timeString
      * @returns {number} representing time of day
@@ -188,6 +205,20 @@ var TypeConverter = (function () {
                 throw new Error();
             }
             return tmpMoment.add(days, 'days');
+        }
+        // Check MONTHDIG_DAYDIG, MM(fd)DD, '01/06'
+        // NOTE: Must come before YEAR_MONTHDIG matching.
+        if (m === undefined) {
+            var matches = dateString.match(MONTHDIG_DAYDIG);
+            if (matches && matches.length >= 10) {
+                var months = parseInt(matches[1]) - 1; // Months are zero indexed.
+                var days = parseInt(matches[3]) - 1; // Days are zero indexed.
+                var tmpMoment = createMoment(moment.utc().get("years"), months, days);
+                if (matches[8] !== undefined) {
+                    tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
+                }
+                m = tmpMoment;
+            }
         }
         // Check YEAR_MONTHDIG, YYYY(fd)MM, '1992/06'
         // NOTE: Must come before YEAR_MONTHDIG_DAY matching.
@@ -639,11 +670,12 @@ var TypeConverter = (function () {
      * @returns {number} representing a date
      */
     TypeConverter.firstValueAsDateNumber = function (input, coerceBoolean) {
+        coerceBoolean = coerceBoolean || false;
         if (input instanceof Array) {
             if (input.length === 0) {
                 throw new Errors_1.RefError("Reference does not exist.");
             }
-            return TypeConverter.firstValueAsDateNumber(input[0], coerceBoolean);
+            return TypeConverter.firstValueAsDateNumber(input[0], coerceBoolean || false);
         }
         return TypeConverter.valueToDateNumber(input, coerceBoolean);
     };
@@ -723,6 +755,14 @@ var TypeConverter = (function () {
      */
     TypeConverter.numberToMoment = function (n) {
         return moment.utc(TypeConverter.ORIGIN_MOMENT).add(n, "days");
+    };
+    /**
+     * Converts a number to moment while preserving the decimal part of the number.
+     * @param n to convert
+     * @returns {Moment} date
+     */
+    TypeConverter.decimalNumberToMoment = function (n) {
+        return moment.utc(TypeConverter.ORIGIN_MOMENT).add(n * TypeConverter.SECONDS_IN_DAY * 1000, "milliseconds");
     };
     /**
      * Using timestamp units, create a time number between 0 and 1, exclusive on end.

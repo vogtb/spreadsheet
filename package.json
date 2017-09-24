@@ -6,8 +6,8 @@
     "clean": "rm -rf dist/* && rm -rf test_output/*",
     "build": "tsc",
     "docs": "./docs.sh src/Formulas",
-    "test": "./tests.sh",
-    "test:quiet": "./tests.sh | grep -v Test:"
+    "test": "rm -rf test_output/* && ./tests.sh",
+    "test:quiet": "rm -rf test_output/* && ./tests.sh | grep -v Test:"
   },
   "author": "vogtb <bvogt at gmail.com>",
   "license": "MIT",

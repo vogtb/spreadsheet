@@ -10,6 +10,15 @@ import {
   RefError,
   NAError
 } from "../Errors";
+import {
+  Filter
+} from "../Utilities/Filter";
+import {
+  isDefined,
+  NumberStringBuilder
+} from "../Utilities/MoreUtils";
+import {ROUND} from "./Math";
+import {min} from "moment";
 
 /**
  * Computes the value of a Roman numeral.
@@ -412,7 +421,6 @@ let CONVERT = function (value, startUnit, endUnit) {
 
   // Return error if a unit does not exist
   if (from === null || to === null) {
-    console.log(from, to);
     throw new NAError("Invalid units for conversion.");
   }
 
@@ -481,7 +489,7 @@ let T = function (value) {
  * Converts a number into a Roman numeral.
  * @param value - The value to convert. Must be between 0 and 3999.
  * @constructor
- * TODO: Second parameter should be 'rule_relaxation'
+ * TODO: Second parameter should be 'rule_relaxation'.
  */
 let ROMAN = function (value) {
   ArgsChecker.checkLength(arguments, 1, "ROMAN");
@@ -492,6 +500,7 @@ let ROMAN = function (value) {
   }
   // The MIT License
   // Copyright (c) 2008 Steven Levithan
+  // https://stackoverflow.com/questions/9083037/convert-a-number-into-a-roman-numeral-in-javascript
   let digits = String(value).split('');
   let key = ['',
     'C',
@@ -532,6 +541,204 @@ let ROMAN = function (value) {
   return new Array(+digits.join('') + 1).join('M') + roman;
 };
 
+/**
+ * Converts a number into text according to a given format.
+ * @param value - The value to be converted.
+ * @param format - Text which defines the format. "0" forces the display of zeros, while "#" suppresses the display of
+ * zeros. For example TEXT(22.1,"000.00") produces 022.10, while TEXT(22.1,"###.##") produces 22.1, and
+ * TEXT(22.405,"00.00") results in 22.41. To format days: "dddd" indicates full name of the day of the week, "ddd"
+ * short name of the day of the week, "dd" indicates the day of the month as two digits, "d" indicates day of the month
+ * as one or two digits, "mmmmm" indicates the first letter in the month of the year, "mmmm" indicates the full name of
+ * the month of the year, "mmm" indicates short name of the month of the year, "mm" indicates month of the year as two
+ * digits or the number of minutes in a time, depending on whether it follows yy or dd, or if it follows hh, "m" month
+ * of the year as one or two digits or the number of minutes in a time, depending on whether it follows yy or dd, or if
+ * it follows hh, "yyyy" indicates year as four digits, "yy" and "y" indicate year as two digits, "hh" indicates hour
+ * on a 24-hour clock, "h" indicates hour on a 12-hour clock, "ss.000" indicates milliseconds in a time, "ss" indicates
+ * seconds in a time, "AM/PM" or "A/P" indicate displaying hours based on a 12-hour clock and showing AM or PM
+ * depending on the time of day. Eg: `TEXT("01/09/2012 10:04:33AM", "mmmm-dd-yyyy, hh:mm AM/PM")` would result in
+ * "January-09-2012, 10:04 AM".
+ * @constructor
+ */
+let TEXT = function (value, format) {
+  ArgsChecker.checkLength(arguments, 2, "TEXT");
+  value = TypeConverter.firstValue(value);
+
+
+  function splitReplace(values: Array<any>, regex, index) : Array<any> {
+    return values.map(function (value) {
+      if (typeof value === "number") {
+        return [value];
+      } else if (value instanceof Array) {
+        return splitReplace(value, regex, index);
+      } else {
+        let splits = value.split(regex);
+        let building = [];
+        if (splits.length === 1) {
+          return [splits];
+        }
+        splits.map(function (splitValue, splitIndex) {
+          building.push(splitValue);
+          if (splitIndex !== splits.length-1) {
+            building.push(index);
+          }
+        });
+        return building;
+      }
+    });
+  }
+
+  // Short cut for booleans
+  if (typeof value === "boolean") {
+    return TypeConverter.valueToString(value);
+  }
+
+  // If the format matches the date format
+  if (format.match(/^.*(d|D|M|m|yy|Y|HH|hh|h|s|S|AM|PM|am|pm|A\/P|\*).*$/g)) {
+    // If the format contains both, throw error
+    if (format.indexOf("#") > -1 || format.indexOf("0") > -1) {
+      throw new ValueError("Invalid format pattern '" + format + "' for TEXT formula.");
+    }
+    let valueAsMoment;
+    if (typeof value === "string") {
+      valueAsMoment = TypeConverter.stringToMoment(value);
+      if (valueAsMoment === undefined) {
+        valueAsMoment = TypeConverter.decimalNumberToMoment(TypeConverter.valueToNumber(value));
+      }
+    } else {
+      valueAsMoment = TypeConverter.decimalNumberToMoment(TypeConverter.valueToNumber(value));
+    }
+    let replacementPairs = [
+      // full name of the day of the week
+      [/dddd/gi, valueAsMoment.format("dddd")],
+      // short name of the day of the week
+      [/ddd/gi, valueAsMoment.format("ddd")],
+      // day of the month as two digits
+      [/dd/gi, valueAsMoment.format("DD")],
+      // day of the month as one or two digits
+      [/d/gi, valueAsMoment.format("d")],
+      // first letter in the month of the year
+      [/mmmmm/gi, valueAsMoment.format("MMMM").charAt(0)],
+      // full name of the month of the year
+      [/mmmm/gi, valueAsMoment.format("MMMM")],
+      // short name of the month of the year
+      [/mmm/gi, valueAsMoment.format("MMM")],
+      // month of the year as two digits or the number of minutes in a time
+      [/mm/gi, function (monthOrMinute : string) {
+        return monthOrMinute === "month" ? valueAsMoment.format("MM") : valueAsMoment.format("mm");
+      }],
+      // month of the year as one or two digits or the number of minutes in a time
+      [/m/g, function (monthOrMinute : string) {
+        return monthOrMinute === "month" ? valueAsMoment.format("M") : valueAsMoment.format("m");
+      }],
+      // year as four digits
+      [/yyyy/gi, valueAsMoment.format("YYYY")],
+      // year as two digits
+      [/yy/gi, valueAsMoment.format("YY")],
+      // year as two digits
+      [/y/gi, valueAsMoment.format("YY")],
+      // hour on a 24-hour clock
+      [/HH/g, valueAsMoment.format("HH")],
+      // hour on a 12-hour clock
+      [/hh/g, valueAsMoment.format("hh")],
+      // hour on a 12-hour clock
+      [/h/gi, valueAsMoment.format("hh")],
+      // milliseconds in a time
+      [/ss\.000/gi, valueAsMoment.format("ss.SSS")],
+      // seconds in a time
+      [/ss/gi, valueAsMoment.format("ss")],
+      // seconds in a time
+      [/s/gi, valueAsMoment.format("ss")],
+      [/AM\/PM/gi, valueAsMoment.format("A")],
+      // displaying hours based on a 12-hour clock and showing AM or PM depending on the time of day
+      [/A\/P/gi, valueAsMoment.format("A").charAt(0)]
+    ];
+
+    let builtList = [format];
+    replacementPairs.map(function (pair, pairIndex) {
+      let regex = pair[0];
+      builtList = splitReplace(builtList, regex, pairIndex);
+    });
+    let lastRegEx = "";
+    return Filter.flatten(builtList).map(function (val) {
+      if (typeof val === "number") {
+        if (typeof replacementPairs[val][1] === "function") {
+          let monthOrMinute = "month";
+          // Hack-ish way of determining if MM, mm, M, or m should be evaluated as minute or month.
+          let lastRegExWasHour = lastRegEx.toString() === new RegExp("hh", "g").toString()
+              || lastRegEx.toString() === new RegExp("HH", "g").toString()
+              || lastRegEx.toString() === new RegExp("h", "g").toString();
+          if (lastRegExWasHour) {
+            monthOrMinute = "minute";
+          }
+          lastRegEx = replacementPairs[val][0];
+          return replacementPairs[val][1](monthOrMinute);
+        }
+        lastRegEx = replacementPairs[val][0];
+        return replacementPairs[val][1];
+      }
+      return val;
+    }).join("");
+
+
+  } else {
+    let numberValue = TypeConverter.valueToNumber(value);
+
+    // Format string can't contain both 0 and #.
+    if (format.indexOf("#") > -1 && format.indexOf("0") > -1) {
+      throw new ValueError("Invalid format pattern '" + format + "' for TEXT formula.");
+    }
+
+    // See https://regex101.com/r/Jji2Ng/8 for more information.
+    const POUND_SIGN_FORMAT_CAPTURE = /^([$%+-]*)([#,]+)?(\.?)([# ]*)([$%+ -]*)$/gi;
+
+    let matches = POUND_SIGN_FORMAT_CAPTURE.exec(format);
+    if (matches !== null) {
+      let headSignsFormat = matches[1] || "";
+      let wholeNumberFormat = matches[2] || "";
+      let decimalNumberFormat = matches[4] || "";
+      let tailingSignsFormat = matches[5] || "";
+      let commafyNumber = wholeNumberFormat.indexOf(",") > -1;
+      let builder = NumberStringBuilder.start()
+        .number(numberValue)
+        .commafy(commafyNumber)
+        .integerZeros(1)
+        .maximumDecimalPlaces(decimalNumberFormat.replace(/ /g, "").length)
+        .head(headSignsFormat)
+        .tail(tailingSignsFormat);
+      return builder.build();
+    }
+
+    /*
+    * See https://regex101.com/r/Pbx7js/6 for more information.
+    * 1 = signs, currency, etc.
+    * 2 = whole number including commas
+    * 3 = decimal
+    * 4 = decimal place including spaces
+    * 5 = signs, currency, etc.
+    * */
+    const ZERO_FORMAT_CAPTURE = /^([$%+-]*)([0,]+)?(\.?)([0 ]*)([$%+ -]*)$/gi;
+    matches = ZERO_FORMAT_CAPTURE.exec(format);
+    if (matches !== null) {
+      let headSignsFormat = matches[1] || "";
+      let wholeNumberFormat = matches[2] || "";
+      let decimalNumberFormat = matches[4] || "";
+      let tailingSignsFormat = matches[5] || "";
+      let commafyNumber = wholeNumberFormat.indexOf(",") > -1;
+      let builder = NumberStringBuilder.start()
+        .number(numberValue)
+        .commafy(commafyNumber)
+        .integerZeros(wholeNumberFormat.replace(/,/g, "").length)
+        .decimalZeros(decimalNumberFormat.replace(/ /g, "").length)
+        .head(headSignsFormat)
+        .tail(tailingSignsFormat);
+      return builder.build();
+    }
+
+    // If the format didn't match the patterns above, it is invalid.
+    throw new ValueError("Invalid format pattern '" + format + "' for TEXT formula.");
+  }
+};
+
 export {
   ARABIC,
   CHAR,
@@ -543,5 +750,6 @@ export {
   LOWER,
   UPPER,
   T,
-  ROMAN
+  ROMAN,
+  TEXT
 }

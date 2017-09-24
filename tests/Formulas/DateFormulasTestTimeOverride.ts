@@ -7,20 +7,9 @@ import * as ERRORS from "../../src/Errors";
 import {
   assertEquals,
   catchAndAssertEquals,
-  test
+  test,
+  lockDate
 } from "../Utils/Asserts"
-
-
-// WARNING: Locking in Date by overriding prototypes.
-function lockDate(year, month, day, hour, minute, second) {
-  var d = new Date(year, month, day, hour, minute, second);
-  Date.prototype.constructor = function () {
-    return d;
-  };
-  Date.now = function () {
-    return +(d);
-  };
-}
 
 test("NOW", function(){
   lockDate(2012, 11, 10, 4, 55, 4);

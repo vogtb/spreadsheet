@@ -1017,6 +1017,10 @@ test("Sheet ROMAN", function(){
   assertFormulaEquals('=ROMAN(3999)', "MMMCMXCIX");
 });
 
+test("Sheet TEXT", function(){
+  assertFormulaEquals('=TEXT(12.3, "###.##")', "12.3");
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);
@@ -1026,6 +1030,11 @@ test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);
   assertFormulaEquals('= 1 * 1', 1);
+});
+
+test("Sheet &", function(){
+  assertFormulaEquals('="hey"&" "&"there"', "hey there");
+  assertFormulaEquals('=TEXT(12.3, "###.##")&"mm"', "12.3mm");
 });
 
 test("Sheet /", function(){

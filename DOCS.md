@@ -1554,6 +1554,18 @@
 @returns {number} 
 @constructor
 ```
+
+### SERIESSUM 
+
+```
+  Returns a sum of powers of the number x in accordance with the following formula. 
+@param x - The number as an independent variable. 
+@param n - The starting power. 
+@param m - The number to increment by 
+@param coefficients - A series of coefficients. For each coefficient the series sum is extended by one section. You can only enter coefficients using cell references. 
+@returns {number} 
+@constructor
+```
 ## Range
 
 
@@ -2295,4 +2307,30 @@
   Returns string arguments as text, or the empty string if the value is not text. 
 @param value - Value to return. 
 @constructor
+```
+
+### ROMAN 
+
+```
+  Converts a number into a Roman numeral. 
+@param value - The value to convert. Must be between 0 and 3999. 
+@constructor TODO: Second parameter should be 'rule_relaxation'.
+```
+
+### TEXT 
+
+```
+  Converts a number into text according to a given format. 
+@param value - The value to be converted. 
+@param format - Text which defines the format. "0" forces the display of zeros, while "#" suppresses the display of zeros. For example TEXT(22.1,"000.00") produces 022.10, while TEXT(22.1,"###.##") produces 22.1, and TEXT(22.405,"00.00") results in 22.41. To format days: "dddd" indicates full name of the day of the week, "ddd" hort name of the day of the week, "dd" indicates the day of the month as two digits, "d" indicates day of the month as one or two digits, "mmmmm" indicates the first letter in the month of the year, "mmmm" indicates the full name of the month of the year, "mmm" indicates short name of the month of the year, "mm" indicates month of the year as two digits or the number of minutes in a time, depending on whether it follows yy or dd, or if it follows hh, "m" month of the year as one or two digits or the number of minutes in a time, depending on whether it follows yy or dd, or if it follows hh, "yyyy" indicates year as four digits, "yy" and "y" indicate year as two digits, "hh" indicates hour on a 24-hour clock, "h" indicates hour on a 12-hour clock, "ss.000" indicates milliseconds in a time, "ss" indicates econds in a time, "AM/PM" or "A/P" indicate displaying hours based on a 12-hour clock and showing AM or PM depending on the time of day. Eg: `TEXT("01/09/2012 10:04:33AM", "mmmm-dd-yyyy, hh:mm AM/PM")` would result in "January-09-2012, 10:04 AM". 
+@constructor
+```
+
+### 
+
+```
+  Converts a number into text according to a given format.  
+@param value - The value to be converted.  
+@param format - Text which defines the format. "0" forces the display of zeros, while "#" suppresses the display of zeros. For example TEXT(22.1,"000.00") produces 022.10, while TEXT(22.1,"###.##") produces 22.1, and TEXT(22.405,"00.00") results in 22.41. To format days: "dddd" indicates full name of the day of the week, "ddd" hort name of the day of the week, "dd" indicates the day of the month as two digits, "d" indicates day of the month as one or two digits, "mmmmm" indicates the first letter in the month of the year, "mmmm" indicates the full name of the month of the year, "mmm" indicates short name of the month of the year, "mm" indicates month of the year as two digits or the number of minutes in a time, depending on whether it follows yy or dd, or if it follows hh, "m" month of the year as one or two digits or the number of minutes in a time, depending on whether it follows yy or dd, or if it follows hh, "yyyy" indicates year as four digits, "yy" and "y" indicate year as two digits, "hh" indicates hour on a 24-hour clock, "h" indicates hour on a 12-hour clock, "ss.000" indicates milliseconds in a time, "ss" indicates econds in a time, "AM/PM" or "A/P" indicate displaying hours based on a 12-hour clock and showing AM or PM depending on the time of day. Eg: `TEXT("01/09/2012 10:04:33AM", "mmmm-dd-yyyy, hh:mm AM/PM")` would result in "January-09-2012, 10:04 AM".  
+@constructor if (format.match(/^.(d|D|M|m|yy|Y|HH|hh|h|s|S|AM|PM|am|pm|A\/P|\).$/g)) { const POUND_SIGN_FORMAT_CAPTURE = /^([$
 ```

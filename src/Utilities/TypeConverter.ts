@@ -12,6 +12,11 @@ import {
   Cell
 } from "../Cell";
 
+const MONTHDIG_DAYDIG = DateRegExBuilder.DateRegExBuilder()
+  .start()
+  .MM().FLEX_DELIMITER().DD_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
+  .end()
+  .build();
 const YEAR_MONTHDIG_DAY = DateRegExBuilder.DateRegExBuilder()
   .start()
   .OPTIONAL_DAYNAME().OPTIONAL_COMMA().YYYY().FLEX_DELIMITER_LOOSEDOT().MM().FLEX_DELIMITER_LOOSEDOT().DD_W_SPACE().OPTIONAL_TIMESTAMP_CAPTURE_GROUP()
@@ -142,6 +147,19 @@ class TypeConverter {
 
 
   /**
+   * Converts a datetime string to a moment object. Will return undefined if the string can't be converted.
+   * @param {string} timeString - string to parse and convert.
+   * @returns {moment.Moment}
+   */
+  static stringToMoment(timeString : string) : moment.Moment {
+    let m = TypeConverter.parseStringToMoment(timeString);
+    if (m === undefined || !m.isValid()) {
+      return undefined;
+    }
+    return m;
+  }
+
+  /**
    * Converts a time-formatted string to a number between 0 and 1, exclusive on 1.
    * @param timeString
    * @returns {number} representing time of day
@@ -193,6 +211,21 @@ class TypeConverter {
         throw new Error();
       }
       return tmpMoment.add(days, 'days');
+    }
+
+    // Check MONTHDIG_DAYDIG, MM(fd)DD, '01/06'
+    // NOTE: Must come before YEAR_MONTHDIG matching.
+    if (m === undefined) {
+      let  matches = dateString.match(MONTHDIG_DAYDIG);
+      if (matches && matches.length >= 10) {
+        let  months = parseInt(matches[1]) - 1; // Months are zero indexed.
+        let  days = parseInt(matches[3]) - 1; // Days are zero indexed.
+        let tmpMoment = createMoment(moment.utc().get("years"), months, days);
+        if (matches[8] !== undefined) {
+          tmpMoment = matchTimestampAndMutateMoment(matches[8], tmpMoment);
+        }
+        m = tmpMoment
+      }
     }
 
     // Check YEAR_MONTHDIG, YYYY(fd)MM, '1992/06'
@@ -645,11 +678,12 @@ class TypeConverter {
    * @returns {number} representing a date
    */
   public static firstValueAsDateNumber(input: any, coerceBoolean?: boolean) : number {
+    coerceBoolean = coerceBoolean || false;
     if (input instanceof Array) {
       if (input.length === 0) {
         throw new RefError("Reference does not exist.");
       }
-      return TypeConverter.firstValueAsDateNumber(input[0], coerceBoolean);
+      return TypeConverter.firstValueAsDateNumber(input[0], coerceBoolean || false);
     }
     return TypeConverter.valueToDateNumber(input, coerceBoolean);
   }
@@ -689,7 +723,7 @@ class TypeConverter {
       return value;
     } else if (typeof value === "string") {
       try {
-        return TypeConverter.stringToDateNumber(value)
+        return TypeConverter.stringToDateNumber(value);
       } catch (e) {
         if (TypeConverter.canCoerceToNumber(value)) {
           return TypeConverter.valueToNumber(value);
@@ -729,6 +763,15 @@ class TypeConverter {
    */
   public static numberToMoment(n : number) : moment.Moment {
     return moment.utc(TypeConverter.ORIGIN_MOMENT).add(n, "days");
+  }
+
+  /**
+   * Converts a number to moment while preserving the decimal part of the number.
+   * @param n to convert
+   * @returns {Moment} date
+   */
+  public static decimalNumberToMoment(n : number) : moment.Moment {
+    return moment.utc(TypeConverter.ORIGIN_MOMENT).add(n * TypeConverter.SECONDS_IN_DAY * 1000, "milliseconds");
   }
 
   /**

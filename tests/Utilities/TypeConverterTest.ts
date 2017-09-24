@@ -3,7 +3,7 @@ import * as moment from "moment";
 import {
   assertEquals,
   test,
-  catchAndAssertEquals
+  catchAndAssertEquals, lockDate
 } from "../Utils/Asserts";
 import {
   TypeConverter
@@ -16,7 +16,7 @@ import {
   Cell
 } from "../../src/Cell";
 
-var ERROR_CELL = new Cell("A1");
+let ERROR_CELL = new Cell("A1");
 ERROR_CELL.setError(new ValueError("Whooops!"));
 
 
@@ -935,6 +935,38 @@ test("TypeConverter.stringToDateNumber", function () {
   catchAndAssertEquals(function() {
     TypeConverter.stringToDateNumber("January-2000 100000000:100000000:1001000000");
   }, VALUE_ERROR);
+  // MONTHDIG_DAYDIG, MM(fd)DD, '09/01' =========================================================================
+  lockDate(2017, 9, 24, 10, 55, 23);
+  assertEquals(TypeConverter.stringToDateNumber("01/09"), 42744);
+  assertEquals(TypeConverter.stringToDateNumber("02/09"), 42775);
+  assertEquals(TypeConverter.stringToDateNumber("03/09"), 42803);
+  assertEquals(TypeConverter.stringToDateNumber("04/09"), 42834);
+  assertEquals(TypeConverter.stringToDateNumber("05/09"), 42864);
+  assertEquals(TypeConverter.stringToDateNumber("06/09"), 42895);
+  assertEquals(TypeConverter.stringToDateNumber("07/09"), 42925);
+  assertEquals(TypeConverter.stringToDateNumber("08/09"), 42956);
+  assertEquals(TypeConverter.stringToDateNumber("09/09"), 42987);
+  assertEquals(TypeConverter.stringToDateNumber("10/09"), 43017);
+  assertEquals(TypeConverter.stringToDateNumber("11/09"), 43048);
+  assertEquals(TypeConverter.stringToDateNumber("12/09"), 43078);
+  assertEquals(TypeConverter.stringToDateNumber("01/01"), 42736);
+  assertEquals(TypeConverter.stringToDateNumber("01/02"), 42737);
+  assertEquals(TypeConverter.stringToDateNumber("01/03"), 42738);
+  assertEquals(TypeConverter.stringToDateNumber("01/04"), 42739);
+  assertEquals(TypeConverter.stringToDateNumber("01/05"), 42740);
+  assertEquals(TypeConverter.stringToDateNumber("01/29"), 42764);
+  assertEquals(TypeConverter.stringToDateNumber("01/30"), 42765);
+  assertEquals(TypeConverter.stringToDateNumber("01/31"), 42766);
+  assertEquals(TypeConverter.stringToDateNumber("01/09 10:10:10am"), 42744);
+  assertEquals(TypeConverter.stringToDateNumber("01/09 10:10:100000"), 42745);
+  assertEquals(TypeConverter.stringToDateNumber("08/09 10:10:100000"), 42957);
+  assertEquals(TypeConverter.stringToDateNumber("01/02 10am"), 42737);
+  assertEquals(TypeConverter.stringToDateNumber("01/02 10:10"), 42737);
+  assertEquals(TypeConverter.stringToDateNumber("01/02 10:10am"), 42737);
+  assertEquals(TypeConverter.stringToDateNumber("01/02 10:10:10"), 42737);
+  assertEquals(TypeConverter.stringToDateNumber("01/02 10:10:10am"), 42737);
+  assertEquals(TypeConverter.stringToDateNumber("01/02   10  am"), 42737);
+  assertEquals(TypeConverter.stringToDateNumber("01/02  10: 10: 10    am  "), 42737);
 });
 
 

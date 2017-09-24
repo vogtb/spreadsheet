@@ -3,7 +3,8 @@
     "allowJs": true,
     "allowUnreachableCode": true,
     "allowUnusedLabels": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "sourceMap": false
   },
   "files": [
     "src/Sheet.ts"

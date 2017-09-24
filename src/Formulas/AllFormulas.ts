@@ -227,7 +227,8 @@ import {
   LOWER,
   UPPER,
   T,
-  ROMAN
+  ROMAN,
+  TEXT
 } from "./Text"
 import {
   DATE,
@@ -515,5 +516,6 @@ export {
   COLUMNS,
   ROWS,
   SERIESSUM,
-  ROMAN
+  ROMAN,
+  TEXT
 }

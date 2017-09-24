@@ -477,6 +477,61 @@ let T = function (value) {
   return "";
 };
 
+/**
+ * Converts a number into a Roman numeral.
+ * @param value - The value to convert. Must be between 0 and 3999.
+ * @constructor
+ * TODO: Second parameter should be 'rule_relaxation'
+ */
+let ROMAN = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "ROMAN");
+  value = TypeConverter.firstValueAsNumber(value);
+  if (value < 1 || value > 3999) {
+    throw new ValueError("Function ROMAN parameter 1 value is " + value
+        + ", while valid values are between 1 and 3999 inclusive.");
+  }
+  // The MIT License
+  // Copyright (c) 2008 Steven Levithan
+  let digits = String(value).split('');
+  let key = ['',
+    'C',
+    'CC',
+    'CCC',
+    'CD',
+    'D',
+    'DC',
+    'DCC',
+    'DCCC',
+    'CM',
+    '',
+    'X',
+    'XX',
+    'XXX',
+    'XL',
+    'L',
+    'LX',
+    'LXX',
+    'LXXX',
+    'XC',
+    '',
+    'I',
+    'II',
+    'III',
+    'IV',
+    'V',
+    'VI',
+    'VII',
+    'VIII',
+    'IX'
+  ];
+  let roman = '';
+  let i = 3;
+  while (i--) {
+    roman = (key[+digits.pop() + (i * 10)] || '') + roman;
+  }
+  return new Array(+digits.join('') + 1).join('M') + roman;
+};
+
 export {
   ARABIC,
   CHAR,
@@ -487,5 +542,6 @@ export {
   TRIM,
   LOWER,
   UPPER,
-  T
+  T,
+  ROMAN
 }

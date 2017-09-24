@@ -8,7 +8,8 @@ import {
   TRIM,
   LOWER,
   UPPER,
-  T
+  T,
+  ROMAN
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -187,4 +188,14 @@ test("T", function(){
   catchAndAssertEquals(function() {
     T.apply(this, []);
   }, ERRORS.NA_ERROR);
+});
+
+test("ROMAN", function(){
+  assertEquals(ROMAN(419), "CDXIX");
+  assertEquals(ROMAN(1), "I");
+  assertEquals(ROMAN(3999), "MMMCMXCIX");
+  assertEquals(ROMAN(300), "CCC");
+  catchAndAssertEquals(function() {
+    ROMAN(0);
+  }, ERRORS.VALUE_ERROR);
 });

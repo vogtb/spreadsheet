@@ -1009,8 +1009,12 @@ test("Sheet ROWS", function(){
   assertFormulaEquals('=ROWS(B1:M44)', 44);
 });
 
-test("Sheet SERIESSUM", function(){
-  // assertFormulaEquals('=SERIESSUM(1, 0, 1, [4, 5, 6])', 15);
+test("Sheet SERIESSUM", function() {
+  assertFormulaEquals('=SERIESSUM([1], [0], [1], [4, 5, 6])', 15);
+});
+
+test("Sheet ROMAN", function(){
+  assertFormulaEquals('=ROMAN(3999)', "MMMCMXCIX");
 });
 
 test("Sheet parsing error", function(){

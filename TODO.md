@@ -9,6 +9,10 @@ Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells sho
 For example 64 tbs to a qt.
 
 
+### Range literals should be allow to follow commas
+Currently, this `=SERIESSUM([1], [0], [1], [4, 5, 6])` parses, but this `=SERIESSUM(1, 0, 1, [4, 5, 6])` does not.
+
+
 ### Parser/Sheet should be able to be initialized with js range notation (`[]`) or regular range notation (`{}`)
 
 

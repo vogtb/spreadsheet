@@ -1,389 +1,14 @@
 "use strict";
 exports.__esModule = true;
-var ObjectFromPairs_1 = require("../Utilities/ObjectFromPairs");
 var Errors_1 = require("../Errors");
 var Formulas_1 = require("../Formulas");
-// Rules represent the Regular Expressions that will be used in sequence to match a given input to the Parser.
-var WHITE_SPACE_RULE = /^(?:\s+)/; // rule 0
-var DOUBLE_QUOTES_RULE = /^(?:"(\\["]|[^"])*")/; // rule 1
-var SINGLE_QUOTES_RULE = /^(?:'(\\[']|[^'])*')/; // rule 2
-var FORMULA_NAME_RULE = /^(?:[A-Za-z.]{1,}[A-Za-z_0-9]+(?=[(]))/; // Changed from /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+(?=[(]))/ // rule 3
-var DATE_RULE = /^(?:([0]?[1-9]|1[0-2])[:][0-5][0-9]([:][0-5][0-9])?[ ]?(AM|am|aM|Am|PM|pm|pM|Pm))/; // rule 4
-var TIME_RULE = /^(?:([0]?[0-9]|1[0-9]|2[0-3])[:][0-5][0-9]([:][0-5][0-9])?)/; // rule 5
-var $_A1_CELL_RULE = /^(?:\$[A-Za-z]+\$[0-9]+)/; // rule 6
-var A1_CELL_RULE = /^(?:[A-Za-z]+[0-9]+)/; // rules 7
-var FORMULA_NAME_SIMPLE_RULE = /^(?:[A-Za-z.]+(?=[(]))/; // rule 8
-var VARIABLE_RULE = /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+)/; // rule 9
-var SIMPLE_VARIABLE_RILE = /^(?:[A-Za-z_]+)/; //rule 10
-var INTEGER_RULE = /^(?:[0-9]+(?:(?:[eE])(?:[\+-])?[0-9]+)?)/; // Changed from /^(?:[0-9]+)/ // rule 11
-var OPEN_AND_CLOSE_OF_ARRAY_RULE = /^(?:\[(.*)?\])/; // rule 12
-var DOLLAR_SIGN_RULE = /^(?:\$)/; // rule 13
-var AMPERSAND_SIGN_RULE = /^(?:&)/; //rule 14
-var SINGLE_WHITESPACE_RULE = /^(?: )/; // rule 15
-var PERIOD_RULE = /^(?:[.])/; // rule 16
-var COLON_RULE = /^(?::)/; //rule 17
-var SEMI_COLON_RULE = /^(?:;)/; // rule 18
-var COMMA_RULE = /^(?:,)/; // rule 19
-var ASTERISK_RULE = /^(?:\*)/; //rule 20
-var FORWARD_SLASH_RULE = /^(?:\/)/; // rule 21
-var MINUS_SIGN_RULE = /^(?:-)/; // rule 22
-var PLUS_SIGN_RULE = /^(?:\+)/; // rule 23
-var CARET_SIGN_RULE = /^(?:\^)/; //rule 24
-var OPEN_PAREN_RULE = /^(?:\()/; // rule 25
-var CLOSE_PAREN_RULE = /^(?:\))/; // rule 26
-var GREATER_THAN_SIGN_RULE = /^(?:>)/; // rule 27
-var LESS_THAN_SIGN_RULE = /^(?:<)/; // rule 28
-var NOT_RULE = /^(?:NOT\b)/; // rule 29
-var OPEN_DOUBLE_QUOTE = /^(?:")/; // rule 30
-var OPEN_SINGLE_QUITE = /^(?:')/; // rule 31
-var EXCLAMATION_POINT_RULE = /^(?:!)/; // rule 32
-var EQUALS_SIGN_RULE = /^(?:=)/; // rule 33
-var PERCENT_SIGN_RULE = /^(?:%)/; // rule 34
-var HASH_SIGN_RULE = /^(?:[#])/; // rule 35
-var END_OF_STRING_RULE = /^(?:$)/; // rule 36
-// Sequential rules to use when parsing a given input.
-var RULES = [
-    WHITE_SPACE_RULE,
-    DOUBLE_QUOTES_RULE,
-    SINGLE_QUOTES_RULE,
-    FORMULA_NAME_RULE,
-    DATE_RULE,
-    TIME_RULE,
-    $_A1_CELL_RULE,
-    A1_CELL_RULE,
-    FORMULA_NAME_SIMPLE_RULE,
-    VARIABLE_RULE,
-    SIMPLE_VARIABLE_RILE,
-    INTEGER_RULE,
-    OPEN_AND_CLOSE_OF_ARRAY_RULE,
-    DOLLAR_SIGN_RULE,
-    AMPERSAND_SIGN_RULE,
-    SINGLE_WHITESPACE_RULE,
-    PERIOD_RULE,
-    COLON_RULE,
-    SEMI_COLON_RULE,
-    COMMA_RULE,
-    ASTERISK_RULE,
-    FORWARD_SLASH_RULE,
-    MINUS_SIGN_RULE,
-    PLUS_SIGN_RULE,
-    CARET_SIGN_RULE,
-    OPEN_PAREN_RULE,
-    CLOSE_PAREN_RULE,
-    GREATER_THAN_SIGN_RULE,
-    LESS_THAN_SIGN_RULE,
-    NOT_RULE,
-    OPEN_DOUBLE_QUOTE,
-    OPEN_SINGLE_QUITE,
-    EXCLAMATION_POINT_RULE,
-    EQUALS_SIGN_RULE,
-    PERCENT_SIGN_RULE,
-    HASH_SIGN_RULE,
-    END_OF_STRING_RULE
-];
-/**
- * Represents the length to reduce the stack by, and the token index value that will replace those tokens in the stack.
- */
-var ReductionPair = (function () {
-    function ReductionPair(replacementTokenIndex, length) {
-        this.lengthToReduceStackBy = length;
-        this.replacementTokenIndex = replacementTokenIndex;
-    }
-    /**
-     * Get the number representing the length to reduce the stack by.
-     * @returns {number}
-     */
-    ReductionPair.prototype.getLengthToReduceStackBy = function () {
-        return this.lengthToReduceStackBy;
-    };
-    /**
-     * Get the replacement token index.
-     * @returns {number}
-     */
-    ReductionPair.prototype.getReplacementTokenIndex = function () {
-        return this.replacementTokenIndex;
-    };
-    return ReductionPair;
-}());
-/**
- * Productions is used to look up both the number to use when reducing the stack (productions[x][1]) and the semantic
- * value that will replace the tokens in the stack (productions[x][0]).
- * @type {Array<ReductionPair>}
- */
-var productions = [];
-productions[0 /* NO_ACTION */] = null;
-productions[1 /* RETURN_LAST */] = new ReductionPair(3, 2);
-productions[2 /* CALL_VARIABLE */] = new ReductionPair(4, 1);
-productions[3 /* TIME_CALL_TRUE */] = new ReductionPair(4, 1);
-productions[4 /* TIME_CALL */] = new ReductionPair(4, 1);
-productions[5 /* AS_NUMBER */] = new ReductionPair(4, 1);
-productions[6 /* AS_STRING */] = new ReductionPair(4, 1);
-productions[7 /* AMPERSAND */] = new ReductionPair(4, 3);
-productions[8 /* EQUALS */] = new ReductionPair(4, 3);
-productions[9 /* PLUS */] = new ReductionPair(4, 3);
-productions[10 /* LAST_NUMBER */] = new ReductionPair(4, 3);
-productions[11 /* LTE */] = new ReductionPair(4, 4);
-productions[12 /* GTE */] = new ReductionPair(4, 4);
-productions[13 /* NOT_EQ */] = new ReductionPair(4, 4);
-productions[14 /* NOT */] = new ReductionPair(4, 3);
-productions[15 /* GT */] = new ReductionPair(4, 3);
-productions[16 /* LT */] = new ReductionPair(4, 3);
-productions[17 /* MINUS */] = new ReductionPair(4, 3);
-productions[18 /* MULTIPLY */] = new ReductionPair(4, 3);
-productions[19 /* DIVIDE */] = new ReductionPair(4, 3);
-productions[20 /* TO_POWER */] = new ReductionPair(4, 3);
-productions[21 /* INVERT_NUM */] = new ReductionPair(4, 2);
-productions[22 /* TO_NUMBER_NAN_AS_ZERO */] = new ReductionPair(4, 2);
-productions[23 /* CALL_FUNCTION_LAST_BLANK */] = new ReductionPair(4, 3);
-productions[24 /* CALL_FUNCTION_LAST_TWO_IN_STACK */] = new ReductionPair(4, 4);
-productions[25 /* I25 */] = new ReductionPair(4, 1);
-productions[26 /* I26 */] = new ReductionPair(4, 1);
-productions[27 /* I27 */] = new ReductionPair(4, 2);
-productions[28 /* FIXED_CELL_VAL */] = new ReductionPair(25, 1);
-productions[29 /* FIXED_CELL_RANGE_VAL */] = new ReductionPair(25, 3);
-productions[30 /* CELL_VALUE */] = new ReductionPair(25, 1);
-productions[31 /* CELL_RANGE_VALUE */] = new ReductionPair(25, 3);
-productions[32 /* ENSURE_IS_ARRAY */] = new ReductionPair(24, 1);
-productions[33 /* ENSURE_YYTEXT_ARRAY */] = new ReductionPair(24, 1);
-productions[34 /* REDUCE_INT */] = new ReductionPair(24, 3);
-productions[35 /* REDUCE_PERCENT */] = new ReductionPair(24, 3);
-productions[36 /* WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY */] = new ReductionPair(6, 1);
-productions[37 /* ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH */] = new ReductionPair(6, 3);
-productions[38 /* REFLEXIVE_REDUCE */] = new ReductionPair(9, 1);
-productions[39 /* REDUCE_FLOAT */] = new ReductionPair(9, 3);
-productions[40 /* REDUCE_PREV_AS_PERCENT */] = new ReductionPair(9, 2);
-productions[41 /* REDUCE_LAST_THREE_A */] = new ReductionPair(2, 3);
-productions[42 /* REDUCE_LAST_THREE_B */] = new ReductionPair(2, 4);
-var PRODUCTIONS = productions;
-/**
- * Parser initially generated by jison 0.4.15, but modified for readability and extensibility.
- */
+var ParserConstants_1 = require("./ParserConstants");
 var Parser = (function () {
-    /**
-     * Extend object obj by keys k, and values v for each k.
-     * @param k - keys to extend object by.
-     * @param v - value set for each key k.
-     * @param obj - object to extend.
-     * @param l
-     * @returns {Object}
-     */
-    var extendRules = function (k, v, obj, l) {
-        for (obj = obj || {}, l = k.length; l--; obj[k[l]] = v) { }
-        return obj;
-    };
-    var $V0 = [1 /* SHIFT */, 4];
-    var $V1 = [1 /* SHIFT */, 5];
-    var $V2 = [1 /* SHIFT */, 7];
-    var $V3 = [1 /* SHIFT */, 10];
-    var $V4 = [1 /* SHIFT */, 8];
-    var $V5 = [1 /* SHIFT */, 9];
-    var $V6 = [1 /* SHIFT */, 11];
-    var $V7 = [1 /* SHIFT */, 16];
-    var $V8 = [1 /* SHIFT */, 17];
-    var $V9 = [1 /* SHIFT */, 14];
-    var $Va = [1 /* SHIFT */, 15];
-    var $Vb = [1 /* SHIFT */, 18];
-    var $Vc = [1 /* SHIFT */, 20];
-    var $Vd = [1 /* SHIFT */, 21];
-    var $Ve = [1 /* SHIFT */, 22];
-    var $Vf = [1 /* SHIFT */, 23];
-    var $Vg = [1 /* SHIFT */, 24];
-    var $Vh = [1 /* SHIFT */, 25];
-    var $Vi = [1 /* SHIFT */, 26];
-    var $Vj = [1 /* SHIFT */, 27];
-    var $Vk = [1 /* SHIFT */, 28];
-    var $Vl = [1 /* SHIFT */, 29];
-    var $Vm = [
-        5,
-        11,
-        12,
-        13,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        30,
-        31
-    ];
-    var $Vn = [
-        5,
-        11,
-        12,
-        13,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        30,
-        31,
-        33
-    ];
-    var $Vo = [1 /* SHIFT */, 38];
-    var $Vp = [
-        5,
-        11,
-        12,
-        13,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        30,
-        31,
-        35,
-        38
-    ];
-    var $Vq = [
-        5,
-        12,
-        13,
-        15,
-        16,
-        17,
-        18,
-        19,
-        30,
-        31
-    ];
-    var $Vr = [
-        5,
-        12,
-        15,
-        16,
-        17,
-        18,
-        30,
-        31
-    ];
-    var $Vs = [
-        5,
-        12,
-        13,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        30,
-        31
-    ];
-    var $Vt = [
-        15,
-        30,
-        31
-    ];
-    var $Vu = [
-        5,
-        11,
-        12,
-        13,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        30,
-        31,
-        32,
-        36
-    ];
     var parser = {
         lexer: undefined,
         Parser: undefined,
         trace: function trace() { },
         yy: {},
-        symbols: {
-            "error": 2,
-            "expressions": 3,
-            "expression": 4,
-            "EOF": 5,
-            "variableSequence": 6,
-            "TIME_AMPM": 7,
-            "TIME_24": 8,
-            "number": 9,
-            "STRING": 10,
-            "&": 11,
-            "=": 12,
-            "+": 13,
-            "(": 14,
-            ")": 15,
-            "<": 16,
-            ">": 17,
-            "NOT": 18,
-            "-": 19,
-            "*": 20,
-            "/": 21,
-            "^": 22,
-            "FUNCTION": 23,
-            "expseq": 24,
-            "cell": 25,
-            "FIXEDCELL": 26,
-            ":": 27,
-            "CELL": 28,
-            "ARRAY": 29,
-            ";": 30,
-            ",": 31,
-            "VARIABLE": 32,
-            "DECIMAL": 33,
-            "NUMBER": 34,
-            "%": 35,
-            "#": 36,
-            "!": 37,
-            "$accept": 0,
-            "$end": 1
-        },
-        terminals: {
-            5: "EOF",
-            7: "TIME_AMPM",
-            8: "TIME_24",
-            10: "STRING",
-            11: "&",
-            12: "=",
-            13: "+",
-            14: "(",
-            15: ")",
-            16: "<",
-            17: ">",
-            18: "NOT",
-            19: "-",
-            20: "*",
-            21: "/",
-            22: "^",
-            23: "FUNCTION",
-            26: "FIXEDCELL",
-            27: ":",
-            28: "CELL",
-            29: "ARRAY",
-            30: ";",
-            31: ",",
-            32: "VARIABLE",
-            33: "DECIMAL",
-            34: "NUMBER",
-            35: "%",
-            36: "#",
-            37: "!"
-        },
-        /**
-         * Maps a ProductionRule to the appropriate number of previous tokens to use in a reduction action.
-         */
-        productions: PRODUCTIONS,
         /**
          * Perform a reduce action on the given virtual stack. Basically, fetching, deriving, or calculating a value.
          * @param rawValueOfReduceOriginToken - Some actions require the origin token to perform a reduce action. For
@@ -530,6 +155,9 @@ var Parser = (function () {
                     case 42 /* REDUCE_LAST_THREE_B */:
                         this.$ = virtualStack[vsl - 2] + virtualStack[vsl - 1] + virtualStack[vsl];
                         break;
+                    case 43 /* AS_ERROR */:
+                        this.$ = Errors_1.constructErrorByName(virtualStack[vsl]);
+                        break;
                 }
             }
             catch (e) {
@@ -624,603 +252,7 @@ var Parser = (function () {
                 }
             }
         },
-        /**
-         * The `table` is an array of objects that map {@link RULES} to LexActions and tokens.
-         */
-        table: [
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                3, 1,
-                4, 2,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                1, [3]
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                5, [1 /* SHIFT */, 19],
-                11, $Vc,
-                12, $Vd,
-                13, $Ve,
-                16, $Vf,
-                17, $Vg,
-                18, $Vh,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ]),
-            extendRules($Vm, [2 /* REDUCE */, 2], ObjectFromPairs_1.ObjectFromPairs.of([33, [1 /* SHIFT */, 30]])),
-            extendRules($Vm, [2 /* REDUCE */, 3]),
-            extendRules($Vm, [2 /* REDUCE */, 4]),
-            extendRules($Vm, [2 /* REDUCE */, 5], ObjectFromPairs_1.ObjectFromPairs.of([35, [1 /* SHIFT */, 31]])),
-            extendRules($Vm, [2 /* REDUCE */, 6]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 32,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 33,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 34,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                14, [1 /* SHIFT */, 35]
-            ]),
-            extendRules($Vm, [2 /* REDUCE */, 25]),
-            extendRules($Vm, [2 /* REDUCE */, 26], ObjectFromPairs_1.ObjectFromPairs.of([2 /* REDUCE */, 36, 32, [1 /* SHIFT */, 37], 36, $Vb])),
-            extendRules($Vn, [2 /* REDUCE */, 36], ObjectFromPairs_1.ObjectFromPairs.of([36, $Vo])),
-            extendRules($Vp, [2 /* REDUCE */, 38], ObjectFromPairs_1.ObjectFromPairs.of([33, [1 /* SHIFT */, 39]])),
-            extendRules($Vm, [2 /* REDUCE */, 28], ObjectFromPairs_1.ObjectFromPairs.of([27, [1 /* SHIFT */, 40]])),
-            extendRules($Vm, [2 /* REDUCE */, 30], ObjectFromPairs_1.ObjectFromPairs.of([27, [1 /* SHIFT */, 41]])),
-            ObjectFromPairs_1.ObjectFromPairs.of([32, [1 /* SHIFT */, 42]]),
-            ObjectFromPairs_1.ObjectFromPairs.of([1, [3 /* ACCEPT */, 1]]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 43,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 44,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 45,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 48,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                12, [1, 46],
-                13, $V3,
-                14, $V4,
-                17, [1, 47],
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 50,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                12, [1, 49],
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 51,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 52,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 53,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 54,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 55,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([[1 /* SHIFT */, 56]]),
-            extendRules($Vp, [2 /* REDUCE */, 40]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                12, $Vd,
-                13, $Ve,
-                15, [1 /* SHIFT */, 57],
-                16, $Vf,
-                17, $Vg,
-                18, $Vh,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ]),
-            extendRules($Vq, [2 /* REDUCE */, 21], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            extendRules($Vq, [2 /* REDUCE */, 22], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 60,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                15, [1 /* SHIFT */, 58],
-                19, $V5,
-                23, $V6,
-                24, 59,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                29, [1 /* SHIFT */, 61],
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            extendRules($Vm, [2 /* REDUCE */, 27]),
-            ObjectFromPairs_1.ObjectFromPairs.of([36, $Vo]),
-            ObjectFromPairs_1.ObjectFromPairs.of([32, [1 /* SHIFT */, 62]]),
-            ObjectFromPairs_1.ObjectFromPairs.of([34, [1 /* SHIFT */, 63]]),
-            ObjectFromPairs_1.ObjectFromPairs.of([26, [1 /* SHIFT */, 64]]),
-            ObjectFromPairs_1.ObjectFromPairs.of([28, [1 /* SHIFT */, 65]]),
-            ObjectFromPairs_1.ObjectFromPairs.of([37, [1 /* SHIFT */, 66]]),
-            extendRules($Vm, [2 /* REDUCE */, 7]),
-            extendRules([5, 12, 15, 30, 31], [2 /* REDUCE */, 8], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                13, $Ve,
-                16, $Vf,
-                17, $Vg,
-                18, $Vh,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            extendRules($Vq, [2 /* REDUCE */, 9], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 67,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 68,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            extendRules($Vr, [2 /* REDUCE */, 16], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                13, $Ve,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 69,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb
-            ]),
-            extendRules($Vr, [2 /* REDUCE */, 15], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                13, $Ve,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            extendRules([5, 12, 15, 18, 30, 31], [2 /* REDUCE */, 14], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                13, $Ve,
-                16, $Vf,
-                17, $Vg,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            extendRules($Vq, [2 /* REDUCE */, 17], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            extendRules($Vs, [2 /* REDUCE */, 18], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                22, $Vl
-            ])),
-            extendRules($Vs, [2 /* REDUCE */, 19], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                22, $Vl
-            ])),
-            extendRules([5, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 30, 31], [2 /* REDUCE */, 20], ObjectFromPairs_1.ObjectFromPairs.of([11, $Vc])),
-            extendRules($Vn, [2 /* REDUCE */, 37]),
-            extendRules($Vm, [2 /* REDUCE */, 10]),
-            extendRules($Vm, [2 /* REDUCE */, 23]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                15, [1 /* SHIFT */, 70],
-                30, [1 /* SHIFT */, 71],
-                31, [1 /* SHIFT */, 72]
-            ]),
-            extendRules($Vt, [2 /* REDUCE */, 32], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                12, $Vd,
-                13, $Ve,
-                16, $Vf,
-                17, $Vg,
-                18, $Vh,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            extendRules($Vt, [2 /* REDUCE */, 33]), ObjectFromPairs_1.ObjectFromPairs.of([
-                37, [1 /* SHIFT */, 73]
-            ]),
-            extendRules($Vp, [2 /* REDUCE */, 39]),
-            extendRules($Vm, [2 /* REDUCE */, 29]),
-            extendRules($Vm, [2 /* REDUCE */, 31]),
-            extendRules($Vu, [2 /* REDUCE */, 41]),
-            extendRules($Vr, [2 /* REDUCE */, 11], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                13, $Ve,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            extendRules($Vr, [2 /* REDUCE */, 13], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                13, $Ve,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            extendRules($Vr, [2 /* REDUCE */, 12], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                13, $Ve,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            extendRules($Vm, [2 /* REDUCE */, 24]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 74,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb,
-                12, $Vd,
-            ]),
-            ObjectFromPairs_1.ObjectFromPairs.of([
-                2, 13,
-                4, 75,
-                6, 3,
-                7, $V0,
-                8, $V1,
-                9, 6,
-                10, $V2,
-                13, $V3,
-                14, $V4,
-                19, $V5,
-                23, $V6,
-                25, 12,
-                26, $V7,
-                28, $V8,
-                32, $V9,
-                34, $Va,
-                36, $Vb,
-                12, $Vd,
-            ]),
-            extendRules($Vu, [2 /* REDUCE */, 42]),
-            extendRules($Vt, [2 /* REDUCE */, 34], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                12, $Vd,
-                13, $Ve,
-                16, $Vf,
-                17, $Vg,
-                18, $Vh,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ])),
-            extendRules($Vt, [2 /* REDUCE */, 35], ObjectFromPairs_1.ObjectFromPairs.of([
-                11, $Vc,
-                12, $Vd,
-                13, $Ve,
-                16, $Vf,
-                17, $Vg,
-                18, $Vh,
-                19, $Vi,
-                20, $Vj,
-                21, $Vk,
-                22, $Vl
-            ]))
-        ],
-        defaultActions: ObjectFromPairs_1.ObjectFromPairs.of([19, [2 /* REDUCE */, 1]]),
+        defaultActions: { 19: [ParserConstants_1.REDUCE, 1] },
         parseError: function parseError(str, hash) {
             if (hash.recoverable) {
                 this.trace(str);
@@ -1230,7 +262,7 @@ var Parser = (function () {
             }
         },
         parse: function parse(input) {
-            var self = this, stack = [0], semanticValueStack = [null], locationStack = [], table = this.table, yytext = '', yylineno = 0, yyleng = 0, recovering = 0, TERROR = 2, EOF = 1;
+            var stack = [0], semanticValueStack = [null], locationStack = [], yytext = '', yylineno = 0, yyleng = 0, recovering = 0, TERROR = 2, EOF = 1;
             var args = locationStack.slice.call(arguments, 1);
             var lexer = Object.create(this.lexer);
             var sharedState = {
@@ -1274,7 +306,7 @@ var Parser = (function () {
                 var token = lexer.lex() || EOF;
                 // if token isn't its numeric value, convert
                 if (typeof token !== 'number') {
-                    token = self.symbols[token] || token;
+                    token = ParserConstants_1.SYMBOL_NAME_TO_INDEX[token] || token;
                 }
                 return token;
             }
@@ -1294,7 +326,7 @@ var Parser = (function () {
                         symbol = lex();
                     }
                     // read action for current state and first input
-                    action = table[state] && table[state][symbol];
+                    action = ParserConstants_1.ACTION_TABLE[state] && ParserConstants_1.ACTION_TABLE[state][symbol];
                 }
                 // handle parse error
                 if (typeof action === 'undefined' || !action.length || !action[0]) {
@@ -1308,7 +340,7 @@ var Parser = (function () {
                         // try to recover from error
                         for (;;) {
                             // check for error recovery rule in this state
-                            if ((TERROR.toString()) in table[state]) {
+                            if ((TERROR.toString()) in ParserConstants_1.ACTION_TABLE[state]) {
                                 return depth;
                             }
                             if (state === 0 || stack_probe < 2) {
@@ -1325,30 +357,33 @@ var Parser = (function () {
                         // Report error
                         expected = [];
                         var expectedIndexes = [];
-                        var tableState = table[state];
-                        for (p in table[state]) {
-                            if (this.terminals[p] && p > TERROR) {
-                                expected.push(this.terminals[p]);
+                        var tableState = ParserConstants_1.ACTION_TABLE[state];
+                        for (p in ParserConstants_1.ACTION_TABLE[state]) {
+                            if (ParserConstants_1.SYMBOL_INDEX_TO_NAME[p] && p > TERROR) {
+                                expected.push(ParserConstants_1.SYMBOL_INDEX_TO_NAME[p]);
                                 expectedIndexes.push(p);
                             }
                         }
                         if (lexer.showPosition) {
-                            errStr = 'Parse error on line ' + (yylineno + 1) + ":\n" + lexer.showPosition() + "\nExpecting " + expected.join(', ') + ", got '" + (this.terminals[symbol] || symbol) + "'";
+                            errStr = 'Parse error on line ' + (yylineno + 1) + ":  " + lexer.showPosition() + "  Expecting " + expected.join(', ') + ", got '" + (ParserConstants_1.SYMBOL_INDEX_TO_NAME[symbol] || symbol) + "'";
                         }
                         else {
                             errStr = 'Parse error on line ' + (yylineno + 1) + ": Unexpected " +
                                 (symbol == EOF ? "end of input" :
-                                    ("'" + (this.terminals[symbol] || symbol) + "'"));
+                                    ("'" + (ParserConstants_1.SYMBOL_INDEX_TO_NAME[symbol] || symbol) + "'"));
                         }
                         this.parseError(errStr, {
                             text: lexer.match,
-                            token: this.terminals[symbol] || symbol,
+                            token: ParserConstants_1.SYMBOL_INDEX_TO_NAME[symbol] || symbol,
+                            tokenIndex: symbol,
                             line: lexer.yylineno,
                             loc: yyloc,
                             expected: expected,
                             expectedIndexes: expectedIndexes,
                             state: state,
                             tableState: tableState,
+                            stack: stack,
+                            semanticValueStack: semanticValueStack,
                             recoverable: (error_rule_depth !== false)
                         });
                     }
@@ -1375,23 +410,25 @@ var Parser = (function () {
                     preErrorSymbol = (symbol == TERROR ? null : symbol); // save the lookahead token
                     symbol = TERROR; // insert generic error symbol as new lookahead
                     state = stack[stack.length - 1];
-                    action = table[state] && table[state][TERROR];
+                    action = ParserConstants_1.ACTION_TABLE[state] && ParserConstants_1.ACTION_TABLE[state][TERROR];
                     recovering = 3; // allow 3 real symbols to be shifted before reporting a new error
                 }
                 // this shouldn't happen, unless resolve defaults are off
                 if (action[0] instanceof Array && action.length > 1) {
                     throw new Errors_1.ParseError('Parse Error: multiple actions possible at state: ' + state + ', token: ' + symbol);
                 }
-                // LexActions are always:
+                // Available actions:
                 //   Shift: continue to process tokens.
                 //   Reduce: enough tokens have been gathered to reduce input through evaluation.
                 //   Accept: return.
                 switch (action[0]) {
-                    case 1 /* SHIFT */:
+                    case ParserConstants_1.SHIFT:
                         stack.push(symbol);
                         semanticValueStack.push(lexer.yytext);
                         locationStack.push(lexer.yylloc);
                         stack.push(action[1]); // push state
+                        // console.log("SHIFT", "literal", lexer.yytext, "   symbol", symbol, "   symbol name", SYMBOL_INDEX_TO_NAME[symbol], "   action", action,
+                        //     "   stack", stack, "   semanticValueStack", semanticValueStack);
                         symbol = null;
                         if (Formulas_1.Formulas.isTryCatchFormula(lexer.yytext)) {
                             catchFailuresOn = true;
@@ -1411,8 +448,10 @@ var Parser = (function () {
                             preErrorSymbol = null;
                         }
                         break;
-                    case 2 /* REDUCE */:
-                        var currentProduction = this.productions[action[1]];
+                    case ParserConstants_1.REDUCE:
+                        // console.log("REDUCE", "literal", lexer.yytext, "   symbol", symbol, "   symbol name", SYMBOL_INDEX_TO_NAME[symbol], "   action", action,
+                        //     "   stack", stack, "   semanticValueStack", semanticValueStack);
+                        var currentProduction = ParserConstants_1.PRODUCTIONS[action[1]];
                         var lengthToReduceStackBy = currentProduction.getLengthToReduceStackBy();
                         // perform semantic action
                         yyval.$ = semanticValueStack[semanticValueStack.length - lengthToReduceStackBy]; // default to $$ = $1
@@ -1441,10 +480,10 @@ var Parser = (function () {
                         stack.push(currentProduction.getReplacementTokenIndex());
                         semanticValueStack.push(yyval.$);
                         locationStack.push(yyval._$);
-                        newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
+                        newState = ParserConstants_1.ACTION_TABLE[stack[stack.length - 2]][stack[stack.length - 1]];
                         stack.push(newState);
                         break;
-                    case 3 /* ACCEPT */:
+                    case ParserConstants_1.ACCEPT:
                         // Accept
                         return true;
                 }
@@ -1659,7 +698,7 @@ var Parser = (function () {
                 }
                 var rules = this._currentRules();
                 for (var i = 0; i < rules.length; i++) {
-                    tempMatch = this._input.match(this.rules[rules[i]]);
+                    tempMatch = this._input.match(ParserConstants_1.RULES[rules[i]]);
                     if (tempMatch && (!match || tempMatch[0].length > match[0].length)) {
                         match = tempMatch;
                         index = i;
@@ -1712,27 +751,13 @@ var Parser = (function () {
                     return this.lex();
                 }
             },
-            // activates a new lexer condition state (pushes the new lexer condition state onto the condition stack)
-            begin: function begin(condition) {
-                this.conditionStack.push(condition);
-            },
-            // pop the previously active lexer condition state off the condition stack
-            popState: function popState() {
-                var n = this.conditionStack.length - 1;
-                if (n > 0) {
-                    return this.conditionStack.pop();
-                }
-                else {
-                    return this.conditionStack[0];
-                }
-            },
             // produce the lexer rule set which is active for the currently active lexer condition state
             _currentRules: function _currentRules() {
                 if (this.conditionStack.length && this.conditionStack[this.conditionStack.length - 1]) {
                     return this.conditions[this.conditionStack[this.conditionStack.length - 1]].rules;
                 }
                 else {
-                    return this.conditions["INITIAL"].rules;
+                    return this.conditions.INITIAL.rules;
                 }
             },
             options: {},
@@ -1816,10 +841,9 @@ var Parser = (function () {
                         return 5 /* AS_NUMBER */;
                 }
             },
-            rules: RULES,
             conditions: {
-                "INITIAL": {
-                    "rules": [
+                INITIAL: {
+                    rules: [
                         0,
                         1,
                         2,

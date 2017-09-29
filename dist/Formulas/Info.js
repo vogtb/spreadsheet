@@ -281,17 +281,18 @@ exports.ISNA = ISNA;
  * @constructor
  */
 var IFERROR = function (value, valueIfError) {
+    valueIfError = valueIfError || null;
     ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 1, 2, "IFERROR");
     if (value instanceof Cell_1.Cell) {
         if (value.hasError()) {
-            return null;
+            return valueIfError;
         }
         return value;
     }
-    if (!ISERROR(value)) {
-        return value;
+    if (ISERROR(value)) {
+        return valueIfError;
     }
-    return null;
+    return value;
 };
 exports.IFERROR = IFERROR;
 /**

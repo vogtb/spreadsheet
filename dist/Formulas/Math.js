@@ -1378,3 +1378,26 @@ var MULTINOMIAL = function () {
     return _fact(sum) / divisor;
 };
 exports.MULTINOMIAL = MULTINOMIAL;
+/**
+ * Returns a sum of powers of the number x in accordance with the following formula.
+ * @param x - The number as an independent variable.
+ * @param n - The starting power.
+ * @param m - The number to increment by
+ * @param coefficients - A series of coefficients. For each coefficient the series sum is extended by one section. You
+ * can only enter coefficients using cell references.
+ * @returns {number}
+ * @constructor
+ */
+var SERIESSUM = function (x, n, m, coefficients) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 4, "SERIESSUM");
+    x = TypeConverter_1.TypeConverter.firstValueAsNumber(x);
+    n = TypeConverter_1.TypeConverter.firstValueAsNumber(n);
+    m = TypeConverter_1.TypeConverter.firstValueAsNumber(m);
+    coefficients = Filter_1.Filter.flattenAndThrow(coefficients).map(TypeConverter_1.TypeConverter.valueToNumber);
+    var result = coefficients[0] * Math.pow(x, n);
+    for (var i = 1; i < coefficients.length; i++) {
+        result += coefficients[i] * Math.pow(x, n + i * m);
+    }
+    return result;
+};
+exports.SERIESSUM = SERIESSUM;

@@ -13,6 +13,7 @@ import {
   YEARFRAC
 } from "./Date";
 import {Filter} from "../Utilities/Filter";
+import {isUndefined} from "../Utilities/MoreUtils";
 
 
 /**
@@ -737,6 +738,34 @@ let FVSCHEDULE =  function (principal, rateSchedule) {
 };
 
 
+/**
+ * Returns the present value of an investment resulting from a series of regular payments.
+ * @param rate - The interest rate per period.
+ * @param periods - The total number of payment periods
+ * @param paymentPerPeriod - The regular payment made per period.
+ * @param future - [OPTIONAL defaults to 0] The future value remaining after the final installment has been made
+ * @param type - [OPTIONAL defaults to 0] Defines whether the payment is due at the beginning (1) or the end (0) of a
+ * period.
+ * @constructor
+ */
+let PV = function (rate, periods, paymentPerPeriod, future?, type?) {
+  ArgsChecker.checkLengthWithin(arguments, 3, 5, "PV");
+  rate = TypeConverter.firstValueAsNumber(rate);
+  if (rate < 0) {
+    throw new NumError("Function PV parameter 21value is " + rate + ", but should be greater than or equal to 0.");
+  }
+  periods = TypeConverter.firstValueAsNumber(periods);
+  paymentPerPeriod = TypeConverter.firstValueAsNumber(paymentPerPeriod);
+  future = isUndefined(future) ? 0 : TypeConverter.firstValueAsNumber(future);
+  type = isUndefined(type) ? 0 : TypeConverter.firstValueAsNumber(type);
+  if (rate === 0) {
+    return -paymentPerPeriod * periods - future;
+  } else {
+    return (((1 - Math.pow(1 + rate, periods)) / rate) * paymentPerPeriod * (1 + rate * type) - future) / Math.pow(1 + rate, periods);
+  }
+};
+
+
 export {
   ACCRINT,
   CUMPRINC,
@@ -758,5 +787,6 @@ export {
   IPMT,
   FV,
   PPMT,
-  FVSCHEDULE
+  FVSCHEDULE,
+  PV
 }

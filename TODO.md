@@ -88,7 +88,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * PRICE
 * PRICEDISC
 * PRICEMAT
-* PV
 * RATE
 * RECEIVED
 * YIELD

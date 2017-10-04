@@ -19,7 +19,8 @@ import {
   IPMT,
   FV,
   PPMT,
-  FVSCHEDULE
+  FVSCHEDULE,
+  PV
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -477,5 +478,26 @@ test("FVSCHEDULE", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     FVSCHEDULE.apply(this, [0.025]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("PV", function() {
+  assertEquals(PV(2, 12, 100), -49.99990591617884);
+  assertEquals(PV(2, 12, 200), -99.99981183235768);
+  assertEquals(PV(2, -1, 200), 200.00000000000003);
+  assertEquals(PV(2, 1, 0), 0);
+  assertEquals(PV(2, 1, 0, 100), -33.333333333333336);
+  assertEquals(PV(2, 1, 0, 100), -33.333333333333336);
+  assertEquals(PV(2, 3, 100, 100, 1), -148.14814814814815);
+  assertEquals(PV(2, 3, 100, 100, 0), -51.851851851851855);
+  catchAndAssertEquals(function() {
+    PV(-1, 12, 100);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    PV.apply(this, [0, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    PV.apply(this, [0, 1, 2, 3, 4, 5]);
   }, ERRORS.NA_ERROR);
 });

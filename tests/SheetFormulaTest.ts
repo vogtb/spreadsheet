@@ -1021,8 +1021,12 @@ test("Sheet TEXT", function(){
   assertFormulaEquals('=TEXT(12.3, "###.##")', "12.3");
 });
 
-test("Sheet TEXT", function(){
+test("Sheet FVSCHEDULE", function(){
   assertFormulaEquals('=FVSCHEDULE([0.025], [1, 2, 3, 4])', 3.0000000000000004);
+});
+
+test("Sheet PV", function(){
+  assertFormulaEquals('=PV(2, 12, 100)', -49.99990591617884);
 });
 
 test("Sheet parsing error", function(){

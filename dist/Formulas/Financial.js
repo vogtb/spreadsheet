@@ -5,6 +5,7 @@ var TypeConverter_1 = require("../Utilities/TypeConverter");
 var Errors_1 = require("../Errors");
 var Date_1 = require("./Date");
 var Filter_1 = require("../Utilities/Filter");
+var MoreUtils_1 = require("../Utilities/MoreUtils");
 /**
  * Calculates the depreciation of an asset for a specified period using the double-declining balance method.
  * @param cost - The initial cost of the asset.
@@ -723,3 +724,31 @@ var FVSCHEDULE = function (principal, rateSchedule) {
     return future;
 };
 exports.FVSCHEDULE = FVSCHEDULE;
+/**
+ * Returns the present value of an investment resulting from a series of regular payments.
+ * @param rate - The interest rate per period.
+ * @param periods - The total number of payment periods
+ * @param paymentPerPeriod - The regular payment made per period.
+ * @param future - [OPTIONAL defaults to 0] The future value remaining after the final installment has been made
+ * @param type - [OPTIONAL defaults to 0] Defines whether the payment is due at the beginning (1) or the end (0) of a
+ * period.
+ * @constructor
+ */
+var PV = function (rate, periods, paymentPerPeriod, future, type) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 3, 5, "PV");
+    rate = TypeConverter_1.TypeConverter.firstValueAsNumber(rate);
+    if (rate < 0) {
+        throw new Errors_1.NumError("Function PV parameter 21value is " + rate + ", but should be greater than or equal to 0.");
+    }
+    periods = TypeConverter_1.TypeConverter.firstValueAsNumber(periods);
+    paymentPerPeriod = TypeConverter_1.TypeConverter.firstValueAsNumber(paymentPerPeriod);
+    future = MoreUtils_1.isUndefined(future) ? 0 : TypeConverter_1.TypeConverter.firstValueAsNumber(future);
+    type = MoreUtils_1.isUndefined(type) ? 0 : TypeConverter_1.TypeConverter.firstValueAsNumber(type);
+    if (rate === 0) {
+        return -paymentPerPeriod * periods - future;
+    }
+    else {
+        return (((1 - Math.pow(1 + rate, periods)) / rate) * paymentPerPeriod * (1 + rate * type) - future) / Math.pow(1 + rate, periods);
+    }
+};
+exports.PV = PV;

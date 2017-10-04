@@ -602,6 +602,18 @@
 @returns {number} 
 @constructor
 ```
+
+### PV 
+
+```
+  Returns the present value of an investment resulting from a series of regular payments. 
+@param rate - The interest rate per period. 
+@param periods - The total number of payment periods 
+@param paymentPerPeriod - The regular payment made per period. 
+@param future - [OPTIONAL defaults to 0] The future value remaining after the final installment has been made 
+@param type - [OPTIONAL defaults to 0] Defines whether the payment is due at the beginning (1) or the end (0) of a period. 
+@constructor
+```
 ## Info
 
 

@@ -150,7 +150,8 @@ import {
   IRR,
   IPMT,
   FV,
-  PPMT
+  PPMT,
+  FVSCHEDULE
 } from "./Financial";
 import {
   AVERAGE,
@@ -517,5 +518,6 @@ export {
   ROWS,
   SERIESSUM,
   ROMAN,
-  TEXT
+  TEXT,
+  FVSCHEDULE
 }

@@ -1021,6 +1021,10 @@ test("Sheet TEXT", function(){
   assertFormulaEquals('=TEXT(12.3, "###.##")', "12.3");
 });
 
+test("Sheet TEXT", function(){
+  assertFormulaEquals('=FVSCHEDULE([0.025], [1, 2, 3, 4])', 3.0000000000000004);
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

@@ -84,7 +84,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * COUPPCD
 * DISC
 * DURATION
-* FVSCHEDULE
 * INTRATE
 * PRICE
 * PRICEDISC

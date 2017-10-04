@@ -592,6 +592,16 @@
 @returns {number} 
 @constructor
 ```
+
+### FVSCHEDULE 
+
+```
+  Calculates the accumulated value of the starting capital for a series of periodically varying interest rates. 
+@param principal - The starting capital. 
+@param rateSchedule - Range or Array that is a series of interest rates. 
+@returns {number} 
+@constructor
+```
 ## Info
 
 

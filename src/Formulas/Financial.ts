@@ -716,6 +716,27 @@ let PPMT = function (rate, period, periods, present, future?, type?) {
   return PMT(rate, periods, present, future, type) - IPMT(rate, period, periods, present, future, type);
 };
 
+
+/**
+ * Calculates the accumulated value of the starting capital for a series of periodically varying interest rates.
+ * @param principal - The starting capital.
+ * @param rateSchedule - Range or Array that is a series of interest rates.
+ * @returns {number}
+ * @constructor
+ */
+let FVSCHEDULE =  function (principal, rateSchedule) {
+  ArgsChecker.checkLength(arguments, 2, "FVSCHEDULE");
+  let future = TypeConverter.firstValueAsNumber(principal);
+  rateSchedule = Filter.flattenAndThrow(rateSchedule);
+
+  for (let i = 0; i < rateSchedule.length; i++) {
+    // Apply scheduled interest
+    future *= 1 + rateSchedule[i];
+  }
+  return future;
+};
+
+
 export {
   ACCRINT,
   CUMPRINC,
@@ -736,5 +757,6 @@ export {
   IRR,
   IPMT,
   FV,
-  PPMT
+  PPMT,
+  FVSCHEDULE
 }

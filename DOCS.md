@@ -614,6 +614,19 @@
 @param type - [OPTIONAL defaults to 0] Defines whether the payment is due at the beginning (1) or the end (0) of a period. 
 @constructor
 ```
+
+### RATE 
+
+```
+  Returns the constant interest rate per period of an annuity. 
+@param periods - The total number of periods, during which payments are made (payment period). 
+@param paymentPerPeriod - The constant payment (annuity) paid during each period. 
+@param presentValue - The cash value in the sequence of payments 
+@param futureValue - [OPTIONAL defaults to 0] The future value, which is reached at the end of the periodic payments. 
+@param beginningOrEnd - [OPTIONAL defaults to 0] Defines whether the payment is due at the beginning (1) or the end (0) of a period. 
+@param guessRate - [OPTIONAL] - Determines the estimated value of the interest with iterative calculation. 
+@constructor
+```
 ## Info
 
 

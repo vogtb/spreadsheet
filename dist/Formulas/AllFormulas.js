@@ -148,6 +148,7 @@ exports.FV = Financial_1.FV;
 exports.PPMT = Financial_1.PPMT;
 exports.FVSCHEDULE = Financial_1.FVSCHEDULE;
 exports.PV = Financial_1.PV;
+exports.RATE = Financial_1.RATE;
 var Statistical_1 = require("./Statistical");
 exports.AVERAGE = Statistical_1.AVERAGE;
 exports.AVERAGEA = Statistical_1.AVERAGEA;

@@ -20,7 +20,8 @@ import {
   FV,
   PPMT,
   FVSCHEDULE,
-  PV
+  PV,
+  RATE
 } from "../../src/Formulas/Financial";
 import {
   DATE
@@ -499,5 +500,30 @@ test("PV", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     PV.apply(this, [0, 1, 2, 3, 4, 5]);
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("RATE", function() {
+  assertEquals(RATE(12, -100, 400, 0, 0, 0.1), 0.22893307069316507);
+  assertEquals(RATE(360, -665.3, 99000), 0.005916521358085446);
+  assertEquals(RATE(360, -958.63, 192000), 0.0036458502960158515);
+  assertEquals(RATE(180, -1302.96, 192000), 0.0022917255526408564);
+  assertEquals(RATE(360, -889.19, 192000), 0.0031250616819306744);
+  assertEquals(RATE(360, -1145.8, 240000), 0.003333353153720964);
+  assertEquals(RATE(360, -665.3, 99000, 10), 0.00591642102735932);
+  assertEquals(RATE(12, -100, 400, 100), 0.2225948800332845);
+  assertEquals(RATE(360, -665.3, 99000, 10, 1), 0.005965913048930816);
+  catchAndAssertEquals(function() {
+    RATE(0, -100, 400, 10);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    RATE(12, -100, 400, 1000000);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    RATE.apply(this, [0, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    RATE.apply(this, [1, 2, 3, 4, 5, 6, 7]);
   }, ERRORS.NA_ERROR);
 });

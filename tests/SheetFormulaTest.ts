@@ -1029,6 +1029,10 @@ test("Sheet PV", function(){
   assertFormulaEquals('=PV(2, 12, 100)', -49.99990591617884);
 });
 
+test("Sheet RATE", function(){
+  assertFormulaEquals('=RATE(12, -100, 400, 100)', 0.2225948800332845);
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

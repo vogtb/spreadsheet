@@ -752,3 +752,71 @@ var PV = function (rate, periods, paymentPerPeriod, future, type) {
     }
 };
 exports.PV = PV;
+/**
+ * Returns the constant interest rate per period of an annuity.
+ * @param periods - The total number of periods, during which payments are made (payment period).
+ * @param paymentPerPeriod - The constant payment (annuity) paid during each period.
+ * @param presentValue - The cash value in the sequence of payments
+ * @param futureValue - [OPTIONAL defaults to 0] The future value, which is reached at the end of the periodic payments.
+ * @param beginningOrEnd - [OPTIONAL defaults to 0] Defines whether the payment is due at the beginning (1) or the end
+ * (0) of a period.
+ * @param guessRate - [OPTIONAL] - Determines the estimated value of the interest with iterative
+ * calculation.
+ * @constructor
+ */
+var RATE = function (periods, paymentPerPeriod, presentValue, futureValue, beginningOrEnd, guessRate) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 3, 6, "RATE");
+    periods = TypeConverter_1.TypeConverter.firstValueAsNumber(periods);
+    if (periods < 1) {
+        throw new Errors_1.NumError("Function RATE parameter 1 value is" + periods + ", but it should be greater than 0.");
+    }
+    paymentPerPeriod = TypeConverter_1.TypeConverter.firstValueAsNumber(paymentPerPeriod);
+    presentValue = TypeConverter_1.TypeConverter.firstValueAsNumber(presentValue);
+    futureValue = MoreUtils_1.isDefined(futureValue) ? TypeConverter_1.TypeConverter.firstValueAsNumber(futureValue) : 0;
+    beginningOrEnd = MoreUtils_1.isDefined(beginningOrEnd) ? TypeConverter_1.TypeConverter.firstValueAsNumber(beginningOrEnd) : 0;
+    guessRate = MoreUtils_1.isDefined(guessRate) ? TypeConverter_1.TypeConverter.firstValueAsNumber(guessRate) : 0.1;
+    // Sets the limits for possible guesses to any
+    // number between 0% and 100%
+    var lowLimit = 0;
+    var highLimit = 1;
+    var guess = guessRate;
+    // Defines a tolerance of up to +/- 0.00005% of pmt, to accept
+    // the solution as valid.
+    var tolerance = Math.abs(0.00000005 * paymentPerPeriod);
+    // Tries at most 40 times to find a solution within the tolerance.
+    for (var i = 0; i < 40; i++) {
+        // Resets the balance to the original pv.
+        var balance = presentValue;
+        // Calculates the balance at the end of the loan, based
+        // on loan conditions.
+        for (var j = 0; j < periods; j++) {
+            if (beginningOrEnd == 0) {
+                // Interests applied before payment
+                balance = balance * (1 + guess) + paymentPerPeriod;
+            }
+            else {
+                // Payments applied before insterests
+                balance = (balance + paymentPerPeriod) * (1 + guess);
+            }
+        }
+        // Returns the guess if balance is within tolerance.  If not, adjusts
+        // the limits and starts with a new guess.
+        if (Math.abs(balance + futureValue) < tolerance) {
+            return guess;
+        }
+        else if (balance + futureValue > 0) {
+            // Sets a new highLimit knowing that
+            // the current guess was too big.
+            highLimit = guess;
+        }
+        else {
+            // Sets a new lowLimit knowing that
+            // the current guess was too small.
+            lowLimit = guess;
+        }
+        // Calculates the new guess.
+        guess = (highLimit + lowLimit) / 2;
+    }
+    throw new Errors_1.NumError("RATE attempted to complete but it was not able to.");
+};
+exports.RATE = RATE;

@@ -152,7 +152,8 @@ import {
   FV,
   PPMT,
   FVSCHEDULE,
-  PV
+  PV,
+  RATE
 } from "./Financial";
 import {
   AVERAGE,
@@ -521,5 +522,6 @@ export {
   ROMAN,
   TEXT,
   FVSCHEDULE,
-  PV
+  PV,
+  RATE
 }

@@ -60,7 +60,8 @@ import {
   RANK$AVG,
   RANK$EQ,
   LOGNORMDIST,
-  TDIST
+  TDIST,
+  HYPGEOMDIST
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1238,5 +1239,32 @@ test("TDIST", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     TDIST.apply(this, []);
+  }, ERRORS.NA_ERROR);
+});
+
+test("HYPGEOMDIST", function() {
+  assertEquals(HYPGEOMDIST(4, 12, 20, 44), 0.16895408557348432);
+  assertEquals(HYPGEOMDIST(5, 12, 20, 40), 0.21512468231044427);
+  assertEquals(HYPGEOMDIST(1, 12, 29, 40), 5.190757213128131e-9);
+  catchAndAssertEquals(function() {
+    HYPGEOMDIST(1, 12, 30, 40);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    HYPGEOMDIST(1, 12, 35, 40);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    HYPGEOMDIST(1, 12, 35, 40);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    HYPGEOMDIST(-1, 12, 20, 44);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    HYPGEOMDIST(13, 12, 20, 44);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function() {
+    HYPGEOMDIST.apply(this, [5, 12, 20]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    HYPGEOMDIST.apply(this, [5, 12, 20, 40, 44]);
   }, ERRORS.NA_ERROR);
 });

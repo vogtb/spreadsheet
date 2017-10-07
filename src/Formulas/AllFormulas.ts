@@ -218,7 +218,8 @@ import {
   RANK$AVG,
   RANK$EQ,
   LOGNORMDIST,
-  TDIST
+  TDIST,
+  HYPGEOMDIST
 } from "./Statistical";
 import {
   ARABIC,
@@ -525,5 +526,6 @@ export {
   FVSCHEDULE,
   PV,
   RATE,
-  SUBTOTAL
+  SUBTOTAL,
+  HYPGEOMDIST
 }

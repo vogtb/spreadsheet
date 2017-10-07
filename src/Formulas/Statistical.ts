@@ -16,7 +16,8 @@ import {
 import {
   SUM,
   ABS,
-  FLOOR
+  FLOOR,
+  COMBIN
 } from "./Math";
 import {
   cdf,
@@ -2048,6 +2049,38 @@ let TDIST = function (x, degreesOfFreedom, tails) {
   return tails * (1 - _studenttCDF(x, degreesOfFreedom));
 };
 
+/**
+ * Returns the hypergeometric distribution. X is the number of results achieved in the random sample.
+ * @param numberOfSuccesses - The number of results achieved in the random sample.
+ * @param numberOfDraws - The size of the random sample.
+ * @param successesInPop - The number of possible results in the total population.
+ * @param populationSize - The size of the total population.
+ * @returns {number}
+ * @constructor
+ */
+let HYPGEOMDIST = function (numberOfSuccesses, numberOfDraws, successesInPop, populationSize) {
+  ArgsChecker.checkLength(arguments, 4, "HYPGEOMDIST");
+  numberOfSuccesses = TypeConverter.firstValueAsNumber(numberOfSuccesses);
+  numberOfDraws = TypeConverter.firstValueAsNumber(numberOfDraws);
+  if (numberOfSuccesses > numberOfDraws) {
+    throw new NumError("HYPGEOMDIST parameter 1 value is " + numberOfSuccesses
+        + ", but should be less than or equal to parameter 2 with " + numberOfDraws + ".");
+  }
+  if (numberOfSuccesses < 0) {
+    throw new NumError("HYPGEOMDIST parameter 1 value is " + numberOfSuccesses
+        + ", but should be greater than or equal to 0.");
+  }
+  if (numberOfSuccesses < (numberOfDraws + successesInPop - populationSize)) {
+    throw new NumError("HYPGEOMDIST parameter 1 value is " + numberOfSuccesses
+        + ", but should be greater than or equal to " + (numberOfDraws + successesInPop - populationSize) + ".");
+  }
+  successesInPop = TypeConverter.firstValueAsNumber(successesInPop);
+  populationSize = TypeConverter.firstValueAsNumber(populationSize);
+  return COMBIN(successesInPop, numberOfSuccesses) *
+      COMBIN(populationSize - successesInPop, numberOfDraws - numberOfSuccesses) /
+      COMBIN(populationSize, numberOfDraws);
+};
+
 
 export {
   AVERAGE,
@@ -2111,5 +2144,6 @@ export {
   RANK$AVG,
   RANK$EQ,
   LOGNORMDIST,
-  TDIST
+  TDIST,
+  HYPGEOMDIST
 }

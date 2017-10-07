@@ -2260,6 +2260,18 @@
 @returns {number} 
 @constructor
 ```
+
+### HYPGEOMDIST 
+
+```
+  Returns the hypergeometric distribution. X is the number of results achieved in the random sample. 
+@param numberOfSuccesses - The number of results achieved in the random sample. 
+@param numberOfDraws - The size of the random sample. 
+@param successesInPop - The number of possible results in the total population. 
+@param populationSize - The size of the total population. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

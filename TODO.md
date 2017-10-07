@@ -39,7 +39,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 
 
 ### Easy formulas to write
-* HYPGEOMDIST
 * CRITBINOM
 * ZTEST
 * CLEAN

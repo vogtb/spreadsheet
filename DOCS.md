@@ -1601,6 +1601,16 @@
 @returns {number} 
 @constructor
 ```
+
+### SUBTOTAL 
+
+```
+  Calculates subtotals. If a range already contains subtotals, these are not used for further calculations. 
+@param functionCode - A value that stands for another function: 1=AVERAGE, 2=COUNT, 3=COUNTA, 4=MAX, 5=MIN, 6=PRODUCT, 7=STDEV, 8=STDEVP, 9=SUM, 10=VAR, 11=VARP. 
+@param values - The ranges whose cells are included. 
+@returns {Array} 
+@constructor
+```
 ## Range
 
 

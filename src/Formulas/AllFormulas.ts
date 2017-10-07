@@ -73,7 +73,8 @@ import {
   FACTDOUBLE,
   UNARY_PERCENT,
   MULTINOMIAL,
-  SERIESSUM
+  SERIESSUM,
+  SUBTOTAL
 } from "./Math";
 import {
   FREQUENCY,
@@ -523,5 +524,6 @@ export {
   TEXT,
   FVSCHEDULE,
   PV,
-  RATE
+  RATE,
+  SUBTOTAL
 }

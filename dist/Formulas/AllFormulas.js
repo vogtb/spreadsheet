@@ -76,6 +76,7 @@ exports.FACTDOUBLE = Math_1.FACTDOUBLE;
 exports.UNARY_PERCENT = Math_1.UNARY_PERCENT;
 exports.MULTINOMIAL = Math_1.MULTINOMIAL;
 exports.SERIESSUM = Math_1.SERIESSUM;
+exports.SUBTOTAL = Math_1.SUBTOTAL;
 var Range_1 = require("./Range");
 exports.FREQUENCY = Range_1.FREQUENCY;
 exports.GROWTH = Range_1.GROWTH;

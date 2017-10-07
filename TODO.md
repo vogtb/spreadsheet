@@ -38,20 +38,12 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * COUNTBLANK - Requires changes to to Parser/Sheet so when we iterate through a range to return an array, we call a special function that accumulates all values, blank/null/undefined or otherwise.
 
 
-### Formulas to write
-* SUBTOTAL
-* CRITBINOM
-* F.DIST.RT
+### Easy formulas to write
 * HYPGEOMDIST
-* LOGINV
-* T.INV
-* T.INV.2T
-* TINV
-* TTEST
+* CRITBINOM
 * ZTEST
 * CLEAN
 * FIND
-* FINDB
 * JOIN
 * LEFT
 * LEN
@@ -63,11 +55,19 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * REPLACE
 * REPT
 * RIGHT
-* ROMAN
 * SEARCH
-* SEARCHB
 * SUBSTITUTE
 * VALUE
+
+### Other formulas to write
+* F.DIST.RT
+* LOGINV
+* T.INV
+* T.INV.2T
+* TINV
+* TTEST
+* FINDB
+* SEARCHB
 * LOGEST
 * MDETERM
 * MINVERSE

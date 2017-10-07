@@ -1033,6 +1033,10 @@ test("Sheet RATE", function(){
   assertFormulaEquals('=RATE(12, -100, 400, 100)', 0.2225948800332845);
 });
 
+test("Sheet SUBTOTAL", function(){
+  assertFormulaEquals('=SUBTOTAL([1], [1, 2, 3, 4, 5, 6, 7])', 4);
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

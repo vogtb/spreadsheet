@@ -82,12 +82,22 @@ function catchAndAssertEquals(toExecute : Function, expected) {
   }
 }
 
+/**
+ * Print description of test, and run test.
+ * @param {string} description - To print.
+ * @param {Function} toRun - Test function to run.
+ */
 function test(description: string, toRun: Function) {
   console.log("Test:", description);
   toRun();
 }
 
 
+/**
+ * Assert formula will result in a particular error.
+ * @param {string} formula
+ * @param {string} errorString
+ */
 function assertFormulaEqualsError(formula: string, errorString: string) {
   let sheet  = new Sheet();
   sheet.setCell("A1", formula);
@@ -96,6 +106,11 @@ function assertFormulaEqualsError(formula: string, errorString: string) {
   assertEquals(cell.getValue(), null);
 }
 
+/**
+ * Assert formula will result in a particular value.
+ * @param {string} formula
+ * @param expectation
+ */
 function assertFormulaEquals(formula: string, expectation: any) {
   let sheet  = new Sheet();
   sheet.setCell("A1", formula);
@@ -104,6 +119,13 @@ function assertFormulaEquals(formula: string, expectation: any) {
   assertEquals(cell.getValue(), expectation);
 }
 
+/**
+ * Assert formula will equal a result, depends on a specific cell reference.
+ * @param {string} refId - Cell ID, eg: A1
+ * @param value - Value for refId.
+ * @param {string} formula - Formula to evaluate.
+ * @param expectation - Expected result.
+ */
 function assertFormulaEqualsDependsOnReference(refId: string, value: any, formula: string, expectation: any) {
   let sheet  = new Sheet();
   sheet.setCell(refId, value);
@@ -113,6 +135,11 @@ function assertFormulaEqualsDependsOnReference(refId: string, value: any, formul
   assertEquals(cell.getValue(), expectation);
 }
 
+/**
+ * Assert that the evaluation of a formula results in a specific type.
+ * @param {string} formula
+ * @param {string} type
+ */
 function assertFormulaResultsInType(formula: string, type: string) {
   let sheet  = new Sheet();
   sheet.setCell("A1", formula);
@@ -121,6 +148,11 @@ function assertFormulaResultsInType(formula: string, type: string) {
   assertEquals(typeof cell.getValue(), type);
 }
 
+/**
+ * Assert formula will result in a particular array.
+ * @param {string} formula
+ * @param expectation
+ */
 function assertFormulaEqualsArray(formula: string, expectation: any) {
   let sheet  = new Sheet();
   sheet.setCell("A1", formula);
@@ -132,7 +164,15 @@ function assertFormulaEqualsArray(formula: string, expectation: any) {
   }
 }
 
-// WARNING: Locking in Date by overriding prototypes.
+/**
+ * Lock in Date by overriding prototypes. WARNING: Should be used sparingly and cautiously.
+ * @param year
+ * @param month
+ * @param day
+ * @param hour
+ * @param minute
+ * @param second
+ */
 function lockDate(year, month, day, hour, minute, second)  {
   let d = new Date(year, month, day, hour, minute, second);
   Date.prototype.constructor = function () {

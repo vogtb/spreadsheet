@@ -7,6 +7,7 @@ var Serializer_1 = require("../Utilities/Serializer");
 var CriteriaFunctionFactory_1 = require("../Utilities/CriteriaFunctionFactory");
 var Errors_1 = require("../Errors");
 var MathHelpers_1 = require("../Utilities/MathHelpers");
+var Statistical_1 = require("./Statistical");
 /**
  * Returns the greatest common divisor of one or more integers.
  * @param values - The values or ranges whose factors to consider in a calculation to find the greatest common divisor.
@@ -1401,3 +1402,48 @@ var SERIESSUM = function (x, n, m, coefficients) {
     return result;
 };
 exports.SERIESSUM = SERIESSUM;
+/**
+ * Calculates subtotals. If a range already contains subtotals, these are not used for further calculations.
+ * @param functionCode - A value that stands for another function: 1=AVERAGE, 2=COUNT, 3=COUNTA, 4=MAX, 5=MIN,
+ * 6=PRODUCT, 7=STDEV, 8=STDEVP, 9=SUM, 10=VAR, 11=VARP.
+ * @param values - The ranges whose cells are included.
+ * @returns {Array}
+ * @constructor
+ */
+var SUBTOTAL = function (functionCode) {
+    var values = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        values[_i - 1] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 2, "SUBTOTAL");
+    functionCode = TypeConverter_1.TypeConverter.firstValueAsNumber(functionCode);
+    values = Filter_1.Filter.flattenAndThrow(values);
+    switch (functionCode) {
+        case 1:
+            return Statistical_1.AVERAGE(values);
+        case 2:
+            return Statistical_1.COUNT(values);
+        case 3:
+            return Statistical_1.COUNTA(values);
+        case 4:
+            return Statistical_1.MAX(values);
+        case 5:
+            return Statistical_1.MIN(values);
+        case 6:
+            return PRODUCT.apply(this, values);
+        case 7:
+            return Statistical_1.STDEV(values);
+        case 8:
+            return Statistical_1.STDEVP(values);
+        case 9:
+            return SUM(values);
+        case 10:
+            return Statistical_1.VAR(values);
+        case 11:
+            return Statistical_1.VARP(values);
+        default:
+            throw new Errors_1.ValueError("Value '" + functionCode +
+                "' does not correspond to a function for use in SUBTOTAL. Value should be between 1 to 11.");
+    }
+};
+exports.SUBTOTAL = SUBTOTAL;

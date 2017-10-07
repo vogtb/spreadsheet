@@ -73,7 +73,8 @@ import {
   FACTDOUBLE,
   UNARY_PERCENT,
   MULTINOMIAL,
-  SERIESSUM
+  SERIESSUM,
+  SUBTOTAL
 } from "../../src/Formulas/Math";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1528,5 +1529,30 @@ test("SERIESSUM", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     SERIESSUM.apply(this, [1, 0, 1])
+  }, ERRORS.NA_ERROR);
+});
+
+
+test("SUBTOTAL", function(){
+  assertEquals(SUBTOTAL(1, [1, 2, 3, 4, 5, 6, 7]), 4);
+  assertEquals(SUBTOTAL(1, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 5.5);
+  assertEquals(SUBTOTAL(2, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 14);
+  assertEquals(SUBTOTAL(3, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 14);
+  assertEquals(SUBTOTAL(4, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 10);
+  assertEquals(SUBTOTAL(5, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 1);
+  assertEquals(SUBTOTAL(6, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 3048192000);
+  assertEquals(SUBTOTAL(7, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 2.5943726083138543);
+  assertEquals(SUBTOTAL(8, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 2.5);
+  assertEquals(SUBTOTAL(9, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 77);
+  assertEquals(SUBTOTAL(10, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 6.730769230769231);
+  assertEquals(SUBTOTAL(11, [1, 2, 3, 4, 5, 6, 7], [4, 5, 6, 7, 8, 9, 10]), 6.25);
+  catchAndAssertEquals(function() {
+    SUBTOTAL(0, [1, 2, 3, 4, 5, 6, 7]);
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    SUBTOTAL(12, [1, 2, 3, 4, 5, 6, 7]);
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    SUBTOTAL.apply(this, [1])
   }, ERRORS.NA_ERROR);
 });

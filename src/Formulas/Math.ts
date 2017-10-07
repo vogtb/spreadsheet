@@ -23,6 +23,17 @@ import {
 import {
   erf, gammaln
 } from "../Utilities/MathHelpers";
+import {
+  AVERAGE,
+  COUNT,
+  COUNTA,
+  MAX,
+  MIN,
+  STDEV,
+  STDEVP,
+  VAR,
+  VARP
+} from "./Statistical";
 
 
 /**
@@ -1408,6 +1419,48 @@ let SERIESSUM = function (x, n, m, coefficients) {
 };
 
 
+/**
+ * Calculates subtotals. If a range already contains subtotals, these are not used for further calculations.
+ * @param functionCode - A value that stands for another function: 1=AVERAGE, 2=COUNT, 3=COUNTA, 4=MAX, 5=MIN,
+ * 6=PRODUCT, 7=STDEV, 8=STDEVP, 9=SUM, 10=VAR, 11=VARP.
+ * @param values - The ranges whose cells are included.
+ * @returns {Array}
+ * @constructor
+ */
+let SUBTOTAL =  function (functionCode, ...values: Array<Array<any>>) {
+  ArgsChecker.checkAtLeastLength(arguments, 2, "SUBTOTAL");
+  functionCode = TypeConverter.firstValueAsNumber(functionCode);
+  values = Filter.flattenAndThrow(values);
+  switch (functionCode) {
+    case 1:
+      return AVERAGE(values);
+    case 2:
+      return COUNT(values);
+    case 3:
+      return COUNTA(values);
+    case 4:
+      return MAX(values);
+    case 5:
+      return MIN(values);
+    case 6:
+      return PRODUCT.apply(this, values);
+    case 7:
+      return STDEV(values);
+    case 8:
+      return STDEVP(values);
+    case 9:
+      return SUM(values);
+    case 10:
+      return VAR(values);
+    case 11:
+      return VARP(values);
+    default:
+      throw new ValueError("Value '" + functionCode +
+          "' does not correspond to a function for use in SUBTOTAL. Value should be between 1 to 11.");
+  }
+};
+
+
 export {
   ABS,
   ACOS,
@@ -1483,5 +1536,6 @@ export {
   FACTDOUBLE,
   UNARY_PERCENT,
   MULTINOMIAL,
-  SERIESSUM
+  SERIESSUM,
+  SUBTOTAL
 }

@@ -32,6 +32,7 @@ import {
   erf,
   gammaln
 } from "../Utilities/MathHelpers";
+import {isDefined, isUndefined} from "../Utilities/MoreUtils";
 
 
 /**
@@ -2081,6 +2082,23 @@ let HYPGEOMDIST = function (numberOfSuccesses, numberOfDraws, successesInPop, po
       COMBIN(populationSize, numberOfDraws);
 };
 
+/**
+ * Returns the two-tailed P value of a z test with standard distribution.
+ * @param range - Te array of the data.
+ * @param value - The value to be tested.
+ * @param stdDev - [OPTIONAL] The standard deviation of the total population. If this argument is missing, the standard
+ * deviation of the sample is processed.
+ * @returns {number}
+ * @constructor
+ */
+let ZTEST = function (range, value, stdDev?) {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "ZTEST");
+  range = Filter.flattenAndThrow(range);
+  value = TypeConverter.firstValueAsNumber(value);
+  let sd = isUndefined(stdDev) ? STDEV(range) : TypeConverter.firstValueAsNumber(stdDev);
+  return 1 - NORMSDIST((AVERAGE(range) - value) / (sd / Math.sqrt(range.length)));
+};
+
 
 export {
   AVERAGE,
@@ -2145,5 +2163,6 @@ export {
   RANK$EQ,
   LOGNORMDIST,
   TDIST,
-  HYPGEOMDIST
+  HYPGEOMDIST,
+  ZTEST
 }

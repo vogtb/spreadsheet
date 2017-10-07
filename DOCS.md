@@ -2272,6 +2272,17 @@
 @returns {number} 
 @constructor
 ```
+
+### ZTEST 
+
+```
+  Returns the two-tailed P value of a z test with standard distribution. 
+@param range - Te array of the data. 
+@param value - The value to be tested. 
+@param stdDev - [OPTIONAL] The standard deviation of the total population. If this argument is missing, the standard deviation of the sample is processed. 
+@returns {number} 
+@constructor
+```
 ## Text
 
 

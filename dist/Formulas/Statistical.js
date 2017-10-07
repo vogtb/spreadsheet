@@ -7,6 +7,7 @@ var TypeConverter_1 = require("../Utilities/TypeConverter");
 var Errors_1 = require("../Errors");
 var Math_1 = require("./Math");
 var MathHelpers_1 = require("../Utilities/MathHelpers");
+var MoreUtils_1 = require("../Utilities/MoreUtils");
 /**
  * Calculates the sum of squares of deviations based on a sample.
  * @param values - The values or ranges of the sample.
@@ -2092,3 +2093,20 @@ var HYPGEOMDIST = function (numberOfSuccesses, numberOfDraws, successesInPop, po
         Math_1.COMBIN(populationSize, numberOfDraws);
 };
 exports.HYPGEOMDIST = HYPGEOMDIST;
+/**
+ * Returns the two-tailed P value of a z test with standard distribution.
+ * @param range - Te array of the data.
+ * @param value - The value to be tested.
+ * @param stdDev - [OPTIONAL] The standard deviation of the total population. If this argument is missing, the standard
+ * deviation of the sample is processed.
+ * @returns {number}
+ * @constructor
+ */
+var ZTEST = function (range, value, stdDev) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 2, 3, "ZTEST");
+    range = Filter_1.Filter.flattenAndThrow(range);
+    value = TypeConverter_1.TypeConverter.firstValueAsNumber(value);
+    var sd = MoreUtils_1.isUndefined(stdDev) ? STDEV(range) : TypeConverter_1.TypeConverter.firstValueAsNumber(stdDev);
+    return 1 - NORMSDIST((AVERAGE(range) - value) / (sd / Math.sqrt(range.length)));
+};
+exports.ZTEST = ZTEST;

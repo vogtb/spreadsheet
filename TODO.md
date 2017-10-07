@@ -39,8 +39,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 
 
 ### Easy formulas to write
-* CRITBINOM
-* ZTEST
 * CLEAN
 * FIND
 * JOIN
@@ -59,6 +57,7 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * VALUE
 
 ### Other formulas to write
+* CRITBINOM
 * F.DIST.RT
 * LOGINV
 * T.INV

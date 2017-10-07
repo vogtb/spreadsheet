@@ -1037,6 +1037,14 @@ test("Sheet SUBTOTAL", function(){
   assertFormulaEquals('=SUBTOTAL([1], [1, 2, 3, 4, 5, 6, 7])', 4);
 });
 
+test("Sheet HYPGEOMDIST", function(){
+  assertFormulaEquals('=HYPGEOMDIST(4, 12, 20, 44)', 0.16895408557348432);
+});
+
+test("Sheet ZTEST", function(){
+  assertFormulaEquals('=ZTEST([1, 2, 3, 4, 5, 6, 7], 5.6, 1.1)', 0.9999405457342111);
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

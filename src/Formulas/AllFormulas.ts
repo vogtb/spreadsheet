@@ -219,7 +219,8 @@ import {
   RANK$EQ,
   LOGNORMDIST,
   TDIST,
-  HYPGEOMDIST
+  HYPGEOMDIST,
+  ZTEST
 } from "./Statistical";
 import {
   ARABIC,
@@ -527,5 +528,6 @@ export {
   PV,
   RATE,
   SUBTOTAL,
-  HYPGEOMDIST
+  HYPGEOMDIST,
+  ZTEST
 }

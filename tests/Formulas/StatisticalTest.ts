@@ -61,7 +61,8 @@ import {
   RANK$EQ,
   LOGNORMDIST,
   TDIST,
-  HYPGEOMDIST
+  HYPGEOMDIST,
+  ZTEST
 } from "../../src/Formulas/Statistical";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -1266,5 +1267,18 @@ test("HYPGEOMDIST", function() {
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     HYPGEOMDIST.apply(this, [5, 12, 20, 40, 44]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("ZTEST", function() {
+  assertEquals(ZTEST([1, 2, 3, 4, 5, 6, 7], 5.6, 1.1), 0.9999405457342111);
+  assertEquals(ZTEST([1, 2, 3, 4], 10.1, 1.1), 1);
+  assertEquals(ZTEST([1, 2, 3, 4, 5, 6, 7], 5.6, 22), 0.5762927116053485);
+  assertEquals(ZTEST([1, 2, 3, 4, 5, 6, 7], -100, -100), 0.9970345857641326);
+  catchAndAssertEquals(function() {
+    ZTEST.apply(this, [5]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    ZTEST.apply(this, [1, 2, 3, 4]);
   }, ERRORS.NA_ERROR);
 });

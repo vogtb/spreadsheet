@@ -14,7 +14,7 @@ import {
   Filter
 } from "../Utilities/Filter";
 import {
-  isDefined,
+  isDefined, isUndefined,
   NumberStringBuilder
 } from "../Utilities/MoreUtils";
 import {ROUND} from "./Math";
@@ -739,6 +739,30 @@ let TEXT = function (value, format) {
   }
 };
 
+/**
+ * Looks for a string of text within another string. Where to begin the search can also be defined. The search term can
+ * be a number or any string of characters. The search is case-sensitive.
+ * @param searchFor - The text to be found.
+ * @param searchIn - The text where the search takes place.
+ * @param startAt - [OPTIONAL defaults to 1] - The position in the text from which the search starts.
+ * @returns {number}
+ * @constructor
+ */
+let FIND = function (searchFor, searchIn, startAt?) {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "FIND");
+  searchFor = TypeConverter.firstValueAsString(searchFor);
+  searchIn = TypeConverter.firstValueAsString(searchIn);
+  startAt = isUndefined(startAt) ? 1 : TypeConverter.firstValueAsNumber(startAt);
+  if (startAt < 1) {
+    throw new ValueError("FIND parameter 3 value is " + startAt + ", but should be greater than or equal to 1.");
+  }
+  let index = searchIn.indexOf(searchFor, startAt - 1);
+  if (index > -1) {
+    return index + 1;
+  }
+  throw new ValueError("For FIND cannot find '" + searchFor + "' within '" + searchIn + "'.");
+};
+
 export {
   ARABIC,
   CHAR,
@@ -751,5 +775,6 @@ export {
   UPPER,
   T,
   ROMAN,
-  TEXT
+  TEXT,
+  FIND
 }

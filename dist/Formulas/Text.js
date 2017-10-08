@@ -703,3 +703,27 @@ var TEXT = function (value, format) {
     }
 };
 exports.TEXT = TEXT;
+/**
+ * Looks for a string of text within another string. Where to begin the search can also be defined. The search term can
+ * be a number or any string of characters. The search is case-sensitive.
+ * @param searchFor - The text to be found.
+ * @param searchIn - The text where the search takes place.
+ * @param startAt - [OPTIONAL defaults to 1] - The position in the text from which the search starts.
+ * @returns {number}
+ * @constructor
+ */
+var FIND = function (searchFor, searchIn, startAt) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 2, 3, "FIND");
+    searchFor = TypeConverter_1.TypeConverter.firstValueAsString(searchFor);
+    searchIn = TypeConverter_1.TypeConverter.firstValueAsString(searchIn);
+    startAt = MoreUtils_1.isUndefined(startAt) ? 1 : TypeConverter_1.TypeConverter.firstValueAsNumber(startAt);
+    if (startAt < 1) {
+        throw new Errors_1.ValueError("FIND parameter 3 value is " + startAt + ", but should be greater than or equal to 1.");
+    }
+    var index = searchIn.indexOf(searchFor, startAt - 1);
+    if (index > -1) {
+        return index + 1;
+    }
+    throw new Errors_1.ValueError("For FIND cannot find '" + searchFor + "' within '" + searchIn + "'.");
+};
+exports.FIND = FIND;

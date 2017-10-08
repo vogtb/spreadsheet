@@ -2402,3 +2402,14 @@
 @param format - Text which defines the format. "0" forces the display of zeros, while "#" suppresses the display of zeros. For example TEXT(22.1,"000.00") produces 022.10, while TEXT(22.1,"###.##") produces 22.1, and TEXT(22.405,"00.00") results in 22.41. To format days: "dddd" indicates full name of the day of the week, "ddd" hort name of the day of the week, "dd" indicates the day of the month as two digits, "d" indicates day of the month as one or two digits, "mmmmm" indicates the first letter in the month of the year, "mmmm" indicates the full name of the month of the year, "mmm" indicates short name of the month of the year, "mm" indicates month of the year as two digits or the number of minutes in a time, depending on whether it follows yy or dd, or if it follows hh, "m" month of the year as one or two digits or the number of minutes in a time, depending on whether it follows yy or dd, or if it follows hh, "yyyy" indicates year as four digits, "yy" and "y" indicate year as two digits, "hh" indicates hour on a 24-hour clock, "h" indicates hour on a 12-hour clock, "ss.000" indicates milliseconds in a time, "ss" indicates econds in a time, "AM/PM" or "A/P" indicate displaying hours based on a 12-hour clock and showing AM or PM depending on the time of day. Eg: `TEXT("01/09/2012 10:04:33AM", "mmmm-dd-yyyy, hh:mm AM/PM")` would result in "January-09-2012, 10:04 AM".  
 @constructor if (format.match(/^.(d|D|M|m|yy|Y|HH|hh|h|s|S|AM|PM|am|pm|A\/P|\).$/g)) { const POUND_SIGN_FORMAT_CAPTURE = /^([$
 ```
+
+### FIND 
+
+```
+  Looks for a string of text within another string. Where to begin the search can also be defined. The search term can be a number or any string of characters. The search is case-sensitive. 
+@param searchFor - The text to be found. 
+@param searchIn - The text where the search takes place. 
+@param startAt - [OPTIONAL defaults to 1] - The position in the text from which the search starts. 
+@returns {number} 
+@constructor
+```

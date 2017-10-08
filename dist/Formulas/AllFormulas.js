@@ -227,6 +227,7 @@ exports.UPPER = Text_1.UPPER;
 exports.T = Text_1.T;
 exports.ROMAN = Text_1.ROMAN;
 exports.TEXT = Text_1.TEXT;
+exports.FIND = Text_1.FIND;
 var Date_1 = require("./Date");
 exports.DATE = Date_1.DATE;
 exports.DATEVALUE = Date_1.DATEVALUE;

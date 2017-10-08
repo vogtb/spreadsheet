@@ -1045,6 +1045,10 @@ test("Sheet ZTEST", function(){
   assertFormulaEquals('=ZTEST([1, 2, 3, 4, 5, 6, 7], 5.6, 1.1)', 0.9999405457342111);
 });
 
+test("Sheet FIND", function(){
+  assertFormulaEquals('=FIND("s", "soup")', 1);
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

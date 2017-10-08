@@ -10,7 +10,8 @@ import {
   UPPER,
   T,
   ROMAN,
-  TEXT
+  TEXT,
+  FIND
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -347,5 +348,30 @@ test("TEXT", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     TEXT.apply(this, [100, "0", 10])
+  }, ERRORS.NA_ERROR);
+});
+
+test("FIND", function(){
+  assertEquals(FIND("s", "soup", 1), 1);
+  assertEquals(FIND("s", "soup"), 1);
+  assertEquals(FIND("o", "soup"), 2);
+  assertEquals(FIND("u", "soup"), 3);
+  assertEquals(FIND("p", "soup"), 4);
+  assertEquals(FIND("s", "soup soup", 5), 6);
+  assertEquals(FIND("o", "soup soup", 5), 7);
+  assertEquals(FIND("u", "soup soup", 5), 8);
+  assertEquals(FIND("p", "soup soup", 5), 9);
+  assertEquals(FIND("p", "soup soup", 4), 4);
+  catchAndAssertEquals(function() {
+    FIND("m", "soup", -1);
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    FIND("m", "soup");
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    FIND.apply(this, [2])
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    FIND.apply(this, [2, 3, 4, 5])
   }, ERRORS.NA_ERROR);
 });

@@ -850,6 +850,23 @@ let SEARCH = function (findText, withinText, position?) {
   throw new ValueError("For SEARCH evaluation, cannot find '" + findText + "' inside '" + withinText + "'");
 };
 
+/**
+ * Repeats a character string by the given number of copies.
+ * @param text - The text to be repeated.
+ * @param numberOfReps - The number of repetitions
+ * @constructor
+ */
+let REPT = function (text, numberOfReps) {
+  ArgsChecker.checkLength(arguments, 2, "REPT");
+  text = TypeConverter.firstValueAsString(text);
+  numberOfReps = TypeConverter.firstValueAsNumber(numberOfReps);
+  if (numberOfReps < 0) {
+    throw new ValueError("Formula REPT parameter 2 value is " + numberOfReps
+      + ", but should be greater than or equal to 0.");
+  }
+  return new Array(numberOfReps + 1).join(text);
+};
+
 export {
   ARABIC,
   CHAR,
@@ -868,5 +885,6 @@ export {
   LEN,
   LEFT,
   RIGHT,
-  SEARCH
+  SEARCH,
+  REPT
 }

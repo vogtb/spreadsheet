@@ -1069,6 +1069,10 @@ test("Sheet SEARCH", function(){
   assertFormulaEquals('=SEARCH("soup", "soup?")', 1);
 });
 
+test("Sheet REPT", function(){
+  assertFormulaEquals('=REPT("a", 2)', "aa");
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

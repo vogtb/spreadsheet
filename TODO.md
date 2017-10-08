@@ -46,7 +46,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * REGEXMATCH - May be difficult considering language differences.
 * REGEXREPLACE - May be difficult considering language differences.
 * REPLACE
-* REPT
 * SUBSTITUTE
 * VALUE
 

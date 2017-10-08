@@ -240,7 +240,8 @@ import {
   LEN,
   LEFT,
   RIGHT,
-  SEARCH
+  SEARCH,
+  REPT
 } from "./Text"
 import {
   DATE,
@@ -541,5 +542,6 @@ export {
   LEN,
   LEFT,
   RIGHT,
-  SEARCH
+  SEARCH,
+  REPT
 }

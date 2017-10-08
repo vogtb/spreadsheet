@@ -2461,3 +2461,12 @@
 @param position - [OPTIONAL default 1] The position in the text where the search is to start. 
 @constructor
 ```
+
+### REPT 
+
+```
+  Repeats a character string by the given number of copies. 
+@param text - The text to be repeated. 
+@param numberOfReps - The number of repetitions 
+@constructor
+```

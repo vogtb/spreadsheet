@@ -16,7 +16,8 @@ import {
   LEN,
   LEFT,
   RIGHT,
-  SEARCH
+  SEARCH,
+  REPT
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -465,5 +466,20 @@ test("SEARCH", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     SEARCH.apply(this, [1, 2, 3, 4]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("REPT", function(){
+  assertEquals(REPT("s", 0), "");
+  assertEquals(REPT("s", 1), "s");
+  assertEquals(REPT("s", 10), "ssssssssss");
+  catchAndAssertEquals(function() {
+    REPT("s", -1);
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    REPT.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    REPT.apply(this, [1, 2, 3]);
   }, ERRORS.NA_ERROR);
 });

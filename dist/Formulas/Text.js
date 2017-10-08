@@ -818,3 +818,20 @@ var SEARCH = function (findText, withinText, position) {
     throw new Errors_1.ValueError("For SEARCH evaluation, cannot find '" + findText + "' inside '" + withinText + "'");
 };
 exports.SEARCH = SEARCH;
+/**
+ * Repeats a character string by the given number of copies.
+ * @param text - The text to be repeated.
+ * @param numberOfReps - The number of repetitions
+ * @constructor
+ */
+var REPT = function (text, numberOfReps) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "REPT");
+    text = TypeConverter_1.TypeConverter.firstValueAsString(text);
+    numberOfReps = TypeConverter_1.TypeConverter.firstValueAsNumber(numberOfReps);
+    if (numberOfReps < 0) {
+        throw new Errors_1.ValueError("Formula REPT parameter 2 value is " + numberOfReps
+            + ", but should be greater than or equal to 0.");
+    }
+    return new Array(numberOfReps + 1).join(text);
+};
+exports.REPT = REPT;

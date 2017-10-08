@@ -2423,3 +2423,11 @@
 @returns {string} 
 @constructor
 ```
+
+### LEN 
+
+```
+  Returns the length of a string including spaces. 
+@param value - The text whose length is to be determined. 
+@constructor
+```

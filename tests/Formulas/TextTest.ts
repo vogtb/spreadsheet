@@ -12,7 +12,8 @@ import {
   ROMAN,
   TEXT,
   FIND,
-  JOIN
+  JOIN,
+  LEN
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -385,5 +386,20 @@ test("JOIN", function(){
   assertEquals(JOIN(true, [1, 2, 3, 4, 5]), "1TRUE2TRUE3TRUE4TRUE5");
   catchAndAssertEquals(function() {
     JOIN.apply(this, [2])
+  }, ERRORS.NA_ERROR);
+});
+
+test("LEN", function(){
+  assertEquals(LEN("soup"), 4);
+  assertEquals(LEN("jja sdkj lkasj lkajlskaj dlj lask"), 33);
+  assertEquals(LEN(""), 0);
+  assertEquals(LEN(4), 1);
+  assertEquals(LEN(44), 2);
+  assertEquals(LEN(true), 4);
+  catchAndAssertEquals(function() {
+    LEN.apply(this, [])
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    LEN.apply(this, [2, 4])
   }, ERRORS.NA_ERROR);
 });

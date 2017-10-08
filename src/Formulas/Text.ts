@@ -777,6 +777,17 @@ let JOIN = function (delimiter, ...values) {
   return values.join(delimiter);
 };
 
+/**
+ * Returns the length of a string including spaces.
+ * @param value - The text whose length is to be determined.
+ * @constructor
+ */
+let LEN = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "LEN");
+  value = TypeConverter.firstValueAsString(value);
+  return value.length;
+};
+
 export {
   ARABIC,
   CHAR,
@@ -791,5 +802,6 @@ export {
   ROMAN,
   TEXT,
   FIND,
-  JOIN
+  JOIN,
+  LEN
 }

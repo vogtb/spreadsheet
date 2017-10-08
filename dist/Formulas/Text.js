@@ -745,3 +745,14 @@ var JOIN = function (delimiter) {
     return values.join(delimiter);
 };
 exports.JOIN = JOIN;
+/**
+ * Returns the length of a string including spaces.
+ * @param value - The text whose length is to be determined.
+ * @constructor
+ */
+var LEN = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "LEN");
+    value = TypeConverter_1.TypeConverter.firstValueAsString(value);
+    return value.length;
+};
+exports.LEN = LEN;

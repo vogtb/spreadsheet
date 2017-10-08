@@ -758,7 +758,7 @@ var LEN = function (value) {
 exports.LEN = LEN;
 /**
  * Returns the first character or characters in a text string.
- * @param text - The text where the initial partial words are to be determined
+ * @param text - The text where the initial partial words are to be determined.
  * @param numberOfCharacters [OPTIONAL] - The number of characters for the start text. If this parameter is not defined,
  * one character is returned.
  * @returns {string}
@@ -775,3 +775,22 @@ var LEFT = function (text, numberOfCharacters) {
     return text.substring(0, numberOfCharacters);
 };
 exports.LEFT = LEFT;
+/**
+ * Defines the last character or characters in a text string.
+ * @param text - The text where the initial partial words are to be determined.
+ * @param numberOfCharacters [OPTIONAL] - The number of characters for the start text. If this parameter is not defined,
+ * one character is returned.
+ * @returns {string}
+ * @constructor
+ */
+var RIGHT = function (text, numberOfCharacters) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 1, 2, "RIGHT");
+    text = TypeConverter_1.TypeConverter.firstValueAsString(text);
+    numberOfCharacters = MoreUtils_1.isUndefined(numberOfCharacters) ? 1 : numberOfCharacters;
+    if (numberOfCharacters < 0) {
+        throw new Errors_1.ValueError("Formula RIGHT parameter 2 value is " + numberOfCharacters
+            + ", but should be greater than or equal to 0.");
+    }
+    return text.substring(text.length - numberOfCharacters);
+};
+exports.RIGHT = RIGHT;

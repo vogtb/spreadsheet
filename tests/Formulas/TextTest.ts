@@ -14,7 +14,8 @@ import {
   FIND,
   JOIN,
   LEN,
-  LEFT
+  LEFT,
+  RIGHT
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -422,5 +423,25 @@ test("LEFT", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     LEFT.apply(this, [1, 2, 3]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("RIGHT", function(){
+  assertEquals(RIGHT("soup"), "p");
+  assertEquals(RIGHT("soup", 0), "");
+  assertEquals(RIGHT("soup", 1), "p");
+  assertEquals(RIGHT("soup", 2), "up");
+  assertEquals(RIGHT("soup", 3), "oup");
+  assertEquals(RIGHT("soup", 4), "soup");
+  assertEquals(RIGHT("soup", 5), "soup");
+  assertEquals(RIGHT("", 1000), "");
+  catchAndAssertEquals(function() {
+    RIGHT("soup", -1);
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    RIGHT.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    RIGHT.apply(this, [1, 2, 3]);
   }, ERRORS.NA_ERROR);
 });

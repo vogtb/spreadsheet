@@ -2436,7 +2436,17 @@
 
 ```
   Returns the first character or characters in a text string. 
-@param text - The text where the initial partial words are to be determined 
+@param text - The text where the initial partial words are to be determined. 
+@param numberOfCharacters [OPTIONAL] - The number of characters for the start text. If this parameter is not defined, one character is returned. 
+@returns {string} 
+@constructor
+```
+
+### RIGHT 
+
+```
+  Defines the last character or characters in a text string. 
+@param text - The text where the initial partial words are to be determined. 
 @param numberOfCharacters [OPTIONAL] - The number of characters for the start text. If this parameter is not defined, one character is returned. 
 @returns {string} 
 @constructor

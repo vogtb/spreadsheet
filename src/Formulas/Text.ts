@@ -790,7 +790,7 @@ let LEN = function (value) {
 
 /**
  * Returns the first character or characters in a text string.
- * @param text - The text where the initial partial words are to be determined
+ * @param text - The text where the initial partial words are to be determined.
  * @param numberOfCharacters [OPTIONAL] - The number of characters for the start text. If this parameter is not defined,
  * one character is returned.
  * @returns {string}
@@ -804,7 +804,26 @@ let LEFT = function (text, numberOfCharacters?) {
     throw new ValueError("Formula LEFT parameter 2 value is " + numberOfCharacters
         + ", but should be greater than or equal to 0.");
   }
-  return text.substring(0, numberOfCharacters)
+  return text.substring(0, numberOfCharacters);
+};
+
+/**
+ * Defines the last character or characters in a text string.
+ * @param text - The text where the initial partial words are to be determined.
+ * @param numberOfCharacters [OPTIONAL] - The number of characters for the start text. If this parameter is not defined,
+ * one character is returned.
+ * @returns {string}
+ * @constructor
+ */
+let RIGHT = function (text, numberOfCharacters?) {
+  ArgsChecker.checkLengthWithin(arguments, 1, 2, "RIGHT");
+  text = TypeConverter.firstValueAsString(text);
+  numberOfCharacters = isUndefined(numberOfCharacters) ? 1 : numberOfCharacters;
+  if (numberOfCharacters < 0) {
+    throw new ValueError("Formula RIGHT parameter 2 value is " + numberOfCharacters
+      + ", but should be greater than or equal to 0.");
+  }
+  return text.substring(text.length - numberOfCharacters);
 };
 
 export {
@@ -823,5 +842,6 @@ export {
   FIND,
   JOIN,
   LEN,
-  LEFT
+  LEFT,
+  RIGHT
 }

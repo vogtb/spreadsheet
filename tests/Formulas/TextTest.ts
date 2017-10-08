@@ -15,7 +15,8 @@ import {
   JOIN,
   LEN,
   LEFT,
-  RIGHT
+  RIGHT,
+  SEARCH
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -443,5 +444,26 @@ test("RIGHT", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     RIGHT.apply(this, [1, 2, 3]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("SEARCH", function(){
+  assertEquals(SEARCH("soup", "where is the soup?"), 14);
+  assertEquals(SEARCH("SOUP", "where is the soup?"), 14);
+  assertEquals(SEARCH("soup", "where Is ThE sOUp?"), 14);
+  assertEquals(SEARCH("soup", "soup?"), 1);
+  assertEquals(SEARCH("oup", "soup?"), 2);
+  assertEquals(SEARCH("soup", "soup, where is the soup?", 14), 20);
+  catchAndAssertEquals(function() {
+    SEARCH("beef", "soup?");
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    SEARCH("beef", "beef", -10);
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    SEARCH.apply(this, [1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    SEARCH.apply(this, [1, 2, 3, 4]);
   }, ERRORS.NA_ERROR);
 });

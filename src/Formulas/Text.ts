@@ -799,7 +799,7 @@ let LEN = function (value) {
 let LEFT = function (text, numberOfCharacters?) {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "LEFT");
   text = TypeConverter.firstValueAsString(text);
-  numberOfCharacters = isUndefined(numberOfCharacters) ? 1 : numberOfCharacters;
+  numberOfCharacters = isUndefined(numberOfCharacters) ? 1 : TypeConverter.firstValueAsNumber(numberOfCharacters);
   if (numberOfCharacters < 0) {
     throw new ValueError("Formula LEFT parameter 2 value is " + numberOfCharacters
         + ", but should be greater than or equal to 0.");
@@ -818,12 +818,36 @@ let LEFT = function (text, numberOfCharacters?) {
 let RIGHT = function (text, numberOfCharacters?) {
   ArgsChecker.checkLengthWithin(arguments, 1, 2, "RIGHT");
   text = TypeConverter.firstValueAsString(text);
-  numberOfCharacters = isUndefined(numberOfCharacters) ? 1 : numberOfCharacters;
+  numberOfCharacters = isUndefined(numberOfCharacters) ? 1 : TypeConverter.firstValueAsNumber(numberOfCharacters);
   if (numberOfCharacters < 0) {
     throw new ValueError("Formula RIGHT parameter 2 value is " + numberOfCharacters
       + ", but should be greater than or equal to 0.");
   }
   return text.substring(text.length - numberOfCharacters);
+};
+
+/**
+ * Returns the position of a text segment within a character string. The start of the search can be set as an option.
+ * The search text can be a number or any sequence of characters. The search is not case-sensitive.
+ * @param findText - The text to be searched for.
+ * @param withinText - The text where the search will take place
+ * @param position - [OPTIONAL default 1] The position in the text where the search is to start.
+ * @constructor
+ */
+let SEARCH = function (findText, withinText, position?) {
+  ArgsChecker.checkLengthWithin(arguments, 2, 3, "SEARCH");
+  findText = TypeConverter.firstValueAsString(findText);
+  withinText = TypeConverter.firstValueAsString(withinText);
+  position = isUndefined(position) ? 0 : TypeConverter.firstValueAsNumber(position);
+  if (position < 0) {
+    throw new ValueError("Formula SEARCH parameter 3 value is " + position
+        + ", but should be greater than or equal to 1.");
+  }
+  let index = withinText.toLowerCase().indexOf(findText.toLowerCase(), position - 1);
+  if (index > -1) {
+    return index + 1;
+  }
+  throw new ValueError("For SEARCH evaluation, cannot find '" + findText + "' inside '" + withinText + "'");
 };
 
 export {
@@ -843,5 +867,6 @@ export {
   JOIN,
   LEN,
   LEFT,
-  RIGHT
+  RIGHT,
+  SEARCH
 }

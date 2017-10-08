@@ -767,7 +767,7 @@ exports.LEN = LEN;
 var LEFT = function (text, numberOfCharacters) {
     ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 1, 2, "LEFT");
     text = TypeConverter_1.TypeConverter.firstValueAsString(text);
-    numberOfCharacters = MoreUtils_1.isUndefined(numberOfCharacters) ? 1 : numberOfCharacters;
+    numberOfCharacters = MoreUtils_1.isUndefined(numberOfCharacters) ? 1 : TypeConverter_1.TypeConverter.firstValueAsNumber(numberOfCharacters);
     if (numberOfCharacters < 0) {
         throw new Errors_1.ValueError("Formula LEFT parameter 2 value is " + numberOfCharacters
             + ", but should be greater than or equal to 0.");
@@ -786,7 +786,7 @@ exports.LEFT = LEFT;
 var RIGHT = function (text, numberOfCharacters) {
     ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 1, 2, "RIGHT");
     text = TypeConverter_1.TypeConverter.firstValueAsString(text);
-    numberOfCharacters = MoreUtils_1.isUndefined(numberOfCharacters) ? 1 : numberOfCharacters;
+    numberOfCharacters = MoreUtils_1.isUndefined(numberOfCharacters) ? 1 : TypeConverter_1.TypeConverter.firstValueAsNumber(numberOfCharacters);
     if (numberOfCharacters < 0) {
         throw new Errors_1.ValueError("Formula RIGHT parameter 2 value is " + numberOfCharacters
             + ", but should be greater than or equal to 0.");
@@ -794,3 +794,27 @@ var RIGHT = function (text, numberOfCharacters) {
     return text.substring(text.length - numberOfCharacters);
 };
 exports.RIGHT = RIGHT;
+/**
+ * Returns the position of a text segment within a character string. The start of the search can be set as an option.
+ * The search text can be a number or any sequence of characters. The search is not case-sensitive.
+ * @param findText - The text to be searched for.
+ * @param withinText - The text where the search will take place
+ * @param position - [OPTIONAL default 1] The position in the text where the search is to start.
+ * @constructor
+ */
+var SEARCH = function (findText, withinText, position) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 2, 3, "SEARCH");
+    findText = TypeConverter_1.TypeConverter.firstValueAsString(findText);
+    withinText = TypeConverter_1.TypeConverter.firstValueAsString(withinText);
+    position = MoreUtils_1.isUndefined(position) ? 0 : TypeConverter_1.TypeConverter.firstValueAsNumber(position);
+    if (position < 0) {
+        throw new Errors_1.ValueError("Formula SEARCH parameter 3 value is " + position
+            + ", but should be greater than or equal to 1.");
+    }
+    var index = withinText.toLowerCase().indexOf(findText.toLowerCase(), position - 1);
+    if (index > -1) {
+        return index + 1;
+    }
+    throw new Errors_1.ValueError("For SEARCH evaluation, cannot find '" + findText + "' inside '" + withinText + "'");
+};
+exports.SEARCH = SEARCH;

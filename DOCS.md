@@ -2451,3 +2451,13 @@
 @returns {string} 
 @constructor
 ```
+
+### SEARCH 
+
+```
+  Returns the position of a text segment within a character string. The start of the search can be set as an option. The search text can be a number or any sequence of characters. The search is not case-sensitive. 
+@param findText - The text to be searched for. 
+@param withinText - The text where the search will take place 
+@param position - [OPTIONAL default 1] The position in the text where the search is to start. 
+@constructor
+```

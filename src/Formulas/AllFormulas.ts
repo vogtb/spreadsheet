@@ -239,7 +239,8 @@ import {
   JOIN,
   LEN,
   LEFT,
-  RIGHT
+  RIGHT,
+  SEARCH
 } from "./Text"
 import {
   DATE,
@@ -539,5 +540,6 @@ export {
   JOIN,
   LEN,
   LEFT,
-  RIGHT
+  RIGHT,
+  SEARCH
 }

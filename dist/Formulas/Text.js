@@ -727,3 +727,21 @@ var FIND = function (searchFor, searchIn, startAt) {
     throw new Errors_1.ValueError("For FIND cannot find '" + searchFor + "' within '" + searchIn + "'.");
 };
 exports.FIND = FIND;
+/**
+ * Concatenates the values of one or more arrays using a specified delimiter.
+ * @param delimiter - The string to place between the values.
+ * @param values - The values to be appended using the delimiter.
+ * @returns {string}
+ * @constructor
+ */
+var JOIN = function (delimiter) {
+    var values = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        values[_i - 1] = arguments[_i];
+    }
+    ArgsChecker_1.ArgsChecker.checkAtLeastLength(arguments, 2, "JOIN");
+    delimiter = TypeConverter_1.TypeConverter.firstValueAsString(delimiter);
+    values = Filter_1.Filter.flattenAndThrow(values);
+    return values.join(delimiter);
+};
+exports.JOIN = JOIN;

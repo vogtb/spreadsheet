@@ -235,7 +235,8 @@ import {
   T,
   ROMAN,
   TEXT,
-  FIND
+  FIND,
+  JOIN
 } from "./Text"
 import {
   DATE,
@@ -531,5 +532,6 @@ export {
   SUBTOTAL,
   HYPGEOMDIST,
   ZTEST,
-  FIND
+  FIND,
+  JOIN
 }

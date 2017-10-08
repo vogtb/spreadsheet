@@ -763,6 +763,20 @@ let FIND = function (searchFor, searchIn, startAt?) {
   throw new ValueError("For FIND cannot find '" + searchFor + "' within '" + searchIn + "'.");
 };
 
+/**
+ * Concatenates the values of one or more arrays using a specified delimiter.
+ * @param delimiter - The string to place between the values.
+ * @param values - The values to be appended using the delimiter.
+ * @returns {string}
+ * @constructor
+ */
+let JOIN = function (delimiter, ...values) {
+  ArgsChecker.checkAtLeastLength(arguments, 2, "JOIN");
+  delimiter = TypeConverter.firstValueAsString(delimiter);
+  values = Filter.flattenAndThrow(values);
+  return values.join(delimiter);
+};
+
 export {
   ARABIC,
   CHAR,
@@ -776,5 +790,6 @@ export {
   T,
   ROMAN,
   TEXT,
-  FIND
+  FIND,
+  JOIN
 }

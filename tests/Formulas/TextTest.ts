@@ -11,7 +11,8 @@ import {
   T,
   ROMAN,
   TEXT,
-  FIND
+  FIND,
+  JOIN
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -373,5 +374,16 @@ test("FIND", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     FIND.apply(this, [2, 3, 4, 5])
+  }, ERRORS.NA_ERROR);
+});
+
+test("JOIN", function(){
+  assertEquals(JOIN(",", [1, 2, 3, 4, 5]), "1,2,3,4,5");
+  assertEquals(JOIN(",", 1, 2, 3, 4, 5), "1,2,3,4,5");
+  assertEquals(JOIN(",", 1, [2], [3, 4, 5]), "1,2,3,4,5");
+  assertEquals(JOIN("", [1, 2, 3, 4, 5]), "12345");
+  assertEquals(JOIN(true, [1, 2, 3, 4, 5]), "1TRUE2TRUE3TRUE4TRUE5");
+  catchAndAssertEquals(function() {
+    JOIN.apply(this, [2])
   }, ERRORS.NA_ERROR);
 });

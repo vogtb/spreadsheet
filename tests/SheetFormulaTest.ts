@@ -1049,6 +1049,10 @@ test("Sheet FIND", function(){
   assertFormulaEquals('=FIND("s", "soup")', 1);
 });
 
+test("Sheet JOIN", function(){
+  assertFormulaEquals('=JOIN([","], [1, 2, 3])', "1,2,3");
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

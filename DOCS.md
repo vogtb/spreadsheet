@@ -2413,3 +2413,13 @@
 @returns {number} 
 @constructor
 ```
+
+### JOIN 
+
+```
+  Concatenates the values of one or more arrays using a specified delimiter. 
+@param delimiter - The string to place between the values. 
+@param values - The values to be appended using the delimiter. 
+@returns {string} 
+@constructor
+```

@@ -17,7 +17,8 @@ import {
   LEFT,
   RIGHT,
   SEARCH,
-  REPT
+  REPT,
+  VALUE
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -482,4 +483,20 @@ test("REPT", function(){
   catchAndAssertEquals(function() {
     REPT.apply(this, [1, 2, 3]);
   }, ERRORS.NA_ERROR);
+});
+
+test("VALUE", function(){
+  assertEquals(VALUE("10"), 10);
+  assertEquals(VALUE(10), 10);
+  assertEquals(VALUE(10.1), 10.1);
+  assertEquals(VALUE([10]), 10);
+  assertEquals(VALUE("7/20/1966"), 24308);
+  // TODO: Should pass once we're able to parse timestamp strings.
+  // assertEquals(VALUE("12:00:00"), 0.5);
+  catchAndAssertEquals(function() {
+    VALUE(true);
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    VALUE("str");
+  }, ERRORS.VALUE_ERROR);
 });

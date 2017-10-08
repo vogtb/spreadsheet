@@ -1073,6 +1073,10 @@ test("Sheet REPT", function(){
   assertFormulaEquals('=REPT("a", 2)', "aa");
 });
 
+test("Sheet VALUE", function(){
+  assertFormulaEquals('=VALUE("10")', 10);
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

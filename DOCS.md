@@ -2470,3 +2470,12 @@
 @param numberOfReps - The number of repetitions 
 @constructor
 ```
+
+### VALUE 
+
+```
+  Converts a value into a number if possible. 
+@param value - The value to convert to a number. 
+@returns {number} 
+@constructor
+```

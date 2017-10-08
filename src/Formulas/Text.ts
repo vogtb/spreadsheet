@@ -867,6 +867,21 @@ let REPT = function (text, numberOfReps) {
   return new Array(numberOfReps + 1).join(text);
 };
 
+/**
+ * Converts a value into a number if possible.
+ * @param value - The value to convert to a number.
+ * @returns {number}
+ * @constructor
+ */
+let VALUE = function (value) {
+  ArgsChecker.checkLength(arguments, 1, "VALUE");
+  value = TypeConverter.firstValue(value);
+  if (typeof value === "boolean") {
+    throw new ValueError("VALUE parameter '" + value + "' cannot be parsed to number.");
+  }
+  return TypeConverter.firstValueAsNumber(value);
+};
+
 export {
   ARABIC,
   CHAR,
@@ -886,5 +901,6 @@ export {
   LEFT,
   RIGHT,
   SEARCH,
-  REPT
+  REPT,
+  VALUE
 }

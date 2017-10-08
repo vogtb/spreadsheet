@@ -835,3 +835,18 @@ var REPT = function (text, numberOfReps) {
     return new Array(numberOfReps + 1).join(text);
 };
 exports.REPT = REPT;
+/**
+ * Converts a value into a number if possible.
+ * @param value - The value to convert to a number.
+ * @returns {number}
+ * @constructor
+ */
+var VALUE = function (value) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "VALUE");
+    value = TypeConverter_1.TypeConverter.firstValue(value);
+    if (typeof value === "boolean") {
+        throw new Errors_1.ValueError("VALUE parameter '" + value + "' cannot be parsed to number.");
+    }
+    return TypeConverter_1.TypeConverter.firstValueAsNumber(value);
+};
+exports.VALUE = VALUE;

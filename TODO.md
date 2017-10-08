@@ -20,6 +20,10 @@ Currently, this `=SERIESSUM([1], [0], [1], [4, 5, 6])` parses, but this `=SERIES
 E.g. `01/09/2012 10:04:33.123`
 
 
+### TypeConverter should be able to convert timestamps to numbers.
+E.g. `12:00:00` should result in `0.5`.
+
+
 ### Parser should be able to parse arrays without `eval`
 Right now, arrays and reference literals in a formula are parsed using JS `eval`. This means, if we have references inside, or non-JS parsing values like TRUE or FALSE, they will cause ReferenceErrors. For example, `=SUM([M1, 10])` would throw `[ReferenceError: M1 is not defined]` because M1 is not a variable. Instead of using `eval`, we should parse the opening of an array, and the closeing of an array, and use recursion to see how deep we are, evaluating the tokens inside in the sam way we parse formulas and functions.
 
@@ -47,7 +51,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * REGEXREPLACE - May be difficult considering language differences.
 * REPLACE
 * SUBSTITUTE
-* VALUE
 
 ### Other formulas to write
 * CRITBINOM

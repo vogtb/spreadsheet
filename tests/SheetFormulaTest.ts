@@ -1057,6 +1057,10 @@ test("Sheet LEN", function(){
   assertFormulaEquals('=LEN("soup")', 4);
 });
 
+test("Sheet LEFT", function(){
+  assertFormulaEquals('=LEFT("soup")', "s");
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

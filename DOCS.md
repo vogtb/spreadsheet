@@ -2431,3 +2431,13 @@
 @param value - The text whose length is to be determined. 
 @constructor
 ```
+
+### LEFT 
+
+```
+  Returns the first character or characters in a text string. 
+@param text - The text where the initial partial words are to be determined 
+@param numberOfCharacters [OPTIONAL] - The number of characters for the start text. If this parameter is not defined, one character is returned. 
+@returns {string} 
+@constructor
+```

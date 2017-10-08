@@ -13,7 +13,8 @@ import {
   TEXT,
   FIND,
   JOIN,
-  LEN
+  LEN,
+  LEFT
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -204,7 +205,7 @@ test("ROMAN", function(){
     ROMAN(0);
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    ROMAN.apply(this, [])
+    ROMAN.apply(this, []);
   }, ERRORS.NA_ERROR);
 });
 
@@ -346,10 +347,10 @@ test("TEXT", function(){
     TEXT(0.99, "#0.00");
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    TEXT.apply(this, [100])
+    TEXT.apply(this, [100]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    TEXT.apply(this, [100, "0", 10])
+    TEXT.apply(this, [100, "0", 10]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -371,7 +372,7 @@ test("FIND", function(){
     FIND("m", "soup");
   }, ERRORS.VALUE_ERROR);
   catchAndAssertEquals(function() {
-    FIND.apply(this, [2])
+    FIND.apply(this, [2]);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     FIND.apply(this, [2, 3, 4, 5])
@@ -385,7 +386,7 @@ test("JOIN", function(){
   assertEquals(JOIN("", [1, 2, 3, 4, 5]), "12345");
   assertEquals(JOIN(true, [1, 2, 3, 4, 5]), "1TRUE2TRUE3TRUE4TRUE5");
   catchAndAssertEquals(function() {
-    JOIN.apply(this, [2])
+    JOIN.apply(this, [2]);
   }, ERRORS.NA_ERROR);
 });
 
@@ -397,9 +398,29 @@ test("LEN", function(){
   assertEquals(LEN(44), 2);
   assertEquals(LEN(true), 4);
   catchAndAssertEquals(function() {
-    LEN.apply(this, [])
+    LEN.apply(this, []);
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
-    LEN.apply(this, [2, 4])
+    LEN.apply(this, [2, 4]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("LEFT", function(){
+  assertEquals(LEFT("soup"), "s");
+  assertEquals(LEFT("soup", 0), "");
+  assertEquals(LEFT("soup", 1), "s");
+  assertEquals(LEFT("soup", 2), "so");
+  assertEquals(LEFT("soup", 3), "sou");
+  assertEquals(LEFT("soup", 4), "soup");
+  assertEquals(LEFT("soup", 5), "soup");
+  assertEquals(LEFT("", 1000), "");
+  catchAndAssertEquals(function() {
+    LEFT("soup", -1);
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    LEFT.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    LEFT.apply(this, [1, 2, 3]);
   }, ERRORS.NA_ERROR);
 });

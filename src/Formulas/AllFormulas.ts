@@ -237,7 +237,8 @@ import {
   TEXT,
   FIND,
   JOIN,
-  LEN
+  LEN,
+  LEFT
 } from "./Text"
 import {
   DATE,
@@ -535,5 +536,6 @@ export {
   ZTEST,
   FIND,
   JOIN,
-  LEN
+  LEN,
+  LEFT
 }

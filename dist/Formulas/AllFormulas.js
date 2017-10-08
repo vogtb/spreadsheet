@@ -230,6 +230,7 @@ exports.TEXT = Text_1.TEXT;
 exports.FIND = Text_1.FIND;
 exports.JOIN = Text_1.JOIN;
 exports.LEN = Text_1.LEN;
+exports.LEFT = Text_1.LEFT;
 var Date_1 = require("./Date");
 exports.DATE = Date_1.DATE;
 exports.DATEVALUE = Date_1.DATEVALUE;

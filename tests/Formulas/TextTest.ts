@@ -18,7 +18,8 @@ import {
   RIGHT,
   SEARCH,
   REPT,
-  VALUE
+  VALUE,
+  CLEAN
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -499,4 +500,21 @@ test("VALUE", function(){
   catchAndAssertEquals(function() {
     VALUE("str");
   }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function() {
+    VALUE.apply(this, [1, 2]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("CLEAN", function(){
+  assertEquals(CLEAN("hello"), "hello");
+  assertEquals(CLEAN("hello¿Ãš"), "hello¿Ãš");
+  assertEquals(CLEAN("hello"+CHAR(31)), "hello");
+  assertEquals(CLEAN("hello\n"), "hello");
+  assertEquals(CLEAN(10), "10");
+  catchAndAssertEquals(function() {
+    CLEAN.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function() {
+    CLEAN.apply(this, [1, 2]);
+  }, ERRORS.NA_ERROR);
 });

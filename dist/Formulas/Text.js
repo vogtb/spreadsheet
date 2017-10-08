@@ -850,3 +850,15 @@ var VALUE = function (value) {
     return TypeConverter_1.TypeConverter.firstValueAsNumber(value);
 };
 exports.VALUE = VALUE;
+/**
+ * Removes all non-printing characters from the string.
+ * @param text - The text from which to remove all non-printable characters.
+ * @returns {string}
+ * @constructor
+ */
+var CLEAN = function (text) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "CLEAN");
+    text = TypeConverter_1.TypeConverter.firstValueAsString(text);
+    return text.replace(/[\0-\x1F]/g, "");
+};
+exports.CLEAN = CLEAN;

@@ -2479,3 +2479,12 @@
 @returns {number} 
 @constructor
 ```
+
+### CLEAN 
+
+```
+  Removes all non-printing characters from the string. 
+@param text - The text from which to remove all non-printable characters. 
+@returns {string} 
+@constructor
+```

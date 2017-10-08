@@ -1077,6 +1077,10 @@ test("Sheet VALUE", function(){
   assertFormulaEquals('=VALUE("10")', 10);
 });
 
+test("Sheet CLEAN", function(){
+  assertFormulaEquals('=CLEAN("hello"&CHAR(31))', "hello");
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

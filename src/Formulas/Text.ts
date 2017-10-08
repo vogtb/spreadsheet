@@ -882,6 +882,18 @@ let VALUE = function (value) {
   return TypeConverter.firstValueAsNumber(value);
 };
 
+/**
+ * Removes all non-printing characters from the string.
+ * @param text - The text from which to remove all non-printable characters.
+ * @returns {string}
+ * @constructor
+ */
+let CLEAN = function (text) {
+  ArgsChecker.checkLength(arguments, 1, "CLEAN");
+  text = TypeConverter.firstValueAsString(text);
+  return text.replace(/[\0-\x1F]/g, "");
+};
+
 export {
   ARABIC,
   CHAR,
@@ -902,5 +914,6 @@ export {
   RIGHT,
   SEARCH,
   REPT,
-  VALUE
+  VALUE,
+  CLEAN
 }

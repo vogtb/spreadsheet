@@ -19,7 +19,8 @@ import {
   SEARCH,
   REPT,
   VALUE,
-  CLEAN
+  CLEAN,
+  MID
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -516,5 +517,24 @@ test("CLEAN", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function() {
     CLEAN.apply(this, [1, 2]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("MID", function(){
+  assertEquals(MID("hey there", 5, 4), "ther");
+  assertEquals(MID("hey there", 5, 1), "t");
+  assertEquals(MID("hey there", 5, 0), "");
+  assertEquals(MID("hey there", 50, 10), "");
+  catchAndAssertEquals(function () {
+    MID("", 1, -1);
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function () {
+    MID("", 0, 1);
+  }, ERRORS.NUM_ERROR);
+  catchAndAssertEquals(function () {
+    MID.apply(this, [1, 2, 3, 4]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function () {
+    MID.apply(this, [1, 2]);
   }, ERRORS.NA_ERROR);
 });

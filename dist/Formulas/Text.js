@@ -862,3 +862,29 @@ var CLEAN = function (text) {
     return text.replace(/[\0-\x1F]/g, "");
 };
 exports.CLEAN = CLEAN;
+/**
+ * Returns a text segment of a character string. The parameters specify the starting position and the number of
+ * characters.
+ * @param text - The text containing the characters to extract.
+ * @param start - The position of the first character in the text to extract.
+ * @param number - The number of characters in the part of the text.
+ * @returns {string}
+ * @constructor
+ */
+var MID = function (text, start, number) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 3, "MID");
+    text = TypeConverter_1.TypeConverter.firstValueAsString(text);
+    start = TypeConverter_1.TypeConverter.firstValueAsNumber(start);
+    number = TypeConverter_1.TypeConverter.firstValueAsNumber(number);
+    if (number === 0) {
+        return "";
+    }
+    if (number < 0) {
+        throw new Errors_1.ValueError("MID parameter 3 value is " + number + ", but should be greater than or equal to 0.");
+    }
+    if (start < 1) {
+        throw new Errors_1.NumError("Function MID parameter 2 value is " + start + ", but should be greater than or equal to 1.");
+    }
+    return text.substring(start - 1, start + number - 1);
+};
+exports.MID = MID;

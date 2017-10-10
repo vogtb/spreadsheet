@@ -236,6 +236,7 @@ exports.SEARCH = Text_1.SEARCH;
 exports.REPT = Text_1.REPT;
 exports.VALUE = Text_1.VALUE;
 exports.CLEAN = Text_1.CLEAN;
+exports.MID = Text_1.MID;
 var Date_1 = require("./Date");
 exports.DATE = Date_1.DATE;
 exports.DATEVALUE = Date_1.DATEVALUE;

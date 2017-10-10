@@ -43,7 +43,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 
 
 ### Easy formulas to write
-* MID
 * PROPER
 * REGEXEXTRACT - May be difficult considering language differences.
 * REGEXMATCH - May be difficult considering language differences.

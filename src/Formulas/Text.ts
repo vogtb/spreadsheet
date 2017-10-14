@@ -920,6 +920,15 @@ let MID = function (text, start, number) {
   return text.substring(start - 1, start + number - 1);
 };
 
+
+let PROPER = function (text) {
+  ArgsChecker.checkLength(arguments, 1, "PROPER");
+  text = TypeConverter.firstValueAsString(text);
+  return text.replace(/\w\S*/g, function(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+};
+
 export {
   ARABIC,
   CHAR,
@@ -942,5 +951,6 @@ export {
   REPT,
   VALUE,
   CLEAN,
-  MID
+  MID,
+  PROPER
 }

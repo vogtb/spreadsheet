@@ -1085,6 +1085,10 @@ test("Sheet MID", function(){
   assertFormulaEquals('=MID("hey there", 5, 4)', "ther");
 });
 
+test("Sheet PROPER", function(){
+  assertFormulaEquals('=PROPER("hey there")', "Hey There");
+});
+
 test("Sheet parsing error", function(){
   assertFormulaEqualsError('= 10e', PARSE_ERROR);
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);

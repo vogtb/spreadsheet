@@ -20,7 +20,8 @@ import {
   REPT,
   VALUE,
   CLEAN,
-  MID
+  MID,
+  PROPER
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -536,5 +537,20 @@ test("MID", function(){
   }, ERRORS.NA_ERROR);
   catchAndAssertEquals(function () {
     MID.apply(this, [1, 2]);
+  }, ERRORS.NA_ERROR);
+});
+
+test("PROPER", function(){
+  assertEquals(PROPER("hey there"), "Hey There");
+  assertEquals(PROPER("hEY tHERE"), "Hey There");
+  assertEquals(PROPER("there once was a man, and he lived on the moon."), "There Once Was A Man, And He Lived On The Moon.");
+  assertEquals(PROPER("my name is h.s. thompson"), "My Name Is H.s. Thompson");
+  assertEquals(PROPER(true), "True");
+  assertEquals(PROPER(10), "10");
+  catchAndAssertEquals(function () {
+    PROPER.apply(this, []);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function () {
+    PROPER.apply(this, [1, 2]);
   }, ERRORS.NA_ERROR);
 });

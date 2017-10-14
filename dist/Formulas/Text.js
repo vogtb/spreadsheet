@@ -888,3 +888,11 @@ var MID = function (text, start, number) {
     return text.substring(start - 1, start + number - 1);
 };
 exports.MID = MID;
+var PROPER = function (text) {
+    ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "PROPER");
+    text = TypeConverter_1.TypeConverter.firstValueAsString(text);
+    return text.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+};
+exports.PROPER = PROPER;

@@ -2499,3 +2499,14 @@
 @returns {string} 
 @constructor
 ```
+
+### REPLACE 
+
+```
+  Replaces part of a text string with a different text string. This function can be used to replace both characters and numbers (which are automatically converted to text). The result of the function is always displayed as text. 
+@param text - The text of which a part will be replaced. 
+@param position - The position within the text where the replacement will begin. 
+@param length - The number of characters in text to be replaced. 
+@param newText - The text which replaces text. 
+@constructor
+```

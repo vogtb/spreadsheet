@@ -152,7 +152,7 @@ test("Sheet COT", function(){
 });
 
 test("Sheet COTH", function(){
-  assertFormulaEquals('=COTH(2)', 1.037314720727548);
+  assertFormulaEquals('=COTH(2)', 1.0373147207275482);
 });
 
 test("Sheet COUNT", function(){
@@ -548,7 +548,7 @@ test("Sheet TAN", function(){
 });
 
 test("Sheet TANH", function(){
-  assertFormulaEquals('=TANH(PI())', 0.9962720762207501);
+  assertFormulaEquals('=TANH(PI())', 0.99627207622075);
 });
 
 test("Sheet TRUE", function(){
@@ -1087,6 +1087,10 @@ test("Sheet MID", function(){
 
 test("Sheet PROPER", function(){
   assertFormulaEquals('=PROPER("hey there")', "Hey There");
+});
+
+test("Sheet PROPER", function(){
+  assertFormulaEquals('=REPLACE("Hey there", 1, 3, "Hello")', "Hello there");
 });
 
 test("Sheet parsing error", function(){

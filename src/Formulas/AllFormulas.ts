@@ -245,7 +245,8 @@ import {
   VALUE,
   CLEAN,
   MID,
-  PROPER
+  PROPER,
+  REPLACE
 } from "./Text"
 import {
   DATE,
@@ -551,5 +552,6 @@ export {
   VALUE,
   CLEAN,
   MID,
-  PROPER
+  PROPER,
+  REPLACE
 }

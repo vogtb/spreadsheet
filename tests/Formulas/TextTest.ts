@@ -21,7 +21,8 @@ import {
   VALUE,
   CLEAN,
   MID,
-  PROPER
+  PROPER,
+  REPLACE
 } from "../../src/Formulas/Text";
 import * as ERRORS from "../../src/Errors";
 import {
@@ -553,4 +554,23 @@ test("PROPER", function(){
   catchAndAssertEquals(function () {
     PROPER.apply(this, [1, 2]);
   }, ERRORS.NA_ERROR);
+});
+
+test("PROPER", function(){
+  assertEquals(REPLACE("Hey there", 1, 3, "Hello"), "Hello there");
+  assertEquals(REPLACE("Hey there", 2, 1, "Hello"), "HHelloy there");
+  assertEquals(REPLACE("Hey there", 1, 1100, "Hello"), "Hello");
+  assertEquals(REPLACE("Hey", 10, 11, "Hello"), "HeyHello");
+  catchAndAssertEquals(function () {
+    REPLACE.apply(this, ["Hey there", 1, 1]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function () {
+    REPLACE.apply(this, ["Hey there", 1, 1, "replace me", "me too!"]);
+  }, ERRORS.NA_ERROR);
+  catchAndAssertEquals(function () {
+    REPLACE("Hey there", 0, 3, "Hello")
+  }, ERRORS.VALUE_ERROR);
+  catchAndAssertEquals(function () {
+    REPLACE("Hey there", 1, -1, "Hello")
+  }, ERRORS.VALUE_ERROR);
 });

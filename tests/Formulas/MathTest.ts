@@ -1264,7 +1264,7 @@ test("TANH", function(){
   assertEquals(TANH(0), 0);
   assertEquals(TANH(1), 0.7615941559557649);
   assertEquals(TANH(PI() / 2), 0.9171523356672744);
-  assertEquals(TANH(PI()), 0.9962720762207501);
+  assertEquals(TANH(PI()), 0.99627207622075);
   assertEquals(TANH(false), 0);
   assertEquals(TANH(true), 0.7615941559557649);
   assertEquals(TANH(""), 0);

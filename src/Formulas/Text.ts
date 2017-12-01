@@ -929,6 +929,33 @@ let PROPER = function (text) {
   });
 };
 
+
+/**
+ * Replaces part of a text string with a different text string. This function can be used to replace both characters and
+ * numbers (which are automatically converted to text). The result of the function is always displayed as text.
+ * @param text - The text of which a part will be replaced.
+ * @param position - The position within the text where the replacement will begin.
+ * @param length - The number of characters in text to be replaced.
+ * @param newText - The text which replaces text.
+ * @constructor
+ */
+let REPLACE = function (text, position, length, newText) {
+  ArgsChecker.checkLength(arguments, 4, "REPLACE");
+  text = TypeConverter.firstValueAsString(text);
+  position = TypeConverter.firstValueAsNumber(position);
+  if (position < 1) {
+    throw new ValueError("Function REPLACE parameter 2 value is " + position
+        + ", but should be greater than or equal to 1.");
+  }
+  length = TypeConverter.firstValueAsNumber(length);
+  if (length < 0) {
+    throw new ValueError("Function REPLACE parameter 3 value is " + length
+      + ", but should be greater than or equal to 1.");
+  }
+  newText = TypeConverter.firstValueAsString(newText);
+  return text.substr(0, position - 1) + newText + text.substr(position - 1 + length);
+};
+
 export {
   ARABIC,
   CHAR,
@@ -952,5 +979,6 @@ export {
   VALUE,
   CLEAN,
   MID,
-  PROPER
+  PROPER,
+  REPLACE
 }

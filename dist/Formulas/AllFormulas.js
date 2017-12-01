@@ -239,6 +239,7 @@ exports.CLEAN = Text_1.CLEAN;
 exports.MID = Text_1.MID;
 exports.PROPER = Text_1.PROPER;
 exports.REPLACE = Text_1.REPLACE;
+exports.SUBSTITUTE = Text_1.SUBSTITUTE;
 var Date_1 = require("./Date");
 exports.DATE = Date_1.DATE;
 exports.DATEVALUE = Date_1.DATEVALUE;

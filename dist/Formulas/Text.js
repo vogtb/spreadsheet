@@ -922,3 +922,38 @@ var REPLACE = function (text, position, length, newText) {
     return text.substr(0, position - 1) + newText + text.substr(position - 1 + length);
 };
 exports.REPLACE = REPLACE;
+/**
+ * Substitutes new text for old text in a string.
+ * @param text - The text in which text segments are to be exchanged.
+ * @param searchFor - The text segment that is to be replaced (a number of times)
+ * @param replaceWith - The text that is to replace the text segment.
+ * @param occurrence - [OPTIONAL] - Indicates how many occurrences of the search text are to be replaced. If this
+ * parameter is missing, the search text is replaced throughout.
+ * @returns {string}
+ * @constructor
+ */
+var SUBSTITUTE = function (text, searchFor, replaceWith, occurrence) {
+    ArgsChecker_1.ArgsChecker.checkLengthWithin(arguments, 3, 4, "SUBSTITUTE");
+    text = TypeConverter_1.TypeConverter.firstValueAsString(text);
+    searchFor = TypeConverter_1.TypeConverter.firstValueAsString(searchFor);
+    replaceWith = TypeConverter_1.TypeConverter.firstValueAsString(replaceWith);
+    if (MoreUtils_1.isUndefined(occurrence)) {
+        return text.replace(new RegExp(searchFor, 'g'), replaceWith);
+    }
+    occurrence = TypeConverter_1.TypeConverter.firstValueAsNumber(occurrence);
+    if (occurrence < 0) {
+        throw new Errors_1.ValueError("Function SUBSTITUTE parameter 4 value is " + occurrence
+            + ", but should be greater than or equal to 0.");
+    }
+    var index = 0;
+    var i = 0;
+    while (text.indexOf(searchFor, index) > -1) {
+        index = text.indexOf(searchFor, index);
+        i++;
+        if (i === occurrence) {
+            return text.substring(0, index) + replaceWith + text.substring(index + searchFor.length);
+        }
+    }
+    return text;
+};
+exports.SUBSTITUTE = SUBSTITUTE;

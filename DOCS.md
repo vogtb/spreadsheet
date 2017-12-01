@@ -2510,3 +2510,15 @@
 @param newText - The text which replaces text. 
 @constructor
 ```
+
+### SUBSTITUTE 
+
+```
+  Substitutes new text for old text in a string. 
+@param text - The text in which text segments are to be exchanged. 
+@param searchFor - The text segment that is to be replaced (a number of times) 
+@param replaceWith - The text that is to replace the text segment. 
+@param occurrence - [OPTIONAL] - Indicates how many occurrences of the search text are to be replaced. If this parameter is missing, the search text is replaced throughout. 
+@returns {string} 
+@constructor
+```

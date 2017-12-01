@@ -1089,8 +1089,12 @@ test("Sheet PROPER", function(){
   assertFormulaEquals('=PROPER("hey there")', "Hey There");
 });
 
-test("Sheet PROPER", function(){
+test("Sheet REPLACE", function(){
   assertFormulaEquals('=REPLACE("Hey there", 1, 3, "Hello")', "Hello there");
+});
+
+test("Sheet SUBSTITUTE", function(){
+  assertFormulaEquals('=SUBSTITUTE("Hey darkness my old friend", "Hey", "Hello")', "Hello darkness my old friend");
 });
 
 test("Sheet parsing error", function(){

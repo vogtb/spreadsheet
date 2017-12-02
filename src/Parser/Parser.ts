@@ -17,6 +17,7 @@ import {
   SYMBOL_NAME_TO_INDEX,
   PRODUCTIONS
 } from "./ParserConstants"
+import {isUndefined} from "../Utilities/MoreUtils";
 
 let Parser = (function () {
   let parser = {
@@ -378,6 +379,9 @@ let Parser = (function () {
 
             // try to recover from error
             for (; ;) {
+              if (isUndefined(state)) {
+                return false;
+              }
               // check for error recovery rule in this state
               if ((TERROR.toString()) in ACTION_TABLE[state]) {
                 return depth;

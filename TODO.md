@@ -55,8 +55,6 @@ Many of these formulas can be written by allowing the Sheet and Parser to return
 * T.INV.2T
 * TINV
 * TTEST
-* FINDB
-* SEARCHB
 * LOGEST
 * MDETERM
 * MINVERSE

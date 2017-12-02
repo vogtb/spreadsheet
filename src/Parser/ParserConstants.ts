@@ -12,7 +12,7 @@ const FORMULA_NAME_SIMPLE_RULE = /^(?:[A-Za-z.]+(?=[(]))/; // rule 8
 const VARIABLE_RULE = /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+)/; // rule 9
 const SIMPLE_VARIABLE_RILE = /^(?:[A-Za-z_]+)/; //rule 10
 const INTEGER_RULE = /^(?:[0-9]+(?:(?:[eE])(?:[\+-])?[0-9]+)?)/; // Changed from /^(?:[0-9]+)/ // rule 11
-const OPEN_AND_CLOSE_OF_ARRAY_RULE = /^(?:\[(.*)?\])/; // rule 12
+const OPEN_AND_CLOSE_OF_ARRAY_RULE = /^(?:\[([^\]]*)?\])/; // rule 12 // Changed from /^(?:\[(.*)?\])/
 const DOLLAR_SIGN_RULE = /^(?:\$)/; // rule 13
 const AMPERSAND_SIGN_RULE = /^(?:&)/; //rule 14
 const SINGLE_WHITESPACE_RULE = /^(?: )/; // rule 15
@@ -326,6 +326,7 @@ symbolIndexToName[Symbol.DECIMAL] = "DECIMAL";
 symbolIndexToName[Symbol.NUMBER_UPPER] = "NUMBER";
 symbolIndexToName[Symbol.PERCENT] = "%";
 symbolIndexToName[Symbol.POUND] = "#";
+symbolIndexToName[Symbol.ARRAY] = "ARRAY";
 symbolIndexToName[Symbol.EXCLAMATION_POINT] = "!";
 const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
 
@@ -1435,6 +1436,7 @@ table[72] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, ReduceActions.MINUS])
   .add(Symbol.VARIABLE, [SHIFT, ReduceActions.NOT])
   .add(Symbol.NUMBER_UPPER, [SHIFT, ReduceActions.GT])
+  .add(Symbol.ARRAY, [SHIFT, 61])
   .add(Symbol.POUND, [SHIFT, ReduceActions.MULTIPLY]).build();
 table[73] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])

@@ -14,6 +14,11 @@ test("Sheet parsing error", function(){
   assertFormulaEqualsError('= SUM(', PARSE_ERROR);
 });
 
+test("Sheet &", function(){
+  assertFormulaEquals('="hey"&" "&"there"', "hey there");
+  assertFormulaEquals('=TEXT(12.3, "###.##")&"mm"', "12.3mm");
+});
+
 test("Sheet *", function(){
   assertFormulaEquals('= 10 * 10', 100);
   assertFormulaEquals('= 10 * 0', 0);
@@ -81,4 +86,28 @@ test("Sheet numbers/math", function(){
   assertFormulaEquals('= "-$10.00" + 0', -10);
   assertFormulaEquals('= "$+10.00" + 0', 10);
   assertFormulaEquals('= "$-10.00" + 0', -10);
+  assertFormulaEquals('= "10" + 10', 20);
+  assertFormulaEquals('= "10.111111" + 0', 10.111111);
+  assertFormulaEquals('= 10%', 0.1);
+  assertFormulaEquals('= 10% + 1', 1.1);
+  assertFormulaEquals('= "10e1" + 0', 100);
+  assertFormulaEquals('= 10e1', 100);
+  assertFormulaEquals('= 10e-1', 1);
+  assertFormulaEquals('= 10e+1', 100);
+  assertFormulaEquals('= 10E1', 100);
+  assertFormulaEquals('= 10E-1', 1);
+  assertFormulaEquals('= 10E+1', 100);
+  assertFormulaEquals('= "1,000,000"  + 0', 1000000);
+  assertFormulaEqualsError('= "10e" + 10', VALUE_ERROR);
+  assertFormulaEquals('= "+$10.00" + 0', 10);
+  assertFormulaEquals('= "-$10.00" + 0', -10);
+  assertFormulaEquals('= "$+10.00" + 0', 10);
+  assertFormulaEquals('= "$-10.00" + 0', -10);
 });
+
+test("Sheet parse range following comma", function(){
+  // assertFormulaEquals('=SERIESSUM(1, 0, 1, [4, 5, 6])', 15);
+  // assertFormulaEquals('=SERIESSUM([1], [0], [1], [4, 5, 6])', 15);
+});
+
+

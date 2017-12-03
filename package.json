@@ -1,6 +1,6 @@
 {
   "name": "js-spreadsheet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript/javascript implementation of a spreadsheet.",
   "scripts": {
     "clean": "rm -rf dist/* && rm -rf test_output/*",

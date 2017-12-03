@@ -1,5 +1,5 @@
 # Spreadsheet
-TypeScript/javascript spreadsheet.
+TypeScript/javascript spreadsheet parser, with formulas. For a full list of formulas, see [DOCS.md](DOCS.md).
 
 ## Usage
 

@@ -1,3 +1,6 @@
+import {
+  ObjectBuilder
+} from "./ObjectBuilder";
 
 // Rules represent the Regular Expressions that will be used in sequence to match a given input to the Parser.
 const WHITE_SPACE_RULE = /^(?:\s+)/; // rule 0
@@ -318,7 +321,7 @@ symbolIndexToName[Symbol.ASTERISK] = "*";
 symbolIndexToName[Symbol.DIVIDE] = "/";
 symbolIndexToName[Symbol.CARROT] = "^";
 symbolIndexToName[Symbol.FUNCTION] = "FUNCTION";
-symbolIndexToName[Symbol.FIXEDCELL] = "FIXEDCELL";
+symbolIndexToName[Symbol.FIXEDCELL] = "FIXED_CELL_REF";
 symbolIndexToName[Symbol.COLON] = ";";
 symbolIndexToName[Symbol.COMMA] = ",";
 symbolIndexToName[Symbol.VARIABLE] = "VARIABLE";
@@ -331,23 +334,6 @@ symbolIndexToName[Symbol.EXCLAMATION_POINT] = "!";
 const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
 
 
-
-class ObjectBuilder {
-  public o : Object = {};
-
-  public static add(k, v) : ObjectBuilder {
-    let m = new ObjectBuilder();
-    m.o[k.toString()] = v;
-    return m;
-  }
-  public add(k, v) : ObjectBuilder {
-    this.o[k.toString()] = v;
-    return this;
-  }
-  public build() : Object {
-    return this.o;
-  }
-}
 
 /**
  * Array of to map rules to to LexActions and other rules. A single index in the object (e.g. `{2: 13}`) indicates the

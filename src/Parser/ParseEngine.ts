@@ -40,6 +40,7 @@ const Rules = {
   POUND:  /^(?:\#)/,
   ERROR : /^(?:#N\/A|#NUM\!|#NULL\!|#DIV\/0\!|#VALUE\!|#REF\!|#ERROR)/,
   END : /^(?:$)/
+  // TODO: Need boolean parsing rule, but needs to be listed after formula parsing rule.
 };
 
 
@@ -198,8 +199,10 @@ const enum ReduceActions {
   FIXED_CELL_RANGE_VAL = 23,
   CELL_VALUE = 24,
   CELL_RANGE_VALUE = 25,
-  PERCENT = 26
-}
+  PERCENT = 26,
+  START_ARRAY = 27,
+  INVERT_NUMBER = 28
+};
 
 /**
  * Represents the length to reduce the stack by, and the token index value that will replace those tokens in the stack.
@@ -229,6 +232,38 @@ class ReductionPair {
   }
 }
 
+const enum Tree {
+  START = 0,
+  NUMBER = 1,
+  STRING = 2,
+  BOOLEAN = 3,
+  VARIABLE = 4,
+  ERROR = 5,
+  FORMULA = 6,
+  PLUS = 7,
+  MINUS = 8,
+  ASTERISK = 9,
+  SLASH = 10,
+  CARROT = 11,
+  AMPERSAND = 12,
+  PERCENT = 13,
+  PERIOD = 14,
+  LESS_THAN = 15,
+  GREATER_THAN = 16,
+  EQUALS = 17,
+  COMMA = 18,
+  OPEN_PAREN = 19,
+  CLOSE_PAREN = 20,
+  CELL_REF = 21,
+  FIXED_CELL_REF = 22,
+  CELL_RANGE_REF = 23,
+  FIXED_CELL_RANGE_REF = 24,
+  OPEN_ARRAY = 25,
+  CLOSE_ARRAY = 26,
+  INVERT_NEXT = 27,
+  TERMINATE = 28
+}
+
 /**
  * Productions is used to look up both the number to use when reducing the stack (productions[x][1]) and the semantic
  * value that will replace the tokens in the stack (productions[x][0]).
@@ -239,63 +274,32 @@ class ReductionPair {
 let productions : Array<ReductionPair> = [];
 productions[ReduceActions.NO_ACTION] = null;
 productions[ReduceActions.RETURN_LAST] = new ReductionPair(3, 2);
-productions[ReduceActions.CALL_VARIABLE] = new ReductionPair(4, 1);
-productions[ReduceActions.AS_NUMBER] = new ReductionPair(4, 1);
-productions[ReduceActions.AS_STRING] = new ReductionPair(4, 1);
-productions[ReduceActions.AMPERSAND] = new ReductionPair(4, 3);
-productions[ReduceActions.EQUALS] = new ReductionPair(4, 3);
-productions[ReduceActions.PLUS] = new ReductionPair(4, 3);
-productions[ReduceActions.LAST_NUMBER] = new ReductionPair(4, 3);
-productions[ReduceActions.LTE] = new ReductionPair(4, 4);
-productions[ReduceActions.GTE] = new ReductionPair(4, 4);
-productions[ReduceActions.NOT_EQ] = new ReductionPair(4, 4);
-productions[ReduceActions.NOT] = new ReductionPair(4, 3);
-productions[ReduceActions.GT] = new ReductionPair(4, 3);
-productions[ReduceActions.LT] = new ReductionPair(4, 3);
-productions[ReduceActions.MINUS] = new ReductionPair(4, 3);
-productions[ReduceActions.MULTIPLY] = new ReductionPair(4, 3);
-productions[ReduceActions.DIVIDE] = new ReductionPair(4, 3);
-productions[ReduceActions.TO_POWER] = new ReductionPair(4, 3);
-productions[ReduceActions.TO_NUMBER_NAN_AS_ZERO] = new ReductionPair(4, 2);
-productions[ReduceActions.CALL_FUNCTION_LAST_BLANK] = new ReductionPair(4, 3);
-productions[ReduceActions.FIXED_CELL_VAL] = new ReductionPair(25, 1);
-productions[ReduceActions.FIXED_CELL_RANGE_VAL] = new ReductionPair(25, 3);
-productions[ReduceActions.CELL_VALUE] = new ReductionPair(25, 1);
-productions[ReduceActions.CELL_RANGE_VALUE] = new ReductionPair(25, 3);
-productions[ReduceActions.PERCENT] = new ReductionPair(24, 3);
-productions[ReduceActions.AS_ERROR] = new ReductionPair(4, 1);
+productions[ReduceActions.CALL_VARIABLE] = new ReductionPair(Tree.NUMBER, 1);
+productions[ReduceActions.AS_NUMBER] = new ReductionPair(Tree.NUMBER, 1);
+productions[ReduceActions.INVERT_NUMBER] = new ReductionPair(Tree.NUMBER, 1);
+productions[ReduceActions.AS_STRING] = new ReductionPair(Tree.STRING, 1);
+productions[ReduceActions.AMPERSAND] = new ReductionPair(Tree.AMPERSAND, 3);
+productions[ReduceActions.EQUALS] = new ReductionPair(Tree.EQUALS, 3);
+productions[ReduceActions.PLUS] = new ReductionPair(Tree.PLUS, 3);
+productions[ReduceActions.LAST_NUMBER] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.LTE] = new ReductionPair(Tree.BOOLEAN, 4);
+productions[ReduceActions.GTE] = new ReductionPair(Tree.BOOLEAN, 4);
+productions[ReduceActions.NOT_EQ] = new ReductionPair(Tree.BOOLEAN, 4);
+productions[ReduceActions.GT] = new ReductionPair(Tree.BOOLEAN, 3);
+productions[ReduceActions.LT] = new ReductionPair(Tree.BOOLEAN, 3);
+productions[ReduceActions.MINUS] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.MULTIPLY] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.DIVIDE] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.TO_POWER] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.TO_NUMBER_NAN_AS_ZERO] = new ReductionPair(Tree.NUMBER, 2);
+productions[ReduceActions.FIXED_CELL_VAL] = new ReductionPair(Tree.VARIABLE, 1);
+productions[ReduceActions.FIXED_CELL_RANGE_VAL] = new ReductionPair(Tree.VARIABLE, 3);
+productions[ReduceActions.CELL_VALUE] = new ReductionPair(Tree.VARIABLE, 1);
+productions[ReduceActions.CELL_RANGE_VALUE] = new ReductionPair(Tree.VARIABLE, 3);
+productions[ReduceActions.PERCENT] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.AS_ERROR] = new ReductionPair(Tree.ERROR, 1);
 const PRODUCTIONS = productions;
 
-
-const enum Tree {
-  START = 0,
-  FOLLOWS_NUMBER = 1,
-  FOLLOWS_STRING = 2,
-  FOLLOWS_BOOL = 3,
-  FOLLOWS_ERROR = 4,
-  FOLLOWS_FORMULA = 5,
-  FOLLOWS_PLUS = 6,
-  FOLLOWS_MINUS = 7,
-  FOLLOWS_ASTERISK = 8,
-  FOLLOWS_SLASH = 9,
-  FOLLOWS_CARROT = 10,
-  FOLLOWS_AMPERSAND = 11,
-  FOLLOWS_PERCENT = 12,
-  FOLLOWS_PERIOD = 13,
-  FOLLOWS_LESS_THAN = 14,
-  FOLLOWS_GREATER_THAN = 15,
-  FOLLOWS_EQUALS = 16,
-  FOLLOWS_COMMA = 17,
-  FOLLOWS_OPEN_PAREN = 18,
-  FOLLOWS_CLOSE_PAREN = 19,
-  FOLLOWS_CELL_REF = 20,
-  FOLLOWS_FIXED_CELL_REF = 21,
-  FOLLOWS_CELL_RANGE_REF = 22,
-  FOLLOWS_FIXED_CELL_RANGE_REF = 23,
-  FOLLOWS_OPEN_ARRAY = 24,
-  FOLLOWS_CLOSE_ARRAY = 25,
-  TERMINATE = 26
-}
 
 /**
  * Array of to map rules to to LexActions and other rules. A single index in the object (e.g. `{2: 13}`) indicates the
@@ -305,22 +309,38 @@ const enum Tree {
 let table = [];
 // All functions in the spreadsheet start with a 0-token.
 table[Tree.START] = ObjectBuilder
-  .add(Symbol.NUMBER, Tree.FOLLOWS_NUMBER)
-  .add(Symbol.STRING, null)
-  .add(Symbol.BOOLEAN, null)
-  .add(Symbol.FORMULA, null)
-  .add(Symbol.CELL_REF, null)
-  .add(Symbol.FIXED_CELL_REF, null)
-  .add(Symbol.POUND, null)
-  .add(Symbol.OPEN_ARRAY, null)
+  .add(Symbol.NUMBER, Tree.NUMBER)
+  .add(Symbol.STRING, Tree.STRING)
+  .add(Symbol.BOOLEAN, Tree.BOOLEAN)
+  .add(Symbol.FORMULA, Tree.FORMULA)
+  .add(Symbol.CELL_REF, [REDUCE, ReduceActions.CELL_VALUE])
+  .add(Symbol.FIXED_CELL_REF, [REDUCE, ReduceActions.FIXED_CELL_VAL])
+  .add(Symbol.OPEN_ARRAY, null) // Start array, push until done? Come back to this one.
   .add(Symbol.OPEN_PAREN, null)
-  .add(Symbol.PLUS, null)
-  .add(Symbol.MINUS, null)
-  .add(Symbol.PERIOD, null)
+  .add(Symbol.PLUS, [SHIFT, ReduceActions.AS_NUMBER]) // If we're starting out, the operator is just the regular number.
+  .add(Symbol.MINUS, [SHIFT, ReduceActions.INVERT_NUMBER]) // If we're starting out, the operator is inverting the next number
+  // .add(Symbol.PERIOD, null) // removing for now, maybe we can capture this with numbers, idk.
+  .add(Symbol.WHITE_SPACE, Tree.START) // loop back.
+  .add(Symbol.END, Tree.TERMINATE)
+  .build();
+table[Tree.NUMBER] = ObjectBuilder
+  .add(Symbol.PLUS, [SHIFT, ReduceActions.PLUS])
+  .add(Symbol.MINUS, [SHIFT, ReduceActions.MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, ReduceActions.AS_NUMBER]) // maybe
+  .add(Symbol.DIVIDE, [SHIFT, ReduceActions.DIVIDE]) // At this poing in processing we have "X /" but we need the second variable
+  .add(Symbol.CARROT, [SHIFT, ReduceActions.TO_POWER])
+  .add(Symbol.PERCENT, [REDUCE, ReduceActions.PERCENT])
+  .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.AMPERSAND])
+  .add(Symbol.GREATER_THAN, [SHIFT, ReduceActions.GT])
+  .add(Symbol.LESS_THAN, null)
+  .add(Symbol.EQUALS, null)
+  .add(Symbol.COMMA, null)
+  .add(Symbol.CLOSE_PAREN, null)
+  .add(Symbol.CLOSE_ARRAY, null)
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_NUMBER] = ObjectBuilder
+table[Tree.STRING] = ObjectBuilder
   .add(Symbol.PLUS, null)
   .add(Symbol.MINUS, null)
   .add(Symbol.ASTERISK, null)
@@ -337,7 +357,7 @@ table[Tree.FOLLOWS_NUMBER] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_STRING] = ObjectBuilder
+table[Tree.BOOLEAN] = ObjectBuilder
   .add(Symbol.PLUS, null)
   .add(Symbol.MINUS, null)
   .add(Symbol.ASTERISK, null)
@@ -354,24 +374,7 @@ table[Tree.FOLLOWS_STRING] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_BOOL] = ObjectBuilder
-  .add(Symbol.PLUS, null)
-  .add(Symbol.MINUS, null)
-  .add(Symbol.ASTERISK, null)
-  .add(Symbol.DIVIDE, null)
-  .add(Symbol.CARROT, null)
-  .add(Symbol.PERCENT, null)
-  .add(Symbol.AMPERSAND, null)
-  .add(Symbol.GREATER_THAN, null)
-  .add(Symbol.LESS_THAN, null)
-  .add(Symbol.EQUALS, null)
-  .add(Symbol.COMMA, null)
-  .add(Symbol.CLOSE_PAREN, null)
-  .add(Symbol.CLOSE_ARRAY, null)
-  .add(Symbol.WHITE_SPACE, null)
-  .add(Symbol.END, null)
-  .build();
-table[Tree.FOLLOWS_ERROR] = ObjectBuilder
+table[Tree.ERROR] = ObjectBuilder
   .add(Symbol.PLUS, null)
   .add(Symbol.MINUS, null)
   .add(Symbol.ASTERISK, null)
@@ -385,7 +388,7 @@ table[Tree.FOLLOWS_ERROR] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_FORMULA] = ObjectBuilder
+table[Tree.FORMULA] = ObjectBuilder
   .add(Symbol.NUMBER, null)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
@@ -402,7 +405,7 @@ table[Tree.FOLLOWS_FORMULA] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_PLUS] = ObjectBuilder
+table[Tree.PLUS] = ObjectBuilder
   .add(Symbol.NUMBER, null)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
@@ -417,7 +420,7 @@ table[Tree.FOLLOWS_PLUS] = ObjectBuilder
   .add(Symbol.OPEN_ARRAY, null)
   .add(Symbol.WHITE_SPACE, null)
   .build();
-table[Tree.FOLLOWS_MINUS] = ObjectBuilder
+table[Tree.MINUS] = ObjectBuilder
   .add(Symbol.NUMBER, null)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
@@ -432,7 +435,7 @@ table[Tree.FOLLOWS_MINUS] = ObjectBuilder
   .add(Symbol.OPEN_ARRAY, null)
   .add(Symbol.WHITE_SPACE, null)
   .build();
-table[Tree.FOLLOWS_ASTERISK] = ObjectBuilder
+table[Tree.ASTERISK] = ObjectBuilder
   .add(Symbol.NUMBER, null)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
@@ -447,7 +450,7 @@ table[Tree.FOLLOWS_ASTERISK] = ObjectBuilder
   .add(Symbol.OPEN_ARRAY, null)
   .add(Symbol.WHITE_SPACE, null)
   .build();
-table[Tree.FOLLOWS_SLASH] = ObjectBuilder
+table[Tree.SLASH] = ObjectBuilder
   .add(Symbol.NUMBER, null)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
@@ -462,7 +465,7 @@ table[Tree.FOLLOWS_SLASH] = ObjectBuilder
   .add(Symbol.OPEN_ARRAY, null)
   .add(Symbol.WHITE_SPACE, null)
   .build();
-table[Tree.FOLLOWS_CARROT] = ObjectBuilder
+table[Tree.CARROT] = ObjectBuilder
   .add(Symbol.NUMBER, null)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
@@ -477,7 +480,7 @@ table[Tree.FOLLOWS_CARROT] = ObjectBuilder
   .add(Symbol.OPEN_ARRAY, null)
   .add(Symbol.WHITE_SPACE, null)
   .build();
-table[Tree.FOLLOWS_AMPERSAND] = ObjectBuilder
+table[Tree.AMPERSAND] = ObjectBuilder
   .add(Symbol.NUMBER, null)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
@@ -492,7 +495,7 @@ table[Tree.FOLLOWS_AMPERSAND] = ObjectBuilder
   .add(Symbol.OPEN_ARRAY, null)
   .add(Symbol.WHITE_SPACE, null)
   .build();
-table[Tree.FOLLOWS_PERCENT] = ObjectBuilder
+table[Tree.PERCENT] = ObjectBuilder
   .add(Symbol.PLUS, null)
   .add(Symbol.MINUS, null)
   .add(Symbol.ASTERISK, null)
@@ -505,7 +508,7 @@ table[Tree.FOLLOWS_PERCENT] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_PERIOD] = ObjectBuilder
+table[Tree.PERIOD] = ObjectBuilder
   .add(Symbol.PLUS, null)
   .add(Symbol.MINUS, null)
   .add(Symbol.ASTERISK, null)
@@ -519,8 +522,8 @@ table[Tree.FOLLOWS_PERIOD] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_LESS_THAN] = ObjectBuilder
-  .add(Symbol.NUMBER, Tree.FOLLOWS_NUMBER)
+table[Tree.LESS_THAN] = ObjectBuilder
+  .add(Symbol.NUMBER, Tree.NUMBER)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
   .add(Symbol.FORMULA, null)
@@ -535,8 +538,8 @@ table[Tree.FOLLOWS_LESS_THAN] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_GREATER_THAN] = ObjectBuilder
-  .add(Symbol.NUMBER, Tree.FOLLOWS_NUMBER)
+table[Tree.GREATER_THAN] = ObjectBuilder
+  .add(Symbol.NUMBER, Tree.NUMBER)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
   .add(Symbol.FORMULA, null)
@@ -551,8 +554,8 @@ table[Tree.FOLLOWS_GREATER_THAN] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();;
-table[Tree.FOLLOWS_EQUALS] = ObjectBuilder
-  .add(Symbol.NUMBER, Tree.FOLLOWS_NUMBER)
+table[Tree.EQUALS] = ObjectBuilder
+  .add(Symbol.NUMBER, Tree.NUMBER)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
   .add(Symbol.FORMULA, null)
@@ -567,8 +570,8 @@ table[Tree.FOLLOWS_EQUALS] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();;
-table[Tree.FOLLOWS_COMMA] = ObjectBuilder
-  .add(Symbol.NUMBER, Tree.FOLLOWS_NUMBER)
+table[Tree.COMMA] = ObjectBuilder
+  .add(Symbol.NUMBER, Tree.NUMBER)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
   .add(Symbol.FORMULA, null)
@@ -583,8 +586,8 @@ table[Tree.FOLLOWS_COMMA] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_OPEN_PAREN] = ObjectBuilder
-  .add(Symbol.NUMBER, Tree.FOLLOWS_NUMBER)
+table[Tree.OPEN_PAREN] = ObjectBuilder
+  .add(Symbol.NUMBER, Tree.NUMBER)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
   .add(Symbol.FORMULA, null)
@@ -598,7 +601,7 @@ table[Tree.FOLLOWS_OPEN_PAREN] = ObjectBuilder
   .add(Symbol.OPEN_ARRAY, null)
   .add(Symbol.WHITE_SPACE, null)
   .build();
-table[Tree.FOLLOWS_CLOSE_PAREN] = ObjectBuilder
+table[Tree.CLOSE_PAREN] = ObjectBuilder
   .add(Symbol.PLUS, null)
   .add(Symbol.MINUS, null)
   .add(Symbol.ASTERISK, null)
@@ -610,24 +613,7 @@ table[Tree.FOLLOWS_CLOSE_PAREN] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_CELL_REF] = ObjectBuilder
-  .add(Symbol.PLUS, null)
-  .add(Symbol.MINUS, null)
-  .add(Symbol.ASTERISK, null)
-  .add(Symbol.DIVIDE, null)
-  .add(Symbol.CARROT, null)
-  .add(Symbol.PERCENT, null)
-  .add(Symbol.AMPERSAND, null)
-  .add(Symbol.GREATER_THAN, null)
-  .add(Symbol.LESS_THAN, null)
-  .add(Symbol.EQUALS, null)
-  .add(Symbol.COMMA, null)
-  .add(Symbol.CLOSE_PAREN, null)
-  .add(Symbol.CLOSE_ARRAY, null)
-  .add(Symbol.WHITE_SPACE, null)
-  .add(Symbol.END, null)
-  .build();
-table[Tree.FOLLOWS_FIXED_CELL_REF] = ObjectBuilder
+table[Tree.CELL_REF] = ObjectBuilder
   .add(Symbol.PLUS, null)
   .add(Symbol.MINUS, null)
   .add(Symbol.ASTERISK, null)
@@ -644,7 +630,7 @@ table[Tree.FOLLOWS_FIXED_CELL_REF] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_CELL_RANGE_REF] = ObjectBuilder
+table[Tree.FIXED_CELL_REF] = ObjectBuilder
   .add(Symbol.PLUS, null)
   .add(Symbol.MINUS, null)
   .add(Symbol.ASTERISK, null)
@@ -661,7 +647,7 @@ table[Tree.FOLLOWS_CELL_RANGE_REF] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_FIXED_CELL_RANGE_REF] = ObjectBuilder
+table[Tree.CELL_RANGE_REF] = ObjectBuilder
   .add(Symbol.PLUS, null)
   .add(Symbol.MINUS, null)
   .add(Symbol.ASTERISK, null)
@@ -678,8 +664,25 @@ table[Tree.FOLLOWS_FIXED_CELL_RANGE_REF] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
-table[Tree.FOLLOWS_OPEN_ARRAY] = ObjectBuilder
-  .add(Symbol.NUMBER, Tree.FOLLOWS_NUMBER)
+table[Tree.FIXED_CELL_RANGE_REF] = ObjectBuilder
+  .add(Symbol.PLUS, null)
+  .add(Symbol.MINUS, null)
+  .add(Symbol.ASTERISK, null)
+  .add(Symbol.DIVIDE, null)
+  .add(Symbol.CARROT, null)
+  .add(Symbol.PERCENT, null)
+  .add(Symbol.AMPERSAND, null)
+  .add(Symbol.GREATER_THAN, null)
+  .add(Symbol.LESS_THAN, null)
+  .add(Symbol.EQUALS, null)
+  .add(Symbol.COMMA, null)
+  .add(Symbol.CLOSE_PAREN, null)
+  .add(Symbol.CLOSE_ARRAY, null)
+  .add(Symbol.WHITE_SPACE, null)
+  .add(Symbol.END, null)
+  .build();
+table[Tree.OPEN_ARRAY] = ObjectBuilder
+  .add(Symbol.NUMBER, Tree.NUMBER)
   .add(Symbol.STRING, null)
   .add(Symbol.BOOLEAN, null)
   .add(Symbol.FORMULA, null)
@@ -694,7 +697,7 @@ table[Tree.FOLLOWS_OPEN_ARRAY] = ObjectBuilder
   .add(Symbol.CLOSE_ARRAY, null)
   .add(Symbol.WHITE_SPACE, null)
   .build();
-table[Tree.FOLLOWS_CLOSE_ARRAY] = ObjectBuilder
+table[Tree.CLOSE_ARRAY] = ObjectBuilder
   .add(Symbol.PLUS, null)
   .add(Symbol.MINUS, null)
   .add(Symbol.ASTERISK, null)
@@ -707,6 +710,7 @@ table[Tree.FOLLOWS_CLOSE_ARRAY] = ObjectBuilder
   .add(Symbol.WHITE_SPACE, null)
   .add(Symbol.END, null)
   .build();
+table[Tree.INVERT_NEXT] = null;
 
 
 table[Tree.TERMINATE] = undefined; // Terminate the end.

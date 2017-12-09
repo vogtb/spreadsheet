@@ -317,4 +317,9 @@ parser.setObj("A1");
 
 test("Declare number", function () {
   assertEquals(parser.parse('5'), 5);
+  assertEquals(parser.parse('  5  '), 5);
+});
+
+test("Number multiplication", function () {
+  assertEquals(parser.parse('5*5'), 25);
 });

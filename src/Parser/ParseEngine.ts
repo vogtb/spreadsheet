@@ -328,7 +328,8 @@ const enum ReduceActions {
   INVERT_NUMBER = 29,
   EXPRESSION = 30,
   AS_ARRAY = 31,
-  REFLEXIVE_REDUCE = 31
+  REFLEXIVE_REDUCE = 31,
+  RETURN_LAST_AS_NUMBER = 32
 };
 
 /**
@@ -388,7 +389,8 @@ const enum Tree {
   // CLOSE_ARRAY = 26,
   INVERT_NEXT = 27,
   EXPRESSION = 28,
-  TERMINATE = 29
+  TERMINATE_NUMBER = 29,
+  TERMINATE = 30
 }
 
 /**
@@ -403,30 +405,31 @@ productions[ReduceActions.NO_ACTION] = null;
 productions[ReduceActions.RETURN_LAST] = new ReductionPair(Tree.NUMBER, 2);
 productions[ReduceActions.CALL_VARIABLE] = new ReductionPair(Tree.VARIABLE, 1);
 productions[ReduceActions.AS_NUMBER] = new ReductionPair(Tree.NUMBER, 1);
-productions[ReduceActions.INVERT_NUMBER] = new ReductionPair(Tree.VARIABLE, 1);
+productions[ReduceActions.INVERT_NUMBER] = new ReductionPair(Tree.NUMBER, 1);
 productions[ReduceActions.AS_STRING] = new ReductionPair(Tree.VARIABLE, 1);
 productions[ReduceActions.AMPERSAND] = new ReductionPair(Tree.AMPERSAND, 3);
 productions[ReduceActions.EQUALS] = new ReductionPair(Tree.EQUALS, 3);
 productions[ReduceActions.PLUS] = new ReductionPair(Tree.PLUS, 3);
 productions[ReduceActions.LAST_NUMBER] = new ReductionPair(Tree.NUMBER, 3);
-productions[ReduceActions.LTE] = new ReductionPair(Tree.VARIABLE, 4);
-productions[ReduceActions.GTE] = new ReductionPair(Tree.VARIABLE, 4);
-productions[ReduceActions.NOT_EQ] = new ReductionPair(Tree.VARIABLE, 4);
-productions[ReduceActions.GT] = new ReductionPair(Tree.VARIABLE, 3);
-productions[ReduceActions.LT] = new ReductionPair(Tree.VARIABLE, 3);
-productions[ReduceActions.MINUS] = new ReductionPair(Tree.VARIABLE, 3);
-productions[ReduceActions.MULTIPLY] = new ReductionPair(Tree.VARIABLE, 3);
-productions[ReduceActions.DIVIDE] = new ReductionPair(Tree.VARIABLE, 3);
-productions[ReduceActions.TO_POWER] = new ReductionPair(Tree.VARIABLE, 3);
-productions[ReduceActions.TO_NUMBER_NAN_AS_ZERO] = new ReductionPair(Tree.VARIABLE, 2);
+productions[ReduceActions.LTE] = new ReductionPair(Tree.NUMBER, 4);
+productions[ReduceActions.GTE] = new ReductionPair(Tree.NUMBER, 4);
+productions[ReduceActions.NOT_EQ] = new ReductionPair(Tree.NUMBER, 4);
+productions[ReduceActions.GT] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.LT] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.MINUS] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.MULTIPLY] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.DIVIDE] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.TO_POWER] = new ReductionPair(Tree.NUMBER, 3);
+productions[ReduceActions.TO_NUMBER_NAN_AS_ZERO] = new ReductionPair(Tree.NUMBER, 2);
 productions[ReduceActions.FIXED_CELL_VAL] = new ReductionPair(Tree.VARIABLE, 1);
 productions[ReduceActions.FIXED_CELL_RANGE_VAL] = new ReductionPair(Tree.VARIABLE, 3);
 productions[ReduceActions.CELL_VALUE] = new ReductionPair(Tree.VARIABLE, 1);
 productions[ReduceActions.CELL_RANGE_VALUE] = new ReductionPair(Tree.VARIABLE, 3);
-productions[ReduceActions.PERCENT] = new ReductionPair(Tree.VARIABLE, 3);
+productions[ReduceActions.PERCENT] = new ReductionPair(Tree.NUMBER, 3);
 productions[ReduceActions.AS_ERROR] = new ReductionPair(Tree.ERROR, 1);
 productions[ReduceActions.AS_ARRAY] = new ReductionPair(Tree.VARIABLE, 1);
 productions[ReduceActions.REFLEXIVE_REDUCE] = new ReductionPair(Tree.VARIABLE, 1);
+productions[ReduceActions.RETURN_LAST_AS_NUMBER] = new ReductionPair(Tree.NUMBER, 2);
 const PRODUCTIONS = productions;
 
 
@@ -441,14 +444,22 @@ let table = [];
 table[Tree.START] = ObjectBuilder
   .add(Symbol.NUMBER, Tree.NUMBER)
   .add(Symbol.WHITE_SPACE, Tree.START)
-  .add(Symbol.END, Tree.TERMINATE)
+  .add(Symbol.END, Tree.TERMINATE_NUMBER)
   .build();
 table[Tree.NUMBER] = ObjectBuilder
+  .add(Symbol.ASTERISK, [SHIFT, ReduceActions.MULTIPLY])
   .add(Symbol.WHITE_SPACE, Tree.NUMBER)
-  .add(Symbol.END, [REDUCE, ReduceActions.AS_NUMBER])
+  .add(Symbol.END, Tree.TERMINATE_NUMBER)
+  .build();
+table[Tree.ASTERISK] = ObjectBuilder
+  .add(Symbol.WHITE_SPACE, Tree.ASTERISK)
+  .add(Symbol.END, Tree.TERMINATE_NUMBER)
   .build();
 table[Tree.TERMINATE] = ObjectBuilder
   .add(Symbol.END, [REDUCE, ReduceActions.RETURN_LAST])
+  .build();
+table[Tree.TERMINATE_NUMBER] = ObjectBuilder
+  .add(Symbol.END, [REDUCE, ReduceActions.RETURN_LAST_AS_NUMBER])
   .build();
 const ACTION_TABLE = table;
 
@@ -479,6 +490,8 @@ let Parser = (function () {
         switch (reduceActionToPerform) {
           case ReduceActions.RETURN_LAST:
             return virtualStack[vsl - 1];
+          case ReduceActions.RETURN_LAST_AS_NUMBER:
+            return sharedStateYY.handler.helper.number(virtualStack[vsl - 1]);
           case ReduceActions.CALL_VARIABLE:
             this.$ = sharedStateYY.handler.helper.callVariable.call(this, virtualStack[vsl]);
             break;

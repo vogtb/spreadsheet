@@ -327,7 +327,8 @@ const enum ReduceActions {
   START_ARRAY = 28,
   INVERT_NUMBER = 29,
   EXPRESSION = 30,
-  AS_ARRAY = 31
+  AS_ARRAY = 31,
+  REFLEXIVE_REDUCE = 31
 };
 
 /**
@@ -360,6 +361,9 @@ class ReductionPair {
 
 const enum Tree {
   START = 0,
+  NUMBER = 1,
+  STRING = 2,
+  BOOLEAN = 3,
   VARIABLE = 4,
   ERROR = 5,
   FORMULA = 6,
@@ -396,15 +400,15 @@ const enum Tree {
  */
 let productions : Array<ReductionPair> = [];
 productions[ReduceActions.NO_ACTION] = null;
-productions[ReduceActions.RETURN_LAST] = new ReductionPair(3, 2);
+productions[ReduceActions.RETURN_LAST] = new ReductionPair(Tree.NUMBER, 2);
 productions[ReduceActions.CALL_VARIABLE] = new ReductionPair(Tree.VARIABLE, 1);
-productions[ReduceActions.AS_NUMBER] = new ReductionPair(Tree.VARIABLE, 1);
+productions[ReduceActions.AS_NUMBER] = new ReductionPair(Tree.NUMBER, 1);
 productions[ReduceActions.INVERT_NUMBER] = new ReductionPair(Tree.VARIABLE, 1);
 productions[ReduceActions.AS_STRING] = new ReductionPair(Tree.VARIABLE, 1);
 productions[ReduceActions.AMPERSAND] = new ReductionPair(Tree.AMPERSAND, 3);
 productions[ReduceActions.EQUALS] = new ReductionPair(Tree.EQUALS, 3);
 productions[ReduceActions.PLUS] = new ReductionPair(Tree.PLUS, 3);
-productions[ReduceActions.LAST_NUMBER] = new ReductionPair(Tree.VARIABLE, 3);
+productions[ReduceActions.LAST_NUMBER] = new ReductionPair(Tree.NUMBER, 3);
 productions[ReduceActions.LTE] = new ReductionPair(Tree.VARIABLE, 4);
 productions[ReduceActions.GTE] = new ReductionPair(Tree.VARIABLE, 4);
 productions[ReduceActions.NOT_EQ] = new ReductionPair(Tree.VARIABLE, 4);
@@ -422,6 +426,7 @@ productions[ReduceActions.CELL_RANGE_VALUE] = new ReductionPair(Tree.VARIABLE, 3
 productions[ReduceActions.PERCENT] = new ReductionPair(Tree.VARIABLE, 3);
 productions[ReduceActions.AS_ERROR] = new ReductionPair(Tree.ERROR, 1);
 productions[ReduceActions.AS_ARRAY] = new ReductionPair(Tree.VARIABLE, 1);
+productions[ReduceActions.REFLEXIVE_REDUCE] = new ReductionPair(Tree.VARIABLE, 1);
 const PRODUCTIONS = productions;
 
 
@@ -434,85 +439,16 @@ let table = [];
 // All functions in the spreadsheet start with a 0-token.
 // `=`
 table[Tree.START] = ObjectBuilder
-  .add(Symbol.NUMBER, Tree.VARIABLE)
+  .add(Symbol.NUMBER, Tree.NUMBER)
   .add(Symbol.WHITE_SPACE, Tree.START)
   .add(Symbol.END, Tree.TERMINATE)
   .build();
-table[Tree.VARIABLE] = ObjectBuilder
-  .add(Symbol.PLUS, [SHIFT, ReduceActions.PLUS])
-  .add(Symbol.MINUS, [SHIFT, ReduceActions.MINUS])
-  .add(Symbol.ASTERISK, [SHIFT, ReduceActions.MULTIPLY])
-  .add(Symbol.DIVIDE, [SHIFT, ReduceActions.DIVIDE])
-  .add(Symbol.CARROT, [SHIFT, ReduceActions.TO_POWER])
-  .add(Symbol.PERCENT, [REDUCE, ReduceActions.PERCENT])
-  .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.AMPERSAND])
-  .add(Symbol.WHITE_SPACE, Tree.TERMINATE)
-  .add(Symbol.END, Tree.TERMINATE)
+table[Tree.NUMBER] = ObjectBuilder
+  .add(Symbol.WHITE_SPACE, Tree.NUMBER)
+  .add(Symbol.END, [REDUCE, ReduceActions.AS_NUMBER])
   .build();
-table[Tree.PLUS] = ObjectBuilder
-  .add(Symbol.VARIABLE, null)
-  .add(Symbol.CELL_REF, null)
-  .add(Symbol.FIXED_CELL_REF, null)
-  .add(Symbol.POUND, null)
-  .add(Symbol.FORMULA, null)
-  .add(Symbol.OPEN_PAREN, null)
-  .add(Symbol.OPEN_ARRAY, null)
-  .add(Symbol.WHITE_SPACE, null)
-  .build();
-table[Tree.MINUS] = ObjectBuilder
-  .add(Symbol.VARIABLE, null)
-  .add(Symbol.CELL_REF, null)
-  .add(Symbol.FIXED_CELL_REF, null)
-  .add(Symbol.POUND, null)
-  .add(Symbol.FORMULA, null)
-  .add(Symbol.OPEN_PAREN, null)
-  .add(Symbol.OPEN_ARRAY, null)
-  .add(Symbol.WHITE_SPACE, null)
-  .build();
-table[Tree.ASTERISK] = ObjectBuilder
-  .add(Symbol.VARIABLE, null)
-  .add(Symbol.CELL_REF, null)
-  .add(Symbol.FIXED_CELL_REF, null)
-  .add(Symbol.POUND, null)
-  .add(Symbol.FORMULA, null)
-  .add(Symbol.OPEN_PAREN, null)
-  .add(Symbol.OPEN_ARRAY, null)
-  .add(Symbol.WHITE_SPACE, null)
-  .build();
-table[Tree.SLASH] = ObjectBuilder
-  .add(Symbol.VARIABLE, null)
-  .add(Symbol.CELL_REF, null)
-  .add(Symbol.FIXED_CELL_REF, null)
-  .add(Symbol.POUND, null)
-  .add(Symbol.FORMULA, null)
-  .add(Symbol.OPEN_PAREN, null)
-  .add(Symbol.OPEN_ARRAY, null)
-  .add(Symbol.WHITE_SPACE, null)
-  .build();
-table[Tree.CARROT] = ObjectBuilder
-  .add(Symbol.VARIABLE, null)
-  .add(Symbol.CELL_REF, null)
-  .add(Symbol.FIXED_CELL_REF, null)
-  .add(Symbol.POUND, null)
-  .add(Symbol.FORMULA, null)
-  .add(Symbol.OPEN_PAREN, null)
-  .add(Symbol.OPEN_ARRAY, null)
-  .add(Symbol.WHITE_SPACE, null)
-  .build();
-table[Tree.AMPERSAND] = ObjectBuilder
-  .add(Symbol.VARIABLE, null)
-  .add(Symbol.CELL_REF, null)
-  .add(Symbol.FIXED_CELL_REF, null)
-  .add(Symbol.POUND, null)
-  .add(Symbol.FORMULA, null)
-  .add(Symbol.OPEN_PAREN, null)
-  .add(Symbol.OPEN_ARRAY, null)
-  .add(Symbol.WHITE_SPACE, null)
-  .build();
-table[Tree.EXPRESSION] = null;
-table[Tree.INVERT_NEXT] = null;
 table[Tree.TERMINATE] = ObjectBuilder
-  .add(Symbol.END, [ACCEPT, ReduceActions.RETURN_LAST])
+  .add(Symbol.END, [REDUCE, ReduceActions.RETURN_LAST])
   .build();
 const ACTION_TABLE = table;
 
@@ -620,6 +556,9 @@ let Parser = (function () {
             break;
           case ReduceActions.AS_ERROR:
             this.$ = constructErrorByName(virtualStack[vsl]);
+            break;
+          case ReduceActions.REFLEXIVE_REDUCE:
+            this.$ = virtualStack[vsl];
             break;
         }
       } catch (e) {
@@ -767,11 +706,30 @@ let Parser = (function () {
           }
           // read action for current state and first input
           action = ACTION_TABLE[state] && ACTION_TABLE[state][symbol];
-          console.log(action, state, symbol);
         }
 
-        // handle parse error
-        if (typeof action === 'undefined' || !action.length || !action[0]) {
+        console.log("STEP");
+        console.log({
+          text: lexer.match,
+          token: SYMBOL_INDEX_TO_NAME[symbol] || symbol,
+          symbol: symbol,
+          tokenIndex: symbol,
+          line: lexer.yylineno,
+          loc: yyloc,
+          state: state,
+          stack: stack,
+          semanticValueStack: semanticValueStack
+        });
+
+        if (typeof action == "number") {
+          stack.push(symbol);
+          semanticValueStack.push(lexer.yytext);
+          locationStack.push(lexer.yylloc);
+          stack.push(action);
+          symbol = null;
+          continue;
+          // handle parse error
+        } else if (typeof action === 'undefined' || !action.length || !action[0]) {
           let error_rule_depth;
           let errStr = '';
 
@@ -1109,7 +1067,6 @@ let Parser = (function () {
         }
         if (match) {
           token = this.test_match(match, rules[index]);
-          console.log("match", match, "index", index, "token", token);
           if (token !== false) {
             return token;
           }
@@ -1166,7 +1123,7 @@ let Parser = (function () {
           case 8:
             return ReduceActions.CALL_FUNCTION_LAST_BLANK;
           case 9:
-            return ReduceActions.AS_NUMBER;
+            return Symbol.NUMBER;
           case 12:
             return ReduceActions.FIXED_CELL_RANGE_VAL;
           case 13:

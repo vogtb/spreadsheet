@@ -15,7 +15,7 @@ import {
   SHIFT,
   SYMBOL_INDEX_TO_NAME,
   SYMBOL_NAME_TO_INDEX,
-  PRODUCTIONS
+  PRODUCTIONS, RuleIndex, Symbol
 } from "./ParserConstants"
 import {isUndefined} from "../Utilities/MoreUtils";
 
@@ -689,7 +689,7 @@ let Parser = (function () {
       },
 
       // test the lexed token: return FALSE when not a match, otherwise return token
-      test_match: function (match, indexed_rule) {
+      testMatch: function (match, indexed_rule) {
         let token,
           lines,
           backup;
@@ -744,7 +744,7 @@ let Parser = (function () {
         this._backtrack = false;
         this._input = this._input.slice(match[0].length);
         this.matched += match[0];
-        token = this.mapActionToActionIndex(indexed_rule);
+        token = this.mapRuleIndexToSymbolEnumeration(indexed_rule);
         if (this.done && this._input) {
           this.done = false;
         }
@@ -784,7 +784,7 @@ let Parser = (function () {
             match = tempMatch;
             index = i;
             if (this.options.backtrack_lexer) {
-              token = this.test_match(tempMatch, rules[i]);
+              token = this.testMatch(tempMatch, rules[i]);
               if (token !== false) {
                 return token;
               } else if (this._backtrack) {
@@ -801,7 +801,7 @@ let Parser = (function () {
           }
         }
         if (match) {
-          token = this.test_match(match, rules[index]);
+          token = this.testMatch(match, rules[index]);
           if (token !== false) {
             return token;
           }
@@ -844,84 +844,84 @@ let Parser = (function () {
         // flex?
       },
 
-      mapActionToActionIndex: function (ruleIndex) {
+      mapRuleIndexToSymbolEnumeration: function (ruleIndex) {
         switch (ruleIndex) {
-          case 0:
+          case RuleIndex.WHITE_SPACE:
             // skip whitespace
             break;
-          case 1:
-            return ReduceActions.LAST_NUMBER;
-          case 2:
-            return ReduceActions.LAST_NUMBER;
-          case 3:
-            return ReduceActions.CALL_FUNCTION_LAST_BLANK;
-          case 4:
-            return ReduceActions.AMPERSAND;
-          case 5:
-            return ReduceActions.EQUALS;
-          case 6:
-            return ReduceActions.I26;
-          case 7:
-            return ReduceActions.FIXED_CELL_VAL;
-          case 8:
-            return ReduceActions.CALL_FUNCTION_LAST_BLANK;
-          case 9:
-            return ReduceActions.ENSURE_IS_ARRAY;
-          case 10:
-            return ReduceActions.ENSURE_IS_ARRAY;
-          case 11:
-            return ReduceActions.REDUCE_INT;
-          case 12:
-            return ReduceActions.FIXED_CELL_RANGE_VAL;
-          case 13:
+          case RuleIndex.DOUBLE_QUOTES:
+            return Symbol.STRING;
+          case RuleIndex.SINGLE_QUOTES:
+            return Symbol.STRING;
+          case RuleIndex.FORMULA_NAME:
+            return Symbol.FUNCTION;
+          case RuleIndex.DATE:
+            return Symbol.TIME_AMPM;
+          case RuleIndex.TIME:
+            return Symbol.TIME_24;
+          case RuleIndex.$_A1_CELL:
+            return Symbol.FIXEDCELL;
+          case RuleIndex.A1_CELL:
+            return Symbol.CELL_UPPER;
+          case RuleIndex.FORMULA_NAME_SIMPLE:
+            return Symbol.FUNCTION;
+          case RuleIndex.VARIABLE:
+            return Symbol.VARIABLE;
+          case RuleIndex.SIMPLE_VARIABLE:
+            return Symbol.VARIABLE;
+          case RuleIndex.INTEGER:
+            return Symbol.NUMBER_UPPER;
+          case RuleIndex.OPEN_AND_CLOSE_OF_ARRAY:
+            return Symbol.ARRAY;
+          case RuleIndex.DOLLAR_SIGN:
             // skip whitespace??
             break;
-          case 14:
-            return ReduceActions.LTE;
-          case 15:
+          case RuleIndex.AMPERSAND_SIGN:
+            return Symbol.AMPERSAND;
+          case RuleIndex.SINGLE_WHITESPACE:
             return ' ';
-          case 16:
-            return ReduceActions.ENSURE_YYTEXT_ARRAY;
-          case 17:
-            return ReduceActions.I27;
-          case 18:
-            return ReduceActions.CELL_VALUE;
-          case 19:
-            return ReduceActions.CELL_RANGE_VALUE;
-          case 20:
-            return ReduceActions.TO_POWER;
-          case 21:
-            return ReduceActions.INVERT_NUM;
-          case 22:
-            return ReduceActions.DIVIDE;
-          case 23:
-            return ReduceActions.NOT_EQ;
-          case 24:
-            return ReduceActions.TO_NUMBER_NAN_AS_ZERO;
-          case 25:
-            return ReduceActions.NOT;
-          case 26:
-            return ReduceActions.GT;
-          case 27:
-            return ReduceActions.MINUS;
-          case 28:
-            return ReduceActions.LT;
-          case 29:
-            return ReduceActions.MULTIPLY;
-          case 30:
+          case RuleIndex.PERIOD:
+            return Symbol.DECIMAL;
+          case RuleIndex.COLON:
+            return Symbol.COLON;
+          case RuleIndex.SEMI_COLON:
+            return Symbol.SEMI_COLON;
+          case RuleIndex.COMMA:
+            return Symbol.COMMA;
+          case RuleIndex.ASTERISK:
+            return Symbol.ASTERISK;
+          case RuleIndex.FORWARD_SLASH:
+            return Symbol.DIVIDE;
+          case RuleIndex.MINUS_SIGN:
+            return Symbol.MINUS;
+          case RuleIndex.PLUS_SIGN:
+            return Symbol.PLUS;
+          case RuleIndex.CARET_SIGN:
+            return Symbol.CARROT;
+          case RuleIndex.OPEN_PAREN:
+            return Symbol.LEFT_PAREN;
+          case RuleIndex.CLOSE_PAREN:
+            return Symbol.RIGHT_PAREN;
+          case RuleIndex.GREATER_THAN_SIGN:
+            return Symbol.GREATER_THAN;
+          case RuleIndex.LESS_THAN_SIGN:
+            return Symbol.LESS_THAN;
+          case RuleIndex.NOT:
+            return Symbol.NOT;
+          case RuleIndex.OPEN_DOUBLE_QUOTE:
             return '"';
-          case 31:
+          case RuleIndex.OPEN_SINGLE_QUITE:
             return "'";
-          case 32:
+          case RuleIndex.EXCLAMATION_POINT_RULE:
             return "!";
-          case 33:
-            return ReduceActions.GTE;
-          case 34:
-            return ReduceActions.REDUCE_PERCENT;
-          case 35:
-            return ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY;
-          case 36:
-            return ReduceActions.AS_NUMBER;
+          case RuleIndex.EQUALS_SIGN:
+            return Symbol.EQUALS;
+          case RuleIndex.PERCENT_SIGN:
+            return Symbol.PERCENT;
+          case RuleIndex.POUND_SIGN:
+            return Symbol.POUND;
+          case RuleIndex.END_OF_STRING:
+            return Symbol.EOF;
         }
       },
       conditions: {

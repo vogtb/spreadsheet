@@ -358,6 +358,17 @@ let Parser = (function () {
           action = ACTION_TABLE[state] && ACTION_TABLE[state][symbol];
         }
 
+        console.log({
+          text: lexer.match,
+          token: SYMBOL_INDEX_TO_NAME[symbol] || symbol,
+          tokenIndex: symbol,
+          line: lexer.yylineno,
+          loc: yyloc,
+          state: state,
+          stack: stack,
+          semanticValueStack: semanticValueStack
+        });
+
         // handle parse error
         if (typeof action === 'undefined' || !action.length || !action[0]) {
           let error_rule_depth;

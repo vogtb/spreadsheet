@@ -360,7 +360,9 @@ const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
 
 const enum State {
   START = 0,
-  START_NUMBER = 6
+  START_NUMBER = 6,
+  ADD_TWO_NUMBERS = 45,
+  SUBTRACT_TWO_NUMBERS = 52
 }
 
 
@@ -420,7 +422,7 @@ table[3] = ObjectBuilder
   .add(Symbol.CARROT, [REDUCE, ReduceActions.CALL_VARIABLE])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.CALL_VARIABLE])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.CALL_VARIABLE])
-  .add(33, [SHIFT, ReduceActions.CELL_VALUE])
+  .add(Symbol.DECIMAL, [SHIFT, ReduceActions.CELL_VALUE])
   .build();
 table[State.START_NUMBER] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.AS_NUMBER])
@@ -731,7 +733,7 @@ table[25] = ObjectBuilder
   .build();
 table[26] = ObjectBuilder
   .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 52)
+  .add(Symbol.EXPRESSION, State.SUBTRACT_TWO_NUMBERS)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
@@ -949,7 +951,7 @@ table[44] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.EQUALS])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.EQUALS])
   .build();
-table[45] = ObjectBuilder
+table[State.ADD_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.AMPERSAND, [SHIFT, 20])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.PLUS])
@@ -1064,7 +1066,7 @@ table[51] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.NOT])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.NOT])
   .build();
-table[52] = ObjectBuilder
+table[State.SUBTRACT_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.MINUS])

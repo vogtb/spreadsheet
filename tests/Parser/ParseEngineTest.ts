@@ -1,6 +1,6 @@
 import {
   Parser
-} from "../../src/Parser/ParseEngine";
+} from "../../src/Parser/Parser";
 import {TypeConverter} from "../../src/Utilities/TypeConverter";
 import {DivZeroError, NameError} from "../../src/Errors";
 import {Formulas} from "../../src/Formulas";

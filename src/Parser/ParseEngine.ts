@@ -261,7 +261,8 @@ const enum State {
   ASTERISK = 9,
   TERMINATE_NUMBER = 29,
   TERMINATE = 30,
-  MULTIPLY = 31
+  MULTIPLY = 31,
+  ULTIMATE_TERMINAL = 32
 }
 
 let STATE_NAMES = {};
@@ -272,6 +273,7 @@ STATE_NAMES[State.ASTERISK] = "State.ASTERISK";
 STATE_NAMES[State.TERMINATE_NUMBER] = "State.TERMINATE_NUMBER";
 STATE_NAMES[State.TERMINATE] = "State.TERMINATE";
 STATE_NAMES[State.MULTIPLY] = "State.MULTIPLY";
+STATE_NAMES[State.ULTIMATE_TERMINAL] = "State.ULTIMATE_TERMINAL";
 
 /**
  * Productions is used to look up both the number to use when reducing the stack (productions[x][1]) and the semantic
@@ -380,7 +382,7 @@ let Parser = (function () {
         }
       }
     },
-    defaultActions: {19: [REDUCE, 1]},
+    defaultActions : ObjectBuilder.add(State.ULTIMATE_TERMINAL, [REDUCE, ReduceActions.RETURN_LAST]).build(),
     parseError: function parseError(str, hash) {
       if (hash.recoverable) {
         this.trace(str);

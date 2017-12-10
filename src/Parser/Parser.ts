@@ -267,7 +267,7 @@ let Parser = (function () {
         }
       }
     },
-    defaultActions: {19: [REDUCE, 1]},
+    defaultActions: {19: [REDUCE, ReduceActions.RETURN_LAST]},
     parseError: function parseError(str, hash) {
       if (hash.recoverable) {
         this.trace(str);

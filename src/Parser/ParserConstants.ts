@@ -361,8 +361,17 @@ const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
 const enum State {
   START = 0,
   START_NUMBER = 6,
+  START_STRING = 7,
+  LEFT_PAREN = 8,
+  START_EQUALS = 21,
+  LESS_THAN = 23,
+  GREATER_THAN = 24,
   ADD_TWO_NUMBERS = 45,
-  SUBTRACT_TWO_NUMBERS = 52
+  SUBTRACT_TWO_NUMBERS = 52,
+  MULTIPLY_TWO_NUMBERS = 53,
+  DIVIDE_TWO_NUMBERS = 54,
+  NUMBER_TO_POWER_OF_OTHER = 55,
+  CLOSE_PAREN_ON_EXPRESSION = 57
 }
 
 
@@ -379,9 +388,9 @@ table[State.START] = ObjectBuilder
   .add(Symbol.EXPRESSION, 2)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -397,10 +406,10 @@ table[1] = ObjectBuilder
 table[2] = ObjectBuilder
   .add(Symbol.EOF, [SHIFT, 19])
   .add(Symbol.AMPERSAND, [SHIFT, 20])
-  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
   .add(Symbol.PLUS, [SHIFT, 22])
-  .add(Symbol.LESS_THAN, [SHIFT, 23])
-  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
+  .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, 26])
   .add(Symbol.ASTERISK, [SHIFT, 27])
@@ -441,7 +450,7 @@ table[State.START_NUMBER] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.AS_NUMBER])
   .add(Symbol.PERCENT, [SHIFT, ReduceActions.CELL_RANGE_VALUE])
   .build();
-table[7] = ObjectBuilder
+table[State.START_STRING] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.AS_STRING])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.AS_STRING])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.AS_STRING])
@@ -457,14 +466,14 @@ table[7] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.AS_STRING])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.AS_STRING])
   .build();
-table[8] = ObjectBuilder
+table[State.LEFT_PAREN] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 32)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -479,9 +488,9 @@ table[9] = ObjectBuilder
   .add(Symbol.EXPRESSION, 33)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -496,9 +505,9 @@ table[10] = ObjectBuilder
   .add(Symbol.EXPRESSION, 34)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -631,9 +640,9 @@ table[20] = ObjectBuilder
   .add(Symbol.EXPRESSION, 43)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -643,14 +652,14 @@ table[20] = ObjectBuilder
   .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
   .add(Symbol.POUND, [SHIFT, ReduceActions.MULTIPLY])
   .build();
-table[21] = ObjectBuilder
+table[State.START_EQUALS] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 44)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 1])
   .add(Symbol.CELL, 12)
@@ -665,9 +674,9 @@ table[22] = ObjectBuilder
   .add(Symbol.EXPRESSION, 45)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -677,15 +686,15 @@ table[22] = ObjectBuilder
   .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
   .add(Symbol.POUND, [SHIFT, 18])
   .build();
-table[23] = ObjectBuilder
+table[State.LESS_THAN] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 48)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.EQUALS, [SHIFT, 46])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.GREATER_THAN, [SHIFT, 47])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
@@ -696,15 +705,15 @@ table[23] = ObjectBuilder
   .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
   .add(Symbol.POUND, [SHIFT, 18])
   .build();
-table[24] = ObjectBuilder
+table[State.GREATER_THAN] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 50)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.EQUALS, [SHIFT, 49])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -719,9 +728,9 @@ table[25] = ObjectBuilder
   .add(Symbol.EXPRESSION, 51)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -736,9 +745,9 @@ table[26] = ObjectBuilder
   .add(Symbol.EXPRESSION, State.SUBTRACT_TWO_NUMBERS)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -750,12 +759,12 @@ table[26] = ObjectBuilder
   .build();
 table[27] = ObjectBuilder
   .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 53)
+  .add(Symbol.EXPRESSION, State.MULTIPLY_TWO_NUMBERS)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -767,12 +776,12 @@ table[27] = ObjectBuilder
   .build();
 table[28] = ObjectBuilder
   .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 54)
+  .add(Symbol.EXPRESSION, State.DIVIDE_TWO_NUMBERS)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -784,12 +793,12 @@ table[28] = ObjectBuilder
   .build();
 table[29] = ObjectBuilder
   .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 55)
+  .add(Symbol.EXPRESSION, State.NUMBER_TO_POWER_OF_OTHER)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -822,11 +831,11 @@ table[31] = ObjectBuilder
   .build();
 table[32] = ObjectBuilder
   .add(Symbol.AMPERSAND, [SHIFT, 20])
-  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
   .add(Symbol.PLUS, [SHIFT, 22])
-  .add(Symbol.RIGHT_PAREN, [SHIFT, 57])
-  .add(Symbol.LESS_THAN, [SHIFT, 23])
-  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.RIGHT_PAREN, [SHIFT, State.CLOSE_PAREN_ON_EXPRESSION])
+  .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
+  .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, 26])
   .add(Symbol.ASTERISK, [SHIFT, 27])
@@ -870,9 +879,9 @@ table[35] = ObjectBuilder
   .add(Symbol.EXPRESSION, 60)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.RIGHT_PAREN, [SHIFT, 58])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
@@ -941,8 +950,8 @@ table[44] = ObjectBuilder
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.EQUALS])
   .add(Symbol.PLUS, [SHIFT, 22])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.EQUALS])
-  .add(Symbol.LESS_THAN, [SHIFT, 23])
-  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
+  .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, 26])
   .add(Symbol.ASTERISK, [SHIFT, 27])
@@ -972,9 +981,9 @@ table[46] = ObjectBuilder
   .add(Symbol.EXPRESSION, 67)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -989,9 +998,9 @@ table[47] = ObjectBuilder
   .add(Symbol.EXPRESSION, 68)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -1022,9 +1031,9 @@ table[49] = ObjectBuilder
   .add(Symbol.EXPRESSION, 69)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -1082,7 +1091,7 @@ table[State.SUBTRACT_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.MINUS])
   .build();
-table[53] = ObjectBuilder
+table[State.MULTIPLY_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.MULTIPLY])
   .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.MULTIPLY])
@@ -1098,7 +1107,7 @@ table[53] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.MULTIPLY])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.MULTIPLY])
   .build();
-table[54] = ObjectBuilder
+table[State.DIVIDE_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.DIVIDE])
   .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.DIVIDE])
@@ -1114,7 +1123,7 @@ table[54] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.DIVIDE])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.DIVIDE])
   .build();
-table[55] = ObjectBuilder
+table[State.NUMBER_TO_POWER_OF_OTHER] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.TO_POWER])
   .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.TO_POWER])
@@ -1147,7 +1156,7 @@ table[56] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(33, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .build();
-table[57] = ObjectBuilder
+table[State.CLOSE_PAREN_ON_EXPRESSION] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.LAST_NUMBER])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.LAST_NUMBER])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.LAST_NUMBER])
@@ -1186,11 +1195,11 @@ table[59] = ObjectBuilder
   .build();
 table[60] = ObjectBuilder
   .add(Symbol.AMPERSAND, [SHIFT, 20])
-  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
   .add(Symbol.PLUS, [SHIFT, 22])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.ENSURE_IS_ARRAY])
-  .add(Symbol.LESS_THAN, [SHIFT, 23])
-  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
+  .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, 26])
   .add(Symbol.ASTERISK, [SHIFT, 27])
@@ -1338,10 +1347,10 @@ table[71] = ObjectBuilder
   .add(Symbol.EXPRESSION, 74)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
-  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
+  .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -1356,10 +1365,10 @@ table[72] = ObjectBuilder
   .add(Symbol.EXPRESSION, 75)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
-  .add(Symbol.STRING, [SHIFT, 7])
-  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.STRING, [SHIFT, State.START_STRING])
+  .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
   .add(Symbol.PLUS, [SHIFT, 10])
-  .add(Symbol.LEFT_PAREN, [SHIFT, 8])
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
   .add(Symbol.FUNCTION, [SHIFT, 11])
   .add(Symbol.CELL, 12)
@@ -1390,11 +1399,11 @@ table[73] = ObjectBuilder
   .build();
 table[74] = ObjectBuilder
   .add(Symbol.AMPERSAND, [SHIFT, 20])
-  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
   .add(Symbol.PLUS, [SHIFT, 22])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REDUCE_INT])
-  .add(Symbol.LESS_THAN, [SHIFT, 23])
-  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
+  .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, 26])
   .add(Symbol.ASTERISK, [SHIFT, 27])
@@ -1404,11 +1413,11 @@ table[74] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.REDUCE_INT]).build();
 table[75] = ObjectBuilder
   .add(Symbol.AMPERSAND, [SHIFT, 20])
-  .add(Symbol.EQUALS, [SHIFT, 21])
+  .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
   .add(Symbol.PLUS, [SHIFT, 22])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REDUCE_PERCENT])
-  .add(Symbol.LESS_THAN, [SHIFT, 23])
-  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
+  .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, 26])
   .add(Symbol.ASTERISK, [SHIFT, 27])

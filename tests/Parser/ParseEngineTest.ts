@@ -265,7 +265,11 @@ let helper = {
     args = args || [];
     let formulas = {
       "SUM": function(...args) {
-        return 10;
+        let result = 0;
+        for (let i = 0; i < args.length; i++) {
+          result = result + args[i];
+        }
+        return result;
       }
     };
     if (fn in formulas) {
@@ -514,3 +518,7 @@ test("Parse range following comma", function(){
 });
 
 
+
+
+
+assertEquals(parser.parse('(1+2)'), 3);

@@ -174,115 +174,27 @@ const RulesSeq = [
 enum Symbol {
   ACCEPT = 0,
   END = 1,
-  ERROR = 2,
-  EXPRESSIONS = 3,
-  EXPRESSION = 4,
   EOF = 5,
-  VARIABLE = 6,
-  VARIABLE_SEQUENCE = 7,
   NUMBER = 8,
-  STRING = 9,
-  FORMULA = 10,
-  BOOLEAN = 11,
-  CELL_REF = 12,
-  FIXED_CELL_REF = 13,
-  CELL = 14,
-  OPEN_ARRAY = 15,
-  CLOSE_ARRAY = 16,
-  PERIOD = 17,
-  AMPERSAND = 18,
-  EQUALS = 19,
-  PLUS = 20,
-  OPEN_PAREN = 21,
-  CLOSE_PAREN = 22,
-  LESS_THAN = 23,
-  GREATER_THAN = 24,
-  MINUS = 25,
   ASTERISK = 26,
-  DIVIDE = 27,
-  CARROT = 28,
-  COLON = 29,
-  SEMI_COLON = 30,
-  COMMA = 31,
-  PERCENT = 32,
-  POUND = 33,
-  EXCLAMATION_POINT = 34,
   WHITE_SPACE = 35
 }
 
 const SYMBOL_NAME_TO_INDEX = {
   "ACCEPT": Symbol.ACCEPT,
   "END": Symbol.END,
-  "ERROR": Symbol.ERROR,
-  "EXPRESSIONS": Symbol.EXPRESSIONS,
-  "EXPRESSION": Symbol.EXPRESSION,
   "EOF": Symbol.EOF,
-  "VARIABLE": Symbol.VARIABLE,
-  "VARIABLE_SEQUENCE": Symbol.VARIABLE_SEQUENCE,
   "NUMBER": Symbol.NUMBER,
-  "STRING": Symbol.STRING,
-  "FORMULA": Symbol.FORMULA,
-  "CELL_REF": Symbol.CELL_REF,
-  "FIXED_CELL_REF": Symbol.FIXED_CELL_REF,
-  "CELL": Symbol.CELL,
-  "OPEN_ARRAY": Symbol.OPEN_ARRAY,
-  "CLOSE_ARRAY": Symbol.CLOSE_ARRAY,
-  "PERIOD": Symbol.PERIOD,
-  "&": Symbol.AMPERSAND,
-  "=": Symbol.EQUALS,
-  "+": Symbol.PLUS,
-  "(": Symbol.OPEN_PAREN,
-  ")": Symbol.CLOSE_PAREN,
-  "<": Symbol.LESS_THAN,
-  ">": Symbol.GREATER_THAN,
-  "-": Symbol.MINUS,
   "*": Symbol.ASTERISK,
-  "/": Symbol.DIVIDE,
-  "^": Symbol.CARROT,
-  ":": Symbol.COLON,
-  ";": Symbol.SEMI_COLON,
-  ",": Symbol.COMMA,
-  "%": Symbol.PERCENT,
-  "#": Symbol.POUND,
-  "!": Symbol.EXCLAMATION_POINT,
   "WHITE_SPACE": Symbol.WHITE_SPACE
 };
 
 let symbolIndexToName = {};
 symbolIndexToName[Symbol.ACCEPT] = "ACCEPT";
 symbolIndexToName[Symbol.END] = "END";
-symbolIndexToName[Symbol.ERROR] = "ERROR";
-symbolIndexToName[Symbol.EXPRESSIONS] = "EXPRESSIONS";
-symbolIndexToName[Symbol.EXPRESSION] = "EXPRESSION";
 symbolIndexToName[Symbol.EOF] = "EOF";
-symbolIndexToName[Symbol.VARIABLE] = "VARIABLE";
-symbolIndexToName[Symbol.VARIABLE_SEQUENCE] = "VARIABLE_SEQUENCE";
 symbolIndexToName[Symbol.NUMBER] = "NUMBER";
-symbolIndexToName[Symbol.STRING] = "STRING";
-symbolIndexToName[Symbol.FORMULA] = "FORMULA";
-symbolIndexToName[Symbol.CELL_REF] = "CELL_REF";
-symbolIndexToName[Symbol.FIXED_CELL_REF] = "FIXED_CELL_REF";
-symbolIndexToName[Symbol.CELL] = "CELL";
-symbolIndexToName[Symbol.OPEN_ARRAY] = "OPEN_ARRAY";
-symbolIndexToName[Symbol.CLOSE_ARRAY] = "CLOSE_ARRAY";
-symbolIndexToName[Symbol.PERIOD] = ".";
-symbolIndexToName[Symbol.AMPERSAND] = "&";
-symbolIndexToName[Symbol.EQUALS] = "=";
-symbolIndexToName[Symbol.PLUS] = "+";
-symbolIndexToName[Symbol.OPEN_PAREN] = "(";
-symbolIndexToName[Symbol.CLOSE_PAREN] = ")";
-symbolIndexToName[Symbol.LESS_THAN] = "<";
-symbolIndexToName[Symbol.GREATER_THAN] = ">";
-symbolIndexToName[Symbol.MINUS] = "-";
 symbolIndexToName[Symbol.ASTERISK] = "*";
-symbolIndexToName[Symbol.DIVIDE] = "/";
-symbolIndexToName[Symbol.CARROT] = "^";
-symbolIndexToName[Symbol.SEMI_COLON] = ";";
-symbolIndexToName[Symbol.COLON] = ";";
-symbolIndexToName[Symbol.COMMA] = ",";
-symbolIndexToName[Symbol.PERCENT] = "%";
-symbolIndexToName[Symbol.POUND] = "#";
-symbolIndexToName[Symbol.EXCLAMATION_POINT] = "!";
 symbolIndexToName[Symbol.WHITE_SPACE] = "WHITE_SPACE";
 const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
 
@@ -296,41 +208,23 @@ const REDUCE = 2;
 const ACCEPT = 3;
 
 const enum ReduceActions {
-  NO_ACTION = 0,
-  RETURN_LAST = 1,
-  CALL_VARIABLE = 2,
-  AS_NUMBER = 3,
-  AS_STRING = 4,
-  AMPERSAND = 5,
-  EQUALS = 6,
-  PLUS = 7,
-  LAST_NUMBER = 8,
-  LTE = 9,
-  GTE = 10,
-  NOT_EQ = 11,
-  NOT = 12,
-  GT = 13,
-  LT = 14,
-  MINUS = 15,
-  MULTIPLY = 16,
-  DIVIDE = 17,
-  TO_POWER = 18,
-  AS_ERROR = 19,
-  TO_NUMBER_NAN_AS_ZERO = 20,
-  CALL_FUNCTION_LAST_BLANK = 21,
-  CALL_FUNCTION = 22,
-  FIXED_CELL_VAL = 23,
-  FIXED_CELL_RANGE_VAL = 24,
-  CELL_VALUE = 25,
-  CELL_RANGE_VALUE = 26,
-  PERCENT = 27,
-  START_ARRAY = 28,
-  INVERT_NUMBER = 29,
-  EXPRESSION = 30,
-  AS_ARRAY = 31,
-  REFLEXIVE_REDUCE = 31,
-  RETURN_LAST_AS_NUMBER = 32
-};
+  NO_ACTION = 100,
+  RETURN_LAST = 101,
+  AS_NUMBER = 103,
+  LAST_NUMBER = 108,
+  MULTIPLY = 1016,
+  REFLEXIVE_REDUCE = 1031,
+  RETURN_LAST_AS_NUMBER = 1032
+}
+
+let REDUCTION_ACTION_NAMES = {};
+REDUCTION_ACTION_NAMES[ReduceActions.NO_ACTION] = "ReduceActions.NO_ACTION";
+REDUCTION_ACTION_NAMES[ReduceActions.RETURN_LAST] = "ReduceActions.RETURN_LAST";
+REDUCTION_ACTION_NAMES[ReduceActions.AS_NUMBER] = "ReduceActions.AS_NUMBER";
+REDUCTION_ACTION_NAMES[ReduceActions.LAST_NUMBER] = "ReduceActions.LAST_NUMBER";
+REDUCTION_ACTION_NAMES[ReduceActions.MULTIPLY] = "ReduceActions.MULTIPLY";
+REDUCTION_ACTION_NAMES[ReduceActions.REFLEXIVE_REDUCE] = "ReduceActions.REFLEXIVE_REDUCE";
+REDUCTION_ACTION_NAMES[ReduceActions.RETURN_LAST_AS_NUMBER] = "ReduceActions.RETURN_LAST_AS_NUMBER";
 
 /**
  * Represents the length to reduce the stack by, and the token index value that will replace those tokens in the stack.
@@ -360,38 +254,22 @@ class ReductionPair {
   }
 }
 
-const enum Tree {
+const enum State {
   START = 0,
   NUMBER = 1,
-  STRING = 2,
-  BOOLEAN = 3,
   VARIABLE = 4,
-  ERROR = 5,
-  FORMULA = 6,
-  PLUS = 7,
-  MINUS = 8,
-  ASTERISK = 9,
-  SLASH = 10,
-  CARROT = 11,
-  AMPERSAND = 12,
-  PERCENT = 13,
-  LESS_THAN = 15,
-  GREATER_THAN = 16,
-  EQUALS = 17,
-  COMMA = 18,
-  OPEN_PAREN = 19,
-  CLOSE_PAREN = 20,
-  CELL_REF = 21,
-  FIXED_CELL_REF = 22,
-  CELL_RANGE_REF = 23,
-  FIXED_CELL_RANGE_REF = 24,
-  // OPEN_ARRAY = 25,
-  // CLOSE_ARRAY = 26,
-  INVERT_NEXT = 27,
-  EXPRESSION = 28,
+  MULTIPLICATION = 9,
   TERMINATE_NUMBER = 29,
   TERMINATE = 30
 }
+
+let STATE_NAMES = {};
+STATE_NAMES[State.START] = "State.START";
+STATE_NAMES[State.NUMBER] = "State.NUMBER";
+STATE_NAMES[State.VARIABLE] = "State.VARIABLE";
+STATE_NAMES[State.MULTIPLICATION] = "State.MULTIPLICATION";
+STATE_NAMES[State.TERMINATE_NUMBER] = "State.TERMINATE_NUMBER";
+STATE_NAMES[State.TERMINATE] = "State.TERMINATE";
 
 /**
  * Productions is used to look up both the number to use when reducing the stack (productions[x][1]) and the semantic
@@ -402,34 +280,12 @@ const enum Tree {
  */
 let productions : Array<ReductionPair> = [];
 productions[ReduceActions.NO_ACTION] = null;
-productions[ReduceActions.RETURN_LAST] = new ReductionPair(Tree.NUMBER, 2);
-productions[ReduceActions.CALL_VARIABLE] = new ReductionPair(Tree.VARIABLE, 1);
-productions[ReduceActions.AS_NUMBER] = new ReductionPair(Tree.NUMBER, 1);
-productions[ReduceActions.INVERT_NUMBER] = new ReductionPair(Tree.NUMBER, 1);
-productions[ReduceActions.AS_STRING] = new ReductionPair(Tree.VARIABLE, 1);
-productions[ReduceActions.AMPERSAND] = new ReductionPair(Tree.AMPERSAND, 3);
-productions[ReduceActions.EQUALS] = new ReductionPair(Tree.EQUALS, 3);
-productions[ReduceActions.PLUS] = new ReductionPair(Tree.PLUS, 3);
-productions[ReduceActions.LAST_NUMBER] = new ReductionPair(Tree.NUMBER, 3);
-productions[ReduceActions.LTE] = new ReductionPair(Tree.NUMBER, 4);
-productions[ReduceActions.GTE] = new ReductionPair(Tree.NUMBER, 4);
-productions[ReduceActions.NOT_EQ] = new ReductionPair(Tree.NUMBER, 4);
-productions[ReduceActions.GT] = new ReductionPair(Tree.NUMBER, 3);
-productions[ReduceActions.LT] = new ReductionPair(Tree.NUMBER, 3);
-productions[ReduceActions.MINUS] = new ReductionPair(Tree.NUMBER, 3);
-productions[ReduceActions.MULTIPLY] = new ReductionPair(Tree.NUMBER, 3);
-productions[ReduceActions.DIVIDE] = new ReductionPair(Tree.NUMBER, 3);
-productions[ReduceActions.TO_POWER] = new ReductionPair(Tree.NUMBER, 3);
-productions[ReduceActions.TO_NUMBER_NAN_AS_ZERO] = new ReductionPair(Tree.NUMBER, 2);
-productions[ReduceActions.FIXED_CELL_VAL] = new ReductionPair(Tree.VARIABLE, 1);
-productions[ReduceActions.FIXED_CELL_RANGE_VAL] = new ReductionPair(Tree.VARIABLE, 3);
-productions[ReduceActions.CELL_VALUE] = new ReductionPair(Tree.VARIABLE, 1);
-productions[ReduceActions.CELL_RANGE_VALUE] = new ReductionPair(Tree.VARIABLE, 3);
-productions[ReduceActions.PERCENT] = new ReductionPair(Tree.NUMBER, 3);
-productions[ReduceActions.AS_ERROR] = new ReductionPair(Tree.ERROR, 1);
-productions[ReduceActions.AS_ARRAY] = new ReductionPair(Tree.VARIABLE, 1);
-productions[ReduceActions.REFLEXIVE_REDUCE] = new ReductionPair(Tree.VARIABLE, 1);
-productions[ReduceActions.RETURN_LAST_AS_NUMBER] = new ReductionPair(Tree.NUMBER, 2);
+productions[ReduceActions.RETURN_LAST] = new ReductionPair(State.NUMBER, 2);
+productions[ReduceActions.AS_NUMBER] = new ReductionPair(State.NUMBER, 1);
+productions[ReduceActions.LAST_NUMBER] = new ReductionPair(State.NUMBER, 3);
+productions[ReduceActions.MULTIPLY] = new ReductionPair(State.NUMBER, 3);
+productions[ReduceActions.REFLEXIVE_REDUCE] = new ReductionPair(State.VARIABLE, 1);
+productions[ReduceActions.RETURN_LAST_AS_NUMBER] = new ReductionPair(State.NUMBER, 2);
 const PRODUCTIONS = productions;
 
 
@@ -441,24 +297,25 @@ const PRODUCTIONS = productions;
 let table = [];
 // All functions in the spreadsheet start with a 0-token.
 // `=`
-table[Tree.START] = ObjectBuilder
-  .add(Symbol.NUMBER, Tree.NUMBER)
-  .add(Symbol.WHITE_SPACE, Tree.START)
-  .add(Symbol.END, Tree.TERMINATE_NUMBER)
+table[State.START] = ObjectBuilder
+  .add(Symbol.NUMBER, [SHIFT, State.NUMBER])
+  .add(Symbol.WHITE_SPACE, State.START)
+  .add(Symbol.END, State.TERMINATE)
   .build();
-table[Tree.NUMBER] = ObjectBuilder
-  .add(Symbol.ASTERISK, [SHIFT, ReduceActions.MULTIPLY])
-  .add(Symbol.WHITE_SPACE, Tree.NUMBER)
-  .add(Symbol.END, Tree.TERMINATE_NUMBER)
+table[State.NUMBER] = ObjectBuilder
+  .add(Symbol.ASTERISK, [SHIFT, State.MULTIPLICATION])
+  .add(Symbol.WHITE_SPACE, State.NUMBER)
+  .add(Symbol.END, State.TERMINATE_NUMBER)
   .build();
-table[Tree.ASTERISK] = ObjectBuilder
-  .add(Symbol.WHITE_SPACE, Tree.ASTERISK)
-  .add(Symbol.END, Tree.TERMINATE_NUMBER)
+table[State.MULTIPLICATION] = ObjectBuilder
+  .add(Symbol.NUMBER, [REDUCE, ReduceActions.MULTIPLY])
+  .add(Symbol.WHITE_SPACE, State.MULTIPLICATION)
+  .add(Symbol.END, State.TERMINATE_NUMBER)
   .build();
-table[Tree.TERMINATE] = ObjectBuilder
+table[State.TERMINATE] = ObjectBuilder
   .add(Symbol.END, [REDUCE, ReduceActions.RETURN_LAST])
   .build();
-table[Tree.TERMINATE_NUMBER] = ObjectBuilder
+table[State.TERMINATE_NUMBER] = ObjectBuilder
   .add(Symbol.END, [REDUCE, ReduceActions.RETURN_LAST_AS_NUMBER])
   .build();
 const ACTION_TABLE = table;
@@ -492,83 +349,14 @@ let Parser = (function () {
             return virtualStack[vsl - 1];
           case ReduceActions.RETURN_LAST_AS_NUMBER:
             return sharedStateYY.handler.helper.number(virtualStack[vsl - 1]);
-          case ReduceActions.CALL_VARIABLE:
-            this.$ = sharedStateYY.handler.helper.callVariable.call(this, virtualStack[vsl]);
-            break;
           case ReduceActions.AS_NUMBER:
             this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
-            break;
-          case ReduceActions.AS_STRING:
-            this.$ = sharedStateYY.handler.helper.string(virtualStack[vsl]);
-            break;
-          case ReduceActions.AMPERSAND:
-            this.$ = sharedStateYY.handler.helper.specialMatch('&', virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
-          case ReduceActions.EQUALS:
-            this.$ = sharedStateYY.handler.helper.logicMatch('=', virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
-          case ReduceActions.PLUS:
-            this.$ = sharedStateYY.handler.helper.mathMatch('+', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.LAST_NUMBER:
             this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl - 1]);
             break;
-          case ReduceActions.LTE:
-            this.$ = sharedStateYY.handler.helper.logicMatch('<=', virtualStack[vsl - 3], virtualStack[vsl]);
-            break;
-          case ReduceActions.GTE:
-            this.$ = sharedStateYY.handler.helper.logicMatch('>=', virtualStack[vsl - 3], virtualStack[vsl]);
-            break;
-          case ReduceActions.NOT_EQ:
-            this.$ = sharedStateYY.handler.helper.logicMatch('<>', virtualStack[vsl - 3], virtualStack[vsl]);
-            break;
-          case ReduceActions.GT:
-            this.$ = sharedStateYY.handler.helper.logicMatch('>', virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
-          case ReduceActions.LT:
-            this.$ = sharedStateYY.handler.helper.logicMatch('<', virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
-          case ReduceActions.MINUS:
-            this.$ = sharedStateYY.handler.helper.mathMatch('-', virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
           case ReduceActions.MULTIPLY:
             this.$ = sharedStateYY.handler.helper.mathMatch('*', virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
-          case ReduceActions.DIVIDE:
-            this.$ = sharedStateYY.handler.helper.mathMatch('/', virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
-          case ReduceActions.TO_POWER:
-            this.$ = sharedStateYY.handler.helper.mathMatch('^', virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
-          case ReduceActions.INVERT_NUMBER:
-            this.$ = sharedStateYY.handler.helper.numberInverted(virtualStack[vsl]);
-            if (isNaN(this.$)) {
-              this.$ = 0;
-            }
-            break;
-          case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
-            this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
-            if (isNaN(this.$)) {
-              this.$ = 0;
-            }
-            break;
-          case ReduceActions.CALL_FUNCTION_LAST_BLANK:
-            this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 2], '');
-            break;
-          case ReduceActions.FIXED_CELL_VAL:
-            this.$ = sharedStateYY.handler.helper.fixedCellValue.call(sharedStateYY.obj, virtualStack[vsl]);
-            break;
-          case ReduceActions.FIXED_CELL_RANGE_VAL:
-            this.$ = sharedStateYY.handler.helper.fixedCellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
-          case ReduceActions.CELL_VALUE:
-            this.$ = sharedStateYY.handler.helper.cellValue.call(sharedStateYY.obj, virtualStack[vsl]);
-            break;
-          case ReduceActions.CELL_RANGE_VALUE:
-            this.$ = sharedStateYY.handler.helper.cellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
-          case ReduceActions.AS_ERROR:
-            this.$ = constructErrorByName(virtualStack[vsl]);
             break;
           case ReduceActions.REFLEXIVE_REDUCE:
             this.$ = virtualStack[vsl];
@@ -580,42 +368,10 @@ let Parser = (function () {
           switch (reduceActionToPerform) {
             case ReduceActions.RETURN_LAST:
               return virtualStack[vsl - 1];
-            case ReduceActions.CALL_VARIABLE:
             case ReduceActions.AS_NUMBER:
-            case ReduceActions.AS_STRING:
-            case ReduceActions.AMPERSAND:
-            case ReduceActions.EQUALS:
-            case ReduceActions.PLUS:
             case ReduceActions.LAST_NUMBER:
-            case ReduceActions.LTE:
-            case ReduceActions.GTE:
-            case ReduceActions.NOT_EQ:
-            case ReduceActions.NOT:
-            case ReduceActions.GT:
-            case ReduceActions.LT:
-            case ReduceActions.MINUS:
             case ReduceActions.MULTIPLY:
-            case ReduceActions.DIVIDE:
-            case ReduceActions.TO_POWER:
-            case ReduceActions.CALL_FUNCTION_LAST_BLANK:
-            case ReduceActions.CALL_FUNCTION:
-            case ReduceActions.FIXED_CELL_VAL:
-            case ReduceActions.FIXED_CELL_RANGE_VAL:
-            case ReduceActions.CELL_VALUE:
-            case ReduceActions.CELL_RANGE_VALUE:
               this.$ = e;
-              break;
-            case ReduceActions.INVERT_NUMBER:
-              this.$ = e;
-              if (isNaN(this.$)) {
-                this.$ = 0;
-              }
-              break;
-            case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
-              this.$ = e;
-              if (isNaN(this.$)) {
-                this.$ = 0;
-              }
               break;
           }
         } else {
@@ -678,12 +434,6 @@ let Parser = (function () {
         this.parseError = Object.getPrototypeOf(this).parseError;
       }
 
-      function popStack(n) {
-        stack.length = stack.length - 2 * n;
-        semanticValueStack.length = semanticValueStack.length - n;
-        locationStack.length = locationStack.length - n;
-      }
-
       function lex() {
         let token = lexer.lex() || EOF;
         // if token isn't its numeric value, convert
@@ -730,6 +480,7 @@ let Parser = (function () {
           line: lexer.yylineno,
           loc: yyloc,
           state: state,
+          stateName: STATE_NAMES[state] || REDUCTION_ACTION_NAMES[state],
           stack: stack,
           semanticValueStack: semanticValueStack
         });
@@ -743,64 +494,39 @@ let Parser = (function () {
           continue;
           // handle parse error
         } else if (typeof action === 'undefined' || !action.length || !action[0]) {
-          let error_rule_depth;
           let errStr = '';
 
-          // Return the rule stack depth where the nearest error rule can be found.
-          // Return FALSE when no error recovery rule was found.
-          this.locateNearestErrorRecoveryRule = function(state) {
-            let stack_probe = stack.length - 1;
-            let depth = 0;
 
-            // try to recover from error
-            for (; ;) {
-              if (isUndefined(state)) {
-                return false;
-              }
-              if (state === 0 || stack_probe < 2) {
-                return false; // No suitable error recovery rule available.
-              }
-              stack_probe -= 2; // popStack(1): [symbol, action]
-              state = stack[stack_probe];
-              ++depth;
+          // Report error
+          expected = [];
+          let expectedIndexes = [];
+          let tableState = ACTION_TABLE[state];
+          for (p in ACTION_TABLE[state]) {
+            if (SYMBOL_INDEX_TO_NAME[p]) {
+              expected.push(SYMBOL_INDEX_TO_NAME[p]);
+              expectedIndexes.push(p);
             }
-          };
-
-          if (!recovering) {
-            // first see if there's any chance at hitting an error recovery rule:
-            error_rule_depth = this.locateNearestErrorRecoveryRule(state);
-
-            // Report error
-            expected = [];
-            let expectedIndexes = [];
-            let tableState = ACTION_TABLE[state];
-            for (p in ACTION_TABLE[state]) {
-              if (SYMBOL_INDEX_TO_NAME[p]) {
-                expected.push(SYMBOL_INDEX_TO_NAME[p]);
-                expectedIndexes.push(p);
-              }
-            }
-            if (lexer.showPosition) {
-              errStr = 'Parse error on line ' + (yylineno + 1) + ":  " + lexer.showPosition() + "  Expecting " + expected.join(', ') + ", got " + (SYMBOL_INDEX_TO_NAME[symbol] || symbol);
-            } else {
-              errStr = 'Parse error on line ' + (yylineno + 1) + ": Unexpected " +
-                (symbol == EOF ? "end of input" :
-                  ("'" + (SYMBOL_INDEX_TO_NAME[symbol] || symbol) + "'"));
-            }
-            this.parseError(errStr, {
-              text: lexer.match,
-              token: SYMBOL_INDEX_TO_NAME[symbol] || symbol,
-              tokenIndex: symbol,
-              line: lexer.yylineno,
-              loc: yyloc,
-              expected: expected,
-              expectedIndexes: expectedIndexes,
-              state: state,
-              tableState: tableState,
-              stack: stack,
-              semanticValueStack: semanticValueStack
-            });
           }
+          if (lexer.showPosition) {
+            errStr = 'Parse error on line ' + (yylineno + 1) + ":  " + lexer.showPosition() + "  Expecting " + expected.join(', ') + ", got " + (SYMBOL_INDEX_TO_NAME[symbol] || symbol);
+          } else {
+            errStr = 'Parse error on line ' + (yylineno + 1) + ": Unexpected " +
+              (symbol == EOF ? "end of input" :
+                ("'" + (SYMBOL_INDEX_TO_NAME[symbol] || symbol) + "'"));
+          }
+          this.parseError(errStr, {
+            text: lexer.match,
+            token: SYMBOL_INDEX_TO_NAME[symbol] || symbol,
+            tokenIndex: symbol,
+            line: lexer.yylineno,
+            loc: yyloc,
+            expected: expected,
+            expectedIndexes: expectedIndexes,
+            state: state,
+            tableState: tableState,
+            stack: stack,
+            semanticValueStack: semanticValueStack
+          });
         }
 
         // this shouldn't happen, unless resolve defaults are off
@@ -1018,9 +744,7 @@ let Parser = (function () {
       // test the lexed token: return FALSE when not a match, otherwise return token
       test_match: function (match, indexed_rule) {
         let token,
-          lines,
-          backup;
-
+          lines;
 
         lines = match[0].match(/(?:\r\n?|\n).*/g);
         if (lines) {
@@ -1118,68 +842,12 @@ let Parser = (function () {
 
       mapActionToActionIndex: function (ruleIndex) {
         switch (ruleIndex) {
-          case 0:
-            // skip whitespace
+          case RuleIndex.WHITE_SPACE:
             break;
-          case 1:
-            return ReduceActions.LAST_NUMBER;
-          case 2:
-            return ReduceActions.LAST_NUMBER;
-          case 3:
-            return ReduceActions.CALL_FUNCTION_LAST_BLANK;
-          case 4:
-            return ReduceActions.AMPERSAND;
-          case 5:
-            return ReduceActions.EQUALS;
-          case 7:
-            return ReduceActions.FIXED_CELL_VAL;
-          case 8:
-            return ReduceActions.CALL_FUNCTION_LAST_BLANK;
-          case 9:
+          case RuleIndex.INTEGER:
             return Symbol.NUMBER;
-          case 12:
-            return ReduceActions.FIXED_CELL_RANGE_VAL;
-          case 13:
-            // skip whitespace??
-            break;
-          case 14:
-            return ReduceActions.LTE;
-          case 15:
-            return ' ';
-          case 18:
-            return ReduceActions.CELL_VALUE;
-          case 19:
-            return ReduceActions.CELL_RANGE_VALUE;
-          case 20:
-            return ReduceActions.TO_POWER;
-          case 21:
-            return ReduceActions.INVERT_NUMBER;
-          case 22:
-            return ReduceActions.DIVIDE;
-          case 23:
-            return ReduceActions.NOT_EQ;
-          case 24:
-            return ReduceActions.TO_NUMBER_NAN_AS_ZERO;
-          case 25:
-            return ReduceActions.NOT;
-          case 26:
-            return ReduceActions.GT;
-          case 27:
-            return ReduceActions.MINUS;
-          case 28:
-            return ReduceActions.LT;
-          case 29:
-            return ReduceActions.MULTIPLY;
-          case 30:
-            return '"';
-          case 31:
-            return "'";
-          case 32:
-            return "!";
-          case 33:
-            return ReduceActions.GTE;
-          case 36:
-            return ReduceActions.AS_NUMBER;
+          case RuleIndex.ASTERISK:
+            return Symbol.ASTERISK;
         }
       },
       conditions: {

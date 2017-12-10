@@ -363,15 +363,23 @@ const enum State {
   START_NUMBER = 6,
   START_STRING = 7,
   LEFT_PAREN = 8,
+  NUMBER_FOLLOWED_BY_AMPERSAND = 20,
   START_EQUALS = 21,
+  NUMBER_FOLLOWED_BY_PLUS = 22,
   LESS_THAN = 23,
   GREATER_THAN = 24,
+  NUMBER_FOLLOWED_BY_MINUS = 26,
+  NUMBER_FOLLOWED_BY_ASTERISK = 27,
+  NUMBER_FOLLOWED_BY_SLASH = 28,
+  NUMBER_FOLLOWED_BY_CARROT = 29,
   ADD_TWO_NUMBERS = 45,
   SUBTRACT_TWO_NUMBERS = 52,
   MULTIPLY_TWO_NUMBERS = 53,
   DIVIDE_TWO_NUMBERS = 54,
   NUMBER_TO_POWER_OF_OTHER = 55,
-  CLOSE_PAREN_ON_EXPRESSION = 57
+  CLOSE_PAREN_ON_EXPRESSION = 57,
+  COMPARE_TWO_EXPRESSIONS_WITH_GTE = 69,
+  CLOSE_PAREN_ON_FUNCTION = 70
 }
 
 
@@ -405,16 +413,16 @@ table[1] = ObjectBuilder
   .build();
 table[2] = ObjectBuilder
   .add(Symbol.EOF, [SHIFT, 19])
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .build();
 table[3] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.CALL_VARIABLE])
@@ -635,7 +643,7 @@ table[18] = ObjectBuilder
 table[19] = ObjectBuilder
   .add(Symbol.END, [REDUCE, ReduceActions.RETURN_LAST])
   .build();
-table[20] = ObjectBuilder
+table[State.NUMBER_FOLLOWED_BY_AMPERSAND] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 43)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
@@ -669,7 +677,7 @@ table[State.START_EQUALS] = ObjectBuilder
   .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
   .add(Symbol.POUND, [SHIFT, 18])
   .build();
-table[22] = ObjectBuilder
+table[State.NUMBER_FOLLOWED_BY_PLUS] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 45)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
@@ -740,7 +748,7 @@ table[25] = ObjectBuilder
   .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
   .add(Symbol.POUND, [SHIFT, 18])
   .build();
-table[26] = ObjectBuilder
+table[State.NUMBER_FOLLOWED_BY_MINUS] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, State.SUBTRACT_TWO_NUMBERS)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
@@ -757,7 +765,7 @@ table[26] = ObjectBuilder
   .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
   .add(Symbol.POUND, [SHIFT, 18])
   .build();
-table[27] = ObjectBuilder
+table[State.NUMBER_FOLLOWED_BY_ASTERISK] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, State.MULTIPLY_TWO_NUMBERS)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
@@ -774,7 +782,7 @@ table[27] = ObjectBuilder
   .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
   .add(Symbol.POUND, [SHIFT, 18])
   .build();
-table[28] = ObjectBuilder
+table[State.NUMBER_FOLLOWED_BY_SLASH] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, State.DIVIDE_TWO_NUMBERS)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
@@ -791,7 +799,7 @@ table[28] = ObjectBuilder
   .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
   .add(Symbol.POUND, [SHIFT, 18])
   .build();
-table[29] = ObjectBuilder
+table[State.NUMBER_FOLLOWED_BY_CARROT] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, State.NUMBER_TO_POWER_OF_OTHER)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
@@ -830,17 +838,17 @@ table[31] = ObjectBuilder
   .add(38, [REDUCE, ReduceActions.REDUCE_PREV_AS_PERCENT])
   .build();
 table[32] = ObjectBuilder
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.RIGHT_PAREN, [SHIFT, State.CLOSE_PAREN_ON_EXPRESSION])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .build();
 table[33] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.INVERT_NUM])
@@ -860,7 +868,7 @@ table[33] = ObjectBuilder
   .build();
 table[34] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.PLUS, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
@@ -868,9 +876,9 @@ table[34] = ObjectBuilder
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.NOT, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .build();
@@ -946,23 +954,23 @@ table[43] = ObjectBuilder
   .build();
 table[44] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.EQUALS])
-  .add(Symbol.AMPERSAND, [SHIFT, 22])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.EQUALS])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.EQUALS])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.EQUALS])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.EQUALS])
   .build();
 table[State.ADD_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.PLUS])
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.PLUS, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.PLUS])
@@ -970,9 +978,9 @@ table[State.ADD_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.NOT, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.PLUS])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.PLUS])
   .build();
@@ -1012,23 +1020,23 @@ table[47] = ObjectBuilder
   .build();
 table[48] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.LT])
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.LT])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.LT])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.LT])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.LT])
   .add(Symbol.NOT, [REDUCE, ReduceActions.LT])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.LT])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.LT])
   .build();
 table[49] = ObjectBuilder
   .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 69)
+  .add(Symbol.EXPRESSION, State.COMPARE_TWO_EXPRESSIONS_WITH_GTE)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
@@ -1045,17 +1053,17 @@ table[49] = ObjectBuilder
   .build();
 table[50] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.GT])
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.GT])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.GT])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.GT])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.GT])
   .add(Symbol.NOT, [REDUCE, ReduceActions.GT])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.GT])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.GT])
   .build();
@@ -1189,22 +1197,22 @@ table[58] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
   .build();
 table[59] = ObjectBuilder
-  .add(Symbol.RIGHT_PAREN, [SHIFT, 70])
+  .add(Symbol.RIGHT_PAREN, [SHIFT, State.CLOSE_PAREN_ON_FUNCTION])
   .add(Symbol.SEMI_COLON, [SHIFT, 71])
   .add(Symbol.COMMA, [SHIFT, 72])
   .build();
 table[60] = ObjectBuilder
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.ENSURE_IS_ARRAY])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.ENSURE_IS_ARRAY])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.ENSURE_IS_ARRAY])
   .build();
@@ -1282,51 +1290,51 @@ table[66] = ObjectBuilder
   .add(Symbol.POUND, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A]).build();
 table[67] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.LTE])
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.LTE])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.LTE])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.LTE])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.LTE])
   .add(Symbol.NOT, [REDUCE, ReduceActions.LTE])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.LTE])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.LTE]).build();
 table[68] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.NOT_EQ])
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.NOT_EQ])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.NOT_EQ])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.NOT_EQ])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.NOT_EQ])
   .add(Symbol.NOT, [REDUCE, ReduceActions.NOT_EQ])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.NOT_EQ])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.NOT_EQ]).build();
-table[69] = ObjectBuilder
+table[State.COMPARE_TWO_EXPRESSIONS_WITH_GTE] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.GTE])
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.GTE])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.GTE])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.GTE])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.GTE])
   .add(Symbol.NOT, [REDUCE, ReduceActions.GTE])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.GTE])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.GTE])
   .build();
-table[70] = ObjectBuilder
+table[State.CLOSE_PAREN_ON_FUNCTION] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
@@ -1398,31 +1406,31 @@ table[73] = ObjectBuilder
   .add(Symbol.POUND, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
   .build();
 table[74] = ObjectBuilder
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REDUCE_INT])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.REDUCE_INT])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.REDUCE_INT]).build();
 table[75] = ObjectBuilder
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
-  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REDUCE_PERCENT])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
   .add(Symbol.NOT, [SHIFT, 25])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
-  .add(Symbol.DIVIDE, [SHIFT, 28])
-  .add(Symbol.CARROT, [SHIFT, 29])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
+  .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
+  .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.REDUCE_PERCENT])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.REDUCE_PERCENT]).build();
 const ACTION_TABLE = table;

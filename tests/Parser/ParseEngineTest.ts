@@ -207,7 +207,7 @@ let helper = {
         break;
 
       case '<=':
-        result = (exp1 === exp2);
+        result = (exp1 <= exp2);
         break;
 
       case '<>':
@@ -376,7 +376,7 @@ test("Parse equality operators", function(){
   assertEquals(parser.parse('1 < 2'), true);
   assertEquals(parser.parse('1 < 0'), false);
   assertEquals(parser.parse('1 <= 1'), true);
-  // assertEquals('= 1 <= 2', true); // TODO: Fails.
+  assertEquals(parser.parse('1 <= 2'), true);// fails...
   assertEquals(parser.parse('1 >= 1'), true);
   assertEquals(parser.parse('2 >= 1'), true);
   assertEquals(parser.parse('1 >= 0'), true);
@@ -388,7 +388,7 @@ test("Parse equality operators", function(){
 test("Parse operators, order of operations", function(){
   assertEquals(parser.parse('10 + -10'), 0);
   assertEquals(parser.parse('10 + -10 = 0'), true);
-  // assertEquals(parser.parse('10 + -10 = 0 & "str"'), false); // TODO should pass.
+  assertEquals(parser.parse('10 + -10 = 0 & "str"'), false);
   assertEquals(parser.parse('-10%'), -0.1);
   assertEquals(parser.parse('10 + 10%'), 10.1);
   assertEquals(parser.parse('-10 + 10%'), -9.9);
@@ -521,4 +521,4 @@ test("Parse range following comma", function(){
 
 
 
-assertEquals(parser.parse('SUM(1, 2, 3)'), 6);
+assertEquals(parser.parse('1 <= 2'), true);

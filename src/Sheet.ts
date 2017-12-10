@@ -377,7 +377,7 @@ let Sheet = (function () {
           break;
 
         case '<=':
-          result = (exp1 === exp2);
+          result = (exp1 <= exp2);
           break;
 
         case '<>':

@@ -365,6 +365,7 @@ const enum State {
   NUMBER_FOLLOWED_BY_SLASH = 28,
   NUMBER_FOLLOWED_BY_CARROT = 29,
   ADD_TWO_NUMBERS = 45,
+  LESS_THAN_EQUALS = 46,
   SUBTRACT_TWO_NUMBERS = 52,
   MULTIPLY_TWO_NUMBERS = 53,
   DIVIDE_TWO_NUMBERS = 54,
@@ -684,7 +685,7 @@ table[State.LESS_THAN] = ObjectBuilder
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.EQUALS, [SHIFT, 46])
+  .add(Symbol.EQUALS, [SHIFT, State.LESS_THAN_EQUALS])
   .add(Symbol.PLUS, [SHIFT, 10])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.GREATER_THAN, [SHIFT, 47])
@@ -960,7 +961,7 @@ table[State.ADD_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.PLUS])
   .build();
-table[46] = ObjectBuilder
+table[State.LESS_THAN_EQUALS] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 67)
   .add(Symbol.VARIABLE_SEQUENCE, 3)

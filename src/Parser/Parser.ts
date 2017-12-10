@@ -48,12 +48,6 @@ let Parser = (function () {
           case ReduceActions.CALL_VARIABLE:
             this.$ = sharedStateYY.handler.helper.callVariable.call(this, virtualStack[vsl]);
             break;
-          case ReduceActions.TIME_CALL_TRUE:
-            this.$ = sharedStateYY.handler.time.call(sharedStateYY.obj, virtualStack[vsl], true);
-            break;
-          case ReduceActions.TIME_CALL:
-            this.$ = sharedStateYY.handler.time.call(sharedStateYY.obj, virtualStack[vsl]);
-            break;
           case ReduceActions.AS_NUMBER:
             this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
             break;
@@ -183,8 +177,6 @@ let Parser = (function () {
             case ReduceActions.RETURN_LAST:
               return virtualStack[vsl - 1];
             case ReduceActions.CALL_VARIABLE:
-            case ReduceActions.TIME_CALL_TRUE:
-            case ReduceActions.TIME_CALL:
             case ReduceActions.AS_NUMBER:
             case ReduceActions.AS_STRING:
             case ReduceActions.AMPERSAND:
@@ -855,10 +847,6 @@ let Parser = (function () {
             return Symbol.STRING;
           case RuleIndex.FORMULA_NAME:
             return Symbol.FUNCTION;
-          case RuleIndex.DATE:
-            return Symbol.TIME_AMPM;
-          case RuleIndex.TIME:
-            return Symbol.TIME_24;
           case RuleIndex.$_A1_CELL:
             return Symbol.FIXEDCELL;
           case RuleIndex.A1_CELL:
@@ -931,8 +919,6 @@ let Parser = (function () {
             1,
             2,
             3,
-            4,
-            5,
             6,
             7,
             8,

@@ -3,45 +3,41 @@ import {
 } from "./ObjectBuilder";
 
 // Rules represent the Regular Expressions that will be used in sequence to match a given input to the Parser.
-const WHITE_SPACE_RULE = /^(?:\s+)/; // rule 0
-const DOUBLE_QUOTES_RULE = /^(?:"(\\["]|[^"])*")/; // rule 1
-const SINGLE_QUOTES_RULE = /^(?:'(\\[']|[^'])*')/; // rule 2
-const FORMULA_NAME_RULE = /^(?:[A-Za-z.]{1,}[A-Za-z_0-9]+(?=[(]))/; // Changed from /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+(?=[(]))/ // rule 3
-const DATE_RULE = /^(?:([0]?[1-9]|1[0-2])[:][0-5][0-9]([:][0-5][0-9])?[ ]?(AM|am|aM|Am|PM|pm|pM|Pm))/; // rule 4
-const TIME_RULE = /^(?:([0]?[0-9]|1[0-9]|2[0-3])[:][0-5][0-9]([:][0-5][0-9])?)/; // rule 5
-const $_A1_CELL_RULE = /^(?:\$[A-Za-z]+\$[0-9]+)/; // rule 6
-const A1_CELL_RULE = /^(?:[A-Za-z]+[0-9]+)/; // rules 7
-const FORMULA_NAME_SIMPLE_RULE = /^(?:[A-Za-z.]+(?=[(]))/; // rule 8
-const VARIABLE_RULE = /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+)/; // rule 9
-const SIMPLE_VARIABLE_RILE = /^(?:[A-Za-z_]+)/; //rule 10
-const INTEGER_RULE = /^(?:[0-9]+(?:(?:[eE])(?:[\+-])?[0-9]+)?)/; // Changed from /^(?:[0-9]+)/ // rule 11
-const OPEN_AND_CLOSE_OF_ARRAY_RULE = /^(?:\[([^\]]*)?\])/; // rule 12 // Changed from /^(?:\[(.*)?\])/
-const DOLLAR_SIGN_RULE = /^(?:\$)/; // rule 13
-const AMPERSAND_SIGN_RULE = /^(?:&)/; //rule 14
-const SINGLE_WHITESPACE_RULE = /^(?: )/; // rule 15
-const PERIOD_RULE = /^(?:[.])/; // rule 16
-const COLON_RULE = /^(?::)/; //rule 17
-const SEMI_COLON_RULE = /^(?:;)/; // rule 18
-const COMMA_RULE = /^(?:,)/; // rule 19
-const ASTERISK_RULE = /^(?:\*)/; //rule 20
-const FORWARD_SLASH_RULE = /^(?:\/)/; // rule 21
-const MINUS_SIGN_RULE = /^(?:-)/; // rule 22
-const PLUS_SIGN_RULE = /^(?:\+)/; // rule 23
-const CARET_SIGN_RULE = /^(?:\^)/; //rule 24
-const OPEN_PAREN_RULE = /^(?:\()/; // rule 25
-const CLOSE_PAREN_RULE = /^(?:\))/; // rule 26
-const GREATER_THAN_SIGN_RULE = /^(?:>)/; // rule 27
-const LESS_THAN_SIGN_RULE = /^(?:<)/; // rule 28
-const NOT_RULE = /^(?:NOT\b)/; // rule 29
-const OPEN_DOUBLE_QUOTE = /^(?:")/; // rule 30
-const OPEN_SINGLE_QUITE = /^(?:')/; // rule 31
-const EXCLAMATION_POINT_RULE = /^(?:!)/; // rule 32
-const EQUALS_SIGN_RULE = /^(?:=)/; // rule 33
-const PERCENT_SIGN_RULE = /^(?:%)/; // rule 34
-// TODO: POUND_SIGN Modified from /^(?:[#])/, which matches pound sign exclusively. Now specific to errors.
-// TODO: Should be renamed.
-const POUND_SIGN_RULE = /^(?:#N\/A|#NUM\!|#NULL\!|#DIV\/0\!|#VALUE\!|#REF\!|#ERROR)/; // rule 35
-const END_OF_STRING_RULE = /^(?:$)/; // rule 36
+const WHITE_SPACE_RULE = /^(?:\s+)/;
+const DOUBLE_QUOTES_RULE = /^(?:"(\\["]|[^"])*")/;
+const SINGLE_QUOTES_RULE = /^(?:'(\\[']|[^'])*')/;
+const FORMULA_NAME_RULE = /^(?:[A-Za-z.]{1,}[A-Za-z_0-9]+(?=[(]))/; // Changed from /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+(?=[(]))/
+const $_A1_CELL_RULE = /^(?:\$[A-Za-z]+\$[0-9]+)/;
+const A1_CELL_RULE = /^(?:[A-Za-z]+[0-9]+)/;
+const FORMULA_NAME_SIMPLE_RULE = /^(?:[A-Za-z.]+(?=[(]))/;
+const VARIABLE_RULE = /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+)/;
+const SIMPLE_VARIABLE_RILE = /^(?:[A-Za-z_]+)/;
+const INTEGER_RULE = /^(?:[0-9]+(?:(?:[eE])(?:[\+-])?[0-9]+)?)/;
+const OPEN_AND_CLOSE_OF_ARRAY_RULE = /^(?:\[([^\]]*)?\])/;
+const DOLLAR_SIGN_RULE = /^(?:\$)/;
+const AMPERSAND_SIGN_RULE = /^(?:&)/;
+const SINGLE_WHITESPACE_RULE = /^(?: )/;
+const PERIOD_RULE = /^(?:[.])/;
+const COLON_RULE = /^(?::)/;
+const SEMI_COLON_RULE = /^(?:;)/;
+const COMMA_RULE = /^(?:,)/;
+const ASTERISK_RULE = /^(?:\*)/;
+const FORWARD_SLASH_RULE = /^(?:\/)/;
+const MINUS_SIGN_RULE = /^(?:-)/;
+const PLUS_SIGN_RULE = /^(?:\+)/;
+const CARET_SIGN_RULE = /^(?:\^)/;
+const OPEN_PAREN_RULE = /^(?:\()/;
+const CLOSE_PAREN_RULE = /^(?:\))/;
+const GREATER_THAN_SIGN_RULE = /^(?:>)/;
+const LESS_THAN_SIGN_RULE = /^(?:<)/;
+const NOT_RULE = /^(?:NOT\b)/;
+const OPEN_DOUBLE_QUOTE = /^(?:")/;
+const OPEN_SINGLE_QUITE = /^(?:')/;
+const EXCLAMATION_POINT_RULE = /^(?:!)/;
+const EQUALS_SIGN_RULE = /^(?:=)/;
+const PERCENT_SIGN_RULE = /^(?:%)/;
+const POUND_SIGN_RULE = /^(?:#N\/A|#NUM\!|#NULL\!|#DIV\/0\!|#VALUE\!|#REF\!|#ERROR)/;
+const END_OF_STRING_RULE = /^(?:$)/;
 
 
 const enum RuleIndex {
@@ -49,8 +45,6 @@ const enum RuleIndex {
   DOUBLE_QUOTES = 1,
   SINGLE_QUOTES = 2,
   FORMULA_NAME = 3,
-  DATE = 4,
-  TIME = 5,
   $_A1_CELL = 6,
   A1_CELL = 7,
   FORMULA_NAME_SIMPLE = 8,
@@ -91,8 +85,6 @@ RULES[RuleIndex.WHITE_SPACE] = WHITE_SPACE_RULE;
 RULES[RuleIndex.DOUBLE_QUOTES] = DOUBLE_QUOTES_RULE;
 RULES[RuleIndex.SINGLE_QUOTES] = SINGLE_QUOTES_RULE;
 RULES[RuleIndex.FORMULA_NAME] = FORMULA_NAME_RULE;
-RULES[RuleIndex.DATE] = DATE_RULE;
-RULES[RuleIndex.TIME] = TIME_RULE;
 RULES[RuleIndex.$_A1_CELL] = $_A1_CELL_RULE;
 RULES[RuleIndex.A1_CELL] = A1_CELL_RULE;
 RULES[RuleIndex.FORMULA_NAME_SIMPLE] = FORMULA_NAME_SIMPLE_RULE;
@@ -138,8 +130,6 @@ const enum ReduceActions {
   NO_ACTION = 0,
   RETURN_LAST = 1,
   CALL_VARIABLE = 2,
-  TIME_CALL_TRUE = 3,
-  TIME_CALL = 4,
   AS_NUMBER = 5,
   AS_STRING = 6,
   AMPERSAND = 7,
@@ -220,8 +210,6 @@ let productions : Array<ReductionPair> = [];
 productions[ReduceActions.NO_ACTION] = null;
 productions[ReduceActions.RETURN_LAST] = new ReductionPair(3, 2);
 productions[ReduceActions.CALL_VARIABLE] = new ReductionPair(4, 1);
-productions[ReduceActions.TIME_CALL_TRUE] = new ReductionPair(4, 1);
-productions[ReduceActions.TIME_CALL] = new ReductionPair(4, 1);
 productions[ReduceActions.AS_NUMBER] = new ReductionPair(4, 1);
 productions[ReduceActions.AS_STRING] = new ReductionPair(4, 1);
 productions[ReduceActions.AMPERSAND] = new ReductionPair(4, 3);
@@ -272,8 +260,6 @@ enum Symbol {
   EXPRESSION = 4,
   EOF = 5,
   VARIABLE_SEQUENCE = 6,
-  TIME_AMPM = 7,
-  TIME_24 = 8,
   NUMBER = 9,
   STRING = 10,
   AMPERSAND = 11,
@@ -313,8 +299,6 @@ const SYMBOL_NAME_TO_INDEX = {
   "expression": Symbol.EXPRESSION,
   "EOF": Symbol.EOF,
   "variableSequence": Symbol.VARIABLE_SEQUENCE,
-  "TIME_AMPM": Symbol.TIME_AMPM,
-  "TIME_24": Symbol.TIME_24,
   "number": Symbol.NUMBER,
   "STRING": Symbol.STRING,
   "&": Symbol.AMPERSAND,
@@ -347,8 +331,6 @@ const SYMBOL_NAME_TO_INDEX = {
 };
 let symbolIndexToName = {};
 symbolIndexToName[Symbol.EOF] = "EOF";
-symbolIndexToName[Symbol.TIME_AMPM] = "TIME_AMPM";
-symbolIndexToName[Symbol.TIME_24] = "TIME_24";
 symbolIndexToName[Symbol.STRING] = "STRING";
 symbolIndexToName[Symbol.AMPERSAND] = "&";
 symbolIndexToName[Symbol.EQUALS] = "=";
@@ -394,8 +376,6 @@ table[State.START] = ObjectBuilder
   .add(Symbol.EXPRESSIONS, 1)
   .add(Symbol.EXPRESSION, 2)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -442,38 +422,6 @@ table[3] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.CALL_VARIABLE])
   .add(33, [SHIFT, ReduceActions.CELL_VALUE])
   .build();
-table[4] = ObjectBuilder
-  .add(Symbol.EOF, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.EQUALS, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.PLUS, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.MINUS, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.ASTERISK, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.DIVIDE, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.CARROT, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .add(Symbol.COMMA, [REDUCE, ReduceActions.TIME_CALL_TRUE])
-  .build();
-table[5] = ObjectBuilder
-  .add(Symbol.EOF, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.EQUALS, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.PLUS, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.MINUS, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.ASTERISK, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.DIVIDE, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.CARROT, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.TIME_CALL])
-  .add(Symbol.COMMA, [REDUCE, ReduceActions.TIME_CALL])
-  .build();
 table[State.START_NUMBER] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.AS_NUMBER])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.AS_NUMBER])
@@ -511,8 +459,6 @@ table[8] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 32)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -530,8 +476,6 @@ table[9] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 33)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -549,8 +493,6 @@ table[10] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 34)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -686,8 +628,6 @@ table[20] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 43)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -705,8 +645,6 @@ table[21] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 44)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -724,8 +662,6 @@ table[22] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 45)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -743,8 +679,6 @@ table[23] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 48)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.EQUALS, [SHIFT, 46])
@@ -764,8 +698,6 @@ table[24] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 50)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.EQUALS, [SHIFT, 49])
@@ -784,8 +716,6 @@ table[25] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 51)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -803,8 +733,6 @@ table[26] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 52)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -822,8 +750,6 @@ table[27] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 53)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -841,8 +767,6 @@ table[28] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 54)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -860,8 +784,6 @@ table[29] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 55)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -945,8 +867,6 @@ table[35] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 60)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -1049,8 +969,6 @@ table[46] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 67)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -1068,8 +986,6 @@ table[47] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 68)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -1103,8 +1019,6 @@ table[49] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 69)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.PLUS, [SHIFT, 10])
@@ -1421,8 +1335,6 @@ table[71] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 74)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.EQUALS, [SHIFT, 21])
@@ -1441,8 +1353,6 @@ table[72] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 75)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
-  .add(Symbol.TIME_AMPM, [SHIFT, 4])
-  .add(Symbol.TIME_24, [SHIFT, 5])
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, 7])
   .add(Symbol.EQUALS, [SHIFT, 21])

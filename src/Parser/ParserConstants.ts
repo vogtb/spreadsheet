@@ -30,7 +30,6 @@ const OPEN_PAREN_RULE = /^(?:\()/;
 const CLOSE_PAREN_RULE = /^(?:\))/;
 const GREATER_THAN_SIGN_RULE = /^(?:>)/;
 const LESS_THAN_SIGN_RULE = /^(?:<)/;
-const NOT_RULE = /^(?:NOT\b)/;
 const OPEN_DOUBLE_QUOTE = /^(?:")/;
 const OPEN_SINGLE_QUITE = /^(?:')/;
 const EXCLAMATION_POINT_RULE = /^(?:!)/;
@@ -68,7 +67,6 @@ const enum RuleIndex {
   CLOSE_PAREN = 26,
   GREATER_THAN_SIGN = 27,
   LESS_THAN_SIGN = 28,
-  NOT = 29,
   OPEN_DOUBLE_QUOTE = 30,
   OPEN_SINGLE_QUITE = 31,
   EXCLAMATION_POINT_RULE = 32,
@@ -108,7 +106,6 @@ RULES[RuleIndex.OPEN_PAREN] = OPEN_PAREN_RULE;
 RULES[RuleIndex.CLOSE_PAREN] = CLOSE_PAREN_RULE;
 RULES[RuleIndex.GREATER_THAN_SIGN] = GREATER_THAN_SIGN_RULE;
 RULES[RuleIndex.LESS_THAN_SIGN] = LESS_THAN_SIGN_RULE;
-RULES[RuleIndex.NOT] = NOT_RULE;
 RULES[RuleIndex.OPEN_DOUBLE_QUOTE] = OPEN_DOUBLE_QUOTE;
 RULES[RuleIndex.OPEN_SINGLE_QUITE] = OPEN_SINGLE_QUITE;
 RULES[RuleIndex.EXCLAMATION_POINT_RULE] = EXCLAMATION_POINT_RULE;
@@ -139,7 +136,6 @@ const enum ReduceActions {
   LTE = 11,
   GTE = 12,
   NOT_EQ = 13,
-  NOT = 14,
   GT = 15,
   LT = 16,
   MINUS = 17,
@@ -219,7 +215,6 @@ productions[ReduceActions.LAST_NUMBER] = new ReductionPair(4, 3);
 productions[ReduceActions.LTE] = new ReductionPair(4, 4);
 productions[ReduceActions.GTE] = new ReductionPair(4, 4);
 productions[ReduceActions.NOT_EQ] = new ReductionPair(4, 4);
-productions[ReduceActions.NOT] = new ReductionPair(4, 3);
 productions[ReduceActions.GT] = new ReductionPair(4, 3);
 productions[ReduceActions.LT] = new ReductionPair(4, 3);
 productions[ReduceActions.MINUS] = new ReductionPair(4, 3);
@@ -269,7 +264,6 @@ enum Symbol {
   RIGHT_PAREN = 15,
   LESS_THAN = 16,
   GREATER_THAN = 17,
-  NOT = 18,
   MINUS = 19,
   ASTERISK = 20,
   DIVIDE = 21,
@@ -308,7 +302,6 @@ const SYMBOL_NAME_TO_INDEX = {
   ")": Symbol.RIGHT_PAREN,
   "<": Symbol.LESS_THAN,
   ">": Symbol.GREATER_THAN,
-  "NOT": Symbol.NOT,
   "-": Symbol.MINUS,
   "*": Symbol.ASTERISK,
   "/": Symbol.DIVIDE,
@@ -339,7 +332,6 @@ symbolIndexToName[Symbol.LEFT_PAREN] = "(";
 symbolIndexToName[Symbol.RIGHT_PAREN] = ")";
 symbolIndexToName[Symbol.LESS_THAN] = "<";
 symbolIndexToName[Symbol.GREATER_THAN] = ">";
-symbolIndexToName[Symbol.NOT] = "NOTE";
 symbolIndexToName[Symbol.MINUS] = "-";
 symbolIndexToName[Symbol.ASTERISK] = "*";
 symbolIndexToName[Symbol.DIVIDE] = "/";
@@ -418,7 +410,6 @@ table[2] = ObjectBuilder
   .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
-  .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -432,7 +423,6 @@ table[3] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.CALL_VARIABLE])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.CALL_VARIABLE])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.CALL_VARIABLE])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.CALL_VARIABLE])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.CALL_VARIABLE])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.CALL_VARIABLE])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.CALL_VARIABLE])
@@ -449,7 +439,6 @@ table[State.START_NUMBER] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.AS_NUMBER])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.AS_NUMBER])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.AS_NUMBER])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.AS_NUMBER])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.AS_NUMBER])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.AS_NUMBER])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.AS_NUMBER])
@@ -466,7 +455,6 @@ table[State.START_STRING] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.AS_STRING])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.AS_STRING])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.AS_STRING])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.AS_STRING])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.AS_STRING])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.AS_STRING])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.AS_STRING])
@@ -536,7 +524,6 @@ table[12] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.I25])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.I25])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.I25])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.I25])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.I25])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.I25])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.I25])
@@ -553,7 +540,6 @@ table[13] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.I26])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.I26])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.I26])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.I26])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.I26])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.I26])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.I26])
@@ -571,7 +557,6 @@ table[14] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
@@ -589,7 +574,6 @@ table[15] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
@@ -608,7 +592,6 @@ table[16] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.FIXED_CELL_VAL])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.FIXED_CELL_VAL])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.FIXED_CELL_VAL])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.FIXED_CELL_VAL])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.FIXED_CELL_VAL])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.FIXED_CELL_VAL])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.FIXED_CELL_VAL])
@@ -625,7 +608,6 @@ table[17] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.CELL_VALUE])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.CELL_VALUE])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.CELL_VALUE])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.CELL_VALUE])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.CELL_VALUE])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.CELL_VALUE])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.CELL_VALUE])
@@ -827,7 +809,6 @@ table[31] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REDUCE_PREV_AS_PERCENT])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.REDUCE_PREV_AS_PERCENT])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.REDUCE_PREV_AS_PERCENT])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.REDUCE_PREV_AS_PERCENT])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.REDUCE_PREV_AS_PERCENT])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.REDUCE_PREV_AS_PERCENT])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.REDUCE_PREV_AS_PERCENT])
@@ -844,7 +825,6 @@ table[32] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [SHIFT, State.CLOSE_PAREN_ON_EXPRESSION])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
-  .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -858,7 +838,6 @@ table[33] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.INVERT_NUM])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.INVERT_NUM])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.INVERT_NUM])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.INVERT_NUM])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.INVERT_NUM])
   .add(Symbol.ASTERISK, [SHIFT, ReduceActions.I27])
   .add(Symbol.DIVIDE, [SHIFT, ReduceActions.FIXED_CELL_VAL])
@@ -874,7 +853,6 @@ table[34] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -910,7 +888,6 @@ table[36] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.I27])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.I27])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.I27])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.I27])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.I27])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.I27])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.I27])
@@ -944,7 +921,6 @@ table[43] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.AMPERSAND])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.AMPERSAND])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.AMPERSAND])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.AMPERSAND])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.AMPERSAND])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.AMPERSAND])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.AMPERSAND])
@@ -960,7 +936,6 @@ table[44] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.EQUALS])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
-  .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -976,7 +951,6 @@ table[State.ADD_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.PLUS])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.PLUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -1026,7 +1000,6 @@ table[48] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.LT])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.LT])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.LT])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.LT])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -1059,7 +1032,6 @@ table[50] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.GT])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.GT])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.GT])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.GT])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -1068,46 +1040,38 @@ table[50] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.GT])
   .build();
 table[51] = ObjectBuilder
-  .add(Symbol.EOF, [REDUCE, ReduceActions.NOT])
-  .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])
-  .add(Symbol.EQUALS, [REDUCE, ReduceActions.NOT])
-  .add(Symbol.PLUS, [SHIFT, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
-  .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.NOT])
-  .add(Symbol.LESS_THAN, [SHIFT, ReduceActions.CALL_FUNCTION_LAST_BLANK])
-  .add(Symbol.GREATER_THAN, [SHIFT, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.NOT])
-  .add(Symbol.MINUS, [SHIFT, ReduceActions.I26])
-  .add(Symbol.ASTERISK, [SHIFT, ReduceActions.I27])
-  .add(Symbol.DIVIDE, [SHIFT, ReduceActions.FIXED_CELL_VAL])
-  .add(Symbol.CARROT, [SHIFT, ReduceActions.FIXED_CELL_RANGE_VAL])
-  .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.NOT])
-  .add(Symbol.COMMA, [REDUCE, ReduceActions.NOT])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.PLUS, [SHIFT, 22])
+  .add(Symbol.LESS_THAN, [SHIFT, 23])
+  .add(Symbol.GREATER_THAN, [SHIFT, 24])
+  .add(Symbol.MINUS, [SHIFT, 26])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
   .build();
 table[State.SUBTRACT_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.MINUS])
-  .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])
+  .add(Symbol.AMPERSAND, [SHIFT, 20])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.PLUS, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.MINUS])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.MINUS])
-  .add(Symbol.ASTERISK, [SHIFT, ReduceActions.I27])
-  .add(Symbol.DIVIDE, [SHIFT, ReduceActions.FIXED_CELL_VAL])
-  .add(Symbol.CARROT, [SHIFT, ReduceActions.FIXED_CELL_RANGE_VAL])
+  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.DIVIDE, [SHIFT, 28])
+  .add(Symbol.CARROT, [SHIFT, 29])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.MINUS])
   .build();
 table[State.MULTIPLY_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.MULTIPLY])
-  .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])
+  .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])// ??? questionable use of shift. should it be reduce?
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.MULTIPLY])
   .add(Symbol.PLUS, [REDUCE, ReduceActions.MULTIPLY])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.MULTIPLY])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.MULTIPLY])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.MULTIPLY])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.MULTIPLY])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.MULTIPLY])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.MULTIPLY])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.MULTIPLY])
@@ -1117,13 +1081,12 @@ table[State.MULTIPLY_TWO_NUMBERS] = ObjectBuilder
   .build();
 table[State.DIVIDE_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.DIVIDE])
-  .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])
+  .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER]) // ???same
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.DIVIDE])
   .add(Symbol.PLUS, [REDUCE, ReduceActions.DIVIDE])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.DIVIDE])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.DIVIDE])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.DIVIDE])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.DIVIDE])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.DIVIDE])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.DIVIDE])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.DIVIDE])
@@ -1133,13 +1096,12 @@ table[State.DIVIDE_TWO_NUMBERS] = ObjectBuilder
   .build();
 table[State.NUMBER_TO_POWER_OF_OTHER] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.TO_POWER])
-  .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])
+  .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER]) // ???same
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.TO_POWER])
   .add(Symbol.PLUS, [REDUCE, ReduceActions.TO_POWER])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.TO_POWER])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.TO_POWER])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.TO_POWER])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.TO_POWER])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.TO_POWER])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.TO_POWER])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.TO_POWER])
@@ -1155,7 +1117,6 @@ table[56] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
@@ -1172,7 +1133,6 @@ table[State.CLOSE_PAREN_ON_EXPRESSION] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.LAST_NUMBER])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.LAST_NUMBER])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.LAST_NUMBER])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.LAST_NUMBER])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.LAST_NUMBER])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.LAST_NUMBER])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.LAST_NUMBER])
@@ -1188,7 +1148,6 @@ table[58] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
@@ -1208,7 +1167,6 @@ table[60] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.ENSURE_IS_ARRAY])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
-  .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -1232,7 +1190,6 @@ table[63] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REDUCE_FLOAT])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.REDUCE_FLOAT])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.REDUCE_FLOAT])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.REDUCE_FLOAT])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.REDUCE_FLOAT])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.REDUCE_FLOAT])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.REDUCE_FLOAT])
@@ -1249,7 +1206,6 @@ table[64] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.FIXED_CELL_RANGE_VAL])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.FIXED_CELL_RANGE_VAL])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.FIXED_CELL_RANGE_VAL])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.FIXED_CELL_RANGE_VAL])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.FIXED_CELL_RANGE_VAL])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.FIXED_CELL_RANGE_VAL])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.FIXED_CELL_RANGE_VAL])
@@ -1264,7 +1220,6 @@ table[65] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.CELL_RANGE_VALUE])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.CELL_RANGE_VALUE])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.CELL_RANGE_VALUE])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.CELL_RANGE_VALUE])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.CELL_RANGE_VALUE])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.CELL_RANGE_VALUE])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.CELL_RANGE_VALUE])
@@ -1279,7 +1234,6 @@ table[66] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A])
@@ -1296,7 +1250,6 @@ table[67] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.LTE])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.LTE])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.LTE])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.LTE])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -1311,7 +1264,6 @@ table[68] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.NOT_EQ])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.NOT_EQ])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.NOT_EQ])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.NOT_EQ])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -1326,7 +1278,6 @@ table[State.COMPARE_TWO_EXPRESSIONS_WITH_GTE] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.GTE])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.GTE])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.GTE])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.GTE])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -1342,7 +1293,6 @@ table[State.CLOSE_PAREN_ON_FUNCTION] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
@@ -1395,7 +1345,6 @@ table[73] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
-  .add(Symbol.NOT, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
   .add(Symbol.ASTERISK, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
   .add(Symbol.DIVIDE, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
@@ -1412,7 +1361,6 @@ table[74] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REDUCE_INT])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
-  .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
@@ -1426,7 +1374,6 @@ table[75] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.REDUCE_PERCENT])
   .add(Symbol.LESS_THAN, [SHIFT, State.LESS_THAN])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GREATER_THAN])
-  .add(Symbol.NOT, [SHIFT, 25])
   .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
   .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])

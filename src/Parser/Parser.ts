@@ -75,9 +75,6 @@ let Parser = (function () {
           case ReduceActions.NOT_EQ:
             this.$ = sharedStateYY.handler.helper.logicMatch('<>', virtualStack[vsl - 3], virtualStack[vsl]);
             break;
-          case ReduceActions.NOT:
-            this.$ = sharedStateYY.handler.helper.logicMatch('NOT', virtualStack[vsl - 2], virtualStack[vsl]);
-            break;
           case ReduceActions.GT:
             this.$ = sharedStateYY.handler.helper.logicMatch('>', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
@@ -186,7 +183,6 @@ let Parser = (function () {
             case ReduceActions.LTE:
             case ReduceActions.GTE:
             case ReduceActions.NOT_EQ:
-            case ReduceActions.NOT:
             case ReduceActions.GT:
             case ReduceActions.LT:
             case ReduceActions.MINUS:
@@ -905,8 +901,6 @@ let Parser = (function () {
             return Symbol.GREATER_THAN;
           case RuleIndex.LESS_THAN_SIGN:
             return Symbol.LESS_THAN;
-          case RuleIndex.NOT:
-            return Symbol.NOT;
           case RuleIndex.OPEN_DOUBLE_QUOTE:
             return '"';
           case RuleIndex.OPEN_SINGLE_QUITE:
@@ -926,41 +920,40 @@ let Parser = (function () {
       conditions: {
         INITIAL: {
           rules: [
-            0,
-            1,
-            2,
-            3,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            16,
-            17,
-            18,
-            19,
-            20,
-            21,
-            22,
-            23,
-            24,
-            25,
-            26,
-            27,
-            28,
-            29,
-            30,
-            31,
-            32,
-            33,
-            34,
-            35,
-            36,
+            RuleIndex.WHITE_SPACE,
+            RuleIndex.DOUBLE_QUOTES,
+            RuleIndex.SINGLE_QUOTES,
+            RuleIndex.FORMULA_NAME,
+            RuleIndex.$_A1_CELL,
+            RuleIndex.A1_CELL,
+            RuleIndex.FORMULA_NAME_SIMPLE,
+            RuleIndex.VARIABLE,
+            RuleIndex.SIMPLE_VARIABLE ,
+            RuleIndex.INTEGER,
+            RuleIndex.OPEN_AND_CLOSE_OF_ARRAY,
+            RuleIndex.DOLLAR_SIGN,
+            RuleIndex.AMPERSAND_SIGN ,
+            RuleIndex.SINGLE_WHITESPACE,
+            RuleIndex.PERIOD,
+            RuleIndex.COLON,
+            RuleIndex.SEMI_COLON,
+            RuleIndex.COMMA,
+            RuleIndex.ASTERISK,
+            RuleIndex.FORWARD_SLASH,
+            RuleIndex.MINUS_SIGN,
+            RuleIndex.PLUS_SIGN,
+            RuleIndex.CARET_SIGN,
+            RuleIndex.OPEN_PAREN,
+            RuleIndex.CLOSE_PAREN,
+            RuleIndex.GREATER_THAN_SIGN,
+            RuleIndex.LESS_THAN_SIGN,
+            RuleIndex.OPEN_DOUBLE_QUOTE,
+            RuleIndex.OPEN_SINGLE_QUITE,
+            RuleIndex.EXCLAMATION_POINT_RULE,
+            RuleIndex.EQUALS_SIGN,
+            RuleIndex.PERCENT_SIGN,
+            RuleIndex.POUND_SIGN,
+            RuleIndex.END_OF_STRING,
             37
           ],
           "inclusive": true

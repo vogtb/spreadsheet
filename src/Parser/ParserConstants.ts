@@ -371,7 +371,9 @@ const enum State {
   NUMBER_TO_POWER_OF_OTHER = 55,
   CLOSE_PAREN_ON_EXPRESSION = 57,
   COMPARE_TWO_EXPRESSIONS_WITH_GTE = 69,
-  CLOSE_PAREN_ON_FUNCTION = 70
+  CLOSE_PAREN_ON_FUNCTION = 70,
+  VARIABLE_FOLLOWED_BY_SEMI_COLON = 71,
+  VARIABLE_FOLLOWED_BY_COMMA = 72
 }
 
 
@@ -1157,8 +1159,8 @@ table[58] = ObjectBuilder
   .build();
 table[59] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [SHIFT, State.CLOSE_PAREN_ON_FUNCTION])
-  .add(Symbol.SEMI_COLON, [SHIFT, 71])
-  .add(Symbol.COMMA, [SHIFT, 72])
+  .add(Symbol.SEMI_COLON, [SHIFT, State.VARIABLE_FOLLOWED_BY_SEMI_COLON])
+  .add(Symbol.COMMA, [SHIFT, State.VARIABLE_FOLLOWED_BY_COMMA])
   .build();
 table[60] = ObjectBuilder
   .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
@@ -1300,7 +1302,7 @@ table[State.CLOSE_PAREN_ON_FUNCTION] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
   .build();
-table[71] = ObjectBuilder
+table[State.VARIABLE_FOLLOWED_BY_SEMI_COLON] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 74)
   .add(Symbol.VARIABLE_SEQUENCE, 3)
@@ -1318,7 +1320,7 @@ table[71] = ObjectBuilder
   .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
   .add(Symbol.POUND, [SHIFT, 18])
   .build();
-table[72] = ObjectBuilder
+table[State.VARIABLE_FOLLOWED_BY_COMMA] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, 75)
   .add(Symbol.VARIABLE_SEQUENCE, 3)

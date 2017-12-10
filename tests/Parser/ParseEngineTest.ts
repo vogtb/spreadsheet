@@ -521,4 +521,4 @@ test("Parse range following comma", function(){
 
 
 
-assertEquals(parser.parse('2^4'), 16);
+assertEquals(parser.parse('SUM(1, 2, 3)'), 6);

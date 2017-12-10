@@ -258,18 +258,20 @@ const enum State {
   START = 0,
   NUMBER = 1,
   VARIABLE = 4,
-  MULTIPLICATION = 9,
+  ASTERISK = 9,
   TERMINATE_NUMBER = 29,
-  TERMINATE = 30
+  TERMINATE = 30,
+  MULTIPLY = 31
 }
 
 let STATE_NAMES = {};
 STATE_NAMES[State.START] = "State.START";
 STATE_NAMES[State.NUMBER] = "State.NUMBER";
 STATE_NAMES[State.VARIABLE] = "State.VARIABLE";
-STATE_NAMES[State.MULTIPLICATION] = "State.MULTIPLICATION";
+STATE_NAMES[State.ASTERISK] = "State.ASTERISK";
 STATE_NAMES[State.TERMINATE_NUMBER] = "State.TERMINATE_NUMBER";
 STATE_NAMES[State.TERMINATE] = "State.TERMINATE";
+STATE_NAMES[State.MULTIPLY] = "State.MULTIPLY";
 
 /**
  * Productions is used to look up both the number to use when reducing the stack (productions[x][1]) and the semantic
@@ -284,7 +286,7 @@ productions[ReduceActions.RETURN_LAST] = new ReductionPair(State.NUMBER, 2);
 productions[ReduceActions.AS_NUMBER] = new ReductionPair(State.NUMBER, 1);
 productions[ReduceActions.LAST_NUMBER] = new ReductionPair(State.NUMBER, 3);
 productions[ReduceActions.MULTIPLY] = new ReductionPair(State.NUMBER, 3);
-productions[ReduceActions.REFLEXIVE_REDUCE] = new ReductionPair(State.VARIABLE, 1);
+productions[ReduceActions.REFLEXIVE_REDUCE] = new ReductionPair(State.NUMBER, 1);
 productions[ReduceActions.RETURN_LAST_AS_NUMBER] = new ReductionPair(State.NUMBER, 2);
 const PRODUCTIONS = productions;
 
@@ -299,18 +301,17 @@ let table = [];
 // `=`
 table[State.START] = ObjectBuilder
   .add(Symbol.NUMBER, [SHIFT, State.NUMBER])
-  .add(Symbol.WHITE_SPACE, State.START)
-  .add(Symbol.END, State.TERMINATE)
+  .add(Symbol.END, [SHIFT, State.TERMINATE_NUMBER])
   .build();
 table[State.NUMBER] = ObjectBuilder
-  .add(Symbol.ASTERISK, [SHIFT, State.MULTIPLICATION])
-  .add(Symbol.WHITE_SPACE, State.NUMBER)
-  .add(Symbol.END, State.TERMINATE_NUMBER)
+  .add(Symbol.ASTERISK, [SHIFT, State.ASTERISK])
+  .add(Symbol.END, [SHIFT, State.TERMINATE_NUMBER])
   .build();
-table[State.MULTIPLICATION] = ObjectBuilder
-  .add(Symbol.NUMBER, [REDUCE, ReduceActions.MULTIPLY])
-  .add(Symbol.WHITE_SPACE, State.MULTIPLICATION)
-  .add(Symbol.END, State.TERMINATE_NUMBER)
+table[State.ASTERISK] = ObjectBuilder
+  .add(Symbol.NUMBER, [SHIFT, State.MULTIPLY])
+  .build();
+table[State.MULTIPLY] = ObjectBuilder
+  .add(Symbol.END, [REDUCE, ReduceActions.MULTIPLY])
   .build();
 table[State.TERMINATE] = ObjectBuilder
   .add(Symbol.END, [REDUCE, ReduceActions.RETURN_LAST])
@@ -493,7 +494,8 @@ let Parser = (function () {
           symbol = null;
           continue;
           // handle parse error
-        } else if (typeof action === 'undefined' || !action.length || !action[0]) {
+        } else
+          if (typeof action === 'undefined' || !action.length || !action[0]) {
           let errStr = '';
 
 
@@ -605,6 +607,8 @@ let Parser = (function () {
             semanticValueStack.push(yyval.$);
             locationStack.push(yyval._$);
             newState = ACTION_TABLE[stack[stack.length - 2]][stack[stack.length - 1]];
+            console.log('ACTION_TABLE[stack[stack.length - 2]]', ACTION_TABLE[stack[stack.length - 2]]);
+            console.log('stack[stack.length - 1]', stack[stack.length - 1]);
             stack.push(newState);
             break;
 
@@ -742,7 +746,8 @@ let Parser = (function () {
       },
 
       // test the lexed token: return FALSE when not a match, otherwise return token
-      test_match: function (match, indexed_rule) {
+      testMatchGetToken: function (match, indexed_rule) {
+        console.log('testMatchGetToken', match, indexed_rule);
         let token,
           lines;
 
@@ -767,7 +772,20 @@ let Parser = (function () {
         this._backtrack = false;
         this._input = this._input.slice(match[0].length);
         this.matched += match[0];
-        token = this.mapActionToActionIndex(indexed_rule);
+        switch (indexed_rule) {
+          case RuleIndex.WHITE_SPACE:
+            token = undefined;
+            break;
+          case RuleIndex.INTEGER:
+            token = Symbol.NUMBER;
+            break;
+          case RuleIndex.ASTERISK:
+            token = Symbol.ASTERISK;
+            break;
+          case RuleIndex.END:
+            token = Symbol.END;
+            break;
+        }
         if (this.done && this._input) {
           this.done = false;
         }
@@ -803,7 +821,7 @@ let Parser = (function () {
           }
         }
         if (match) {
-          token = this.test_match(match, rules[index]);
+          token = this.testMatchGetToken(match, rules[index]);
           if (token !== false) {
             return token;
           }
@@ -837,17 +855,6 @@ let Parser = (function () {
           return this.conditions[this.conditionStack[this.conditionStack.length - 1]].rules;
         } else {
           return this.conditions.INITIAL.rules;
-        }
-      },
-
-      mapActionToActionIndex: function (ruleIndex) {
-        switch (ruleIndex) {
-          case RuleIndex.WHITE_SPACE:
-            break;
-          case RuleIndex.INTEGER:
-            return Symbol.NUMBER;
-          case RuleIndex.ASTERISK:
-            return Symbol.ASTERISK;
         }
       },
       conditions: {

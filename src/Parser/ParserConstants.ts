@@ -334,6 +334,10 @@ symbolIndexToName[Symbol.EXCLAMATION_POINT] = "!";
 const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
 
 
+const enum State {
+  START = 0
+}
+
 
 /**
  * Array of to map rules to to LexActions and other rules. A single index in the object (e.g. `{2: 13}`) indicates the
@@ -342,7 +346,7 @@ const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
  */
 let table = [];
 // All functions in the spreadsheet start with a 0-token.
-table[0] = ObjectBuilder
+table[State.START] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSIONS, 1)
   .add(Symbol.EXPRESSION, 2)

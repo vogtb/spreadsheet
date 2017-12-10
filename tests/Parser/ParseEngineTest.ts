@@ -2,9 +2,12 @@ import {
   Parser
 } from "../../src/Parser/Parser";
 import {TypeConverter} from "../../src/Utilities/TypeConverter";
-import {DivZeroError, NameError} from "../../src/Errors";
+import {
+  DIV_ZERO_ERROR, DivZeroError, NA_ERROR, NameError, NULL_ERROR, NUM_ERROR, PARSE_ERROR,
+  REF_ERROR, VALUE_ERROR
+} from "../../src/Errors";
 import {Formulas} from "../../src/Formulas";
-import {assertEquals, test} from "../Utils/Asserts";
+import {assertEquals, catchAndAssertEquals, test} from "../Utils/Asserts";
 
 
 let FormulaParser = function(handler) {
@@ -319,8 +322,195 @@ test("Declare number", function () {
   assertEquals(parser.parse('5'), 5);
 });
 
-console.log("\n\n\n\n\n\n\n");
-
 test("Number multiplication", function () {
   assertEquals(parser.parse('5*5'), 25);
 });
+
+
+
+test("Parse but throw parse error", function(){
+  // assertEquals(parser.parse('=10e'), PARSE_ERROR);
+  // assertEquals(parser.parse('= SUM('), PARSE_ERROR);
+});
+
+test("Parse & operator", function(){
+  assertEquals(parser.parse('"hey"&" "&"there"'), "hey there");
+});
+
+test("Parse * operator", function(){
+  assertEquals(parser.parse('10 * 10'), 100);
+  assertEquals(parser.parse('10 * 0'), 0);
+  assertEquals(parser.parse('1 * 1'), 1);
+});
+
+test("Parse / operator", function(){
+  assertEquals(parser.parse('10 / 2'), 5);
+  assertEquals(parser.parse('10 / 1'), 10);
+  assertEquals(parser.parse('1 / 1'), 1);
+  assertEquals(parser.parse('0 / 1'), 0);
+  assertEquals(parser.parse('"1" / 1'), 1);
+  assertEquals(parser.parse('"500" / 1'), 500);
+  catchAndAssertEquals(function () {
+    parser.parse(' 10 / 0');
+  }, DIV_ZERO_ERROR);
+  catchAndAssertEquals(function () {
+    parser.parse('0 / 0')
+  }, DIV_ZERO_ERROR);
+  // assertEquals(parser.parse('P9 / 1'), 0);
+});
+
+test("Parse ^ operator", function(){
+  assertEquals(parser.parse('10 ^ 10'), 10000000000);
+  assertEquals(parser.parse('10 ^ 0'), 1);
+  assertEquals(parser.parse('1 ^ 1'), 1);
+  assertEquals(parser.parse('2 ^ 10'), 1024);
+});
+
+test("Parse equality operators", function(){
+  assertEquals(parser.parse('1 = 1'), true);
+  assertEquals(parser.parse('1 = 0'), false);
+  assertEquals(parser.parse('1 < 2'), true);
+  assertEquals(parser.parse('1 < 0'), false);
+  assertEquals(parser.parse('1 <= 1'), true);
+  // assertEquals('= 1 <= 2', true); // TODO: Fails.
+  assertEquals(parser.parse('1 >= 1'), true);
+  assertEquals(parser.parse('2 >= 1'), true);
+  assertEquals(parser.parse('1 >= 0'), true);
+  assertEquals(parser.parse('1 >= 2'), false);
+  assertEquals(parser.parse('1 <> 1'), false);
+  assertEquals(parser.parse('1 <> 2'), true);
+});
+
+test("Parse operators, order of operations", function(){
+  assertEquals(parser.parse('10 + -10'), 0);
+  assertEquals(parser.parse('10 + -10 = 0'), true);
+  // assertEquals(parser.parse('10 + -10 = 0 & "str"'), false); // TODO should pass.
+  assertEquals(parser.parse('-10%'), -0.1);
+  assertEquals(parser.parse('10 + 10%'), 10.1);
+  assertEquals(parser.parse('-10 + 10%'), -9.9);
+  assertEquals(parser.parse('-10 - +10%'), -10.1);
+  assertEquals(parser.parse('2^-10 + 10%'), 0.1009765625);
+  assertEquals(parser.parse('4 * 5 / 2'), 10);
+  assertEquals(parser.parse('4 / 5 * 4'), 3.2);
+  assertEquals(parser.parse('2^2*5'), 20);
+  assertEquals(parser.parse('2^(2*5)'), 1024);
+});
+
+test("Parse and throw error literal", function () {
+  // these pass, but strangely so.
+  // assertEquals(parser.parse('#N/A'), NA_ERROR);
+  // assertEquals(parser.parse('#NUM!'), NUM_ERROR);
+  // assertEquals(parser.parse('#REF!'), REF_ERROR);
+  // assertEquals(parser.parse('#NULL!'), NULL_ERROR);
+  // assertEquals(parser.parse('#ERROR'), PARSE_ERROR);
+  // assertEquals(parser.parse('#DIV/0!'), DIV_ZERO_ERROR);
+  // assertEquals(parser.parse('#VALUE!'), VALUE_ERROR);
+  // assertEquals(parser.parse('ISERROR(#N/A)'), true);
+  // assertEquals(parser.parse('=ISERROR(#NUM!)'), true);
+  // assertEquals(parser.parse('=ISERROR(#REF!)'), true);
+  // assertEquals(parser.parse('=ISERROR(#NULL!)'), true);
+  // assertEquals(parser.parse('=ISERROR(#ERROR)'), true);
+  // assertEquals(parser.parse('=ISERROR(#DIV/0!)'), true);
+  // assertEquals(parser.parse('=ISERROR(#VALUE!)'), true);
+  // assertEquals(parser.parse('=IFERROR(#N/A, 10)'), 10);
+  // assertEquals(parser.parse('=IFERROR(#NUM!, 10)'), 10);
+  // assertEquals(parser.parse('=IFERROR(#REF!, 10)'), 10);
+  // assertEquals(parser.parse('=IFERROR(#NULL!, 10)'), 10);
+  // assertEquals(parser.parse('=IFERROR(#ERROR, 10)'), 10);
+  // assertEquals(parser.parse('=IFERROR(#DIV/0!, 10)'), 10);
+  // assertEquals(parser.parse('=IFERROR(#VALUE!, 10)'), 10);
+});
+
+test("Parse plain numbers", function() {
+  assertEquals(parser.parse('10'), 10);
+  // assertEquals('=.1', 0.1); // TODO: Fails from parse error, but should pass
+  // assertEquals(parser.parse('0.1'), 0.1); // TODO: Can't coerce to number?
+  assertEquals(parser.parse('+1'), 1);
+  assertEquals(parser.parse('-1'), -1);
+  assertEquals(parser.parse('++1'), 1);
+  assertEquals(parser.parse('--1'), 1);
+  assertEquals(parser.parse('10e1'), 100);
+  assertEquals(parser.parse('0e1'), 0);
+  // assertEquals('=0.e1', 0); // TODO: Fails from parse error, but should pass
+  assertEquals(parser.parse('-10e1'), -100);
+  assertEquals(parser.parse('+10e1'), 100);
+  assertEquals(parser.parse('++10e1'), 100);
+  assertEquals(parser.parse('--10e1'), 100);
+});
+
+test("Parse complex numbers and math", function(){
+  assertEquals(parser.parse('"10" + 10'), 20);
+  assertEquals(parser.parse('"10.111111" + 0'), 10.111111);
+  assertEquals(parser.parse('10%'), 0.1);
+  assertEquals(parser.parse('10% + 1'), 1.1);
+  assertEquals(parser.parse('"10e1" + 0'), 100);
+  assertEquals(parser.parse('10e1'), 100);
+  assertEquals(parser.parse('10e-1'), 1);
+  assertEquals(parser.parse('10e+1'), 100);
+  assertEquals(parser.parse('10E1'), 100);
+  assertEquals(parser.parse('10E-1'), 1);
+  assertEquals(parser.parse('10E+1'), 100);
+  assertEquals(parser.parse('"1,000,000"  + 0'), 1000000);
+  assertEquals(parser.parse('"+$10.00" + 0'), 10);
+  assertEquals(parser.parse('"-$10.00" + 0'), -10);
+  assertEquals(parser.parse('"$+10.00" + 0'), 10);
+  assertEquals(parser.parse('"$-10.00" + 0'), -10);
+  assertEquals(parser.parse('"10" + 10'), 20);
+  assertEquals(parser.parse('"10.111111" + 0'), 10.111111);
+  assertEquals(parser.parse('10%'), 0.1);
+  assertEquals(parser.parse('10% + 1'), 1.1);
+  assertEquals(parser.parse('"10e1" + 0'), 100);
+  assertEquals(parser.parse('10e1'), 100);
+  assertEquals(parser.parse('10e-1'), 1);
+  assertEquals(parser.parse('10e+1'), 100);
+  assertEquals(parser.parse('10E1'), 100);
+  assertEquals(parser.parse('10E-1'), 1);
+  assertEquals(parser.parse('10E+1'), 100);
+  assertEquals(parser.parse('"1,000,000"  + 0'), 1000000);
+  catchAndAssertEquals(function () {
+    parser.parse('"10e" + 10');
+  }, VALUE_ERROR);
+  assertEquals(parser.parse('"+$10.00" + 0'), 10);
+  assertEquals(parser.parse('"-$10.00" + 0'), -10);
+  assertEquals(parser.parse('"$+10.00" + 0'), 10);
+  assertEquals(parser.parse('"$-10.00" + 0'), -10);
+});
+
+test("Parse strings", function(){
+  assertEquals(parser.parse('"str"'), "str");
+  assertEquals(parser.parse('"str"&"str"'), "strstr");
+  catchAndAssertEquals(function () {
+    parser.parse('"str"+"str"');
+  }, VALUE_ERROR);
+  // assertEquals("='str'", PARSE_ERROR); // TODO: Parses, but it shouldn't.
+});
+
+test("Parse boolean literals", function(){
+  assertEquals(parser.parse('TRUE'), true);
+  assertEquals(parser.parse('true'), true);
+  assertEquals(parser.parse('FALSE'), false);
+  assertEquals(parser.parse('false'), false);
+});
+
+test("Parse boolean logic", function(){
+  // assertEquals('=(1=1)', true); // TODO: Fails because we compute the value, rather than checking equality
+  // assertEquals('=(1=2)', false); // TODO: Fails because we compute the value, rather than checking equality
+  assertEquals(parser.parse('(1=1)+2'), 3);
+
+});
+
+
+test("Parse range literal", function(){
+  // assertEqualsArray('=[1, 2, 3]', [1, 2, 3]); // TODO: Fails because of low-level parser error
+  // assertEqualsArray('=[]', []); // TODO: Fails because of low-level parser error
+  // assertEqualsArray('=["str", "str"]', ["str", "str"]); // TODO: Fails because of low-level parser error
+  // assertEqualsArray('=["str", [1, 2, 3], [1]]', ["str", [1, 2, 3], [1]]); // TODO: Fails because of low-level parser error
+});
+
+
+test("Parse range following comma", function(){
+  // assertEquals('=SERIESSUM(1, 0, 1, [4, 5, 6])', 15);
+  // assertEquals('=SERIESSUM([1], [0], [1], [4, 5, 6])', 15);
+});
+
+

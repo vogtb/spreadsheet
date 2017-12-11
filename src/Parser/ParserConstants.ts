@@ -6,7 +6,7 @@ import {
 const WHITE_SPACE_RULE = /^(?:\s+)/;
 const DOUBLE_QUOTES_RULE = /^(?:"(\\["]|[^"])*")/;
 const SINGLE_QUOTES_RULE = /^(?:'(\\[']|[^'])*')/;
-const FORMULA_NAME_RULE = /^(?:[A-Za-z.]{1,}[A-Za-z_0-9]+(?=[(]))/; // Changed from /^(?:[A-Za-z]{1,}[A-Za-z_0-9]+(?=[(]))/
+const FORMULA_NAME_RULE = /^(?:[A-Za-z.]{1,}[A-Za-z_0-9]+(?=[(]))/;
 const $_A1_CELL_RULE = /^(?:\$[A-Za-z]+\$[0-9]+)/;
 const A1_CELL_RULE = /^(?:[A-Za-z]+[0-9]+)/;
 const FORMULA_NAME_SIMPLE_RULE = /^(?:[A-Za-z.]+(?=[(]))/;
@@ -366,6 +366,7 @@ const enum State {
   NUMBER_FOLLOWED_BY_CARROT = 29,
   ADD_TWO_NUMBERS = 45,
   LESS_THAN_EQUALS = 46,
+  GREATER_THAN_EQUALS = 49,
   SUBTRACT_TWO_NUMBERS = 52,
   MULTIPLY_TWO_NUMBERS = 53,
   DIVIDE_TWO_NUMBERS = 54,
@@ -704,7 +705,7 @@ table[State.GREATER_THAN] = ObjectBuilder
   .add(Symbol.VARIABLE_SEQUENCE, 3)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.EQUALS, [SHIFT, 49])
+  .add(Symbol.EQUALS, [SHIFT, State.GREATER_THAN_EQUALS])
   .add(Symbol.PLUS, [SHIFT, 10])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.MINUS, [SHIFT, 9])
@@ -1010,7 +1011,7 @@ table[48] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.LT])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.LT])
   .build();
-table[49] = ObjectBuilder
+table[State.GREATER_THAN_EQUALS] = ObjectBuilder
   .add(Symbol.ERROR, 13)
   .add(Symbol.EXPRESSION, State.COMPARE_TWO_EXPRESSIONS_WITH_GTE)
   .add(Symbol.VARIABLE_SEQUENCE, 3)

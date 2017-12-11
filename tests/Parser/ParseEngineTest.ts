@@ -370,19 +370,55 @@ test("Parse ^ operator", function(){
   assertEquals(parser.parse('2 ^ 10'), 1024);
 });
 
-test("Parse equality operators", function(){
+test("Parse comparison operators on numbers", function(){
   assertEquals(parser.parse('1 = 1'), true);
   assertEquals(parser.parse('1 = 0'), false);
   assertEquals(parser.parse('1 < 2'), true);
   assertEquals(parser.parse('1 < 0'), false);
+  assertEquals(parser.parse('1 < 1'), false);
+  assertEquals(parser.parse('1 <= 0'), false);
   assertEquals(parser.parse('1 <= 1'), true);
-  assertEquals(parser.parse('1 <= 2'), true);// fails...
+  assertEquals(parser.parse('1 <= 2'), true);
   assertEquals(parser.parse('1 >= 1'), true);
   assertEquals(parser.parse('2 >= 1'), true);
   assertEquals(parser.parse('1 >= 0'), true);
   assertEquals(parser.parse('1 >= 2'), false);
   assertEquals(parser.parse('1 <> 1'), false);
   assertEquals(parser.parse('1 <> 2'), true);
+});
+
+test("Parse comparison operators on strings", function(){
+  assertEquals(parser.parse('"abc" = "abc"'), true);
+  assertEquals(parser.parse('"abc" = "xyz"'), false);
+  assertEquals(parser.parse('"abc" < "abc"'), false);
+  assertEquals(parser.parse('"abc" < "xyz"'), true);
+  assertEquals(parser.parse('"abc" <= "abc"'), true);
+  assertEquals(parser.parse('"abc" <= "xyz"'), true);
+  assertEquals(parser.parse('"xyz" <= "abc"'), false);
+  assertEquals(parser.parse('"abc" >= "abc"'), true);
+  assertEquals(parser.parse('"abc" >= "zyx"'), false);
+  assertEquals(parser.parse('"xyz" >= "abc"'), true);
+  assertEquals(parser.parse('"abc" <> "abc"'), false);
+  assertEquals(parser.parse('"abc" <> "zyz"'), true);
+});
+
+test("Parse comparison operators on boolean", function(){
+  assertEquals(parser.parse('TRUE = TRUE'), true);
+  assertEquals(parser.parse('TRUE = FALSE'), false);
+  assertEquals(parser.parse('FALSE = FALSE'), true);
+  assertEquals(parser.parse('TRUE > TRUE'), false);
+  assertEquals(parser.parse('TRUE > FALSE'), true);
+  assertEquals(parser.parse('FALSE > FALSE'), false);
+  assertEquals(parser.parse('TRUE <= TRUE'), true);
+  assertEquals(parser.parse('TRUE <= FALSE'), false);
+  assertEquals(parser.parse('FALSE <= TRUE'), true);
+  assertEquals(parser.parse('TRUE >= TRUE'), true);
+  assertEquals(parser.parse('TRUE >= FALSE'), true);
+  assertEquals(parser.parse('FALSE >= TRUE'), false);
+  assertEquals(parser.parse('TRUE <> TRUE'), false);
+  assertEquals(parser.parse('FALSE <> FALSE'), false);
+  assertEquals(parser.parse('TRUE <> FALSE'), true);
+  assertEquals(parser.parse('FALSE <> TRUE'), true);
 });
 
 test("Parse operators, order of operations", function(){
@@ -521,4 +557,4 @@ test("Parse range following comma", function(){
 
 
 
-assertEquals(parser.parse('1 <= 2'), true);
+assertEquals(parser.parse('"one" = "one"'), true);

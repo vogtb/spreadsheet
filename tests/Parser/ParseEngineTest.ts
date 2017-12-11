@@ -437,28 +437,13 @@ test("Parse operators, order of operations", function(){
 });
 
 test("Parse and throw error literal", function () {
-  // these pass, but strangely so.
-  // assertEquals(parser.parse('#N/A'), NA_ERROR);
-  // assertEquals(parser.parse('#NUM!'), NUM_ERROR);
-  // assertEquals(parser.parse('#REF!'), REF_ERROR);
-  // assertEquals(parser.parse('#NULL!'), NULL_ERROR);
-  // assertEquals(parser.parse('#ERROR'), PARSE_ERROR);
-  // assertEquals(parser.parse('#DIV/0!'), DIV_ZERO_ERROR);
-  // assertEquals(parser.parse('#VALUE!'), VALUE_ERROR);
-  // assertEquals(parser.parse('ISERROR(#N/A)'), true);
-  // assertEquals(parser.parse('=ISERROR(#NUM!)'), true);
-  // assertEquals(parser.parse('=ISERROR(#REF!)'), true);
-  // assertEquals(parser.parse('=ISERROR(#NULL!)'), true);
-  // assertEquals(parser.parse('=ISERROR(#ERROR)'), true);
-  // assertEquals(parser.parse('=ISERROR(#DIV/0!)'), true);
-  // assertEquals(parser.parse('=ISERROR(#VALUE!)'), true);
-  // assertEquals(parser.parse('=IFERROR(#N/A, 10)'), 10);
-  // assertEquals(parser.parse('=IFERROR(#NUM!, 10)'), 10);
-  // assertEquals(parser.parse('=IFERROR(#REF!, 10)'), 10);
-  // assertEquals(parser.parse('=IFERROR(#NULL!, 10)'), 10);
-  // assertEquals(parser.parse('=IFERROR(#ERROR, 10)'), 10);
-  // assertEquals(parser.parse('=IFERROR(#DIV/0!, 10)'), 10);
-  // assertEquals(parser.parse('=IFERROR(#VALUE!, 10)'), 10);
+  assertEquals(parser.parse('#N/A').name, NA_ERROR);
+  assertEquals(parser.parse('#NUM!').name, NUM_ERROR);
+  assertEquals(parser.parse('#REF!').name, REF_ERROR);
+  assertEquals(parser.parse('#NULL!').name, NULL_ERROR);
+  assertEquals(parser.parse('#ERROR').name, PARSE_ERROR);
+  assertEquals(parser.parse('#DIV/0!').name, DIV_ZERO_ERROR);
+  assertEquals(parser.parse('#VALUE!').name, VALUE_ERROR);
 });
 
 test("Parse plain numbers", function() {

@@ -448,15 +448,14 @@ test("Parse and throw error literal", function () {
 
 test("Parse plain numbers", function() {
   assertEquals(parser.parse('10'), 10);
-  // assertEquals('=.1', 0.1); // TODO: Fails from parse error, but should pass
-  // assertEquals(parser.parse('0.1'), 0.1); // TODO: Can't coerce to number?
+  // assertEquals(parser.parse('.1'), 0.1); // TODO: Fails because our parser doesn't expect a decimal right away.
   assertEquals(parser.parse('+1'), 1);
   assertEquals(parser.parse('-1'), -1);
   assertEquals(parser.parse('++1'), 1);
   assertEquals(parser.parse('--1'), 1);
   assertEquals(parser.parse('10e1'), 100);
   assertEquals(parser.parse('0e1'), 0);
-  // assertEquals('=0.e1', 0); // TODO: Fails from parse error, but should pass
+  // assertEquals(parser.parse('0.e1'), 0); // TODO: Fails. After decimal, finds 'e' and thinks it's a variable.
   assertEquals(parser.parse('-10e1'), -100);
   assertEquals(parser.parse('+10e1'), 100);
   assertEquals(parser.parse('++10e1'), 100);
@@ -507,7 +506,7 @@ test("Parse strings", function(){
   catchAndAssertEquals(function () {
     parser.parse('"str"+"str"');
   }, VALUE_ERROR);
-  // assertEquals("='str'", PARSE_ERROR); // TODO: Parses, but it shouldn't.
+  // assertEquals("='str'", PARSE_ERROR); // TODO: Parses, but we should not allow single-quote strings.
 });
 
 test("Parse boolean literals", function(){
@@ -518,27 +517,18 @@ test("Parse boolean literals", function(){
 });
 
 test("Parse boolean logic", function(){
-  // assertEquals('=(1=1)', true); // TODO: Fails because we compute the value, rather than checking equality
-  // assertEquals('=(1=2)', false); // TODO: Fails because we compute the value, rather than checking equality
+  // assertEquals(parser.parse('(1=1)'), true); // TODO: Fails because we compute the value, rather than checking equality
+  // assertEquals(parser.parse('(1=2)'), false); // TODO: Fails because we compute the value, rather than checking equality
   assertEquals(parser.parse('(1=1)+2'), 3);
-
 });
 
 
 test("Parse range literal", function(){
-  // assertEqualsArray('=[1, 2, 3]', [1, 2, 3]); // TODO: Fails because of low-level parser error
-  // assertEqualsArray('=[]', []); // TODO: Fails because of low-level parser error
-  // assertEqualsArray('=["str", "str"]', ["str", "str"]); // TODO: Fails because of low-level parser error
-  // assertEqualsArray('=["str", [1, 2, 3], [1]]', ["str", [1, 2, 3], [1]]); // TODO: Fails because of low-level parser error
+  // assertEqualsArray('=[1, 2, 3]', [1, 2, 3]); // TODO: Fails because we've not implemented array-level parsing.
+  // assertEqualsArray('=[]', []);
+  // assertEqualsArray('=["str", "str"]', ["str", "str"]);
+  // assertEqualsArray('=["str", [1, 2, 3], [1]]', ["str", [1, 2, 3], [1]]);
 });
-
-
-test("Parse range following comma", function(){
-  // assertEquals('=SERIESSUM(1, 0, 1, [4, 5, 6])', 15);
-  // assertEquals('=SERIESSUM([1], [0], [1], [4, 5, 6])', 15);
-});
-
-
 
 
 

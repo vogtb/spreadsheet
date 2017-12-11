@@ -1,4 +1,3 @@
-/// <reference path="../../node_modules/moment/moment.d.ts"/>
 import * as moment from "moment";
 import {
   RefError,

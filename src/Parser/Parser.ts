@@ -8,14 +8,16 @@ import {
 import {
   ACTION_TABLE,
   RULES,
-  ReduceActions,
-  ReductionPair,
   REDUCE,
   ACCEPT,
   SHIFT,
   SYMBOL_INDEX_TO_NAME,
   SYMBOL_NAME_TO_INDEX,
-  PRODUCTIONS, RuleIndex, Symbol
+  PRODUCTIONS,
+  ReduceActions,
+  ReductionPair,
+  RuleIndex,
+  Symbol
 } from "./ParserConstants"
 import {isUndefined} from "../Utilities/MoreUtils";
 
@@ -46,85 +48,85 @@ let Parser = (function () {
           case ReduceActions.RETURN_LAST:
             return virtualStack[vsl - 1];
           case ReduceActions.CALL_VARIABLE:
-            this.$ = sharedStateYY.handler.helper.callVariable.call(this, virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.callVariable.call(this, virtualStack[vsl]);
             break;
           case ReduceActions.AS_NUMBER:
-            this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.number(virtualStack[vsl]);
             break;
           case ReduceActions.AS_STRING:
-            this.$ = sharedStateYY.handler.helper.string(virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.string(virtualStack[vsl]);
             break;
           case ReduceActions.AMPERSAND:
-            this.$ = sharedStateYY.handler.helper.specialMatch('&', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.specialMatch('&', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.EQUALS:
-            this.$ = sharedStateYY.handler.helper.logicMatch('=', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.logicMatch('=', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.PLUS:
-            this.$ = sharedStateYY.handler.helper.mathMatch('+', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.mathMatch('+', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.LAST_NUMBER:
-            this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl - 1]);
+            this.$ = sharedStateYY.handler.number(virtualStack[vsl - 1]);
             break;
           case ReduceActions.LTE:
-            this.$ = sharedStateYY.handler.helper.logicMatch('<=', virtualStack[vsl - 3], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.logicMatch('<=', virtualStack[vsl - 3], virtualStack[vsl]);
             break;
           case ReduceActions.GTE:
-            this.$ = sharedStateYY.handler.helper.logicMatch('>=', virtualStack[vsl - 3], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.logicMatch('>=', virtualStack[vsl - 3], virtualStack[vsl]);
             break;
           case ReduceActions.NOT_EQ:
-            this.$ = sharedStateYY.handler.helper.logicMatch('<>', virtualStack[vsl - 3], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.logicMatch('<>', virtualStack[vsl - 3], virtualStack[vsl]);
             break;
           case ReduceActions.GT:
-            this.$ = sharedStateYY.handler.helper.logicMatch('>', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.logicMatch('>', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.LT:
-            this.$ = sharedStateYY.handler.helper.logicMatch('<', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.logicMatch('<', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.MINUS:
-            this.$ = sharedStateYY.handler.helper.mathMatch('-', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.mathMatch('-', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.MULTIPLY:
-            this.$ = sharedStateYY.handler.helper.mathMatch('*', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.mathMatch('*', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.DIVIDE:
-            this.$ = sharedStateYY.handler.helper.mathMatch('/', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.mathMatch('/', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.TO_POWER:
-            this.$ = sharedStateYY.handler.helper.mathMatch('^', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.mathMatch('^', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.INVERT_NUM:
-            this.$ = sharedStateYY.handler.helper.numberInverted(virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.numberInverted(virtualStack[vsl]);
             if (isNaN(this.$)) {
               this.$ = 0;
             }
             break;
           case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
-            this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.number(virtualStack[vsl]);
             if (isNaN(this.$)) {
               this.$ = 0;
             }
             break;
           case ReduceActions.CALL_FUNCTION_LAST_BLANK:
-            this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 2], '');
+            this.$ = sharedStateYY.handler.callFunction.call(this, virtualStack[vsl - 2], '');
             break;
           case ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK:
-            this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 3], virtualStack[vsl - 1]);
+            this.$ = sharedStateYY.handler.callFunction.call(this, virtualStack[vsl - 3], virtualStack[vsl - 1]);
             break;
           case ReduceActions.FIXED_CELL_VAL:
-            this.$ = sharedStateYY.handler.helper.fixedCellValue.call(sharedStateYY.obj, virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.fixedCellValue(sharedStateYY.obj, virtualStack[vsl]);
             break;
           case ReduceActions.FIXED_CELL_RANGE_VAL:
-            this.$ = sharedStateYY.handler.helper.fixedCellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.fixedCellRangeValue(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.CELL_VALUE:
-            this.$ = sharedStateYY.handler.helper.cellValue.call(sharedStateYY.obj, virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.cellValue(sharedStateYY.obj, virtualStack[vsl]);
             break;
           case ReduceActions.CELL_RANGE_VALUE:
-            this.$ = sharedStateYY.handler.helper.cellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.cellRangeValue(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.ENSURE_IS_ARRAY:
-            if (sharedStateYY.handler.utils.isArray(virtualStack[vsl])) {
+            if (sharedStateYY.handler.isArray(virtualStack[vsl])) {
               this.$ = virtualStack[vsl];
             } else {
               this.$ = [virtualStack[vsl]];
@@ -147,7 +149,7 @@ let Parser = (function () {
             this.$ = [virtualStack[vsl]];
             break;
           case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
-            this.$ = (sharedStateYY.handler.utils.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
+            this.$ = (sharedStateYY.handler.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
             this.$.push(virtualStack[vsl]);
             break;
           case ReduceActions.REFLEXIVE_REDUCE:
@@ -210,7 +212,7 @@ let Parser = (function () {
               }
               break;
             case ReduceActions.ENSURE_IS_ARRAY:
-              if (sharedStateYY.handler.utils.isArray(virtualStack[vsl])) {
+              if (sharedStateYY.handler.isArray(virtualStack[vsl])) {
                 this.$ = virtualStack[vsl];
               } else {
                 this.$ = [virtualStack[vsl]];
@@ -233,7 +235,7 @@ let Parser = (function () {
               this.$ = [virtualStack[vsl]];
               break;
             case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
-              this.$ = (sharedStateYY.handler.utils.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
+              this.$ = (sharedStateYY.handler.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
               this.$.push(virtualStack[vsl]);
               break;
             case ReduceActions.REFLEXIVE_REDUCE:
@@ -563,6 +565,13 @@ let Parser = (function () {
       // resets the lexer, sets new input
       setInput: function (input, yy) {
         this.yy = yy || this.yy || {};
+        this.yy.parseError = function (str, hash) {
+          throw new ParseError(JSON.stringify({
+            name: 'Parser error',
+            message: str,
+            prop: hash
+          }));
+        };
         this._input = input;
         this._more = this._backtrack = this.done = false;
         this.yylineno = this.yyleng = 0;
@@ -970,6 +979,29 @@ let Parser = (function () {
   return new Parser;
 })();
 
+/**
+ * Creates a new FormulaParser, which parses formulas, and does minimal error handling.
+ *
+ * @param handler should be this instance. Needs access to helper.fixedCellValue, helper.cellValue,
+ * helper.cellRangeValue, and helper.fixedCellRangeValue
+ * @returns formula parser instance for use with parser.js
+ * @constructor
+ */
+let FormulaParser = function(handler) {
+  let formulaLexer = function () {};
+  formulaLexer.prototype = Parser.lexer;
+
+  let formulaParser = function () {
+    this.lexer = new formulaLexer();
+    this.yy = {};
+  };
+
+  formulaParser.prototype = Parser;
+  let newParser = new formulaParser;
+  newParser.yy.handler = handler;
+  return newParser;
+};
+
 export {
-  Parser
+  FormulaParser
 }

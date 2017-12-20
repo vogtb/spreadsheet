@@ -26,15 +26,6 @@ function isArray(value) : boolean {
 }
 
 /**
- * Returns true if value is instance of a Function.
- * @param value
- * @returns {boolean}
- */
-function isFunction(value) : boolean {
-  return value instanceof Function;
-}
-
-/**
  * Alphabetical character to number.
  * @param chr
  * @returns {number}
@@ -305,7 +296,6 @@ export {
   isDefined,
   isUndefined,
   isArray,
-  isFunction,
   string,
   numberToCharacter,
   convertXYtoA1Coordinates,

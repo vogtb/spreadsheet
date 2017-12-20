@@ -25,8 +25,18 @@ import {
   string
 } from "../Utilities/MoreUtils";
 import {TypeConverter} from "../Utilities/TypeConverter";
-import {DIVIDE, EQ, GT, GTE, LT, LTE, MINUS, MULTIPLY, POWER, SUM} from "../Formulas/Math";
-
+import {
+  DIVIDE,
+  EQ,
+  GT,
+  GTE,
+  LT,
+  LTE,
+  MINUS,
+  MULTIPLY,
+  POWER,
+  SUM
+} from "../Formulas/Math";
 
 let Parser = (function () {
   let parser = {

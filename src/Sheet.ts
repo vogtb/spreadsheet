@@ -4,19 +4,16 @@ import {DataStore} from "./Parser/DataStore";
 import {FormulaParser} from "./Parser/Parser";
 import {Formulas} from "./Formulas";
 import {
-  isFunction, characterToNumber, numberToCharacter, convertXYtoA1Coordinates,
+  numberToCharacter,
+  convertXYtoA1Coordinates,
   A1toRowColCoordinates
 } from "./Utilities/MoreUtils";
 
-// TODO: Document.
+/**
+ * Represents a spreadsheet parser and data-store that act together as a functional spreadsheet.
+ */
 class Sheet {
-  private parser  = {
-    yy:{
-      obj: undefined
-    },
-    setObj: function (obj: string) {},
-    parse: function (formula: string) {}
-  };
+  private parser;
   private dataStore : DataStore;
 
   constructor() {
@@ -24,17 +21,22 @@ class Sheet {
     this.dataStore = new DataStore();
   }
 
-  iterateCells (origin, startCell, endCell, callback?) {
+  /**
+   * Iterate through cells in the data-store, returning the collected cells in the range.
+   * @param origin
+   * @param startCell
+   * @param endCell
+   * @returns {{index: Array; value: Array}}
+   */
+  iterateCells (origin, startCell, endCell) {
     let result = {
       index: [], // list of cell index: A1, A2, A3
       value: []  // list of cell value
     };
-
     let cols = {
       start: 0,
       end: 0
     };
-
     if (endCell.col >= startCell.col) {
       cols = {
         start: startCell.col,
@@ -46,12 +48,10 @@ class Sheet {
         end: startCell.col
       };
     }
-
     let rows = {
       start: 0,
       end: 0
     };
-
     if (endCell.row >= startCell.row) {
       rows = {
         start: startCell.row,
@@ -63,7 +63,6 @@ class Sheet {
         end: startCell.row
       };
     }
-
     for (let column = cols.start; column <= cols.end; column++) {
       for (let row = rows.start; row <= rows.end; row++) {
         let cellIndex = numberToCharacter(column) + (row + 1),
@@ -73,14 +72,15 @@ class Sheet {
         result.value.push(cellValue);
       }
     }
-
-    if (isFunction(callback)) {
-      return callback.apply(callback, [result]);
-    } else {
-      return result;
-    }
+    return result;
   }
 
+  /**
+   * Call function with given arguments. Used for calling formulas.
+   * @param fn
+   * @param args
+   * @returns {any}
+   */
   callFunction(fn, args) {
     fn = fn.toUpperCase();
     args = args || [];
@@ -91,6 +91,11 @@ class Sheet {
     throw new NameError("Unknown function: '" + fn + "'.");
   }
 
+  /**
+   * Call variable, which could include calling a function.
+   * @param args
+   * @returns {any}
+   */
   callVariable(args) {
     args = args || [];
     let str = args.shift(); // the first in args is the name of the function to call.
@@ -105,6 +110,12 @@ class Sheet {
     throw new NameError("Unknown variable: '" + str + "'.");
   };
 
+  /**
+   * Fetch cell, updating dependencies in process.
+   * @param origin
+   * @param cellId
+   * @returns {Cell}
+   */
   cellValue(origin, cellId) {
     let cell = this.dataStore.getCell(cellId);
 
@@ -119,6 +130,13 @@ class Sheet {
     return cell;
   }
 
+  /**
+   * Get a range of cells.
+   * @param origin - the cell id in A1 notation from which this range is being referenced.
+   * @param {string} start - first cell coordinate (in A1 notation) in iteration
+   * @param {string} end - final cell coordinate (in A1 notation) in iteration
+   * @returns {Array}
+   */
   cellRangeValue(origin, start: string, end: string) {
     let coordsStart = A1toRowColCoordinates(start),
       coordsEnd = A1toRowColCoordinates(end);
@@ -133,11 +151,24 @@ class Sheet {
     return result;
   }
 
+  /**
+   * Get a fixed cell value.
+   * @param origin
+   * @param id
+   * @returns {Cell}
+   */
   fixedCellValue (origin, id) {
     id = id.replace(/\$/g, '');
     return this.cellValue(origin, id);
   };
 
+  /**
+   * Get a fixed cell value range.
+   * @param origin
+   * @param start
+   * @param end
+   * @returns {Array}
+   */
   fixedCellRangeValue(origin, start, end) {
     start = start.replace(/\$/g, '');
     end = end.replace(/\$/g, '');
@@ -145,6 +176,10 @@ class Sheet {
     return this.cellRangeValue(origin, start, end);
   };
 
+  /**
+   * Recalculate dependencies for a cell.
+   * @param {Cell} cell
+   */
   private recalculateCellDependencies(cell: Cell) {
     let allDependencies = this.dataStore.getDependencies(cell.getId());
 
@@ -156,6 +191,11 @@ class Sheet {
     }
   }
 
+  /**
+   * Executes the formula in a cell.
+   * @param {Cell} cell
+   * @returns {{error: Error; result: any} | {error: any; result: any}}
+   */
   private calculateCellFormula(cell: Cell) {
     // to avoid double translate formulas, update cell data in parser
     let parsed = this.parse(cell.getFormula(), cell.getId());
@@ -166,6 +206,10 @@ class Sheet {
     return parsed;
   }
 
+  /**
+   * Add a cell to the data-store, recording and updating dependencies if necessary.
+   * @param {Cell} cell
+   */
   private registerCellInDataStore(cell: Cell) {
     this.dataStore.addCell(cell);
     if (cell.hasFormula()) {
@@ -173,6 +217,12 @@ class Sheet {
     }
   }
 
+  /**
+   * Parse a formula for a given cellId. This involves all calculations and look-ups.
+   * @param formula
+   * @param cellId
+   * @returns {any}
+   */
   public parse(formula, cellId) {
     let result = null;
     let error = null;
@@ -206,6 +256,11 @@ class Sheet {
     }
   }
 
+  /**
+   * Set a cell's value, by id.
+   * @param {string} id
+   * @param {string} value
+   */
   public setCell(id: string, value: string) {
     let cell = new Cell(id);
     cell.setValue(value.toString());
@@ -213,6 +268,11 @@ class Sheet {
     this.recalculateCellDependencies(cell);
   }
 
+  /**
+   * Get a cell from the data-store, returning null if a cell is undefined.
+   * @param {string} id
+   * @returns {Cell}
+   */
   public getCell(id: string) : Cell {
     let cell = this.dataStore.getCell(id);
     if (cell === undefined) {
@@ -221,6 +281,10 @@ class Sheet {
     return cell;
   }
 
+  /**
+   * Load an a matrix of cells into the data-store.
+   * @param {Array<Array<any>>} input
+   */
   public load(input: Array<Array<any>>) {
     for (let y = 0; y < input.length; y++) {
       for (let x = 0; x < input[0].length; x++) {

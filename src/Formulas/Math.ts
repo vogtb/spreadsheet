@@ -825,7 +825,7 @@ let SUMSQ = function (...values) {
 let MULTIPLY = function (factor1, factor2) {
   ArgsChecker.checkLength(arguments, 2, "MULTIPLY");
   let x = TypeConverter.firstValueAsNumber(factor1);
-  let y = TypeConverter.firstValueAsNumber(factor1);
+  let y = TypeConverter.firstValueAsNumber(factor2);
   return x * y;
 };
 
@@ -952,7 +952,13 @@ let DIVIDE = function (dividend, divisor) {
   if (y < 0) {
     throw new DivZeroError("Function DIVIDE parameter 2 cannot be zero.");
   }
-  return x / y;
+  let result = x / y;
+  if (result == Infinity) {
+    throw new DivZeroError("Evaluation caused divide by zero error.");
+  } else if (isNaN(result)) {
+    throw new DivZeroError("Evaluation caused divide by zero error.");
+  }
+  return result;
 };
 
 

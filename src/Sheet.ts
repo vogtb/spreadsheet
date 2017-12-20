@@ -228,7 +228,7 @@ class Sheet {
     let error = null;
 
     try {
-      this.parser.yy.obj = cellId;
+      this.parser.yy.originCellId = cellId;
       result = this.parser.parse(formula);
       let deps = this.dataStore.getDependencies(cellId);
 

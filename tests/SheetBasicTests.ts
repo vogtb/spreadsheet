@@ -7,7 +7,10 @@ import {
   REF_ERROR,
   VALUE_ERROR
 } from "../src/Errors";
-import {assertFormulaEquals, assertFormulaEqualsError, test} from "./Utils/Asserts";
+import {
+  assertFormulaEquals, assertFormulaEqualsDependsOnReference, assertFormulaEqualsError,
+  test
+} from "./Utils/Asserts";
 
 test("Sheet, declare number", function () {
   assertFormulaEquals('=5', 5);
@@ -212,3 +215,6 @@ test("Sheet, parse range literal", function(){
   // assertEqualsArray('=["str", "str"]', ["str", "str"]);
   // assertEqualsArray('=["str", [1, 2, 3], [1]]', ["str", [1, 2, 3], [1]]);
 });
+
+
+assertFormulaEqualsDependsOnReference('M1', 10, '=10 + $M$1', 20);

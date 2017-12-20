@@ -10,5 +10,5 @@ do
   echo "$(date) Running ${test_file}"
   node ${test_file}
 done
-# node test_output/tests/Parser/ParserTest.js
+node test_output/tests/SheetBasicTests.js
 echo "$(date) Tests Done"

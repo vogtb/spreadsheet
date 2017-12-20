@@ -352,9 +352,22 @@ const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
 
 const enum State {
   START = 0,
+  FOLLOW_EXPRESSIONS = 1,
+  FOLLOW_EXPRESSION = 2,
+  FOLLOW_VARIABLE_SEQUENCE = 3,
   START_NUMBER = 6,
   START_STRING = 7,
   LEFT_PAREN = 8,
+  PREFIX_UNARY_MINUS = 9,
+  PREFIX_UNARY_PLUS = 10,
+  FUNCTION = 11,
+  FOLLOWS_CELL = 12,
+  ERROR = 13,
+  FOLLOW_VARIABLE = 14,
+  FOLLOW_NUMBER_UPPER = 15,
+  FIXED_CELL = 16,
+  FOLLOW_CELL_UPPER = 17,
+  FOLLOW_POUND = 18,
   EOF_AND_RETURN_LAST = 19,
   NUMBER_FOLLOWED_BY_AMPERSAND = 20,
   START_EQUALS = 21,
@@ -365,9 +378,20 @@ const enum State {
   NUMBER_FOLLOWED_BY_ASTERISK = 27,
   NUMBER_FOLLOWED_BY_SLASH = 28,
   NUMBER_FOLLOWED_BY_CARROT = 29,
+  EXPRESSION_FOLLOWING_LEFT_PAREN = 32,
+  EXPRESSION_FOLLOWING_PREFIX_UNARY_MINUS = 33,
+  EXPRESSION_FOLLOWING_PREFIX_UNARY_PLUS = 34,
+  FOLLOW_FUNCTION_THEN_LEFT_PAREN = 35,
+  FOLLOW_ERROR_ERROR = 36,
+  FOLLOW_POUND_VARIABLE = 42,
+  NUMBER_AMPERSAND_EXPRESSION = 43,
+  START_EQUALS_EXPRESSION = 44,
   ADD_TWO_NUMBERS = 45,
   LESS_THAN_EQUALS = 46,
+  LESSTHAN_GREATERTHAN = 47,
+  LESSTHAN_EXPRESSION = 48,
   GREATER_THAN_EQUALS = 49,
+  GREATERTHAN_EXPRESSION = 50,
   SUBTRACT_TWO_NUMBERS = 52,
   MULTIPLY_TWO_NUMBERS = 53,
   DIVIDE_TWO_NUMBERS = 54,
@@ -388,27 +412,27 @@ const enum State {
 let table = [];
 // All functions in the spreadsheet start with a 0-token.
 table[State.START] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSIONS, 1)
-  .add(Symbol.EXPRESSION, 2)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.ERROR, State.ERROR)
+  .add(Symbol.EXPRESSIONS, State.FOLLOW_EXPRESSIONS)
+  .add(Symbol.EXPRESSION, State.FOLLOW_EXPRESSION)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
-table[1] = ObjectBuilder
+table[State.FOLLOW_EXPRESSIONS] = ObjectBuilder
   .add(Symbol.END, [ACCEPT])
   .build();
-table[2] = ObjectBuilder
+table[State.FOLLOW_EXPRESSION] = ObjectBuilder
   .add(Symbol.EOF, [SHIFT, State.EOF_AND_RETURN_LAST])
   .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
@@ -420,7 +444,7 @@ table[2] = ObjectBuilder
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
   .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .build();
-table[3] = ObjectBuilder
+table[State.FOLLOW_VARIABLE_SEQUENCE] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.CALL_VARIABLE])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.CALL_VARIABLE])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.CALL_VARIABLE])
@@ -468,60 +492,60 @@ table[State.START_STRING] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.AS_STRING])
   .build();
 table[State.LEFT_PAREN] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 32)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.ERROR, State.ERROR)
+  .add(Symbol.EXPRESSION, State.EXPRESSION_FOLLOWING_LEFT_PAREN)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
-table[9] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 33)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+table[State.PREFIX_UNARY_MINUS] = ObjectBuilder
+  .add(Symbol.ERROR, State.ERROR)
+  .add(Symbol.EXPRESSION, State.EXPRESSION_FOLLOWING_PREFIX_UNARY_MINUS)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
-table[10] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 34)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+table[State.PREFIX_UNARY_PLUS] = ObjectBuilder
+  .add(Symbol.ERROR, State.ERROR)
+  .add(Symbol.EXPRESSION, State.EXPRESSION_FOLLOWING_PREFIX_UNARY_PLUS)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
-table[11] = ObjectBuilder
-  .add(Symbol.LEFT_PAREN, [SHIFT, 35])
+table[State.FUNCTION] = ObjectBuilder
+  .add(Symbol.LEFT_PAREN, [SHIFT, State.FOLLOW_FUNCTION_THEN_LEFT_PAREN])
   .build();
-table[12] = ObjectBuilder
+table[State.FOLLOWS_CELL] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.I25])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.I25])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.I25])
@@ -536,8 +560,8 @@ table[12] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.I25])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.I25])
   .build();
-table[13] = ObjectBuilder
-  .add(Symbol.ERROR, 36)
+table[State.ERROR] = ObjectBuilder
+  .add(Symbol.ERROR, State.FOLLOW_ERROR_ERROR)
   .add(Symbol.EOF, [REDUCE, ReduceActions.I26])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.I26])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.I26])
@@ -554,7 +578,7 @@ table[13] = ObjectBuilder
   .add(Symbol.VARIABLE, [SHIFT, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(Symbol.POUND, [SHIFT, ReduceActions.MULTIPLY])
   .build();
-table[14] = ObjectBuilder
+table[State.FOLLOW_VARIABLE] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
@@ -568,10 +592,10 @@ table[14] = ObjectBuilder
   .add(Symbol.CARROT, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
-  .add(33, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
+  .add(Symbol.DECIMAL, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.POUND, [SHIFT, ReduceActions.REFLEXIVE_REDUCE])
   .build();
-table[15] = ObjectBuilder
+table[State.FOLLOW_NUMBER_UPPER] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
@@ -585,11 +609,11 @@ table[15] = ObjectBuilder
   .add(Symbol.CARROT, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
-  .add(33, [SHIFT, ReduceActions.REDUCE_FLOAT])
+  .add(Symbol.DECIMAL, [SHIFT, ReduceActions.REDUCE_FLOAT])
   .add(Symbol.PERCENT, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .add(38, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
   .build();
-table[16] = ObjectBuilder
+table[State.FIXED_CELL] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.FIXED_CELL_VAL])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.FIXED_CELL_VAL])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.FIXED_CELL_VAL])
@@ -605,7 +629,7 @@ table[16] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.FIXED_CELL_VAL])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.FIXED_CELL_VAL])
   .build();
-table[17] = ObjectBuilder
+table[State.FOLLOW_CELL_UPPER] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.CELL_VALUE])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.CELL_VALUE])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.CELL_VALUE])
@@ -621,8 +645,8 @@ table[17] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.CELL_VALUE])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.CELL_VALUE])
   .build();
-table[18] = ObjectBuilder
-  .add(Symbol.VARIABLE, [SHIFT, 42])
+table[State.FOLLOW_POUND] = ObjectBuilder
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_POUND_VARIABLE])
   .add(Symbol.EOF, [REDUCE, ReduceActions.AS_ERROR])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.AS_ERROR])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.AS_ERROR])
@@ -631,177 +655,177 @@ table[State.EOF_AND_RETURN_LAST] = ObjectBuilder
   .add(Symbol.END, [REDUCE, ReduceActions.RETURN_LAST])
   .build();
 table[State.NUMBER_FOLLOWED_BY_AMPERSAND] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 43)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.ERROR, State.ERROR)
+  .add(Symbol.EXPRESSION, State.NUMBER_AMPERSAND_EXPRESSION)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
   .add(Symbol.POUND, [SHIFT, ReduceActions.MULTIPLY])
   .build();
 table[State.START_EQUALS] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 44)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.ERROR, State.ERROR)
+  .add(Symbol.EXPRESSION, State.START_EQUALS_EXPRESSION)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 1])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[State.NUMBER_FOLLOWED_BY_PLUS] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 45)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.ERROR, State.ERROR)
+  .add(Symbol.EXPRESSION, State.ADD_TWO_NUMBERS)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[State.LESS_THAN] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 48)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.ERROR, State.ERROR)
+  .add(Symbol.EXPRESSION, State.LESSTHAN_EXPRESSION)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.EQUALS, [SHIFT, State.LESS_THAN_EQUALS])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.GREATER_THAN, [SHIFT, 47])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.GREATER_THAN, [SHIFT, State.LESSTHAN_GREATERTHAN])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[State.GREATER_THAN] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
-  .add(Symbol.EXPRESSION, 50)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.ERROR, State.ERROR)
+  .add(Symbol.EXPRESSION, State.GREATERTHAN_EXPRESSION)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.EQUALS, [SHIFT, State.GREATER_THAN_EQUALS])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[25] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, 51)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[State.NUMBER_FOLLOWED_BY_MINUS] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, State.SUBTRACT_TWO_NUMBERS)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[State.NUMBER_FOLLOWED_BY_ASTERISK] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, State.MULTIPLY_TWO_NUMBERS)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[State.NUMBER_FOLLOWED_BY_SLASH] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, State.DIVIDE_TWO_NUMBERS)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[State.NUMBER_FOLLOWED_BY_CARROT] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, State.NUMBER_TO_POWER_OF_OTHER)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[ReduceActions.CELL_VALUE] = ObjectBuilder
   .add(Symbol.VARIABLE, [SHIFT, 56])
@@ -823,7 +847,7 @@ table[31] = ObjectBuilder
   .add(Symbol.PERCENT, [REDUCE, ReduceActions.REDUCE_PREV_AS_PERCENT])
   .add(38, [REDUCE, ReduceActions.REDUCE_PREV_AS_PERCENT])
   .build();
-table[32] = ObjectBuilder
+table[State.EXPRESSION_FOLLOWING_LEFT_PAREN] = ObjectBuilder
   .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
   .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
@@ -835,7 +859,7 @@ table[32] = ObjectBuilder
   .add(Symbol.DIVIDE, [SHIFT, State.NUMBER_FOLLOWED_BY_SLASH])
   .add(Symbol.CARROT, [SHIFT, State.NUMBER_FOLLOWED_BY_CARROT])
   .build();
-table[33] = ObjectBuilder
+table[State.EXPRESSION_FOLLOWING_PREFIX_UNARY_MINUS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.INVERT_NUM])
   .add(Symbol.AMPERSAND, [SHIFT, ReduceActions.TO_POWER])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.INVERT_NUM])
@@ -850,7 +874,7 @@ table[33] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.INVERT_NUM])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.INVERT_NUM])
   .build();
-table[34] = ObjectBuilder
+table[State.EXPRESSION_FOLLOWING_PREFIX_UNARY_PLUS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
@@ -865,27 +889,27 @@ table[34] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.TO_NUMBER_NAN_AS_ZERO])
   .build();
-table[35] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+table[State.FOLLOW_FUNCTION_THEN_LEFT_PAREN] = ObjectBuilder
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, 60)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
   .add(Symbol.RIGHT_PAREN, [SHIFT, 58])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
   .add(Symbol.EXP_SEQ, 59)
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
   .add(Symbol.ARRAY, [SHIFT, 61])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
-table[36] = ObjectBuilder
+table[State.FOLLOW_ERROR_ERROR] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.I27])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.I27])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.I27])
@@ -915,10 +939,10 @@ table[40] = ObjectBuilder
 table[41] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, 65])
   .build();
-table[42] = ObjectBuilder
+table[State.FOLLOW_POUND_VARIABLE] = ObjectBuilder
   .add(Symbol.EXCLAMATION_POINT, [SHIFT, 66])
   .build();
-table[43] = ObjectBuilder
+table[State.NUMBER_AMPERSAND_EXPRESSION] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.AMPERSAND])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.AMPERSAND])
@@ -933,7 +957,7 @@ table[43] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.AMPERSAND])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.AMPERSAND])
   .build();
-table[44] = ObjectBuilder
+table[State.START_EQUALS_EXPRESSION] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.EQUALS])
   .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.EQUALS])
@@ -964,40 +988,40 @@ table[State.ADD_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.PLUS])
   .build();
 table[State.LESS_THAN_EQUALS] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, 67)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
-table[47] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+table[State.LESSTHAN_GREATERTHAN] = ObjectBuilder
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, 68)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
-table[48] = ObjectBuilder
+table[State.LESSTHAN_EXPRESSION] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.LT])
   .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.LT])
@@ -1013,23 +1037,23 @@ table[48] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.LT])
   .build();
 table[State.GREATER_THAN_EQUALS] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, State.COMPARE_TWO_EXPRESSIONS_WITH_GTE)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
-table[50] = ObjectBuilder
+table[State.GREATERTHAN_EXPRESSION] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.GT])
   .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.GT])
@@ -1128,7 +1152,7 @@ table[56] = ObjectBuilder
   .add(Symbol.CARROT, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
-  .add(33, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
+  .add(Symbol.DECIMAL, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .build();
 table[State.CLOSE_PAREN_ON_EXPRESSION] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.LAST_NUMBER])
@@ -1306,41 +1330,41 @@ table[State.CLOSE_PAREN_ON_FUNCTION] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK])
   .build();
 table[State.VARIABLE_FOLLOWED_BY_SEMI_COLON] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, 74)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[State.VARIABLE_FOLLOWED_BY_COMMA] = ObjectBuilder
-  .add(Symbol.ERROR, 13)
+  .add(Symbol.ERROR, State.ERROR)
   .add(Symbol.EXPRESSION, 75)
-  .add(Symbol.VARIABLE_SEQUENCE, 3)
+  .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
-  .add(Symbol.PLUS, [SHIFT, 10])
+  .add(Symbol.PLUS, [SHIFT, State.PREFIX_UNARY_PLUS])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LEFT_PAREN])
-  .add(Symbol.MINUS, [SHIFT, 9])
-  .add(Symbol.FUNCTION, [SHIFT, 11])
-  .add(Symbol.CELL, 12)
-  .add(Symbol.FIXEDCELL, [SHIFT, 16])
-  .add(Symbol.CELL_UPPER, [SHIFT, 17])
-  .add(Symbol.VARIABLE, [SHIFT, 14])
-  .add(Symbol.NUMBER_UPPER, [SHIFT, 15])
+  .add(Symbol.MINUS, [SHIFT, State.PREFIX_UNARY_MINUS])
+  .add(Symbol.FUNCTION, [SHIFT, State.FUNCTION])
+  .add(Symbol.CELL, State.FOLLOWS_CELL)
+  .add(Symbol.FIXEDCELL, [SHIFT, State.FIXED_CELL])
+  .add(Symbol.CELL_UPPER, [SHIFT, State.FOLLOW_CELL_UPPER])
+  .add(Symbol.VARIABLE, [SHIFT, State.FOLLOW_VARIABLE])
+  .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
   .add(Symbol.ARRAY, [SHIFT, 61])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[73] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])

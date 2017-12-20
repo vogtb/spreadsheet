@@ -131,16 +131,16 @@ let Parser = (function () {
             this.$ = sharedStateYY.handler.callFunction.call(this, virtualStack[vsl - 3], virtualStack[vsl - 1]);
             break;
           case ReduceActions.FIXED_CELL_VAL:
-            this.$ = sharedStateYY.handler.fixedCellValue(sharedStateYY.obj, virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.fixedCellValue(sharedStateYY.originCellId, virtualStack[vsl]);
             break;
           case ReduceActions.FIXED_CELL_RANGE_VAL:
-            this.$ = sharedStateYY.handler.fixedCellRangeValue(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.fixedCellRangeValue(sharedStateYY.originCellId, virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.CELL_VALUE:
-            this.$ = sharedStateYY.handler.cellValue(sharedStateYY.obj, virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.cellValue(sharedStateYY.originCellId, virtualStack[vsl]);
             break;
           case ReduceActions.CELL_RANGE_VALUE:
-            this.$ = sharedStateYY.handler.cellRangeValue(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = sharedStateYY.handler.cellRangeValue(sharedStateYY.originCellId, virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.ENSURE_IS_ARRAY:
             if (isArray(virtualStack[vsl])) {
@@ -671,26 +671,6 @@ let Parser = (function () {
         return this;
       },
 
-      // When called from action, signals the lexer that this rule fails to match the input, so the next matching rule (regex) should be tested instead.
-      reject: function () {
-        if (this.options.backtrack_lexer) {
-          this._backtrack = true;
-        } else {
-          return this.parseError('Lexical error on line ' + (this.yylineno + 1) + '. You can only invoke reject() in the lexer when the lexer is of the backtracking persuasion (options.backtrack_lexer = true).\n' + this.showPosition(), {
-            text: "",
-            token: null,
-            line: this.yylineno
-          });
-
-        }
-        return this;
-      },
-
-      // retain first n characters of the match
-      less: function (n) {
-        this.unput(this.match.slice(n));
-      },
-
       // displays already matched input, i.e. for error messages
       pastInput: function () {
         let past = this.matched.substr(0, this.matched.length - this.match.length);
@@ -999,8 +979,8 @@ let Parser = (function () {
 /**
  * Creates a new FormulaParser, which parses formulas, and does minimal error handling.
  *
- * @param handler should be this instance. Needs access to helper.fixedCellValue, helper.cellValue,
- * helper.cellRangeValue, and helper.fixedCellRangeValue
+ * @param handler should be a Sheet, since the parser needs access to fixedCellValue, cellValue, cellRangeValue, and
+ * fixedCellRangeValue
  * @returns formula parser instance for use with parser.js
  * @constructor
  */

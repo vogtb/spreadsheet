@@ -458,6 +458,15 @@ class TypeConverter {
   }
 
   /**
+   * Converts any value to an inverted number or throws an error if it cannot coerce it to the number type
+   * @param value to convert
+   * @returns {number} to return. Will always return a number or throw an error. Never returns undefined.
+   */
+  public static valueToInvertedNumber(value: any) {
+    return TypeConverter.valueToNumber(value) * (-1);
+  }
+
+  /**
    * Converts any value to a number or throws an error if it cannot coerce it to the number type
    * @param value to convert
    * @returns {number} to return. Will always return a number or throw an error. Never returns undefined.

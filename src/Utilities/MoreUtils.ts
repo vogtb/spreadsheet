@@ -16,6 +16,100 @@ function isDefined(value : any) : boolean {
   return value !== undefined;
 }
 
+/**
+ * Returns true if value is an instance of a Array.
+ * @param value
+ * @returns {boolean}
+ */
+function isArray(value) : boolean {
+  return value instanceof Array;
+}
+
+/**
+ * Returns true if value is instance of a Function.
+ * @param value
+ * @returns {boolean}
+ */
+function isFunction(value) : boolean {
+  return value instanceof Function;
+}
+
+/**
+ * Alphabetical character to number.
+ * @param chr
+ * @returns {number}
+ */
+function characterToNumber(chr) {
+  chr = chr.replace(/\$/g, '');
+  let base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', i, j, result = 0;
+
+  for (i = 0, j = chr.length - 1; i < chr.length; i += 1, j -= 1) {
+    result += Math.pow(base.length, j) * (base.indexOf(chr[i]) + 1);
+  }
+
+  if (result) {
+    --result;
+  }
+
+  return result;
+}
+
+/**
+ * Converts a number to an alphabetical character.
+ * @param num
+ * @returns {string}
+ */
+function numberToCharacter(num) {
+  let s = '';
+
+  while (num >= 0) {
+    s = String.fromCharCode(num % 26 + 97) + s;
+    num = Math.floor(num / 26) - 1;
+  }
+
+  return s.toUpperCase();
+}
+
+/**
+ * Converts a quoted string to an un-quoted string: `"hey"` to `hey`
+ * @param str
+ * @returns {string}
+ */
+function string(str){
+  return str.substring(1, str.length - 1);
+}
+
+
+/**
+ * Converts XY coordinates (eg {0, 0}) to A1 coordinates (eg {A1}).
+ * @param x
+ * @param y
+ * @returns {string}
+ */
+function convertXYtoA1Coordinates(x, y) {
+  function numberToLetters(num) {
+    let mod = num % 26,
+      pow = num / 26 | 0,
+      out = mod ? String.fromCharCode(64 + mod) : (--pow, 'Z');
+    return pow ? numberToLetters(pow) + out : out;
+  }
+  return numberToLetters(x+1) + (y+1).toString();
+}
+
+/**
+ * Returns RowCol coordinates of an A1 cellId
+ * @param cellId
+ * @returns {Object}
+ */
+function A1toRowColCoordinates(cellId) {
+  let num = cellId.match(/\d+$/),
+    alpha = cellId.replace(num, '');
+
+  return {
+    row: parseInt(num[0], 10) - 1,
+    col: characterToNumber(alpha)
+  };
+}
 
 /**
  * Class for building formatted strings with commas, forced number of leading and trailing zeros, and arbitrary leading
@@ -181,7 +275,6 @@ class NumberStringBuilder {
       }
     }
 
-
     // Inserting commas if necessary.
     if (this.shouldUseComma) {
       integerPart = integerPart.split("").reverse().map(function (digit, index) {
@@ -211,5 +304,12 @@ class NumberStringBuilder {
 export {
   isDefined,
   isUndefined,
+  isArray,
+  isFunction,
+  string,
+  numberToCharacter,
+  convertXYtoA1Coordinates,
+  A1toRowColCoordinates,
+  characterToNumber,
   NumberStringBuilder
 }

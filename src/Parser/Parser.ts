@@ -1,5 +1,5 @@
 import {
-  constructErrorByName,
+  constructErrorByName, DivZeroError,
   ParseError
 } from "../Errors";
 import {
@@ -19,7 +19,118 @@ import {
   RuleIndex,
   Symbol
 } from "./ParserConstants"
-import {isUndefined} from "../Utilities/MoreUtils";
+import {
+  isArray,
+  isUndefined,
+  string
+} from "../Utilities/MoreUtils";
+import {TypeConverter} from "../Utilities/TypeConverter";
+
+
+/**
+ * Performs logical operations on two values.
+ * @param type of logic operation
+ * @param exp1
+ * @param exp2
+ * @returns {boolean}
+ */
+function logicMatch(type, exp1, exp2) {
+  let result;
+
+  switch (type) {
+    case '=':
+      result = (exp1 === exp2);
+      break;
+
+    case '>':
+      result = (exp1 > exp2);
+      break;
+
+    case '<':
+      result = (exp1 < exp2);
+      break;
+
+    case '>=':
+      result = (exp1 >= exp2);
+      break;
+
+    case '<=':
+      result = (exp1 <= exp2);
+      break;
+
+    case '<>':
+      result = (exp1 != exp2);
+      break;
+
+    case 'NOT':
+      result = (exp1 != exp2);
+      break;
+  }
+
+  return result;
+}
+
+/**
+ * Performs math operations on two values.
+ * @param type
+ * @param number1
+ * @param number2
+ * @returns {number}
+ */
+function mathMatch(type, number1, number2) {
+  let result;
+
+  number1 = TypeConverter.valueToNumber(number1);
+  number2 = TypeConverter.valueToNumber(number2);
+
+  switch (type) {
+    case '+':
+      result = number1 + number2;
+      break;
+    case '-':
+      result = number1 - number2;
+      break;
+    case '/':
+      if (number2 === 0) {
+        throw new DivZeroError("Evaluation caused divide by zero error.");
+      }
+      if (number2 !== 0 && number1 === 0) {
+        result = 0;
+      }
+      result = number1 / number2;
+      if (result == Infinity) {
+        throw new DivZeroError("Evaluation caused divide by zero error.");
+      } else if (isNaN(result)) {
+        throw new DivZeroError("Evaluation caused divide by zero error.");
+      }
+      break;
+    case '*':
+      result = number1 * number2;
+      break;
+    case '^':
+      result = Math.pow(number1, number2);
+      break;
+  }
+  return result;
+}
+
+/**
+ * Performs special operations on two values. Currently only concatenation.
+ * @param type
+ * @param exp1
+ * @param exp2
+ * @returns {any}
+ */
+function specialMatch(type, exp1, exp2) {
+  let result;
+
+  switch (type) {
+    case '&':
+      result = exp1.toString() + exp2.toString();
+      break;
+  }
+  return result;
+}
 
 let Parser = (function () {
   let parser = {
@@ -51,58 +162,58 @@ let Parser = (function () {
             this.$ = sharedStateYY.handler.callVariable.call(this, virtualStack[vsl]);
             break;
           case ReduceActions.AS_NUMBER:
-            this.$ = sharedStateYY.handler.number(virtualStack[vsl]);
+            this.$ = TypeConverter.valueToNumber(virtualStack[vsl]);
             break;
           case ReduceActions.AS_STRING:
-            this.$ = sharedStateYY.handler.string(virtualStack[vsl]);
+            this.$ = string(virtualStack[vsl]);
             break;
           case ReduceActions.AMPERSAND:
-            this.$ = sharedStateYY.handler.specialMatch('&', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = specialMatch('&', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.EQUALS:
-            this.$ = sharedStateYY.handler.logicMatch('=', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = logicMatch('=', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.PLUS:
-            this.$ = sharedStateYY.handler.mathMatch('+', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = mathMatch('+', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.LAST_NUMBER:
-            this.$ = sharedStateYY.handler.number(virtualStack[vsl - 1]);
+            this.$ = TypeConverter.valueToNumber(virtualStack[vsl - 1]);
             break;
           case ReduceActions.LTE:
-            this.$ = sharedStateYY.handler.logicMatch('<=', virtualStack[vsl - 3], virtualStack[vsl]);
+            this.$ = logicMatch('<=', virtualStack[vsl - 3], virtualStack[vsl]);
             break;
           case ReduceActions.GTE:
-            this.$ = sharedStateYY.handler.logicMatch('>=', virtualStack[vsl - 3], virtualStack[vsl]);
+            this.$ = logicMatch('>=', virtualStack[vsl - 3], virtualStack[vsl]);
             break;
           case ReduceActions.NOT_EQ:
-            this.$ = sharedStateYY.handler.logicMatch('<>', virtualStack[vsl - 3], virtualStack[vsl]);
+            this.$ = logicMatch('<>', virtualStack[vsl - 3], virtualStack[vsl]);
             break;
           case ReduceActions.GT:
-            this.$ = sharedStateYY.handler.logicMatch('>', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = logicMatch('>', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.LT:
-            this.$ = sharedStateYY.handler.logicMatch('<', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = logicMatch('<', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.MINUS:
-            this.$ = sharedStateYY.handler.mathMatch('-', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = mathMatch('-', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.MULTIPLY:
-            this.$ = sharedStateYY.handler.mathMatch('*', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = mathMatch('*', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.DIVIDE:
-            this.$ = sharedStateYY.handler.mathMatch('/', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = mathMatch('/', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.TO_POWER:
-            this.$ = sharedStateYY.handler.mathMatch('^', virtualStack[vsl - 2], virtualStack[vsl]);
+            this.$ = mathMatch('^', virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.INVERT_NUM:
-            this.$ = sharedStateYY.handler.numberInverted(virtualStack[vsl]);
+            this.$ = TypeConverter.valueToInvertedNumber(virtualStack[vsl]);
             if (isNaN(this.$)) {
               this.$ = 0;
             }
             break;
           case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
-            this.$ = sharedStateYY.handler.number(virtualStack[vsl]);
+            this.$ = TypeConverter.valueToNumber(virtualStack[vsl]);
             if (isNaN(this.$)) {
               this.$ = 0;
             }
@@ -126,7 +237,7 @@ let Parser = (function () {
             this.$ = sharedStateYY.handler.cellRangeValue(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
             break;
           case ReduceActions.ENSURE_IS_ARRAY:
-            if (sharedStateYY.handler.isArray(virtualStack[vsl])) {
+            if (isArray(virtualStack[vsl])) {
               this.$ = virtualStack[vsl];
             } else {
               this.$ = [virtualStack[vsl]];
@@ -149,7 +260,7 @@ let Parser = (function () {
             this.$ = [virtualStack[vsl]];
             break;
           case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
-            this.$ = (sharedStateYY.handler.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
+            this.$ = (isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
             this.$.push(virtualStack[vsl]);
             break;
           case ReduceActions.REFLEXIVE_REDUCE:
@@ -212,7 +323,7 @@ let Parser = (function () {
               }
               break;
             case ReduceActions.ENSURE_IS_ARRAY:
-              if (sharedStateYY.handler.isArray(virtualStack[vsl])) {
+              if (isArray(virtualStack[vsl])) {
                 this.$ = virtualStack[vsl];
               } else {
                 this.$ = [virtualStack[vsl]];
@@ -235,7 +346,7 @@ let Parser = (function () {
               this.$ = [virtualStack[vsl]];
               break;
             case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
-              this.$ = (sharedStateYY.handler.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
+              this.$ = (isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
               this.$.push(virtualStack[vsl]);
               break;
             case ReduceActions.REFLEXIVE_REDUCE:

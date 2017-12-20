@@ -1,6 +1,6 @@
 import {
   ObjectBuilder
-} from "./ObjectBuilder";
+} from "../Utilities/ObjectBuilder";
 
 // Rules represent the Regular Expressions that will be used in sequence to match a given input to the Parser.
 const WHITE_SPACE_RULE = /^(?:\s+)/;
@@ -355,6 +355,7 @@ const enum State {
   START_NUMBER = 6,
   START_STRING = 7,
   LEFT_PAREN = 8,
+  EOF_AND_RETURN_LAST = 19,
   NUMBER_FOLLOWED_BY_AMPERSAND = 20,
   START_EQUALS = 21,
   NUMBER_FOLLOWED_BY_PLUS = 22,
@@ -408,7 +409,7 @@ table[1] = ObjectBuilder
   .add(Symbol.END, [ACCEPT])
   .build();
 table[2] = ObjectBuilder
-  .add(Symbol.EOF, [SHIFT, 19])
+  .add(Symbol.EOF, [SHIFT, State.EOF_AND_RETURN_LAST])
   .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
   .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])
@@ -626,7 +627,7 @@ table[18] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.AS_ERROR])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.AS_ERROR])
   .build();
-table[19] = ObjectBuilder
+table[State.EOF_AND_RETURN_LAST] = ObjectBuilder
   .add(Symbol.END, [REDUCE, ReduceActions.RETURN_LAST])
   .build();
 table[State.NUMBER_FOLLOWED_BY_AMPERSAND] = ObjectBuilder

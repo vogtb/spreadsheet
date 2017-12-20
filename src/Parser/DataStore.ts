@@ -4,14 +4,11 @@
 import {
   Cell
 } from "../Cell";
-import {
-  DataStoreInterface
-} from "./DataStoreInterface";
 
 /**
  * Cell DataStore that stores cells in memory.
  */
-class DataStore implements DataStoreInterface {
+class DataStore {
   /**
    * Holds cells inside an object for quick access.
    */

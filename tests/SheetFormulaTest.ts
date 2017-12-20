@@ -11,8 +11,6 @@ import {
   test
 } from "./Utils/Asserts";
 import {
-  DIV_ZERO_ERROR,
-  VALUE_ERROR,
   NA_ERROR,
   PARSE_ERROR,
   REF_ERROR

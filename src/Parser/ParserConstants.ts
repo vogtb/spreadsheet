@@ -167,86 +167,6 @@ const enum ReduceActions {
   AS_ERROR = 43
 }
 
-/**
- * Represents the length to reduce the stack by, and the token index value that will replace those tokens in the stack.
- */
-class ReductionPair {
-  private lengthToReduceStackBy : number;
-  private replacementTokenIndex : number;
-  constructor(replacementTokenIndex : number, length : number) {
-    this.lengthToReduceStackBy = length;
-    this.replacementTokenIndex = replacementTokenIndex;
-  }
-
-  /**
-   * Get the number representing the length to reduce the stack by.
-   * @returns {number}
-   */
-  getLengthToReduceStackBy() : number {
-    return this.lengthToReduceStackBy;
-  }
-
-  /**
-   * Get the replacement token index.
-   * @returns {number}
-   */
-  getReplacementTokenIndex() : number {
-    return this.replacementTokenIndex;
-  }
-}
-
-/**
- * Productions is used to look up both the number to use when reducing the stack (productions[x][1]) and the semantic
- * value that will replace the tokens in the stack (productions[x][0]).
- * @type {Array<ReductionPair>}
- *
- * Maps a ProductionRule to the appropriate number of previous tokens to use in a reduction action.
- */
-let productions : Array<ReductionPair> = [];
-productions[ReduceActions.NO_ACTION] = null;
-productions[ReduceActions.RETURN_LAST] = new ReductionPair(3, 2);
-productions[ReduceActions.CALL_VARIABLE] = new ReductionPair(4, 1);
-productions[ReduceActions.AS_NUMBER] = new ReductionPair(4, 1);
-productions[ReduceActions.AS_STRING] = new ReductionPair(4, 1);
-productions[ReduceActions.AMPERSAND] = new ReductionPair(4, 3);
-productions[ReduceActions.EQUALS] = new ReductionPair(4, 3);
-productions[ReduceActions.PLUS] = new ReductionPair(4, 3);
-productions[ReduceActions.LAST_NUMBER] = new ReductionPair(4, 3);
-productions[ReduceActions.LTE] = new ReductionPair(4, 4);
-productions[ReduceActions.GTE] = new ReductionPair(4, 4);
-productions[ReduceActions.NOT_EQ] = new ReductionPair(4, 4);
-productions[ReduceActions.GT] = new ReductionPair(4, 3);
-productions[ReduceActions.LT] = new ReductionPair(4, 3);
-productions[ReduceActions.MINUS] = new ReductionPair(4, 3);
-productions[ReduceActions.MULTIPLY] = new ReductionPair(4, 3);
-productions[ReduceActions.DIVIDE] = new ReductionPair(4, 3);
-productions[ReduceActions.TO_POWER] = new ReductionPair(4, 3);
-productions[ReduceActions.INVERT_NUM] = new ReductionPair(4, 2);
-productions[ReduceActions.TO_NUMBER_NAN_AS_ZERO] = new ReductionPair(4, 2);
-productions[ReduceActions.CALL_FUNCTION_LAST_BLANK] = new ReductionPair(4, 3);
-productions[ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK] = new ReductionPair(4, 4);
-productions[ReduceActions.I25] = new ReductionPair(4, 1);
-productions[ReduceActions.I26] = new ReductionPair(4, 1);
-productions[ReduceActions.I27] = new ReductionPair(4, 2);
-productions[ReduceActions.FIXED_CELL_VAL] = new ReductionPair(25, 1);
-productions[ReduceActions.FIXED_CELL_RANGE_VAL] = new ReductionPair(25, 3);
-productions[ReduceActions.CELL_VALUE] = new ReductionPair(25, 1);
-productions[ReduceActions.CELL_RANGE_VALUE] = new ReductionPair(25, 3);
-productions[ReduceActions.ENSURE_IS_ARRAY] = new ReductionPair(24, 1);
-productions[ReduceActions.ENSURE_YYTEXT_ARRAY] = new ReductionPair(24, 1);
-productions[ReduceActions.REDUCE_INT] = new ReductionPair(24, 3);
-productions[ReduceActions.REDUCE_PERCENT] = new ReductionPair(24, 3);
-productions[ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY] = new ReductionPair(6, 1);
-productions[ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH] = new ReductionPair(6, 3);
-productions[ReduceActions.REFLEXIVE_REDUCE] = new ReductionPair(9, 1);
-productions[ReduceActions.REDUCE_FLOAT] = new ReductionPair(9, 3);
-productions[ReduceActions.REDUCE_PREV_AS_PERCENT] = new ReductionPair(9, 2);
-productions[ReduceActions.REDUCE_LAST_THREE_A] = new ReductionPair(2, 3);
-productions[ReduceActions.REDUCE_LAST_THREE_B] = new ReductionPair(2, 4);
-productions[ReduceActions.AS_ERROR] = new ReductionPair(4, 1);
-
-const PRODUCTIONS = productions;
-
 enum Symbol {
   ACCEPT = 0,
   END = 1,
@@ -284,6 +204,86 @@ enum Symbol {
   POUND = 36,
   EXCLAMATION_POINT = 37
 }
+
+/**
+ * Represents the length to reduce the stack by, and the replacement symbol that will replace those tokens in the stack.
+ */
+class ReductionPair {
+  private lengthToReduceStackBy : number;
+  private replacementSymbol : number;
+  constructor(replacementSymbol : number, length : number) {
+    this.lengthToReduceStackBy = length;
+    this.replacementSymbol = replacementSymbol;
+  }
+
+  /**
+   * Get the number representing the length to reduce the stack by.
+   * @returns {number}
+   */
+  getLengthToReduceStackBy() : number {
+    return this.lengthToReduceStackBy;
+  }
+
+  /**
+   * Get the replacement token index.
+   * @returns {number}
+   */
+  getReplacementSymbol() : number {
+    return this.replacementSymbol;
+  }
+}
+
+/**
+ * Productions is used to look up both the number to use when reducing the stack (productions[x][1]) and the semantic
+ * value that will replace the tokens in the stack (productions[x][0]).
+ * @type {Array<ReductionPair>}
+ *
+ * Maps a ProductionRule to the appropriate number of previous tokens to use in a reduction action.
+ */
+let productions : Array<ReductionPair> = [];
+productions[ReduceActions.NO_ACTION] = null;
+productions[ReduceActions.RETURN_LAST] = new ReductionPair(Symbol.EXPRESSIONS, 2);
+productions[ReduceActions.CALL_VARIABLE] = new ReductionPair(Symbol.EXPRESSION, 1);
+productions[ReduceActions.AS_NUMBER] = new ReductionPair(Symbol.EXPRESSION, 1);
+productions[ReduceActions.AS_STRING] = new ReductionPair(Symbol.EXPRESSION, 1);
+productions[ReduceActions.AMPERSAND] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.EQUALS] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.PLUS] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.LAST_NUMBER] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.LTE] = new ReductionPair(Symbol.EXPRESSION, 4);
+productions[ReduceActions.GTE] = new ReductionPair(Symbol.EXPRESSION, 4);
+productions[ReduceActions.NOT_EQ] = new ReductionPair(Symbol.EXPRESSION, 4);
+productions[ReduceActions.GT] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.LT] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.MINUS] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.MULTIPLY] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.DIVIDE] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.TO_POWER] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.INVERT_NUM] = new ReductionPair(Symbol.EXPRESSION, 2);
+productions[ReduceActions.TO_NUMBER_NAN_AS_ZERO] = new ReductionPair(Symbol.EXPRESSION, 2);
+productions[ReduceActions.CALL_FUNCTION_LAST_BLANK] = new ReductionPair(Symbol.EXPRESSION, 3);
+productions[ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK] = new ReductionPair(Symbol.EXPRESSION, 4);
+productions[ReduceActions.I25] = new ReductionPair(Symbol.EXPRESSION, 1);
+productions[ReduceActions.I26] = new ReductionPair(Symbol.EXPRESSION, 1);
+productions[ReduceActions.I27] = new ReductionPair(Symbol.EXPRESSION, 2);
+productions[ReduceActions.FIXED_CELL_VAL] = new ReductionPair(Symbol.CELL, 1);
+productions[ReduceActions.FIXED_CELL_RANGE_VAL] = new ReductionPair(Symbol.CELL, 3);
+productions[ReduceActions.CELL_VALUE] = new ReductionPair(Symbol.CELL, 1);
+productions[ReduceActions.CELL_RANGE_VALUE] = new ReductionPair(Symbol.CELL, 3);
+productions[ReduceActions.ENSURE_IS_ARRAY] = new ReductionPair(Symbol.EXP_SEQ, 1);
+productions[ReduceActions.ENSURE_YYTEXT_ARRAY] = new ReductionPair(Symbol.EXP_SEQ, 1);
+productions[ReduceActions.REDUCE_INT] = new ReductionPair(Symbol.EXP_SEQ, 3);
+productions[ReduceActions.REDUCE_PERCENT] = new ReductionPair(Symbol.EXP_SEQ, 3);
+productions[ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY] = new ReductionPair(Symbol.VARIABLE_SEQUENCE, 1);
+productions[ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH] = new ReductionPair(Symbol.VARIABLE_SEQUENCE, 3);
+productions[ReduceActions.REFLEXIVE_REDUCE] = new ReductionPair(Symbol.NUMBER, 1);
+productions[ReduceActions.REDUCE_FLOAT] = new ReductionPair(Symbol.NUMBER, 3);
+productions[ReduceActions.REDUCE_PREV_AS_PERCENT] = new ReductionPair(Symbol.NUMBER, 2);
+productions[ReduceActions.REDUCE_LAST_THREE_A] = new ReductionPair(Symbol.ERROR, 3);
+productions[ReduceActions.REDUCE_LAST_THREE_B] = new ReductionPair(Symbol.ERROR, 4);
+productions[ReduceActions.AS_ERROR] = new ReductionPair(Symbol.EXPRESSION, 1);
+
+const PRODUCTIONS = productions;
 
 const SYMBOL_NAME_TO_INDEX = {
   "$accept": Symbol.ACCEPT,

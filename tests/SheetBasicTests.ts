@@ -217,4 +217,4 @@ test("Sheet, parse range literal", function(){
 });
 
 
-assertFormulaEqualsDependsOnReference('M1', 10, '=10 + $M$1', 20);
+assertFormulaEqualsDependsOnReference('M1', 10, '=10 + 10', 20);

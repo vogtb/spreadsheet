@@ -551,7 +551,7 @@ let Parser = (function () {
             }
 
             // push non-terminal (reduce)
-            stack.push(currentProduction.getReplacementTokenIndex());
+            stack.push(currentProduction.getReplacementSymbol());
             semanticValueStack.push(yyval.$);
             locationStack.push(yyval._$);
             newState = ACTION_TABLE[stack[stack.length - 2]][stack[stack.length - 1]];

@@ -146,9 +146,9 @@ const enum ReduceActions {
   TO_NUMBER_NAN_AS_ZERO = 22,
   CALL_FUNCTION_LAST_BLANK = 23,
   CALL_FUNCTION_LAST_TWO_IN_STACK = 24,
-  I25 = 25,
-  I26 = 26,
-  I27 = 27,
+  CELL_VALUE_AS_EXPRESSION = 25,
+  ERROR_AND_CONTINUE = 26,
+  ERROR_AND_CONTINUE_WITH_OTHER_ERRORS = 27,
   FIXED_CELL_VAL = 28,
   FIXED_CELL_RANGE_VAL = 29,
   CELL_VALUE = 30,
@@ -263,9 +263,9 @@ productions[ReduceActions.INVERT_NUM] = new ReductionPair(Symbol.EXPRESSION, 2);
 productions[ReduceActions.TO_NUMBER_NAN_AS_ZERO] = new ReductionPair(Symbol.EXPRESSION, 2);
 productions[ReduceActions.CALL_FUNCTION_LAST_BLANK] = new ReductionPair(Symbol.EXPRESSION, 3);
 productions[ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK] = new ReductionPair(Symbol.EXPRESSION, 4);
-productions[ReduceActions.I25] = new ReductionPair(Symbol.EXPRESSION, 1);
-productions[ReduceActions.I26] = new ReductionPair(Symbol.EXPRESSION, 1);
-productions[ReduceActions.I27] = new ReductionPair(Symbol.EXPRESSION, 2);
+productions[ReduceActions.CELL_VALUE_AS_EXPRESSION] = new ReductionPair(Symbol.EXPRESSION, 1);
+productions[ReduceActions.ERROR_AND_CONTINUE] = new ReductionPair(Symbol.EXPRESSION, 1);
+productions[ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS] = new ReductionPair(Symbol.EXPRESSION, 2);
 productions[ReduceActions.FIXED_CELL_VAL] = new ReductionPair(Symbol.CELL, 1);
 productions[ReduceActions.FIXED_CELL_RANGE_VAL] = new ReductionPair(Symbol.CELL, 3);
 productions[ReduceActions.CELL_VALUE] = new ReductionPair(Symbol.CELL, 1);
@@ -397,6 +397,7 @@ const enum State {
   DIVIDE_TWO_NUMBERS = 54,
   NUMBER_TO_POWER_OF_OTHER = 55,
   CLOSE_PAREN_ON_EXPRESSION = 57,
+  FUNCTION_LEFTPAREN_EXPRESSION = 60,
   COMPARE_TWO_EXPRESSIONS_WITH_GTE = 69,
   CLOSE_PAREN_ON_FUNCTION = 70,
   VARIABLE_FOLLOWED_BY_SEMI_COLON = 71,
@@ -546,35 +547,35 @@ table[State.FUNCTION] = ObjectBuilder
   .add(Symbol.LEFT_PAREN, [SHIFT, State.FOLLOW_FUNCTION_THEN_LEFT_PAREN])
   .build();
 table[State.FOLLOWS_CELL] = ObjectBuilder
-  .add(Symbol.EOF, [REDUCE, ReduceActions.I25])
-  .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.I25])
-  .add(Symbol.EQUALS, [REDUCE, ReduceActions.I25])
-  .add(Symbol.PLUS, [REDUCE, ReduceActions.I25])
-  .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.I25])
-  .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.I25])
-  .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.I25])
-  .add(Symbol.MINUS, [REDUCE, ReduceActions.I25])
-  .add(Symbol.ASTERISK, [REDUCE, ReduceActions.I25])
-  .add(Symbol.DIVIDE, [REDUCE, ReduceActions.I25])
-  .add(Symbol.CARROT, [REDUCE, ReduceActions.I25])
-  .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.I25])
-  .add(Symbol.COMMA, [REDUCE, ReduceActions.I25])
+  .add(Symbol.EOF, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.EQUALS, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.PLUS, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.MINUS, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.ASTERISK, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.DIVIDE, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.CARROT, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
+  .add(Symbol.COMMA, [REDUCE, ReduceActions.CELL_VALUE_AS_EXPRESSION])
   .build();
 table[State.ERROR] = ObjectBuilder
   .add(Symbol.ERROR, State.FOLLOW_ERROR_ERROR)
-  .add(Symbol.EOF, [REDUCE, ReduceActions.I26])
-  .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.I26])
-  .add(Symbol.EQUALS, [REDUCE, ReduceActions.I26])
-  .add(Symbol.PLUS, [REDUCE, ReduceActions.I26])
-  .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.I26])
-  .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.I26])
-  .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.I26])
-  .add(Symbol.MINUS, [REDUCE, ReduceActions.I26])
-  .add(Symbol.ASTERISK, [REDUCE, ReduceActions.I26])
-  .add(Symbol.DIVIDE, [REDUCE, ReduceActions.I26])
-  .add(Symbol.CARROT, [REDUCE, ReduceActions.I26])
-  .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.I26])
-  .add(Symbol.COMMA, [REDUCE, ReduceActions.I26])
+  .add(Symbol.EOF, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.EQUALS, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.PLUS, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.MINUS, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.ASTERISK, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.DIVIDE, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.CARROT, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
+  .add(Symbol.COMMA, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
   .add(Symbol.VARIABLE, [SHIFT, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(Symbol.POUND, [SHIFT, ReduceActions.MULTIPLY])
   .build();
@@ -827,7 +828,7 @@ table[State.NUMBER_FOLLOWED_BY_CARROT] = ObjectBuilder
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.FOLLOW_NUMBER_UPPER])
   .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
-table[ReduceActions.CELL_VALUE] = ObjectBuilder
+table[30] = ObjectBuilder
   .add(Symbol.VARIABLE, [SHIFT, 56])
   .build();
 table[31] = ObjectBuilder
@@ -868,7 +869,7 @@ table[State.EXPRESSION_FOLLOWING_PREFIX_UNARY_MINUS] = ObjectBuilder
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.INVERT_NUM])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.INVERT_NUM])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.INVERT_NUM])
-  .add(Symbol.ASTERISK, [SHIFT, ReduceActions.I27])
+  .add(Symbol.ASTERISK, [SHIFT, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
   .add(Symbol.DIVIDE, [SHIFT, ReduceActions.FIXED_CELL_VAL])
   .add(Symbol.CARROT, [SHIFT, ReduceActions.FIXED_CELL_RANGE_VAL])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.INVERT_NUM])
@@ -891,7 +892,7 @@ table[State.EXPRESSION_FOLLOWING_PREFIX_UNARY_PLUS] = ObjectBuilder
   .build();
 table[State.FOLLOW_FUNCTION_THEN_LEFT_PAREN] = ObjectBuilder
   .add(Symbol.ERROR, State.ERROR)
-  .add(Symbol.EXPRESSION, 60)
+  .add(Symbol.EXPRESSION, State.FUNCTION_LEFTPAREN_EXPRESSION)
   .add(Symbol.VARIABLE_SEQUENCE, State.FOLLOW_VARIABLE_SEQUENCE)
   .add(Symbol.NUMBER, State.START_NUMBER)
   .add(Symbol.STRING, [SHIFT, State.START_STRING])
@@ -910,19 +911,19 @@ table[State.FOLLOW_FUNCTION_THEN_LEFT_PAREN] = ObjectBuilder
   .add(Symbol.POUND, [SHIFT, State.FOLLOW_POUND])
   .build();
 table[State.FOLLOW_ERROR_ERROR] = ObjectBuilder
-  .add(Symbol.EOF, [REDUCE, ReduceActions.I27])
-  .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.I27])
-  .add(Symbol.EQUALS, [REDUCE, ReduceActions.I27])
-  .add(Symbol.PLUS, [REDUCE, ReduceActions.I27])
-  .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.I27])
-  .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.I27])
-  .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.I27])
-  .add(Symbol.MINUS, [REDUCE, ReduceActions.I27])
-  .add(Symbol.ASTERISK, [REDUCE, ReduceActions.I27])
-  .add(Symbol.DIVIDE, [REDUCE, ReduceActions.I27])
-  .add(Symbol.CARROT, [REDUCE, ReduceActions.I27])
-  .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.I27])
-  .add(Symbol.COMMA, [REDUCE, ReduceActions.I27])
+  .add(Symbol.EOF, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.EQUALS, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.PLUS, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.MINUS, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.ASTERISK, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.DIVIDE, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.CARROT, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
+  .add(Symbol.COMMA, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
   .build();
 table[37] = ObjectBuilder
   .add(Symbol.POUND, [REDUCE, ReduceActions.AS_ERROR])
@@ -1069,25 +1070,25 @@ table[State.GREATERTHAN_EXPRESSION] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.GT])
   .build();
 table[51] = ObjectBuilder
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.PLUS, [SHIFT, 22])
   .add(Symbol.LESS_THAN, [SHIFT, 23])
   .add(Symbol.GREATER_THAN, [SHIFT, 24])
-  .add(Symbol.MINUS, [SHIFT, 26])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.MINUS, [SHIFT, State.NUMBER_FOLLOWED_BY_MINUS])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, 28])
   .add(Symbol.CARROT, [SHIFT, 29])
   .build();
 table[State.SUBTRACT_TWO_NUMBERS] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.MINUS])
-  .add(Symbol.AMPERSAND, [SHIFT, 20])
+  .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.PLUS, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.LESS_THAN, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.GREATER_THAN, [REDUCE, ReduceActions.MINUS])
   .add(Symbol.MINUS, [REDUCE, ReduceActions.MINUS])
-  .add(Symbol.ASTERISK, [SHIFT, 27])
+  .add(Symbol.ASTERISK, [SHIFT, State.NUMBER_FOLLOWED_BY_ASTERISK])
   .add(Symbol.DIVIDE, [SHIFT, 28])
   .add(Symbol.CARROT, [SHIFT, 29])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.MINUS])
@@ -1189,7 +1190,7 @@ table[59] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [SHIFT, State.VARIABLE_FOLLOWED_BY_SEMI_COLON])
   .add(Symbol.COMMA, [SHIFT, State.VARIABLE_FOLLOWED_BY_COMMA])
   .build();
-table[60] = ObjectBuilder
+table[State.FUNCTION_LEFTPAREN_EXPRESSION] = ObjectBuilder
   .add(Symbol.AMPERSAND, [SHIFT, State.NUMBER_FOLLOWED_BY_AMPERSAND])
   .add(Symbol.EQUALS, [SHIFT, State.START_EQUALS])
   .add(Symbol.PLUS, [SHIFT, State.NUMBER_FOLLOWED_BY_PLUS])

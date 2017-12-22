@@ -25,8 +25,8 @@ test("Sheet, number multiplication", function () {
 });
 
 test("Sheet, parse but throw parse error", function(){
-  // assertEquals(parser.parse('=10e'), PARSE_ERROR);
-  // assertEquals(parser.parse('= SUM('), PARSE_ERROR);
+  assertFormulaEqualsError('=10e', PARSE_ERROR);
+  assertFormulaEqualsError('= SUM(', PARSE_ERROR);
 });
 
 test("Sheet, parse & operator", function(){
@@ -50,7 +50,7 @@ test("Sheet, parse / operator", function(){
   assertFormulaEquals('="500" / 1', 500);
   assertFormulaEqualsError('=10 / 0', DIV_ZERO_ERROR);
   assertFormulaEqualsError('=0 / 0', DIV_ZERO_ERROR);
-  // assertEquals(parser.parse('P9 / 1'), 0);
+  assertFormulaEquals('=P9 / 1', 0);
 });
 
 test("Sheet, parse ^ operator", function(){
@@ -138,14 +138,14 @@ test("Sheet, parse and throw error literal", function () {
 
 test("Sheet, parse plain numbers", function() {
   assertFormulaEquals('=10', 10);
-  // assertEquals(parser.parse('.1'), 0.1); // TODO: Fails because our parser doesn't expect a decimal right away.
+  // assertFormulaEquals('=.1', 0.1); // TODO: Fails because our parser doesn't expect a decimal right away.
   assertFormulaEquals('=+1', 1);
   assertFormulaEquals('=-1', -1);
   assertFormulaEquals('=++1', 1);
   assertFormulaEquals('=--1', 1);
   assertFormulaEquals('=10e1', 100);
   assertFormulaEquals('=0e1', 0);
-  // assertEquals(parser.parse('0.e1'), 0); // TODO: Fails. After decimal, finds 'e' and thinks it's a variable.
+  // assertFormulaEquals('=0.e1', 0); // TODO: Fails. After decimal, finds 'e' and thinks it's a variable.
   assertFormulaEquals('=-10e1', -100);
   assertFormulaEquals('=+10e1', 100);
   assertFormulaEquals('=++10e1', 100);
@@ -192,7 +192,7 @@ test("Sheet, parse strings", function(){
   assertFormulaEquals('="str"', "str");
   assertFormulaEquals('="str"&"str"', "strstr");
   assertFormulaEqualsError('="str"+"str"', VALUE_ERROR);
-  // assertEquals("='str'", PARSE_ERROR); // TODO: Parses, but we should not allow single-quote strings.
+  // assertFormulaEqualsError("='str'", PARSE_ERROR); // TODO: Parses, but we should not allow single-quote strings.
 });
 
 test("Sheet, parse boolean literals", function(){
@@ -208,7 +208,6 @@ test("Sheet, parse comparison logic inside parentheses", function(){
   assertFormulaEquals('=(1=1)+2', 3);
 });
 
-
 test("Sheet, parse range literal", function(){
   // assertEqualsArray('=[1, 2, 3]', [1, 2, 3]); // TODO: Fails because we've not implemented array-level parsing.
   // assertEqualsArray('=[]', []);
@@ -216,5 +215,9 @@ test("Sheet, parse range literal", function(){
   // assertEqualsArray('=["str", [1, 2, 3], [1]]', ["str", [1, 2, 3], [1]]);
 });
 
+test("Sheet state sequence: (number, ampersand, expression)", function(){
+  assertFormulaEquals('=10&10', "1010");
+  assertFormulaEquals('=10&"str"', "10str");
+  assertFormulaEquals('=10 & TRUE', "10TRUE");
+});
 
-assertFormulaEqualsDependsOnReference('M1', 10, '=10 + 10', 20);

@@ -3,6 +3,9 @@ exports.__esModule = true;
 var Errors_1 = require("../Errors");
 var Formulas_1 = require("../Formulas");
 var ParserConstants_1 = require("./ParserConstants");
+var MoreUtils_1 = require("../Utilities/MoreUtils");
+var TypeConverter_1 = require("../Utilities/TypeConverter");
+var Math_1 = require("../Formulas/Math");
 var Parser = (function () {
     var parser = {
         lexer: undefined,
@@ -29,94 +32,85 @@ var Parser = (function () {
                     case 1 /* RETURN_LAST */:
                         return virtualStack[vsl - 1];
                     case 2 /* CALL_VARIABLE */:
-                        this.$ = sharedStateYY.handler.helper.callVariable.call(this, virtualStack[vsl]);
-                        break;
-                    case 3 /* TIME_CALL_TRUE */:
-                        this.$ = sharedStateYY.handler.time.call(sharedStateYY.obj, virtualStack[vsl], true);
-                        break;
-                    case 4 /* TIME_CALL */:
-                        this.$ = sharedStateYY.handler.time.call(sharedStateYY.obj, virtualStack[vsl]);
+                        this.$ = sharedStateYY.handler.callVariable.call(this, virtualStack[vsl]);
                         break;
                     case 5 /* AS_NUMBER */:
-                        this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
+                        this.$ = TypeConverter_1.TypeConverter.valueToNumber(virtualStack[vsl]);
                         break;
                     case 6 /* AS_STRING */:
-                        this.$ = sharedStateYY.handler.helper.string(virtualStack[vsl]);
+                        this.$ = MoreUtils_1.string(virtualStack[vsl]);
                         break;
                     case 7 /* AMPERSAND */:
-                        this.$ = sharedStateYY.handler.helper.specialMatch('&', virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = TypeConverter_1.TypeConverter.valueToString(virtualStack[vsl - 2]) + TypeConverter_1.TypeConverter.valueToString(virtualStack[vsl]);
                         break;
                     case 8 /* EQUALS */:
-                        this.$ = sharedStateYY.handler.helper.logicMatch('=', virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = Math_1.EQ(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
                     case 9 /* PLUS */:
-                        this.$ = sharedStateYY.handler.helper.mathMatch('+', virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = Math_1.SUM(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
                     case 10 /* LAST_NUMBER */:
-                        this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl - 1]);
+                        this.$ = TypeConverter_1.TypeConverter.valueToNumber(virtualStack[vsl - 1]);
                         break;
                     case 11 /* LTE */:
-                        this.$ = sharedStateYY.handler.helper.logicMatch('<=', virtualStack[vsl - 3], virtualStack[vsl]);
+                        this.$ = Math_1.LTE(virtualStack[vsl - 3], virtualStack[vsl]);
                         break;
                     case 12 /* GTE */:
-                        this.$ = sharedStateYY.handler.helper.logicMatch('>=', virtualStack[vsl - 3], virtualStack[vsl]);
+                        this.$ = Math_1.GTE(virtualStack[vsl - 3], virtualStack[vsl]);
                         break;
                     case 13 /* NOT_EQ */:
-                        this.$ = sharedStateYY.handler.helper.logicMatch('<>', virtualStack[vsl - 3], virtualStack[vsl]);
-                        break;
-                    case 14 /* NOT */:
-                        this.$ = sharedStateYY.handler.helper.logicMatch('NOT', virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = !Math_1.EQ(virtualStack[vsl - 3], virtualStack[vsl]);
                         break;
                     case 15 /* GT */:
-                        this.$ = sharedStateYY.handler.helper.logicMatch('>', virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = Math_1.GT(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
                     case 16 /* LT */:
-                        this.$ = sharedStateYY.handler.helper.logicMatch('<', virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = Math_1.LT(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
                     case 17 /* MINUS */:
-                        this.$ = sharedStateYY.handler.helper.mathMatch('-', virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = Math_1.MINUS(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
                     case 18 /* MULTIPLY */:
-                        this.$ = sharedStateYY.handler.helper.mathMatch('*', virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = Math_1.MULTIPLY(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
                     case 19 /* DIVIDE */:
-                        this.$ = sharedStateYY.handler.helper.mathMatch('/', virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = Math_1.DIVIDE(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
                     case 20 /* TO_POWER */:
-                        this.$ = sharedStateYY.handler.helper.mathMatch('^', virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = Math_1.POWER(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
                     case 21 /* INVERT_NUM */:
-                        this.$ = sharedStateYY.handler.helper.numberInverted(virtualStack[vsl]);
+                        this.$ = TypeConverter_1.TypeConverter.valueToInvertedNumber(virtualStack[vsl]);
                         if (isNaN(this.$)) {
                             this.$ = 0;
                         }
                         break;
                     case 22 /* TO_NUMBER_NAN_AS_ZERO */:
-                        this.$ = sharedStateYY.handler.helper.number(virtualStack[vsl]);
+                        this.$ = TypeConverter_1.TypeConverter.valueToNumber(virtualStack[vsl]);
                         if (isNaN(this.$)) {
                             this.$ = 0;
                         }
                         break;
                     case 23 /* CALL_FUNCTION_LAST_BLANK */:
-                        this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 2], '');
+                        this.$ = sharedStateYY.handler.callFunction.call(this, virtualStack[vsl - 2], '');
                         break;
                     case 24 /* CALL_FUNCTION_LAST_TWO_IN_STACK */:
-                        this.$ = sharedStateYY.handler.helper.callFunction.call(this, virtualStack[vsl - 3], virtualStack[vsl - 1]);
+                        this.$ = sharedStateYY.handler.callFunction.call(this, virtualStack[vsl - 3], virtualStack[vsl - 1]);
                         break;
                     case 28 /* FIXED_CELL_VAL */:
-                        this.$ = sharedStateYY.handler.helper.fixedCellValue.call(sharedStateYY.obj, virtualStack[vsl]);
+                        this.$ = sharedStateYY.handler.fixedCellValue(sharedStateYY.originCellId, virtualStack[vsl]);
                         break;
                     case 29 /* FIXED_CELL_RANGE_VAL */:
-                        this.$ = sharedStateYY.handler.helper.fixedCellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = sharedStateYY.handler.fixedCellRangeValue(sharedStateYY.originCellId, virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
                     case 30 /* CELL_VALUE */:
-                        this.$ = sharedStateYY.handler.helper.cellValue.call(sharedStateYY.obj, virtualStack[vsl]);
+                        this.$ = sharedStateYY.handler.cellValue(sharedStateYY.originCellId, virtualStack[vsl]);
                         break;
                     case 31 /* CELL_RANGE_VALUE */:
-                        this.$ = sharedStateYY.handler.helper.cellRangeValue.call(sharedStateYY.obj, virtualStack[vsl - 2], virtualStack[vsl]);
+                        this.$ = sharedStateYY.handler.cellRangeValue(sharedStateYY.originCellId, virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
                     case 32 /* ENSURE_IS_ARRAY */:
-                        if (sharedStateYY.handler.utils.isArray(virtualStack[vsl])) {
+                        if (MoreUtils_1.isArray(virtualStack[vsl])) {
                             this.$ = virtualStack[vsl];
                         }
                         else {
@@ -139,14 +133,14 @@ var Parser = (function () {
                         this.$ = [virtualStack[vsl]];
                         break;
                     case 37 /* ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH */:
-                        this.$ = (sharedStateYY.handler.utils.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
+                        this.$ = (MoreUtils_1.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
                         this.$.push(virtualStack[vsl]);
                         break;
                     case 38 /* REFLEXIVE_REDUCE */:
                         this.$ = virtualStack[vsl];
                         break;
                     case 39 /* REDUCE_FLOAT */:
-                        this.$ = parseFloat(virtualStack[vsl - 2] + '.' + virtualStack[vsl]);
+                        this.$ = TypeConverter_1.TypeConverter.valueToNumber(virtualStack[vsl - 2] + '.' + virtualStack[vsl]);
                         break;
                     case 40 /* REDUCE_PREV_AS_PERCENT */:
                         this.$ = virtualStack[vsl - 1] * 0.01;
@@ -167,8 +161,6 @@ var Parser = (function () {
                         case 1 /* RETURN_LAST */:
                             return virtualStack[vsl - 1];
                         case 2 /* CALL_VARIABLE */:
-                        case 3 /* TIME_CALL_TRUE */:
-                        case 4 /* TIME_CALL */:
                         case 5 /* AS_NUMBER */:
                         case 6 /* AS_STRING */:
                         case 7 /* AMPERSAND */:
@@ -178,7 +170,6 @@ var Parser = (function () {
                         case 11 /* LTE */:
                         case 12 /* GTE */:
                         case 13 /* NOT_EQ */:
-                        case 14 /* NOT */:
                         case 15 /* GT */:
                         case 16 /* LT */:
                         case 17 /* MINUS */:
@@ -206,7 +197,7 @@ var Parser = (function () {
                             }
                             break;
                         case 32 /* ENSURE_IS_ARRAY */:
-                            if (sharedStateYY.handler.utils.isArray(virtualStack[vsl])) {
+                            if (MoreUtils_1.isArray(virtualStack[vsl])) {
                                 this.$ = virtualStack[vsl];
                             }
                             else {
@@ -229,7 +220,7 @@ var Parser = (function () {
                             this.$ = [virtualStack[vsl]];
                             break;
                         case 37 /* ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH */:
-                            this.$ = (sharedStateYY.handler.utils.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
+                            this.$ = (MoreUtils_1.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
                             this.$.push(virtualStack[vsl]);
                             break;
                         case 38 /* REFLEXIVE_REDUCE */:
@@ -252,7 +243,7 @@ var Parser = (function () {
                 }
             }
         },
-        defaultActions: { 19: [ParserConstants_1.REDUCE, 1] },
+        defaultActions: { 19: [ParserConstants_1.REDUCE, 1 /* RETURN_LAST */] },
         parseError: function parseError(str, hash) {
             if (hash.recoverable) {
                 this.trace(str);
@@ -328,6 +319,16 @@ var Parser = (function () {
                     // read action for current state and first input
                     action = ParserConstants_1.ACTION_TABLE[state] && ParserConstants_1.ACTION_TABLE[state][symbol];
                 }
+                // console.log({
+                //   text: lexer.match,
+                //   token: SYMBOL_INDEX_TO_NAME[symbol] || symbol,
+                //   tokenIndex: symbol,
+                //   line: lexer.yylineno,
+                //   loc: yyloc,
+                //   state: state,
+                //   stack: stack,
+                //   semanticValueStack: semanticValueStack
+                // });
                 // handle parse error
                 if (typeof action === 'undefined' || !action.length || !action[0]) {
                     var error_rule_depth = void 0;
@@ -339,6 +340,9 @@ var Parser = (function () {
                         var depth = 0;
                         // try to recover from error
                         for (;;) {
+                            if (MoreUtils_1.isUndefined(state)) {
+                                return false;
+                            }
                             // check for error recovery rule in this state
                             if ((TERROR.toString()) in ParserConstants_1.ACTION_TABLE[state]) {
                                 return depth;
@@ -422,7 +426,7 @@ var Parser = (function () {
                 //   Reduce: enough tokens have been gathered to reduce input through evaluation.
                 //   Accept: return.
                 switch (action[0]) {
-                    case ParserConstants_1.SHIFT:
+                    case ParserConstants_1.SHIFT:// Shift
                         stack.push(symbol);
                         semanticValueStack.push(lexer.yytext);
                         locationStack.push(lexer.yylloc);
@@ -448,7 +452,7 @@ var Parser = (function () {
                             preErrorSymbol = null;
                         }
                         break;
-                    case ParserConstants_1.REDUCE:
+                    case ParserConstants_1.REDUCE:// Reduce
                         // console.log("REDUCE", "literal", lexer.yytext, "   symbol", symbol, "   symbol name", SYMBOL_INDEX_TO_NAME[symbol], "   action", action,
                         //     "   stack", stack, "   semanticValueStack", semanticValueStack);
                         var currentProduction = ParserConstants_1.PRODUCTIONS[action[1]];
@@ -477,7 +481,7 @@ var Parser = (function () {
                             locationStack = locationStack.slice(0, -1 * lengthToReduceStackBy);
                         }
                         // push non-terminal (reduce)
-                        stack.push(currentProduction.getReplacementTokenIndex());
+                        stack.push(currentProduction.getReplacementSymbol());
                         semanticValueStack.push(yyval.$);
                         locationStack.push(yyval._$);
                         newState = ParserConstants_1.ACTION_TABLE[stack[stack.length - 2]][stack[stack.length - 1]];
@@ -504,6 +508,13 @@ var Parser = (function () {
             // resets the lexer, sets new input
             setInput: function (input, yy) {
                 this.yy = yy || this.yy || {};
+                this.yy.parseError = function (str, hash) {
+                    throw new Errors_1.ParseError(JSON.stringify({
+                        name: 'Parser error',
+                        message: str,
+                        prop: hash
+                    }));
+                };
                 this._input = input;
                 this._more = this._backtrack = this.done = false;
                 this.yylineno = this.yyleng = 0;
@@ -578,24 +589,6 @@ var Parser = (function () {
                 this._more = true;
                 return this;
             },
-            // When called from action, signals the lexer that this rule fails to match the input, so the next matching rule (regex) should be tested instead.
-            reject: function () {
-                if (this.options.backtrack_lexer) {
-                    this._backtrack = true;
-                }
-                else {
-                    return this.parseError('Lexical error on line ' + (this.yylineno + 1) + '. You can only invoke reject() in the lexer when the lexer is of the backtracking persuasion (options.backtrack_lexer = true).\n' + this.showPosition(), {
-                        text: "",
-                        token: null,
-                        line: this.yylineno
-                    });
-                }
-                return this;
-            },
-            // retain first n characters of the match
-            less: function (n) {
-                this.unput(this.match.slice(n));
-            },
             // displays already matched input, i.e. for error messages
             pastInput: function () {
                 var past = this.matched.substr(0, this.matched.length - this.match.length);
@@ -616,7 +609,7 @@ var Parser = (function () {
                 return pre + this.upcomingInput() + "\n" + c + "^";
             },
             // test the lexed token: return FALSE when not a match, otherwise return token
-            test_match: function (match, indexed_rule) {
+            testMatch: function (match, indexed_rule) {
                 var token, lines, backup;
                 if (this.options.backtrack_lexer) {
                     // save context
@@ -667,7 +660,7 @@ var Parser = (function () {
                 this._backtrack = false;
                 this._input = this._input.slice(match[0].length);
                 this.matched += match[0];
-                token = this.mapActionToActionIndex(indexed_rule);
+                token = this.mapRuleIndexToSymbolEnumeration(indexed_rule);
                 if (this.done && this._input) {
                     this.done = false;
                 }
@@ -703,7 +696,7 @@ var Parser = (function () {
                         match = tempMatch;
                         index = i;
                         if (this.options.backtrack_lexer) {
-                            token = this.test_match(tempMatch, rules[i]);
+                            token = this.testMatch(tempMatch, rules[i]);
                             if (token !== false) {
                                 return token;
                             }
@@ -723,7 +716,7 @@ var Parser = (function () {
                     }
                 }
                 if (match) {
-                    token = this.test_match(match, rules[index]);
+                    token = this.testMatch(match, rules[index]);
                     if (token !== false) {
                         return token;
                     }
@@ -761,126 +754,117 @@ var Parser = (function () {
                 }
             },
             options: {},
-            mapActionToActionIndex: function (ruleIndex) {
+            mapRuleIndexToSymbolEnumeration: function (ruleIndex) {
                 switch (ruleIndex) {
-                    case 0:
+                    case 0 /* WHITE_SPACE */:
                         // skip whitespace
                         break;
-                    case 1:
-                        return 10 /* LAST_NUMBER */;
-                    case 2:
-                        return 10 /* LAST_NUMBER */;
-                    case 3:
-                        return 23 /* CALL_FUNCTION_LAST_BLANK */;
-                    case 4:
-                        return 7 /* AMPERSAND */;
-                    case 5:
-                        return 8 /* EQUALS */;
-                    case 6:
-                        return 26 /* I26 */;
-                    case 7:
-                        return 28 /* FIXED_CELL_VAL */;
-                    case 8:
-                        return 23 /* CALL_FUNCTION_LAST_BLANK */;
-                    case 9:
-                        return 32 /* ENSURE_IS_ARRAY */;
-                    case 10:
-                        return 32 /* ENSURE_IS_ARRAY */;
-                    case 11:
-                        return 34 /* REDUCE_INT */;
-                    case 12:
-                        return 29 /* FIXED_CELL_RANGE_VAL */;
-                    case 13:
+                    case 1 /* DOUBLE_QUOTES */:
+                        return ParserConstants_1.Symbol.STRING;
+                    case 2 /* SINGLE_QUOTES */:
+                        return ParserConstants_1.Symbol.STRING;
+                    case 3 /* FORMULA_NAME */:
+                        return ParserConstants_1.Symbol.FUNCTION;
+                    case 6 /* $_A1_CELL */:
+                        return ParserConstants_1.Symbol.FIXEDCELL;
+                    case 7 /* A1_CELL */:
+                        return ParserConstants_1.Symbol.CELL_UPPER;
+                    case 8 /* FORMULA_NAME_SIMPLE */:
+                        return ParserConstants_1.Symbol.FUNCTION;
+                    case 9 /* VARIABLE */:
+                        return ParserConstants_1.Symbol.VARIABLE;
+                    case 10 /* SIMPLE_VARIABLE */:
+                        return ParserConstants_1.Symbol.VARIABLE;
+                    case 11 /* INTEGER */:
+                        return ParserConstants_1.Symbol.NUMBER_UPPER;
+                    case 12 /* OPEN_AND_CLOSE_OF_ARRAY */:
+                        return ParserConstants_1.Symbol.ARRAY;
+                    case 13 /* DOLLAR_SIGN */:
                         // skip whitespace??
                         break;
-                    case 14:
-                        return 11 /* LTE */;
-                    case 15:
+                    case 14 /* AMPERSAND_SIGN */:
+                        return ParserConstants_1.Symbol.AMPERSAND;
+                    case 15 /* SINGLE_WHITESPACE */:
                         return ' ';
-                    case 16:
-                        return 33 /* ENSURE_YYTEXT_ARRAY */;
-                    case 17:
-                        return 27 /* I27 */;
-                    case 18:
-                        return 30 /* CELL_VALUE */;
-                    case 19:
-                        return 31 /* CELL_RANGE_VALUE */;
-                    case 20:
-                        return 20 /* TO_POWER */;
-                    case 21:
-                        return 21 /* INVERT_NUM */;
-                    case 22:
-                        return 19 /* DIVIDE */;
-                    case 23:
-                        return 13 /* NOT_EQ */;
-                    case 24:
-                        return 22 /* TO_NUMBER_NAN_AS_ZERO */;
-                    case 25:
-                        return 14 /* NOT */;
-                    case 26:
-                        return 15 /* GT */;
-                    case 27:
-                        return 17 /* MINUS */;
-                    case 28:
-                        return 16 /* LT */;
-                    case 29:
-                        return 18 /* MULTIPLY */;
-                    case 30:
+                    case 16 /* PERIOD */:
+                        return ParserConstants_1.Symbol.DECIMAL;
+                    case 17 /* COLON */:
+                        return ParserConstants_1.Symbol.COLON;
+                    case 18 /* SEMI_COLON */:
+                        return ParserConstants_1.Symbol.SEMI_COLON;
+                    case 19 /* COMMA */:
+                        return ParserConstants_1.Symbol.COMMA;
+                    case 20 /* ASTERISK */:
+                        return ParserConstants_1.Symbol.ASTERISK;
+                    case 21 /* FORWARD_SLASH */:
+                        return ParserConstants_1.Symbol.DIVIDE;
+                    case 22 /* MINUS_SIGN */:
+                        return ParserConstants_1.Symbol.MINUS;
+                    case 23 /* PLUS_SIGN */:
+                        return ParserConstants_1.Symbol.PLUS;
+                    case 24 /* CARET_SIGN */:
+                        return ParserConstants_1.Symbol.CARROT;
+                    case 25 /* OPEN_PAREN */:
+                        return ParserConstants_1.Symbol.LEFT_PAREN;
+                    case 26 /* CLOSE_PAREN */:
+                        return ParserConstants_1.Symbol.RIGHT_PAREN;
+                    case 27 /* GREATER_THAN_SIGN */:
+                        return ParserConstants_1.Symbol.GREATER_THAN;
+                    case 28 /* LESS_THAN_SIGN */:
+                        return ParserConstants_1.Symbol.LESS_THAN;
+                    case 30 /* OPEN_DOUBLE_QUOTE */:
                         return '"';
-                    case 31:
+                    case 31 /* OPEN_SINGLE_QUITE */:
                         return "'";
-                    case 32:
+                    case 32 /* EXCLAMATION_POINT_RULE */:
                         return "!";
-                    case 33:
-                        return 12 /* GTE */;
-                    case 34:
-                        return 35 /* REDUCE_PERCENT */;
-                    case 35:
-                        return 36 /* WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY */;
-                    case 36:
-                        return 5 /* AS_NUMBER */;
+                    case 33 /* EQUALS_SIGN */:
+                        return ParserConstants_1.Symbol.EQUALS;
+                    case 34 /* PERCENT_SIGN */:
+                        return ParserConstants_1.Symbol.PERCENT;
+                    case 35 /* FULL_ERROR */:
+                        return ParserConstants_1.Symbol.FULL_ERROR;
+                    case 36 /* END_OF_STRING */:
+                        return ParserConstants_1.Symbol.EOF;
                 }
             },
             conditions: {
                 INITIAL: {
                     rules: [
-                        0,
-                        1,
-                        2,
-                        3,
-                        4,
-                        5,
-                        6,
-                        7,
-                        8,
-                        9,
-                        10,
-                        11,
-                        12,
-                        13,
-                        14,
-                        15,
-                        16,
-                        17,
-                        18,
-                        19,
-                        20,
-                        21,
-                        22,
-                        23,
-                        24,
-                        25,
-                        26,
-                        27,
-                        28,
-                        29,
-                        30,
-                        31,
-                        32,
-                        33,
-                        34,
-                        35,
-                        36,
+                        0 /* WHITE_SPACE */,
+                        1 /* DOUBLE_QUOTES */,
+                        2 /* SINGLE_QUOTES */,
+                        3 /* FORMULA_NAME */,
+                        6 /* $_A1_CELL */,
+                        7 /* A1_CELL */,
+                        8 /* FORMULA_NAME_SIMPLE */,
+                        9 /* VARIABLE */,
+                        10 /* SIMPLE_VARIABLE */,
+                        11 /* INTEGER */,
+                        12 /* OPEN_AND_CLOSE_OF_ARRAY */,
+                        13 /* DOLLAR_SIGN */,
+                        14 /* AMPERSAND_SIGN */,
+                        15 /* SINGLE_WHITESPACE */,
+                        16 /* PERIOD */,
+                        17 /* COLON */,
+                        18 /* SEMI_COLON */,
+                        19 /* COMMA */,
+                        20 /* ASTERISK */,
+                        21 /* FORWARD_SLASH */,
+                        22 /* MINUS_SIGN */,
+                        23 /* PLUS_SIGN */,
+                        24 /* CARET_SIGN */,
+                        25 /* OPEN_PAREN */,
+                        26 /* CLOSE_PAREN */,
+                        27 /* GREATER_THAN_SIGN */,
+                        28 /* LESS_THAN_SIGN */,
+                        30 /* OPEN_DOUBLE_QUOTE */,
+                        31 /* OPEN_SINGLE_QUITE */,
+                        32 /* EXCLAMATION_POINT_RULE */,
+                        33 /* EQUALS_SIGN */,
+                        34 /* PERCENT_SIGN */,
+                        35 /* FULL_ERROR */,
+                        36 /* END_OF_STRING */,
                         37
                     ],
                     "inclusive": true
@@ -895,4 +879,24 @@ var Parser = (function () {
     parser.Parser = Parser;
     return new Parser;
 })();
-exports.Parser = Parser;
+/**
+ * Creates a new FormulaParser, which parses formulas, and does minimal error handling.
+ *
+ * @param handler should be a Sheet, since the parser needs access to fixedCellValue, cellValue, cellRangeValue, and
+ * fixedCellRangeValue
+ * @returns formula parser instance for use with parser.js
+ * @constructor
+ */
+var FormulaParser = function (handler) {
+    var formulaLexer = function () { };
+    formulaLexer.prototype = Parser.lexer;
+    var formulaParser = function () {
+        this.lexer = new formulaLexer();
+        this.yy = {};
+    };
+    formulaParser.prototype = Parser;
+    var newParser = new formulaParser;
+    newParser.yy.handler = handler;
+    return newParser;
+};
+exports.FormulaParser = FormulaParser;

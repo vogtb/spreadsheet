@@ -816,7 +816,7 @@ exports.SUMSQ = SUMSQ;
 var MULTIPLY = function (factor1, factor2) {
     ArgsChecker_1.ArgsChecker.checkLength(arguments, 2, "MULTIPLY");
     var x = TypeConverter_1.TypeConverter.firstValueAsNumber(factor1);
-    var y = TypeConverter_1.TypeConverter.firstValueAsNumber(factor1);
+    var y = TypeConverter_1.TypeConverter.firstValueAsNumber(factor2);
     return x * y;
 };
 exports.MULTIPLY = MULTIPLY;
@@ -935,7 +935,14 @@ var DIVIDE = function (dividend, divisor) {
     if (y < 0) {
         throw new Errors_1.DivZeroError("Function DIVIDE parameter 2 cannot be zero.");
     }
-    return x / y;
+    var result = x / y;
+    if (result == Infinity) {
+        throw new Errors_1.DivZeroError("Evaluation caused divide by zero error.");
+    }
+    else if (isNaN(result)) {
+        throw new Errors_1.DivZeroError("Evaluation caused divide by zero error.");
+    }
+    return result;
 };
 exports.DIVIDE = DIVIDE;
 /**

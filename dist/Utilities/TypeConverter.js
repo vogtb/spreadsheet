@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-/// <reference path="../../node_modules/moment/moment.d.ts"/>
 var moment = require("moment");
 var Errors_1 = require("../Errors");
 var DateRegExBuilder_1 = require("./DateRegExBuilder");
@@ -137,7 +136,7 @@ function matchTimestampAndMutateMoment(timestampString, momentToMutate) {
 /**
  * Static class of helpers used to convert let ious types to each other.
  */
-var TypeConverter = (function () {
+var TypeConverter = /** @class */ (function () {
     function TypeConverter() {
     }
     /**
@@ -443,6 +442,14 @@ var TypeConverter = (function () {
                 return;
             }
         }
+    };
+    /**
+     * Converts any value to an inverted number or throws an error if it cannot coerce it to the number type
+     * @param value to convert
+     * @returns {number} to return. Will always return a number or throw an error. Never returns undefined.
+     */
+    TypeConverter.valueToInvertedNumber = function (value) {
+        return TypeConverter.valueToNumber(value) * (-1);
     };
     /**
      * Converts any value to a number or throws an error if it cannot coerce it to the number type
@@ -775,10 +782,10 @@ var TypeConverter = (function () {
         var v = (((hours % 24) * 60 * 60) + ((minutes) * 60) + (seconds)) / 86400;
         return v % 1;
     };
+    TypeConverter.ORIGIN_MOMENT = moment.utc([1899, 11, 30]).startOf("day");
+    TypeConverter.SECONDS_IN_DAY = 86400;
     return TypeConverter;
 }());
-TypeConverter.ORIGIN_MOMENT = moment.utc([1899, 11, 30]).startOf("day");
-TypeConverter.SECONDS_IN_DAY = 86400;
 exports.TypeConverter = TypeConverter;
 /**
  * Catches divide by zero situations and throws them as errors

@@ -917,8 +917,8 @@ let Parser = (function () {
             return Symbol.EQUALS;
           case RuleIndex.PERCENT_SIGN:
             return Symbol.PERCENT;
-          case RuleIndex.POUND_SIGN:
-            return Symbol.POUND;
+          case RuleIndex.FULL_ERROR:
+            return Symbol.FULL_ERROR;
           case RuleIndex.END_OF_STRING:
             return Symbol.EOF;
         }
@@ -958,7 +958,7 @@ let Parser = (function () {
             RuleIndex.EXCLAMATION_POINT_RULE,
             RuleIndex.EQUALS_SIGN,
             RuleIndex.PERCENT_SIGN,
-            RuleIndex.POUND_SIGN,
+            RuleIndex.FULL_ERROR,
             RuleIndex.END_OF_STRING,
             37
           ],

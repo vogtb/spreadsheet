@@ -26,7 +26,7 @@ var NA_ERROR = "#N/A";
 exports.NA_ERROR = NA_ERROR;
 var PARSE_ERROR = "#ERROR";
 exports.PARSE_ERROR = PARSE_ERROR;
-var NullError = (function (_super) {
+var NullError = /** @class */ (function (_super) {
     __extends(NullError, _super);
     function NullError(message) {
         var _this = _super.call(this, message) || this;
@@ -36,7 +36,7 @@ var NullError = (function (_super) {
     return NullError;
 }(Error));
 exports.NullError = NullError;
-var DivZeroError = (function (_super) {
+var DivZeroError = /** @class */ (function (_super) {
     __extends(DivZeroError, _super);
     function DivZeroError(message) {
         var _this = _super.call(this, message) || this;
@@ -46,7 +46,7 @@ var DivZeroError = (function (_super) {
     return DivZeroError;
 }(Error));
 exports.DivZeroError = DivZeroError;
-var ValueError = (function (_super) {
+var ValueError = /** @class */ (function (_super) {
     __extends(ValueError, _super);
     function ValueError(message) {
         var _this = _super.call(this, message) || this;
@@ -56,7 +56,7 @@ var ValueError = (function (_super) {
     return ValueError;
 }(Error));
 exports.ValueError = ValueError;
-var RefError = (function (_super) {
+var RefError = /** @class */ (function (_super) {
     __extends(RefError, _super);
     function RefError(message) {
         var _this = _super.call(this, message) || this;
@@ -66,7 +66,7 @@ var RefError = (function (_super) {
     return RefError;
 }(Error));
 exports.RefError = RefError;
-var NameError = (function (_super) {
+var NameError = /** @class */ (function (_super) {
     __extends(NameError, _super);
     function NameError(message) {
         var _this = _super.call(this, message) || this;
@@ -76,7 +76,7 @@ var NameError = (function (_super) {
     return NameError;
 }(Error));
 exports.NameError = NameError;
-var NumError = (function (_super) {
+var NumError = /** @class */ (function (_super) {
     __extends(NumError, _super);
     function NumError(message) {
         var _this = _super.call(this, message) || this;
@@ -86,7 +86,7 @@ var NumError = (function (_super) {
     return NumError;
 }(Error));
 exports.NumError = NumError;
-var NAError = (function (_super) {
+var NAError = /** @class */ (function (_super) {
     __extends(NAError, _super);
     function NAError(message) {
         var _this = _super.call(this, message) || this;
@@ -96,7 +96,7 @@ var NAError = (function (_super) {
     return NAError;
 }(Error));
 exports.NAError = NAError;
-var ParseError = (function (_super) {
+var ParseError = /** @class */ (function (_super) {
     __extends(ParseError, _super);
     function ParseError(message) {
         var _this = _super.call(this, message) || this;

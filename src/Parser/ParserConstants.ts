@@ -35,7 +35,7 @@ const OPEN_SINGLE_QUITE = /^(?:')/;
 const EXCLAMATION_POINT_RULE = /^(?:!)/;
 const EQUALS_SIGN_RULE = /^(?:=)/;
 const PERCENT_SIGN_RULE = /^(?:%)/;
-const POUND_SIGN_RULE = /^(?:#N\/A|#NUM\!|#NULL\!|#DIV\/0\!|#VALUE\!|#REF\!|#ERROR)/;
+const FULL_ERROR_RULE = /^(?:#N\/A|#NUM\!|#NULL\!|#DIV\/0\!|#VALUE\!|#REF\!|#ERROR)/;
 const END_OF_STRING_RULE = /^(?:$)/;
 
 
@@ -72,7 +72,7 @@ const enum RuleIndex {
   EXCLAMATION_POINT_RULE = 32,
   EQUALS_SIGN = 33,
   PERCENT_SIGN = 34,
-  POUND_SIGN = 35,
+  FULL_ERROR = 35,
   END_OF_STRING = 36
 };
 
@@ -111,7 +111,7 @@ RULES[RuleIndex.OPEN_SINGLE_QUITE] = OPEN_SINGLE_QUITE;
 RULES[RuleIndex.EXCLAMATION_POINT_RULE] = EXCLAMATION_POINT_RULE;
 RULES[RuleIndex.EQUALS_SIGN] = EQUALS_SIGN_RULE;
 RULES[RuleIndex.PERCENT_SIGN] = PERCENT_SIGN_RULE;
-RULES[RuleIndex.POUND_SIGN] = POUND_SIGN_RULE;
+RULES[RuleIndex.FULL_ERROR] = FULL_ERROR_RULE;
 RULES[RuleIndex.END_OF_STRING] = END_OF_STRING_RULE;
 
 
@@ -201,7 +201,7 @@ enum Symbol {
   DECIMAL = 33,
   NUMBER_UPPER = 34,
   PERCENT = 35,
-  POUND = 36,
+  FULL_ERROR = 36,
   EXCLAMATION_POINT = 37
 }
 
@@ -319,7 +319,7 @@ const SYMBOL_NAME_TO_INDEX = {
   "DECIMAL": Symbol.DECIMAL,
   "NUMBER": Symbol.NUMBER_UPPER,
   "%": Symbol.PERCENT,
-  "#": Symbol.POUND,
+  "#": Symbol.FULL_ERROR,
   "!": Symbol.EXCLAMATION_POINT
 };
 let symbolIndexToName = {};
@@ -338,13 +338,14 @@ symbolIndexToName[Symbol.DIVIDE] = "/";
 symbolIndexToName[Symbol.CARROT] = "^";
 symbolIndexToName[Symbol.FUNCTION] = "FUNCTION";
 symbolIndexToName[Symbol.FIXEDCELL] = "FIXED_CELL_REF";
+symbolIndexToName[Symbol.CELL] = "CELL";
 symbolIndexToName[Symbol.COLON] = ";";
 symbolIndexToName[Symbol.COMMA] = ",";
 symbolIndexToName[Symbol.VARIABLE] = "VARIABLE";
 symbolIndexToName[Symbol.DECIMAL] = "DECIMAL";
 symbolIndexToName[Symbol.NUMBER_UPPER] = "NUMBER";
 symbolIndexToName[Symbol.PERCENT] = "%";
-symbolIndexToName[Symbol.POUND] = "#";
+symbolIndexToName[Symbol.FULL_ERROR] = "#";
 symbolIndexToName[Symbol.ARRAY] = "ARRAY";
 symbolIndexToName[Symbol.EXCLAMATION_POINT] = "!";
 const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
@@ -441,7 +442,7 @@ table[State.Start] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.Expressions] = ObjectBuilder
   .add(Symbol.END, [ACCEPT])
@@ -520,7 +521,7 @@ table[State.LeftParen] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.PrefixUnaryMinus] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -537,7 +538,7 @@ table[State.PrefixUnaryMinus] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.PrefixUnaryPlus] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -554,7 +555,7 @@ table[State.PrefixUnaryPlus] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.Function] = ObjectBuilder
   .add(Symbol.LEFT_PAREN, [SHIFT, State.Function_LeftParen])
@@ -590,7 +591,7 @@ table[State.Error] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
   .add(Symbol.VARIABLE, [SHIFT, 37])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.FULL_ERROR, [SHIFT, 18])
   .build();
 table[State.Variable] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
@@ -607,7 +608,7 @@ table[State.Variable] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.DECIMAL, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
-  .add(Symbol.POUND, [SHIFT, 38])
+  .add(Symbol.FULL_ERROR, [SHIFT, 38])
   .build();
 table[State.NumberUpper] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
@@ -683,7 +684,7 @@ table[State.Number_Ampersand] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, 18])
+  .add(Symbol.FULL_ERROR, [SHIFT, 18])
   .build();
 table[State.Start_Equals] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -700,7 +701,7 @@ table[State.Start_Equals] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.Number_Plus] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -717,7 +718,7 @@ table[State.Number_Plus] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.LessThan] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -736,7 +737,7 @@ table[State.LessThan] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.GreaterThan] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -754,7 +755,7 @@ table[State.GreaterThan] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[25] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -771,7 +772,7 @@ table[25] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.Number_Minus] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -788,7 +789,7 @@ table[State.Number_Minus] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.Number_Asterisk] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -805,7 +806,7 @@ table[State.Number_Asterisk] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.Number_Divide] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -822,7 +823,7 @@ table[State.Number_Divide] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.Number_Carrot] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -839,7 +840,7 @@ table[State.Number_Carrot] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.VariableSeq_Decimal] = ObjectBuilder
   .add(Symbol.VARIABLE, [SHIFT, State.VariableSeq_Decimal_Variable])
@@ -921,7 +922,7 @@ table[State.Function_LeftParen] = ObjectBuilder
   .add(Symbol.ARRAY, [SHIFT, 61])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.Error_Error] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
@@ -939,7 +940,7 @@ table[State.Error_Error] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
   .build();
 table[37] = ObjectBuilder
-  .add(Symbol.POUND, [REDUCE, ReduceActions.AS_ERROR])
+  .add(Symbol.FULL_ERROR, [REDUCE, ReduceActions.AS_ERROR])
   .build();
 table[38] = ObjectBuilder
   .add(Symbol.VARIABLE, [SHIFT, 62])
@@ -1016,7 +1017,7 @@ table[State.LessThan_Equals] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.LessThan_GreaterThan] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -1033,7 +1034,7 @@ table[State.LessThan_GreaterThan] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.LessThan_Expression] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.LT])
@@ -1065,7 +1066,7 @@ table[State.GreaterThan_Equals] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.GreaterThan_Expression] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.GT])
@@ -1284,7 +1285,7 @@ table[66] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A])
   .add(Symbol.VARIABLE, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A])
-  .add(Symbol.POUND, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A]).build();
+  .add(Symbol.FULL_ERROR, [REDUCE, ReduceActions.REDUCE_LAST_THREE_A]).build();
 table[67] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.LTE])
   .add(Symbol.AMPERSAND, [SHIFT, State.Number_Ampersand])
@@ -1359,7 +1360,7 @@ table[State.Variable_SemiColon] = ObjectBuilder
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[State.Variable_Comma] = ObjectBuilder
   .add(Symbol.ERROR, State.Error)
@@ -1378,7 +1379,7 @@ table[State.Variable_Comma] = ObjectBuilder
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
   .add(Symbol.ARRAY, [SHIFT, 61])
-  .add(Symbol.POUND, [SHIFT, State.Pound])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
   .build();
 table[73] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
@@ -1395,7 +1396,7 @@ table[73] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
   .add(Symbol.VARIABLE, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
-  .add(Symbol.POUND, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
+  .add(Symbol.FULL_ERROR, [REDUCE, ReduceActions.REDUCE_LAST_THREE_B])
   .build();
 table[74] = ObjectBuilder
   .add(Symbol.AMPERSAND, [SHIFT, State.Number_Ampersand])

@@ -1316,7 +1316,7 @@ test("MULTIPLY", function(){
 });
 
 
-test("MINUS", function(){
+test("Minus", function(){
   assertEquals(MINUS(2, 2), 0);
   assertEquals(MINUS(2, 10), -8);
   assertEquals(MINUS(2, "12"), -10);

@@ -6,6 +6,18 @@ import {
   Formulas
 } from "../Formulas";
 import {
+  Symbol
+} from "./Symbols";
+import {
+  ReduceActions
+} from "./ReduceActions";
+import {
+  ReductionPair
+} from "./ReductionPair";
+import {
+  RuleIndex
+} from "./RuleIndex";
+import {
   ACTION_TABLE,
   RULES,
   REDUCE,
@@ -13,11 +25,7 @@ import {
   SHIFT,
   SYMBOL_INDEX_TO_NAME,
   SYMBOL_NAME_TO_INDEX,
-  PRODUCTIONS,
-  ReduceActions,
-  ReductionPair,
-  RuleIndex,
-  Symbol
+  PRODUCTIONS
 } from "./ParserConstants"
 import {
   isArray,
@@ -62,27 +70,27 @@ let Parser = (function () {
       const vsl = virtualStack.length - 1;
       try {
         switch (reduceActionToPerform) {
-          case ReduceActions.RETURN_LAST:
+          case ReduceActions.ReturnLast:
             return virtualStack[vsl - 1];
-          case ReduceActions.CALL_VARIABLE:
+          case ReduceActions.CallVariable:
             this.$ = sharedStateYY.handler.callVariable.call(this, virtualStack[vsl]);
             break;
-          case ReduceActions.AS_NUMBER:
+          case ReduceActions.AsNumber:
             this.$ = TypeConverter.valueToNumber(virtualStack[vsl]);
             break;
-          case ReduceActions.AS_STRING:
+          case ReduceActions.AsString:
             this.$ = string(virtualStack[vsl]);
             break;
-          case ReduceActions.AMPERSAND:
+          case ReduceActions.Ampersand:
             this.$ = TypeConverter.valueToString(virtualStack[vsl - 2]) + TypeConverter.valueToString(virtualStack[vsl]);
             break;
-          case ReduceActions.EQUALS:
+          case ReduceActions.Equals:
             this.$ = EQ(virtualStack[vsl - 2], virtualStack[vsl]);
             break;
-          case ReduceActions.PLUS:
+          case ReduceActions.Plus:
             this.$ = SUM(virtualStack[vsl - 2], virtualStack[vsl]);
             break;
-          case ReduceActions.LAST_NUMBER:
+          case ReduceActions.LastNumber:
             this.$ = TypeConverter.valueToNumber(virtualStack[vsl - 1]);
             break;
           case ReduceActions.LTE:
@@ -91,7 +99,7 @@ let Parser = (function () {
           case ReduceActions.GTE:
             this.$ = GTE(virtualStack[vsl - 3], virtualStack[vsl]);
             break;
-          case ReduceActions.NOT_EQ:
+          case ReduceActions.NotEqual:
             this.$ = !EQ(virtualStack[vsl - 3], virtualStack[vsl]);
             break;
           case ReduceActions.GT:
@@ -100,56 +108,56 @@ let Parser = (function () {
           case ReduceActions.LT:
             this.$ = LT(virtualStack[vsl - 2], virtualStack[vsl]);
             break;
-          case ReduceActions.MINUS:
+          case ReduceActions.Minus:
             this.$ = MINUS(virtualStack[vsl - 2], virtualStack[vsl]);
             break;
-          case ReduceActions.MULTIPLY:
+          case ReduceActions.Multiply:
             this.$ = MULTIPLY(virtualStack[vsl - 2], virtualStack[vsl]);
             break;
-          case ReduceActions.DIVIDE:
+          case ReduceActions.Divide:
             this.$ = DIVIDE(virtualStack[vsl - 2], virtualStack[vsl]);
             break;
-          case ReduceActions.TO_POWER:
+          case ReduceActions.ToPower:
             this.$ = POWER(virtualStack[vsl - 2], virtualStack[vsl]);
             break;
-          case ReduceActions.INVERT_NUM:
+          case ReduceActions.InvertNumber:
             this.$ = TypeConverter.valueToInvertedNumber(virtualStack[vsl]);
             if (isNaN(this.$)) {
               this.$ = 0;
             }
             break;
-          case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
+          case ReduceActions.ToNumberNANAsZero:
             this.$ = TypeConverter.valueToNumber(virtualStack[vsl]);
             if (isNaN(this.$)) {
               this.$ = 0;
             }
             break;
-          case ReduceActions.CALL_FUNCTION_LAST_BLANK:
+          case ReduceActions.CallFunctionLastBlank:
             this.$ = sharedStateYY.handler.callFunction.call(this, virtualStack[vsl - 2], '');
             break;
-          case ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK:
+          case ReduceActions.CallFunctionLastTwoInStack:
             this.$ = sharedStateYY.handler.callFunction.call(this, virtualStack[vsl - 3], virtualStack[vsl - 1]);
             break;
-          case ReduceActions.FIXED_CELL_VAL:
+          case ReduceActions.FixedCellValue:
             this.$ = sharedStateYY.handler.fixedCellValue(sharedStateYY.originCellId, virtualStack[vsl]);
             break;
-          case ReduceActions.FIXED_CELL_RANGE_VAL:
+          case ReduceActions.FixedCellRangeValue:
             this.$ = sharedStateYY.handler.fixedCellRangeValue(sharedStateYY.originCellId, virtualStack[vsl - 2], virtualStack[vsl]);
             break;
-          case ReduceActions.CELL_VALUE:
+          case ReduceActions.CellValue:
             this.$ = sharedStateYY.handler.cellValue(sharedStateYY.originCellId, virtualStack[vsl]);
             break;
-          case ReduceActions.CELL_RANGE_VALUE:
+          case ReduceActions.CellRangeValue:
             this.$ = sharedStateYY.handler.cellRangeValue(sharedStateYY.originCellId, virtualStack[vsl - 2], virtualStack[vsl]);
             break;
-          case ReduceActions.ENSURE_IS_ARRAY:
+          case ReduceActions.EnsureIsArray:
             if (isArray(virtualStack[vsl])) {
               this.$ = virtualStack[vsl];
             } else {
               this.$ = [virtualStack[vsl]];
             }
             break;
-          case ReduceActions.ENSURE_YYTEXT_ARRAY:
+          case ReduceActions.EnsureYYTextIsArray:
             let result = [],
               arr = eval("[" + rawValueOfReduceOriginToken + "]");
             arr.forEach(function (item) {
@@ -157,32 +165,32 @@ let Parser = (function () {
             });
             this.$ = result;
             break;
-          case ReduceActions.REDUCE_INT:
-          case ReduceActions.REDUCE_PERCENT:
+          case ReduceActions.ReduceInt:
+          case ReduceActions.ReducePercent:
             virtualStack[vsl - 2].push(virtualStack[vsl]);
             this.$ = virtualStack[vsl - 2];
             break;
-          case ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY:
+          case ReduceActions.WrapCurrentTokenAsArray:
             this.$ = [virtualStack[vsl]];
             break;
-          case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
+          case ReduceActions.EnsureLastTwoINArrayAndPush:
             this.$ = (isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
             this.$.push(virtualStack[vsl]);
             break;
-          case ReduceActions.REFLEXIVE_REDUCE:
+          case ReduceActions.ReflexiveReduce:
             this.$ = virtualStack[vsl];
             break;
-          case ReduceActions.REDUCE_FLOAT:
+          case ReduceActions.ReduceFloat:
             this.$ = TypeConverter.valueToNumber(virtualStack[vsl - 2] + '.' + virtualStack[vsl]);
             break;
-          case ReduceActions.REDUCE_PREV_AS_PERCENT:
+          case ReduceActions.ReducePrevAsPercent:
             this.$ = virtualStack[vsl - 1] * 0.01;
             break;
-          case ReduceActions.REDUCE_LAST_THREE_A:
-          case ReduceActions.REDUCE_LAST_THREE_B:
+          case ReduceActions.ReduceLastThreeA:
+          case ReduceActions.ReduceLastThreeB:
             this.$ = virtualStack[vsl - 2] + virtualStack[vsl - 1] + virtualStack[vsl];
             break;
-          case ReduceActions.AS_ERROR:
+          case ReduceActions.AsError:
             this.$ = constructErrorByName(virtualStack[vsl]);
             break;
         }
@@ -190,52 +198,52 @@ let Parser = (function () {
         if (catchOnFailure) {
           // NOTE: I'm not sure if some of these ReduceAction map correctly in the case of an error.
           switch (reduceActionToPerform) {
-            case ReduceActions.RETURN_LAST:
+            case ReduceActions.ReturnLast:
               return virtualStack[vsl - 1];
-            case ReduceActions.CALL_VARIABLE:
-            case ReduceActions.AS_NUMBER:
-            case ReduceActions.AS_STRING:
-            case ReduceActions.AMPERSAND:
-            case ReduceActions.EQUALS:
-            case ReduceActions.PLUS:
-            case ReduceActions.LAST_NUMBER:
+            case ReduceActions.CallVariable:
+            case ReduceActions.AsNumber:
+            case ReduceActions.AsString:
+            case ReduceActions.Ampersand:
+            case ReduceActions.Equals:
+            case ReduceActions.Plus:
+            case ReduceActions.LastNumber:
             case ReduceActions.LTE:
             case ReduceActions.GTE:
-            case ReduceActions.NOT_EQ:
+            case ReduceActions.NotEqual:
             case ReduceActions.GT:
             case ReduceActions.LT:
-            case ReduceActions.MINUS:
-            case ReduceActions.MULTIPLY:
-            case ReduceActions.DIVIDE:
-            case ReduceActions.TO_POWER:
-            case ReduceActions.CALL_FUNCTION_LAST_BLANK:
-            case ReduceActions.CALL_FUNCTION_LAST_TWO_IN_STACK:
-            case ReduceActions.FIXED_CELL_VAL:
-            case ReduceActions.FIXED_CELL_RANGE_VAL:
-            case ReduceActions.CELL_VALUE:
-            case ReduceActions.CELL_RANGE_VALUE:
+            case ReduceActions.Minus:
+            case ReduceActions.Multiply:
+            case ReduceActions.Divide:
+            case ReduceActions.ToPower:
+            case ReduceActions.CallFunctionLastBlank:
+            case ReduceActions.CallFunctionLastTwoInStack:
+            case ReduceActions.FixedCellValue:
+            case ReduceActions.FixedCellRangeValue:
+            case ReduceActions.CellValue:
+            case ReduceActions.CellRangeValue:
               this.$ = e;
               break;
-            case ReduceActions.INVERT_NUM:
-              this.$ = e;
-              if (isNaN(this.$)) {
-                this.$ = 0;
-              }
-              break;
-            case ReduceActions.TO_NUMBER_NAN_AS_ZERO:
+            case ReduceActions.InvertNumber:
               this.$ = e;
               if (isNaN(this.$)) {
                 this.$ = 0;
               }
               break;
-            case ReduceActions.ENSURE_IS_ARRAY:
+            case ReduceActions.ToNumberNANAsZero:
+              this.$ = e;
+              if (isNaN(this.$)) {
+                this.$ = 0;
+              }
+              break;
+            case ReduceActions.EnsureIsArray:
               if (isArray(virtualStack[vsl])) {
                 this.$ = virtualStack[vsl];
               } else {
                 this.$ = [virtualStack[vsl]];
               }
               break;
-            case ReduceActions.ENSURE_YYTEXT_ARRAY:
+            case ReduceActions.EnsureYYTextIsArray:
               let result = [],
                 arr = eval("[" + rawValueOfReduceOriginToken + "]");
               arr.forEach(function (item) {
@@ -243,29 +251,29 @@ let Parser = (function () {
               });
               this.$ = result;
               break;
-            case ReduceActions.REDUCE_INT:
-            case ReduceActions.REDUCE_PERCENT:
+            case ReduceActions.ReduceInt:
+            case ReduceActions.ReducePercent:
               virtualStack[vsl - 2].push(virtualStack[vsl]);
               this.$ = virtualStack[vsl - 2];
               break;
-            case ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY:
+            case ReduceActions.WrapCurrentTokenAsArray:
               this.$ = [virtualStack[vsl]];
               break;
-            case ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH:
+            case ReduceActions.EnsureLastTwoINArrayAndPush:
               this.$ = (isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
               this.$.push(virtualStack[vsl]);
               break;
-            case ReduceActions.REFLEXIVE_REDUCE:
+            case ReduceActions.ReflexiveReduce:
               this.$ = virtualStack[vsl];
               break;
-            case ReduceActions.REDUCE_FLOAT:
+            case ReduceActions.ReduceFloat:
               this.$ = parseFloat(virtualStack[vsl - 2] + '.' + virtualStack[vsl]);
               break;
-            case ReduceActions.REDUCE_PREV_AS_PERCENT:
+            case ReduceActions.ReducePrevAsPercent:
               this.$ = virtualStack[vsl - 1] * 0.01;
               break;
-            case ReduceActions.REDUCE_LAST_THREE_A:
-            case ReduceActions.REDUCE_LAST_THREE_B:
+            case ReduceActions.ReduceLastThreeA:
+            case ReduceActions.ReduceLastThreeB:
               this.$ = virtualStack[vsl - 2] + virtualStack[vsl - 1] + virtualStack[vsl];
               break;
           }
@@ -274,7 +282,7 @@ let Parser = (function () {
         }
       }
     },
-    defaultActions: {19: [REDUCE, ReduceActions.RETURN_LAST]},
+    defaultActions: {19: [REDUCE, ReduceActions.ReturnLast]},
     parseError: function parseError(str, hash) {
       if (hash.recoverable) {
         this.trace(str);
@@ -851,115 +859,115 @@ let Parser = (function () {
 
       mapRuleIndexToSymbolEnumeration: function (ruleIndex) {
         switch (ruleIndex) {
-          case RuleIndex.WHITE_SPACE:
+          case RuleIndex.WhiteSpace:
             // skip whitespace
             break;
-          case RuleIndex.DOUBLE_QUOTES:
-            return Symbol.STRING;
-          case RuleIndex.SINGLE_QUOTES:
-            return Symbol.STRING;
-          case RuleIndex.FORMULA_NAME:
-            return Symbol.FUNCTION;
-          case RuleIndex.$_A1_CELL:
-            return Symbol.FIXEDCELL;
-          case RuleIndex.A1_CELL:
-            return Symbol.CELL_UPPER;
-          case RuleIndex.FORMULA_NAME_SIMPLE:
-            return Symbol.FUNCTION;
-          case RuleIndex.VARIABLE:
-            return Symbol.VARIABLE;
-          case RuleIndex.SIMPLE_VARIABLE:
-            return Symbol.VARIABLE;
-          case RuleIndex.INTEGER:
-            return Symbol.NUMBER_UPPER;
-          case RuleIndex.OPEN_AND_CLOSE_OF_ARRAY:
-            return Symbol.ARRAY;
-          case RuleIndex.DOLLAR_SIGN:
+          case RuleIndex.DoubleQuotes:
+            return Symbol.String;
+          case RuleIndex.SingleQuotes:
+            return Symbol.String;
+          case RuleIndex.FormulaName:
+            return Symbol.Function;
+          case RuleIndex.$A1Cell:
+            return Symbol.FixedCell;
+          case RuleIndex.A1Cell:
+            return Symbol.CellUpper;
+          case RuleIndex.FormulaNameSimple:
+            return Symbol.Function;
+          case RuleIndex.Variable:
+            return Symbol.Variable;
+          case RuleIndex.SimpleVariable:
+            return Symbol.Variable;
+          case RuleIndex.Integer:
+            return Symbol.NumberUpper;
+          case RuleIndex.SelfContainedArray:
+            return Symbol.Array;
+          case RuleIndex.DollarSign:
             // skip whitespace??
             break;
-          case RuleIndex.AMPERSAND_SIGN:
-            return Symbol.AMPERSAND;
-          case RuleIndex.SINGLE_WHITESPACE:
+          case RuleIndex.Ampersand:
+            return Symbol.Ampersand;
+          case RuleIndex.SingleWhitespace:
             return ' ';
-          case RuleIndex.PERIOD:
-            return Symbol.DECIMAL;
-          case RuleIndex.COLON:
-            return Symbol.COLON;
-          case RuleIndex.SEMI_COLON:
-            return Symbol.SEMI_COLON;
-          case RuleIndex.COMMA:
-            return Symbol.COMMA;
-          case RuleIndex.ASTERISK:
-            return Symbol.ASTERISK;
-          case RuleIndex.FORWARD_SLASH:
-            return Symbol.DIVIDE;
-          case RuleIndex.MINUS_SIGN:
-            return Symbol.MINUS;
-          case RuleIndex.PLUS_SIGN:
-            return Symbol.PLUS;
-          case RuleIndex.CARET_SIGN:
-            return Symbol.CARROT;
-          case RuleIndex.OPEN_PAREN:
-            return Symbol.LEFT_PAREN;
-          case RuleIndex.CLOSE_PAREN:
-            return Symbol.RIGHT_PAREN;
-          case RuleIndex.GREATER_THAN_SIGN:
-            return Symbol.GREATER_THAN;
-          case RuleIndex.LESS_THAN_SIGN:
-            return Symbol.LESS_THAN;
-          case RuleIndex.OPEN_DOUBLE_QUOTE:
+          case RuleIndex.Period:
+            return Symbol.Decimal;
+          case RuleIndex.Colon:
+            return Symbol.Colon;
+          case RuleIndex.Semicolon:
+            return Symbol.Semicolon;
+          case RuleIndex.Comma:
+            return Symbol.Comma;
+          case RuleIndex.Asterisk:
+            return Symbol.Asterisk;
+          case RuleIndex.ForwardSlash:
+            return Symbol.Divide;
+          case RuleIndex.Minus:
+            return Symbol.Minus;
+          case RuleIndex.Plus:
+            return Symbol.Plus;
+          case RuleIndex.Caret:
+            return Symbol.Carrot;
+          case RuleIndex.OpenParen:
+            return Symbol.LeftParen;
+          case RuleIndex.CloseParen:
+            return Symbol.RightParen;
+          case RuleIndex.GreaterThan:
+            return Symbol.GreaterThan;
+          case RuleIndex.LessThanSign:
+            return Symbol.LessThan;
+          case RuleIndex.OpenDoubleQuote:
             return '"';
-          case RuleIndex.OPEN_SINGLE_QUITE:
+          case RuleIndex.OpenSingleQuote:
             return "'";
-          case RuleIndex.EXCLAMATION_POINT_RULE:
+          case RuleIndex.ExclamationPoint:
             return "!";
-          case RuleIndex.EQUALS_SIGN:
-            return Symbol.EQUALS;
-          case RuleIndex.PERCENT_SIGN:
-            return Symbol.PERCENT;
-          case RuleIndex.FULL_ERROR:
-            return Symbol.FULL_ERROR;
-          case RuleIndex.END_OF_STRING:
+          case RuleIndex.Equals:
+            return Symbol.Equals;
+          case RuleIndex.Percent:
+            return Symbol.Percent;
+          case RuleIndex.FullError:
+            return Symbol.FullError;
+          case RuleIndex.EndOfString:
             return Symbol.EOF;
         }
       },
       conditions: {
         INITIAL: {
           rules: [
-            RuleIndex.WHITE_SPACE,
-            RuleIndex.DOUBLE_QUOTES,
-            RuleIndex.SINGLE_QUOTES,
-            RuleIndex.FORMULA_NAME,
-            RuleIndex.$_A1_CELL,
-            RuleIndex.A1_CELL,
-            RuleIndex.FORMULA_NAME_SIMPLE,
-            RuleIndex.VARIABLE,
-            RuleIndex.SIMPLE_VARIABLE ,
-            RuleIndex.INTEGER,
-            RuleIndex.OPEN_AND_CLOSE_OF_ARRAY,
-            RuleIndex.DOLLAR_SIGN,
-            RuleIndex.AMPERSAND_SIGN ,
-            RuleIndex.SINGLE_WHITESPACE,
-            RuleIndex.PERIOD,
-            RuleIndex.COLON,
-            RuleIndex.SEMI_COLON,
-            RuleIndex.COMMA,
-            RuleIndex.ASTERISK,
-            RuleIndex.FORWARD_SLASH,
-            RuleIndex.MINUS_SIGN,
-            RuleIndex.PLUS_SIGN,
-            RuleIndex.CARET_SIGN,
-            RuleIndex.OPEN_PAREN,
-            RuleIndex.CLOSE_PAREN,
-            RuleIndex.GREATER_THAN_SIGN,
-            RuleIndex.LESS_THAN_SIGN,
-            RuleIndex.OPEN_DOUBLE_QUOTE,
-            RuleIndex.OPEN_SINGLE_QUITE,
-            RuleIndex.EXCLAMATION_POINT_RULE,
-            RuleIndex.EQUALS_SIGN,
-            RuleIndex.PERCENT_SIGN,
-            RuleIndex.FULL_ERROR,
-            RuleIndex.END_OF_STRING,
+            RuleIndex.WhiteSpace,
+            RuleIndex.DoubleQuotes,
+            RuleIndex.SingleQuotes,
+            RuleIndex.FormulaName,
+            RuleIndex.$A1Cell,
+            RuleIndex.A1Cell,
+            RuleIndex.FormulaNameSimple,
+            RuleIndex.Variable,
+            RuleIndex.SimpleVariable ,
+            RuleIndex.Integer,
+            RuleIndex.SelfContainedArray,
+            RuleIndex.DollarSign,
+            RuleIndex.Ampersand ,
+            RuleIndex.SingleWhitespace,
+            RuleIndex.Period,
+            RuleIndex.Colon,
+            RuleIndex.Semicolon,
+            RuleIndex.Comma,
+            RuleIndex.Asterisk,
+            RuleIndex.ForwardSlash,
+            RuleIndex.Minus,
+            RuleIndex.Plus,
+            RuleIndex.Caret,
+            RuleIndex.OpenParen,
+            RuleIndex.CloseParen,
+            RuleIndex.GreaterThan,
+            RuleIndex.LessThanSign,
+            RuleIndex.OpenDoubleQuote,
+            RuleIndex.OpenSingleQuote,
+            RuleIndex.ExclamationPoint,
+            RuleIndex.Equals,
+            RuleIndex.Percent,
+            RuleIndex.FullError,
+            RuleIndex.EndOfString,
             37
           ],
           "inclusive": true

@@ -51,7 +51,7 @@ test("Parse equality operators", function(){
   assertFormulaEquals('= 1 < 2', true);
   assertFormulaEquals('= 1 < 0', false);
   assertFormulaEquals('= 1 <= 1', true);
-  // assertFormulaEquals('= 1 <= 2', true); // TODO: Fails.
+  assertFormulaEquals('= 1 <= 2', true);
   assertFormulaEquals('= 1 >= 1', true);
   assertFormulaEquals('= 2 >= 1', true);
   assertFormulaEquals('= 1 >= 0', true);
@@ -101,7 +101,7 @@ test("Parse and throw error literal", function () {
 
 test("Parse plain numbers", function() {
   assertFormulaEquals('=10', 10);
-  // assertFormulaEquals('=.1', 0.1); // TODO: Fails from parse error, but should pass
+  // assertFormulaEquals('=.1', 0.1); // TODO: [ISSUE-010]
   assertFormulaEquals('=0.1', 0.1);
   assertFormulaEquals('=+1', 1);
   assertFormulaEquals('=-1', -1);
@@ -109,7 +109,7 @@ test("Parse plain numbers", function() {
   assertFormulaEquals('=--1', 1);
   assertFormulaEquals('=10e1', 100);
   assertFormulaEquals('=0e1', 0);
-  // assertFormulaEquals('=0.e1', 0); // TODO: Fails from parse error, but should pass
+  // assertFormulaEquals('=0.e1', 0); // TODO: [ISSUE-010]
   assertFormulaEquals('=-10e1', -100);
   assertFormulaEquals('=+10e1', 100);
   assertFormulaEquals('=++10e1', 100);
@@ -157,7 +157,8 @@ test("Parse strings", function(){
   assertFormulaEquals('="str"', "str");
   assertFormulaEquals('="str"&"str"', "strstr");
   assertFormulaEqualsError('="str"+"str"', VALUE_ERROR);
-  // assertFormulaEqualsError("='str'", PARSE_ERROR); // TODO: Parses, but it shouldn't.
+  // assertFormulaEqualsError("='str'", PARSE_ERROR); // TODO: [ISSUE-011]
+
 });
 
 test("Parse boolean literals", function(){
@@ -168,23 +169,23 @@ test("Parse boolean literals", function(){
 });
 
 test("Parse boolean logic", function(){
-  // assertFormulaEquals('=(1=1)', true); // TODO: Fails because we compute the value, rather than checking equality
-  // assertFormulaEquals('=(1=2)', false); // TODO: Fails because we compute the value, rather than checking equality
+  // assertFormulaEquals('=(1=1)', true); // TODO: [ISSUE-013]
+  // assertFormulaEquals('=(1=2)', false); // TODO: [ISSUE-013]
   assertFormulaEquals('=(1=1)+2', 3);
 
 });
 
 
 test("Parse range literal", function(){
-  // assertFormulaEqualsArray('=[1, 2, 3]', [1, 2, 3]); // TODO: Fails because of low-level parser error
-  // assertFormulaEqualsArray('=[]', []); // TODO: Fails because of low-level parser error
-  // assertFormulaEqualsArray('=["str", "str"]', ["str", "str"]); // TODO: Fails because of low-level parser error
-  // assertFormulaEqualsArray('=["str", [1, 2, 3], [1]]', ["str", [1, 2, 3], [1]]); // TODO: Fails because of low-level parser error
+  // assertFormulaEqualsArray('=[1, 2, 3]', [1, 2, 3]); // TODO: [ISSUE-007]
+  // assertFormulaEqualsArray('=[]', []); // TODO: [ISSUE-007]
+  // assertFormulaEqualsArray('=["str", "str"]', ["str", "str"]); // TODO: [ISSUE-007]
+  // assertFormulaEqualsArray('=["str", [1, 2, 3], [1]]', ["str", [1, 2, 3], [1]]); // TODO: [ISSUE-007]
 });
 
 test("Parse cell references", function(){
   assertFormulaEqualsDependsOnReference("E1", "str", '=E1', Cell.BuildFrom("E1", "str"));
-  // assertFormulaEqualsArray('=E1:E2', [new Cell("E1"), new Cell("E2")]); // TODO: Fails because the returned result is nested. Shouldn't be.
+  // assertFormulaEqualsArray('=E1:E2', [new Cell("E1"), new Cell("E2")]); // TODO: [ISSUE-014]
 });
 
 test("Parse range following comma", function(){
@@ -192,4 +193,133 @@ test("Parse range following comma", function(){
   // assertFormulaEquals('=SERIESSUM([1], [0], [1], [4, 5, 6])', 15);
 });
 
-
+test("Combinations of expressions and operators", function(){
+  test("Combinations of expressions and operators, ", function(){
+    assertFormulaEquals('=10 + 10', 20);
+    assertFormulaEquals('=10 + TRUE', 11);
+    assertFormulaEquals('=10 + "10"', 20);
+    assertFormulaEquals('=10 + (2*2)', 14);
+    assertFormulaEquals('=10 + SUM(1, 2)', 13);
+    // assertFormulaEquals('=10 + [10]', 20); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 + #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, plus operator", function(){
+    assertFormulaEquals('=10 + 10', 20);
+    assertFormulaEquals('=10 + TRUE', 11);
+    assertFormulaEquals('=10 + "10"', 20);
+    assertFormulaEquals('=10 + (2*2)', 14);
+    assertFormulaEquals('=10 + SUM(1, 2)', 13);
+    // assertFormulaEquals('=10 + [10]', 20); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 + #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, minus operator", function(){
+    assertFormulaEquals('=10 - 10', 0);
+    assertFormulaEquals('=10 - TRUE', 9);
+    assertFormulaEquals('=10 - "10"', 0);
+    assertFormulaEquals('=10 - (2*2)', 6);
+    assertFormulaEquals('=10 - SUM(1, 2)', 7);
+    // assertFormulaEquals('=10 - [10]', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 - #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, division operator", function(){
+    assertFormulaEquals('=10 / 10', 1);
+    assertFormulaEquals('=10 / TRUE', 10);
+    assertFormulaEquals('=10 / "10"', 1);
+    assertFormulaEquals('=10 / (2*2)', 2.5);
+    assertFormulaEquals('=10 / SUM(1, 2)', 3.3333333333333335);
+    // assertFormulaEquals('=10 / [10]', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 / #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, multiplication operator", function(){
+    assertFormulaEquals('=10 * 10', 100);
+    assertFormulaEquals('=10 * TRUE', 10);
+    assertFormulaEquals('=10 * "10"', 100);
+    assertFormulaEquals('=10 * (2*2)', 40);
+    assertFormulaEquals('=10 * SUM(1, 2)', 30);
+    // assertFormulaEquals('=10 * [10]', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 * #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, power operator", function(){
+    assertFormulaEquals('=10 ^ 2', 100);
+    assertFormulaEquals('=10 ^ TRUE', 10);
+    assertFormulaEquals('=10 ^ "2"', 100);
+    assertFormulaEquals('=10 ^ (2*2)', 10000);
+    assertFormulaEquals('=10 ^ SUM(2, 2)', 10000);
+    // assertFormulaEquals('=10 ^ 1', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 & #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, concat operator", function(){
+    assertFormulaEquals('=10 & 10', "1010");
+    assertFormulaEquals('=10 & TRUE', "10TRUE");
+    assertFormulaEquals('=10 & "10"', "1010");
+    assertFormulaEquals('=10 & (2*2)', "104");
+    assertFormulaEquals('=10 & SUM(1, 2)', "103");
+    // assertFormulaEquals('=10 & [10]', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 & #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, LT operator", function(){
+    assertFormulaEquals('=10 < 10', false);
+    assertFormulaEquals('=10 < TRUE', false);
+    assertFormulaEquals('=10 < "10"', false);
+    assertFormulaEquals('=10 < (2*2)', false);
+    assertFormulaEquals('=10 < SUM(1, 2)', false);
+    // assertFormulaEquals('=10 < [10]', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 < #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, LTE operator", function(){
+    assertFormulaEquals('=10 <= 10', true);
+    assertFormulaEquals('=10 <= TRUE', false);
+    assertFormulaEquals('=10 <= "10"', true);
+    assertFormulaEquals('=10 <= (2*2)', false);
+    assertFormulaEquals('=10 <= SUM(1, 2)', false);
+    // assertFormulaEquals('=10 <= [10]', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 <= #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, GT operator", function(){
+    assertFormulaEquals('=10 > 10', false);
+    assertFormulaEquals('=10 > TRUE', true);
+    assertFormulaEquals('=10 > "10"', false);
+    assertFormulaEquals('=10 > (2*2)', true);
+    assertFormulaEquals('=10 > SUM(1, 2)', true);
+    // assertFormulaEquals('=10 > [10]', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 > #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, GTE operator", function(){
+    assertFormulaEquals('=10 >= 10', true);
+    assertFormulaEquals('=10 >= TRUE', true);
+    assertFormulaEquals('=10 >= "10"', true);
+    assertFormulaEquals('=10 >= (2*2)', true);
+    assertFormulaEquals('=10 >= SUM(1, 2)', true);
+    // assertFormulaEquals('=10 >= [10]', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 >= #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, equality operator", function(){
+    assertFormulaEquals('=10 = 10', true);
+    assertFormulaEquals('=10 = TRUE', false);
+    // assertFormulaEquals('=10 = "10"', true); // TODO: [ISSUE-009]
+    assertFormulaEquals('=10 = (2*2)', false);
+    assertFormulaEquals('=10 = SUM(1, 2)', false);
+    // assertFormulaEquals('=10 >= [10]', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 >= #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, not-equal operator", function(){
+    assertFormulaEquals('=10 <> 10', false);
+    assertFormulaEquals('=10 <> TRUE', true);
+    assertFormulaEquals('=10 <> "10"', true);
+    assertFormulaEquals('=10 <> (2*2)', true);
+    assertFormulaEquals('=10 <> SUM(1, 2)', true);
+    // assertFormulaEquals('=10 <> [10]', 10); // TODO: [ISSUE-007]
+    // assertFormulaEqualsError('=10 <> #DIV/0!', DIV_ZERO_ERROR); // TODO: [ISSUE-008]
+  });
+  test("Combinations of expressions and operators, unary prefix operators", function(){
+    assertFormulaEquals('=10 <> -10', true);
+    assertFormulaEquals('=-10', -10);
+    assertFormulaEquals('=-(-10)', 10);
+    assertFormulaEquals('=-(-(-1*2))', -2);
+    assertFormulaEquals('=-TRUE', -1);
+    assertFormulaEquals('=-"1"', -1);
+    assertFormulaEquals('=-+"1"', -1);
+    assertFormulaEquals('=-+-"1"', 1);
+    assertFormulaEquals('=-(1=1)', -1);
+  });
+});

@@ -1,31 +1,59 @@
 # TODO
 
 
-### Cells should have `formatAs` fields.
+### [ISSUE-001] Cells should have `formatAs` fields.
 Instead of having non-primitives, (i.e. Date, DateTime, Time, Dollar), cells should have formats based on the highest-order type that was used during the compilation and execution of a cell's dependency. For example, `DATE` might return a number, but the cell that called `DATE` would be aware of it calling a formula that returns an non-primitive type, and would display the returned number as a Date. If you're using `DATE` in conjunction with `DOLLAR` it would still display the returned value as a Date. The hierarchy would look like: [Date, DateTime, Time, Dollar, number, boolean, string]. Advantages to this would include not having to cast down when using primitive operators, and flexibility in display. It would also simplify the types themselves, by having types be constants and just having helpers to convert, display, and do normal operations with them. Requires changes to `TO_DATE`, `TO_PERCENT`, `TO_DOLLAR`, and `TO_TEXT`.
 
 
-### CONVERT could offer more accurate conversions for units in the same system
+### [ISSUE-002] CONVERT could offer more accurate conversions for units in the same system
 For example 64 tbs to a qt.
 
 
-### Range literals should be allow to follow commas
+### [ISSUE-003] Range literals should be allow to follow commas
 Currently, this `=SERIESSUM([1], [0], [1], [4, 5, 6])` parses, but this `=SERIESSUM(1, 0, 1, [4, 5, 6])` does not.
 
 
-### Parser/Sheet should be able to be initialized with js range notation (`[]`) or regular range notation (`{}`)
+### [ISSUE-004] Parser/Sheet should be able to be initialized with js range notation (`[]`) or regular range notation (`{}`)
 
 
-### TypeConverter.stringToDateNumber should handle fractions of a second.
+### [ISSUE-005] TypeConverter.stringToDateNumber should handle fractions of a second.
 E.g. `01/09/2012 10:04:33.123`
 
 
-### TypeConverter should be able to convert timestamps to numbers.
+### [ISSUE-006] TypeConverter should be able to convert timestamps to numbers.
 E.g. `12:00:00` should result in `0.5`.
 
 
-### Parser should be able to parse arrays without `eval`
+### [ISSUE-007] Parser should be able to parse arrays without 'eval'
 Right now, arrays and reference literals in a formula are parsed using JS `eval`. This means, if we have references inside, or non-JS parsing values like TRUE or FALSE, they will cause ReferenceErrors. For example, `=SUM([M1, 10])` would throw `[ReferenceError: M1 is not defined]` because M1 is not a variable. Instead of using `eval`, we should parse the opening of an array, and the closeing of an array, and use recursion to see how deep we are, evaluating the tokens inside in the sam way we parse formulas and functions.
+
+
+### [ISSUE-008] Error literals should be thrown
+Error literals in valid locations should throw themselves. For example "=10 + #DIV?/0!" should throw a Divide-By-Zero error.
+
+
+### [ISSUE-009] Equality checking should check for type and value
+Currently '=10 = "10"' is true, when it should be false.
+
+
+### [ISSUE-010] Input should be able to start with a decimal.
+Currently '=.1' should parse properly. Could be solved by going back from handling number input in reg-ex to handling it with the parser logic. See [ISSUE-011].
+
+
+### [ISSUE-011] Input should be able to parse short-cut sci-notation
+Currently '=0.e1' should parse properly.  Could be solved by going back from handling number input in reg-ex to handling it with the parser logic. See [ISSUE-010].
+
+
+### [ISSUE-012] Strings should only start with double quotes.
+Single quotes are reserved for variables, like sheet names.
+
+
+### [ISSUE-013] Equality checking inside parentheses should return boolean values
+For example '=(1=1)' should return true.
+
+
+### [ISSUE-014] Cell reference ranges should not return nested values
+For example '=(E1:E4)' should return an array of values, not a nested array of values.
 
 
 ### Meta-Formulas to write

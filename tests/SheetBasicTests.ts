@@ -138,14 +138,14 @@ test("Sheet, parse and throw error literal", function () {
 
 test("Sheet, parse plain numbers", function() {
   assertFormulaEquals('=10', 10);
-  // assertFormulaEquals('=.1', 0.1); // TODO: Fails because our parser doesn't expect a decimal right away.
+  // assertFormulaEquals('=.1', 0.1); // TODO: [ISSUE-010]
   assertFormulaEquals('=+1', 1);
   assertFormulaEquals('=-1', -1);
   assertFormulaEquals('=++1', 1);
   assertFormulaEquals('=--1', 1);
   assertFormulaEquals('=10e1', 100);
   assertFormulaEquals('=0e1', 0);
-  // assertFormulaEquals('=0.e1', 0); // TODO: Fails. After decimal, finds 'e' and thinks it's a variable.
+  // assertFormulaEquals('=0.e1', 0); // TODO: [ISSUE-011]
   assertFormulaEquals('=-10e1', -100);
   assertFormulaEquals('=+10e1', 100);
   assertFormulaEquals('=++10e1', 100);
@@ -192,7 +192,7 @@ test("Sheet, parse strings", function(){
   assertFormulaEquals('="str"', "str");
   assertFormulaEquals('="str"&"str"', "strstr");
   assertFormulaEqualsError('="str"+"str"', VALUE_ERROR);
-  // assertFormulaEqualsError("='str'", PARSE_ERROR); // TODO: Parses, but we should not allow single-quote strings.
+  // assertFormulaEqualsError("='str'", PARSE_ERROR); // TODO: [ISSUE-012]
 });
 
 test("Sheet, parse boolean literals", function(){
@@ -203,13 +203,13 @@ test("Sheet, parse boolean literals", function(){
 });
 
 test("Sheet, parse comparison logic inside parentheses", function(){
-  // assertEquals(parser.parse('(1=1)'), true); // TODO: Fails because we compute the value, rather than checking equality
-  // assertEquals(parser.parse('(1=2)'), false); // TODO: Fails because we compute the value, rather than checking equality
+  // assertEquals(parser.parse('(1=1)'), true); // TODO: [ISSUE-013]
+  // assertEquals(parser.parse('(1=2)'), false); // TODO: [ISSUE-013]
   assertFormulaEquals('=(1=1)+2', 3);
 });
 
 test("Sheet, parse range literal", function(){
-  // assertEqualsArray('=[1, 2, 3]', [1, 2, 3]); // TODO: Fails because we've not implemented array-level parsing.
+  // assertEqualsArray('=[1, 2, 3]', [1, 2, 3]); // TODO: [ISSUE-007]
   // assertEqualsArray('=[]', []);
   // assertEqualsArray('=["str", "str"]', ["str", "str"]);
   // assertEqualsArray('=["str", [1, 2, 3], [1]]', ["str", [1, 2, 3], [1]]);

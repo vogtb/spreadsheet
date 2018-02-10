@@ -124,8 +124,7 @@ test("Sheet CONVERT", function(){
 });
 
 test("Sheet CORREL", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEquals('=CORREL([9, 5], [10, 4])', 1);
+  // assertFormulaEquals('=CORREL([9, 5], [10, 4])', 1); // TODO: [ISSUE-003]
 });
 
 test("Sheet CHOOSE", function(){
@@ -168,8 +167,7 @@ test("Sheet COUNTIF", function(){
 });
 
 test("Sheet COUNTIFS", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEquals('=COUNTIFS([1, 5, 10], ">4", [1, 5, 10], ">4")', 2);
+  // assertFormulaEquals('=COUNTIFS([1, 5, 10], ">4", [1, 5, 10], ">4")', 2);  // TODO: [ISSUE-003]
 });
 
 test("Sheet COUNTUNIQUE", function(){
@@ -526,23 +524,19 @@ test("Sheet SUMIF", function(){
 });
 
 test("Sheet SUMPRODUCT", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEquals('=SUMPRODUCT([1, 5, 10], [2, 2, 2])', 32);
+  // assertFormulaEquals('=SUMPRODUCT([1, 5, 10], [2, 2, 2])', 32); // TODO: [ISSUE-003]
 });
 
 test("Sheet SUMSQ", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEquals('=SUMSQ([1, 5, 10], 10)', 226);
+  // assertFormulaEquals('=SUMSQ([1, 5, 10], 10)', 226); // TODO: [ISSUE-003]
 });
 
 test("Sheet SUMX2MY2", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEquals('=SUMX2MY2([1,2,3],[4,5,6])', -63);
+  // assertFormulaEquals('=SUMX2MY2([1,2,3],[4,5,6])', -63); // TODO: [ISSUE-003]
 });
 
 test("Sheet SUMX2PY2", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEquals('=SUMX2PY2([1, 2, 3], [4, 5, 6])', 91);
+  // assertFormulaEquals('=SUMX2PY2([1, 2, 3], [4, 5, 6])', 91); // TODO: [ISSUE-003]
 });
 
 test("Sheet TAN", function(){
@@ -665,8 +659,9 @@ test("Sheet FREQUENCY", function(){
 });
 
 test("Sheet GROWTH", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEqualsArray('=GROWTH([15.53, 19.99, 20.43, 21.18, 25.93, 30.00, 30.00, 34.01, 36.47],[1, 2, 3, 4, 5, 6, 7, 8, 9],[10, 11, 12])', [41.740521723275876, 46.22712349335047, 51.19598074591973]);
+  // TODO: [ISSUE-003]
+  // assertFormulaEqualsArray('=GROWTH([15.53, 19.99, 20.43, 21.18, 25.93, 30.00, 30.00, 34.01, 36.47],
+  // [1, 2, 3, 4, 5, 6, 7, 8, 9],[10, 11, 12])', [41.740521723275876, 46.22712349335047, 51.19598074591973]);
 });
 
 test("Sheet TRIMMEAN", function(){
@@ -674,8 +669,7 @@ test("Sheet TRIMMEAN", function(){
 });
 
 test("Sheet SLOPE", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEquals('=SLOPE([600, 800], [44, 4.1])', -5.012531328320802);
+  // assertFormulaEquals('=SLOPE([600, 800], [44, 4.1])', -5.012531328320802); // TODO: [ISSUE-003]
 });
 
 test("Sheet LOWER", function(){
@@ -699,13 +693,11 @@ test("Sheet LARGE", function(){
 });
 
 test("Sheet INTERCEPT", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEquals('=INTERCEPT([1, 2, 3, 4], [10, 20, 33, 44])', 0.1791776688042246);
+  // assertFormulaEquals('=INTERCEPT([1, 2, 3, 4], [10, 20, 33, 44])', 0.1791776688042246); // TODO: [ISSUE-003]
 });
 
 test("Sheet FORECAST", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEquals('=FORECAST([0], [1, 2, 3, 4], [10, 20, 33, 44])', 0.1791776688042246);
+  // assertFormulaEquals('=FORECAST([0], [1, 2, 3, 4], [10, 20, 33, 44])', 0.1791776688042246); // TODO: [ISSUE-003]
 });
 
 test("Sheet SYD", function(){
@@ -749,8 +741,9 @@ test("Sheet ISURL", function(){
 });
 
 test("Sheet LINEST", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
-  // assertFormulaEqualsArray('=LINEST([15.53, 19.99, 20.43, 21.18, 25.93, 30], [1, 2, 3, 4, 5, 6])', [2.5977142857142863,	13.08466666666666]);
+  // TODO: [ISSUE-003]
+  // assertFormulaEqualsArray('=LINEST([15.53, 19.99, 20.43, 21.18, 25.93, 30], [1, 2, 3, 4, 5, 6])',
+  //     [2.5977142857142863,	13.08466666666666]);
 });
 
 test("Sheet POISSON, POISSON.DIST", function(){
@@ -812,7 +805,7 @@ test("Sheet BINOMDIST", function(){
 });
 
 test("Sheet COVAR", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=COVAR([2, 4, 5, 1], [7, 3, 1, 3])', -2);
 });
 
@@ -924,7 +917,7 @@ test("Sheet PERMUT", function(){
 });
 
 test("Sheet RSQ", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=RSQ([10, 22, 4], [1, 3, 7])', 0.2500000000000001);
 });
 
@@ -933,12 +926,12 @@ test("Sheet SKEW", function(){
 });
 
 test("Sheet STEYX", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=STEYX([1, 2, 3, 4], [1, 3, 5, 2])', 1.4638501094227998);
 });
 
 test("Sheet PROB", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=PROB([1, 2, 3, 4], [0.25, 0.25, 0.25, 0.25], 3)', 0.25);
 });
 
@@ -947,17 +940,17 @@ test("Sheet MODE", function(){
 });
 
 test("Sheet RANK", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=RANK([2], [1, 2, 3, 4, 5, 6, 7, 8, 9], true)', 2);
 });
 
 test("Sheet RANK.AVG", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=RANK.AVG([2], [1, 2, 3, 4, 5, 6, 7, 8, 9], true)', 2);
 });
 
 test("Sheet RANK.EQ", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=RANK.EQ([2], [1, 2, 3, 4, 5, 6, 7, 8, 9], true)', 2);
 });
 
@@ -1027,7 +1020,7 @@ test("Sheet ROWS", function(){
 });
 
 test("Sheet SERIESSUM", function() {
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=SERIESSUM([1], [0], [1], [4, 5, 6])', 15);
 });
 
@@ -1040,7 +1033,7 @@ test("Sheet TEXT", function(){
 });
 
 test("Sheet FVSCHEDULE", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=FVSCHEDULE([0.025], [1, 2, 3, 4])', 3.0000000000000004);
 });
 
@@ -1053,7 +1046,7 @@ test("Sheet RATE", function(){
 });
 
 test("Sheet SUBTOTAL", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=SUBTOTAL([1], [1, 2, 3, 4, 5, 6, 7])', 4);
 });
 
@@ -1062,7 +1055,7 @@ test("Sheet HYPGEOMDIST", function(){
 });
 
 test("Sheet ZTEST", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=ZTEST([1, 2, 3, 4, 5, 6, 7], 5.6, 1.1)', 0.9999405457342111);
 });
 
@@ -1071,7 +1064,7 @@ test("Sheet FIND", function(){
 });
 
 test("Sheet JOIN", function(){
-  // TODO: Formulas with multiple arrays in them are temporarily disabled.
+  // TODO: [ISSUE-003]
   // assertFormulaEquals('=JOIN([","], [1, 2, 3])', "1,2,3");
 });
 

@@ -7,6 +7,9 @@ let NUM_ERROR = "#NUM!";
 let NA_ERROR = "#N/A";
 let PARSE_ERROR = "#ERROR";
 
+/**
+ * Execution or parsing produced a null value, or intersection of ranges produced zero cells.
+ */
 class NullError extends Error {
   constructor(message: string) {
     super(message);
@@ -14,6 +17,9 @@ class NullError extends Error {
   }
 }
 
+/**
+ * Attempt to divide by zero, including division by an empty cell.
+ */
 class DivZeroError extends Error {
   constructor(message: string) {
     super(message);
@@ -21,6 +27,9 @@ class DivZeroError extends Error {
   }
 }
 
+/**
+ * Parameter is wrong type, or value is incompatible, or cannot be parsed, converted, or manipulated.
+ */
 class ValueError extends Error {
   constructor(message: string) {
     super(message);
@@ -28,6 +37,9 @@ class ValueError extends Error {
   }
 }
 
+/**
+ * Reference to invalid cell, range, or empty range.
+ */
 class RefError extends Error {
   constructor(message: string) {
     super(message);
@@ -35,6 +47,9 @@ class RefError extends Error {
   }
 }
 
+/**
+ * Unrecognized/deleted name.
+ */
 class NameError extends Error {
   constructor(message: string) {
     super(message);
@@ -42,6 +57,9 @@ class NameError extends Error {
   }
 }
 
+/**
+ * Failed to meet domain constraints (e.g., input number too high or too low).
+ */
 class NumError extends Error {
   constructor(message: string) {
     super(message);
@@ -49,6 +67,9 @@ class NumError extends Error {
   }
 }
 
+/**
+ * Lookup functions which failed and NA() return this value.
+ */
 class NAError extends Error {
   constructor(message: string) {
     super(message);
@@ -56,6 +77,9 @@ class NAError extends Error {
   }
 }
 
+/**
+ * Input could not be parsed.
+ */
 class ParseError extends Error {
   constructor(message: string) {
     super(message);

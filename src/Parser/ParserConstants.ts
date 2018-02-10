@@ -351,6 +351,9 @@ symbolIndexToName[Symbol.EXCLAMATION_POINT] = "!";
 const SYMBOL_INDEX_TO_NAME = symbolIndexToName;
 
 
+/**
+ * State represents the state of the parser. Enums should be in the format {prev}_{next}.
+ */
 const enum State {
   // Start
   Start = 0,
@@ -412,10 +415,14 @@ const enum State {
   PrefixUnaryPlus_Expression = 34,
   Function_LeftParen = 35,
   Number_Ampersand_Expression = 43,
-  CLOSE_PAREN_ON_EXPRESSION = 57,
+  Expression_RightParen = 57,
+  Function_RightParenNoArguments = 58,
   Function_LeftParen_Expression = 60,
+  LeftParen_Array = 61,
   GTETwoExpressions = 69,
-  CLOSE_PAREN_ON_FUNCTION = 70
+  CLOSE_PAREN_ON_FUNCTION = 70,
+  Variable_FullError = 38,
+  Error_Variable = 37
 }
 
 
@@ -590,7 +597,7 @@ table[State.Error] = ObjectBuilder
   .add(Symbol.CARROT, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.ERROR_AND_CONTINUE])
-  .add(Symbol.VARIABLE, [SHIFT, 37])
+  .add(Symbol.VARIABLE, [SHIFT, State.Error_Variable])
   .add(Symbol.FULL_ERROR, [SHIFT, 18])
   .build();
 table[State.Variable] = ObjectBuilder
@@ -608,7 +615,7 @@ table[State.Variable] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
   .add(Symbol.DECIMAL, [REDUCE, ReduceActions.WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY])
-  .add(Symbol.FULL_ERROR, [SHIFT, 38])
+  .add(Symbol.FULL_ERROR, [SHIFT, State.Variable_FullError])
   .build();
 table[State.NumberUpper] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.REFLEXIVE_REDUCE])
@@ -866,7 +873,7 @@ table[State.LeftParen_Expression] = ObjectBuilder
   .add(Symbol.AMPERSAND, [SHIFT, State.Number_Ampersand])
   .add(Symbol.EQUALS, [SHIFT, State.Start_Equals])
   .add(Symbol.PLUS, [SHIFT, State.Number_Plus])
-  .add(Symbol.RIGHT_PAREN, [SHIFT, State.CLOSE_PAREN_ON_EXPRESSION])
+  .add(Symbol.RIGHT_PAREN, [SHIFT, State.Expression_RightParen])
   .add(Symbol.LESS_THAN, [SHIFT, State.LessThan])
   .add(Symbol.GREATER_THAN, [SHIFT, State.GreaterThan])
   .add(Symbol.MINUS, [SHIFT, State.Number_Minus])
@@ -912,14 +919,14 @@ table[State.Function_LeftParen] = ObjectBuilder
   .add(Symbol.STRING, [SHIFT, State.Start_String])
   .add(Symbol.PLUS, [SHIFT, State.PrefixUnaryPlus])
   .add(Symbol.LEFT_PAREN, [SHIFT, State.LeftParen])
-  .add(Symbol.RIGHT_PAREN, [SHIFT, 58])
+  .add(Symbol.RIGHT_PAREN, [SHIFT, State.Function_RightParenNoArguments])
   .add(Symbol.MINUS, [SHIFT, State.PrefixUnaryMinus])
   .add(Symbol.FUNCTION, [SHIFT, State.Function])
   .add(Symbol.EXP_SEQ, 59)
   .add(Symbol.CELL, State.Cell)
   .add(Symbol.FIXEDCELL, [SHIFT, State.FixedCell])
   .add(Symbol.CELL_UPPER, [SHIFT, State.CellUpper])
-  .add(Symbol.ARRAY, [SHIFT, 61])
+  .add(Symbol.ARRAY, [SHIFT, State.LeftParen_Array])
   .add(Symbol.VARIABLE, [SHIFT, State.Variable])
   .add(Symbol.NUMBER_UPPER, [SHIFT, State.NumberUpper])
   .add(Symbol.FULL_ERROR, [SHIFT, State.Pound])
@@ -939,10 +946,10 @@ table[State.Error_Error] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.ERROR_AND_CONTINUE_WITH_OTHER_ERRORS])
   .build();
-table[37] = ObjectBuilder
+table[State.Error_Variable] = ObjectBuilder
   .add(Symbol.FULL_ERROR, [REDUCE, ReduceActions.AS_ERROR])
   .build();
-table[38] = ObjectBuilder
+table[State.Variable_FullError] = ObjectBuilder
   .add(Symbol.VARIABLE, [SHIFT, 62])
   .build();
 table[39] = ObjectBuilder
@@ -1169,7 +1176,7 @@ table[State.VariableSeq_Decimal_Variable] = ObjectBuilder
   .add(Symbol.COMMA, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .add(Symbol.DECIMAL, [REDUCE, ReduceActions.ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH])
   .build();
-table[State.CLOSE_PAREN_ON_EXPRESSION] = ObjectBuilder
+table[State.Expression_RightParen] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.LAST_NUMBER])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.LAST_NUMBER])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.LAST_NUMBER])
@@ -1184,7 +1191,7 @@ table[State.CLOSE_PAREN_ON_EXPRESSION] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.LAST_NUMBER])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.LAST_NUMBER])
   .build();
-table[58] = ObjectBuilder
+table[State.Function_RightParenNoArguments] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
   .add(Symbol.AMPERSAND, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
   .add(Symbol.EQUALS, [REDUCE, ReduceActions.CALL_FUNCTION_LAST_BLANK])
@@ -1218,7 +1225,7 @@ table[State.Function_LeftParen_Expression] = ObjectBuilder
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.ENSURE_IS_ARRAY])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.ENSURE_IS_ARRAY])
   .build();
-table[61] = ObjectBuilder
+table[State.LeftParen_Array] = ObjectBuilder
   .add(Symbol.RIGHT_PAREN, [REDUCE, ReduceActions.ENSURE_YYTEXT_ARRAY])
   .add(Symbol.SEMI_COLON, [REDUCE, ReduceActions.ENSURE_YYTEXT_ARRAY])
   .add(Symbol.COMMA, [REDUCE, ReduceActions.ENSURE_YYTEXT_ARRAY])

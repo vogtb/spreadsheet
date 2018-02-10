@@ -346,8 +346,8 @@ test("NPV", function() {
 
 
 test("NPER", function() {
-  assertEquals(NPER(0.04, 100, 4000, 0, 0), -24.362418941571317);
-  assertEquals(NPER(0.04, 100, 4000), -24.362418941571317);
+  assertEquals(NPER(0.04, 100, 4000, 0, 0), -24.362418941571313);
+  assertEquals(NPER(0.04, 100, 4000), -24.362418941571313);
   assertEquals(NPER(0.02, 100, 4000, 0, 0), -29.68225660720854);
   assertEquals(NPER(0.01, 100, 4000, 0, 0), -33.815180780052486);
   assertEquals(NPER(0.04, -50, 1000, 20, 0), 41.44012515117696);

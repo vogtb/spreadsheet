@@ -286,7 +286,7 @@ test("EXPONDIST", function(){
 
 test("FINV", function(){
   assertEquals(FINV(0.42, 2, 3), 1.174597274485816);
-  assertEquals(FINV(0.42, 2, 5), 1.0370426242728021);
+  assertEquals(FINV(0.42, 2, 5), 1.037042624272801);
   assertEquals(FINV(0.42, 33, 5), 1.303222112500911);
   assertEquals(FINV(["0.42"], [33, []], [5]), 1.303222112500911);
   assertEquals(FINV("0.42", 2, 3), 1.174597274485816);
@@ -337,7 +337,7 @@ test("FISHERINV", function(){
   assertEquals(FISHERINV("0.962"), 0.7451676440945232);
   assertEquals(FISHERINV(0), 0);
   assertEquals(FISHERINV(false), 0);
-  assertEquals(FISHERINV(true), 0.761594155955765);
+  assertEquals(FISHERINV(true), 0.7615941559557649);
   assertEquals(FISHERINV(0.92), 0.7258974148490807);
   catchAndAssertEquals(function() {
     FISHER("str");
@@ -728,11 +728,11 @@ test("FORCAST", function() {
 
 
 test("POISSON", function() {
-  assertEquals(POISSON(3, 500, true), 1.4932281660406229e-210);
-  assertEquals(POISSON(30, 500, true), 2.660801877634559e-169);
-  assertEquals(POISSON(3, 5, true), 0.26502591529736175);
-  assertEquals(POISSON(3, 5, false), 0.14037389581428059);
-  assertEquals(POISSON(3, 5), 0.14037389581428059);
+  assertEquals(POISSON(3, 500, true), 1.4932281660406588e-210);
+  assertEquals(POISSON(30, 500, true), 2.660801877634623e-169);
+  assertEquals(POISSON(3, 5, true), 0.2650259152973617);
+  assertEquals(POISSON(3, 5, false), 0.14037389581428056);
+  assertEquals(POISSON(3, 5), 0.14037389581428056);
   catchAndAssertEquals(function() {
     POISSON(-3, 5);
   }, ERRORS.NUM_ERROR);
@@ -781,7 +781,7 @@ test("PERCENTRANK$EXC", function() {
 
 test("NORMSINV", function() {
   assertEquals(NORMSINV(0.1), -1.2815515655446006);
-  assertEquals(NORMSINV(0.4), -0.2533471031357999);
+  assertEquals(NORMSINV(0.4), -0.25334710313580006);
   catchAndAssertEquals(function() {
     NORMSINV(0);
   }, ERRORS.NUM_ERROR);
@@ -813,8 +813,8 @@ test("NORMDIST", function() {
   assertEquals(NORMDIST(1, 0, 6, true), 0.5661838326109037);
   assertEquals(NORMDIST(1, 0, 6, false), 0.06557328601698999);
   assertEquals(NORMDIST(0.5, 0.44, 8, true), 0.5029920390526184);
-  assertEquals(NORMDIST(0.5, 0.44, 8, false), 0.04986638253844748);
-  assertEquals(NORMDIST(-0.5, 0.44, 8, true), 0.45323192202214374);
+  assertEquals(NORMDIST(0.5, 0.44, 8, false), 0.049866382538447475);
+  assertEquals(NORMDIST(-0.5, 0.44, 8, true), 0.4532319220221437);
   assertEquals(NORMDIST(-0.5, -100, 100, true), 0.840131867824506);
   catchAndAssertEquals(function() {
     NORMDIST(-0.5, 0.44, 0, true);
@@ -829,9 +829,9 @@ test("NORMDIST", function() {
 
 
 test("NORMINV", function() {
-  assertEquals(NORMINV(0.8, 0, 6), 5.049727401437487);
+  assertEquals(NORMINV(0.8, 0, 6), 5.0497274014374876);
   assertEquals(NORMINV(0.2, 0, 6), -5.049727401437487);
-  assertEquals(NORMINV(0.4, 1, 6), -0.5200826188147996);
+  assertEquals(NORMINV(0.4, 1, 6), -0.5200826188148002);
   catchAndAssertEquals(function() {
     NORMINV(-0.5, 0.44, 1);
   }, ERRORS.NUM_ERROR);
@@ -897,7 +897,7 @@ test("HARMEAN", function() {
 test("CONFIDENCE", function() {
   assertEquals(CONFIDENCE(0.04, 6.48, 25), 2.6616585881788426);
   assertEquals(CONFIDENCE(0.0001, 101.1, 24281), 2.5242568756291566);
-  assertEquals(CONFIDENCE(0.8, 101.1, 24281), 0.1643742612132182);
+  assertEquals(CONFIDENCE(0.8, 101.1, 24281), 0.1643742612132184);
   catchAndAssertEquals(function() {
     CONFIDENCE(0, 101.1, 24281);
   }, ERRORS.NUM_ERROR);
@@ -951,7 +951,7 @@ test("COVAR", function() {
 });
 
 test("WEIBULL", function() {
-  assertEquals(WEIBULL(2.4, 2, 4, true), 0.30232367392896886);
+  assertEquals(WEIBULL(2.4, 2, 4, true), 0.302323673928969);
   assertEquals(WEIBULL(3.1, 4, 4, true), 0.3028470073265427);
   assertEquals(WEIBULL(0.16, 1, 4, false), 0.2401973597880808);
   catchAndAssertEquals(function() {

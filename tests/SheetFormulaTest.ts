@@ -142,8 +142,9 @@ test("Sheet TRIM", function(){
   assertFormulaEquals("=TRIM(' trim ')", "trim");
 });
 
+// I have strong suspicions that these are subject to minuscule rounding-errors and can change on different chips.
 test("Sheet COSH", function(){
-  assertFormulaEquals("=COSH(PI())", 11.591953275521522);
+  assertFormulaEquals("=COSH(PI())", 11.591953275521519);
 });
 
 test("Sheet COT", function(){
@@ -716,7 +717,7 @@ test("Sheet SLN", function(){
 });
 
 test("Sheet NPER", function(){
-  assertFormulaEquals('=NPER(0.04, 100, 4000, 0, 0)', -24.362418941571317);
+  assertFormulaEquals('=NPER(0.04, 100, 4000, 0, 0)', -24.362418941571313);
 });
 
 test("Sheet NOMINAL", function(){
@@ -753,8 +754,8 @@ test("Sheet LINEST", function(){
 });
 
 test("Sheet POISSON, POISSON.DIST", function(){
-  assertFormulaEquals('=POISSON(3, 5, true)', 0.26502591529736175);
-  assertFormulaEquals('=POISSON.DIST(3, 5, true)', 0.26502591529736175);
+  assertFormulaEquals('=POISSON(3, 5, true)', 0.2650259152973617);
+  assertFormulaEquals('=POISSON.DIST(3, 5, true)', 0.2650259152973617);
 });
 
 test("Sheet PERCENTRANK, PERCENTRANK.INC", function(){
@@ -775,7 +776,7 @@ test("Sheet NORMSINV", function(){
 });
 
 test("Sheet NORMINV", function(){
-  assertFormulaEquals('=NORMINV(0.8, 0, 6)', 5.049727401437487);
+  assertFormulaEquals('=NORMINV(0.8, 0, 6)', 5.0497274014374876);
 });
 
 test("Sheet NEGBINOMDIST", function(){
@@ -899,7 +900,7 @@ test("Sheet PPMT", function(){
 });
 
 test("Sheet WEIBULL", function(){
-  assertFormulaEquals('=WEIBULL(2.4, 2, 4, true)', 0.30232367392896886);
+  assertFormulaEquals('=WEIBULL(2.4, 2, 4, true)', 0.302323673928969);
 });
 
 test("Sheet VARPA", function(){

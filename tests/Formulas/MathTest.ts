@@ -348,9 +348,9 @@ test("ATAN2", function(){
 
 test("ATANH", function(){
   assertEquals(ATANH(0.51), 0.5627297693521489);
-  assertEquals(ATANH(0.44), 0.47223080442042564);
+  assertEquals(ATANH(0.44), 0.4722308044204257);
   assertEquals(ATANH(0), 0);
-  assertEquals(ATANH("0.1"), 0.10033534773107562);
+  assertEquals(ATANH("0.1"), 0.10033534773107558);
   assertEquals(ATANH(false), 0);
   catchAndAssertEquals(function() {
     ATANH(true);
@@ -434,7 +434,7 @@ test("COS", function(){
 
 
 test("COSH", function(){
-  assertEquals(COSH(PI()), 11.591953275521522);
+  assertEquals(COSH(PI()), 11.591953275521519);
   assertEquals(COSH(1), 1.5430806348152437);
   assertEquals(COSH(false), 1);
   assertEquals(COSH(0), 1);

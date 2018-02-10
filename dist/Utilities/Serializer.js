@@ -3,7 +3,7 @@ exports.__esModule = true;
 /**
  * Class to hold static methods for serialization.
  */
-var Serializer = /** @class */ (function () {
+var Serializer = (function () {
     function Serializer() {
     }
     Serializer.serialize = function (value) {

@@ -15,7 +15,7 @@ exports.CELL_ID_ERROR = CELL_ID_ERROR;
 /**
  * Represents a cell id error, and is thrown when a cells id does not conform to A1 notation.
  */
-var CellIdError = /** @class */ (function (_super) {
+var CellIdError = (function (_super) {
     __extends(CellIdError, _super);
     function CellIdError(msg) {
         var _this = _super.call(this) || this;
@@ -30,7 +30,7 @@ exports.CellIdError = CellIdError;
  * Cell represents a cell in the spreadsheet. It contains a nullable rawFormulaText, and a value, which is not nullable unless
  * the parsing of the rawFormulaText results in an error.
  */
-var Cell = /** @class */ (function () {
+var Cell = (function () {
     /**
      * Creates an empty cell with an id.
      * @param id key of the cell in A1-format.

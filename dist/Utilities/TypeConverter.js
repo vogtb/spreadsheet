@@ -136,7 +136,7 @@ function matchTimestampAndMutateMoment(timestampString, momentToMutate) {
 /**
  * Static class of helpers used to convert let ious types to each other.
  */
-var TypeConverter = /** @class */ (function () {
+var TypeConverter = (function () {
     function TypeConverter() {
     }
     /**
@@ -782,10 +782,10 @@ var TypeConverter = /** @class */ (function () {
         var v = (((hours % 24) * 60 * 60) + ((minutes) * 60) + (seconds)) / 86400;
         return v % 1;
     };
-    TypeConverter.ORIGIN_MOMENT = moment.utc([1899, 11, 30]).startOf("day");
-    TypeConverter.SECONDS_IN_DAY = 86400;
     return TypeConverter;
 }());
+TypeConverter.ORIGIN_MOMENT = moment.utc([1899, 11, 30]).startOf("day");
+TypeConverter.SECONDS_IN_DAY = 86400;
 exports.TypeConverter = TypeConverter;
 /**
  * Catches divide by zero situations and throws them as errors

@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var Errors_1 = require("../Errors");
 var Formulas_1 = require("../Formulas");
+var Symbols_1 = require("./Symbols");
 var ParserConstants_1 = require("./ParserConstants");
 var MoreUtils_1 = require("../Utilities/MoreUtils");
 var TypeConverter_1 = require("../Utilities/TypeConverter");
@@ -29,27 +30,27 @@ var Parser = (function () {
             var vsl = virtualStack.length - 1;
             try {
                 switch (reduceActionToPerform) {
-                    case 1 /* RETURN_LAST */:
+                    case 1 /* ReturnLast */:
                         return virtualStack[vsl - 1];
-                    case 2 /* CALL_VARIABLE */:
+                    case 2 /* CallVariable */:
                         this.$ = sharedStateYY.handler.callVariable.call(this, virtualStack[vsl]);
                         break;
-                    case 5 /* AS_NUMBER */:
+                    case 5 /* AsNumber */:
                         this.$ = TypeConverter_1.TypeConverter.valueToNumber(virtualStack[vsl]);
                         break;
-                    case 6 /* AS_STRING */:
+                    case 6 /* AsString */:
                         this.$ = MoreUtils_1.string(virtualStack[vsl]);
                         break;
-                    case 7 /* AMPERSAND */:
+                    case 7 /* Ampersand */:
                         this.$ = TypeConverter_1.TypeConverter.valueToString(virtualStack[vsl - 2]) + TypeConverter_1.TypeConverter.valueToString(virtualStack[vsl]);
                         break;
-                    case 8 /* EQUALS */:
+                    case 8 /* Equals */:
                         this.$ = Math_1.EQ(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
-                    case 9 /* PLUS */:
+                    case 9 /* Plus */:
                         this.$ = Math_1.SUM(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
-                    case 10 /* LAST_NUMBER */:
+                    case 10 /* LastNumber */:
                         this.$ = TypeConverter_1.TypeConverter.valueToNumber(virtualStack[vsl - 1]);
                         break;
                     case 11 /* LTE */:
@@ -58,7 +59,7 @@ var Parser = (function () {
                     case 12 /* GTE */:
                         this.$ = Math_1.GTE(virtualStack[vsl - 3], virtualStack[vsl]);
                         break;
-                    case 13 /* NOT_EQ */:
+                    case 13 /* NotEqual */:
                         this.$ = !Math_1.EQ(virtualStack[vsl - 3], virtualStack[vsl]);
                         break;
                     case 15 /* GT */:
@@ -67,49 +68,49 @@ var Parser = (function () {
                     case 16 /* LT */:
                         this.$ = Math_1.LT(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
-                    case 17 /* MINUS */:
+                    case 17 /* Minus */:
                         this.$ = Math_1.MINUS(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
-                    case 18 /* MULTIPLY */:
+                    case 18 /* Multiply */:
                         this.$ = Math_1.MULTIPLY(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
-                    case 19 /* DIVIDE */:
+                    case 19 /* Divide */:
                         this.$ = Math_1.DIVIDE(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
-                    case 20 /* TO_POWER */:
+                    case 20 /* ToPower */:
                         this.$ = Math_1.POWER(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
-                    case 21 /* INVERT_NUM */:
+                    case 21 /* InvertNumber */:
                         this.$ = TypeConverter_1.TypeConverter.valueToInvertedNumber(virtualStack[vsl]);
                         if (isNaN(this.$)) {
                             this.$ = 0;
                         }
                         break;
-                    case 22 /* TO_NUMBER_NAN_AS_ZERO */:
+                    case 22 /* ToNumberNANAsZero */:
                         this.$ = TypeConverter_1.TypeConverter.valueToNumber(virtualStack[vsl]);
                         if (isNaN(this.$)) {
                             this.$ = 0;
                         }
                         break;
-                    case 23 /* CALL_FUNCTION_LAST_BLANK */:
+                    case 23 /* CallFunctionLastBlank */:
                         this.$ = sharedStateYY.handler.callFunction.call(this, virtualStack[vsl - 2], '');
                         break;
-                    case 24 /* CALL_FUNCTION_LAST_TWO_IN_STACK */:
+                    case 24 /* CallFunctionLastTwoInStack */:
                         this.$ = sharedStateYY.handler.callFunction.call(this, virtualStack[vsl - 3], virtualStack[vsl - 1]);
                         break;
-                    case 28 /* FIXED_CELL_VAL */:
+                    case 28 /* FixedCellValue */:
                         this.$ = sharedStateYY.handler.fixedCellValue(sharedStateYY.originCellId, virtualStack[vsl]);
                         break;
-                    case 29 /* FIXED_CELL_RANGE_VAL */:
+                    case 29 /* FixedCellRangeValue */:
                         this.$ = sharedStateYY.handler.fixedCellRangeValue(sharedStateYY.originCellId, virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
-                    case 30 /* CELL_VALUE */:
+                    case 30 /* CellValue */:
                         this.$ = sharedStateYY.handler.cellValue(sharedStateYY.originCellId, virtualStack[vsl]);
                         break;
-                    case 31 /* CELL_RANGE_VALUE */:
+                    case 31 /* CellRangeValue */:
                         this.$ = sharedStateYY.handler.cellRangeValue(sharedStateYY.originCellId, virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
-                    case 32 /* ENSURE_IS_ARRAY */:
+                    case 32 /* EnsureIsArray */:
                         if (MoreUtils_1.isArray(virtualStack[vsl])) {
                             this.$ = virtualStack[vsl];
                         }
@@ -117,39 +118,39 @@ var Parser = (function () {
                             this.$ = [virtualStack[vsl]];
                         }
                         break;
-                    case 33 /* ENSURE_YYTEXT_ARRAY */:
+                    case 33 /* EnsureYYTextIsArray */:
                         var result_1 = [], arr = eval("[" + rawValueOfReduceOriginToken + "]");
                         arr.forEach(function (item) {
                             result_1.push(item);
                         });
                         this.$ = result_1;
                         break;
-                    case 34 /* REDUCE_INT */:
-                    case 35 /* REDUCE_PERCENT */:
+                    case 34 /* ReduceInt */:
+                    case 35 /* ReducePercent */:
                         virtualStack[vsl - 2].push(virtualStack[vsl]);
                         this.$ = virtualStack[vsl - 2];
                         break;
-                    case 36 /* WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY */:
+                    case 36 /* WrapCurrentTokenAsArray */:
                         this.$ = [virtualStack[vsl]];
                         break;
-                    case 37 /* ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH */:
+                    case 37 /* EnsureLastTwoINArrayAndPush */:
                         this.$ = (MoreUtils_1.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
                         this.$.push(virtualStack[vsl]);
                         break;
-                    case 38 /* REFLEXIVE_REDUCE */:
+                    case 38 /* ReflexiveReduce */:
                         this.$ = virtualStack[vsl];
                         break;
-                    case 39 /* REDUCE_FLOAT */:
+                    case 39 /* ReduceFloat */:
                         this.$ = TypeConverter_1.TypeConverter.valueToNumber(virtualStack[vsl - 2] + '.' + virtualStack[vsl]);
                         break;
-                    case 40 /* REDUCE_PREV_AS_PERCENT */:
+                    case 40 /* ReducePrevAsPercent */:
                         this.$ = virtualStack[vsl - 1] * 0.01;
                         break;
-                    case 41 /* REDUCE_LAST_THREE_A */:
-                    case 42 /* REDUCE_LAST_THREE_B */:
+                    case 41 /* ReduceLastThreeA */:
+                    case 42 /* ReduceLastThreeB */:
                         this.$ = virtualStack[vsl - 2] + virtualStack[vsl - 1] + virtualStack[vsl];
                         break;
-                    case 43 /* AS_ERROR */:
+                    case 43 /* AsError */:
                         this.$ = Errors_1.constructErrorByName(virtualStack[vsl]);
                         break;
                 }
@@ -158,45 +159,45 @@ var Parser = (function () {
                 if (catchOnFailure) {
                     // NOTE: I'm not sure if some of these ReduceAction map correctly in the case of an error.
                     switch (reduceActionToPerform) {
-                        case 1 /* RETURN_LAST */:
+                        case 1 /* ReturnLast */:
                             return virtualStack[vsl - 1];
-                        case 2 /* CALL_VARIABLE */:
-                        case 5 /* AS_NUMBER */:
-                        case 6 /* AS_STRING */:
-                        case 7 /* AMPERSAND */:
-                        case 8 /* EQUALS */:
-                        case 9 /* PLUS */:
-                        case 10 /* LAST_NUMBER */:
+                        case 2 /* CallVariable */:
+                        case 5 /* AsNumber */:
+                        case 6 /* AsString */:
+                        case 7 /* Ampersand */:
+                        case 8 /* Equals */:
+                        case 9 /* Plus */:
+                        case 10 /* LastNumber */:
                         case 11 /* LTE */:
                         case 12 /* GTE */:
-                        case 13 /* NOT_EQ */:
+                        case 13 /* NotEqual */:
                         case 15 /* GT */:
                         case 16 /* LT */:
-                        case 17 /* MINUS */:
-                        case 18 /* MULTIPLY */:
-                        case 19 /* DIVIDE */:
-                        case 20 /* TO_POWER */:
-                        case 23 /* CALL_FUNCTION_LAST_BLANK */:
-                        case 24 /* CALL_FUNCTION_LAST_TWO_IN_STACK */:
-                        case 28 /* FIXED_CELL_VAL */:
-                        case 29 /* FIXED_CELL_RANGE_VAL */:
-                        case 30 /* CELL_VALUE */:
-                        case 31 /* CELL_RANGE_VALUE */:
+                        case 17 /* Minus */:
+                        case 18 /* Multiply */:
+                        case 19 /* Divide */:
+                        case 20 /* ToPower */:
+                        case 23 /* CallFunctionLastBlank */:
+                        case 24 /* CallFunctionLastTwoInStack */:
+                        case 28 /* FixedCellValue */:
+                        case 29 /* FixedCellRangeValue */:
+                        case 30 /* CellValue */:
+                        case 31 /* CellRangeValue */:
                             this.$ = e;
                             break;
-                        case 21 /* INVERT_NUM */:
-                            this.$ = e;
-                            if (isNaN(this.$)) {
-                                this.$ = 0;
-                            }
-                            break;
-                        case 22 /* TO_NUMBER_NAN_AS_ZERO */:
+                        case 21 /* InvertNumber */:
                             this.$ = e;
                             if (isNaN(this.$)) {
                                 this.$ = 0;
                             }
                             break;
-                        case 32 /* ENSURE_IS_ARRAY */:
+                        case 22 /* ToNumberNANAsZero */:
+                            this.$ = e;
+                            if (isNaN(this.$)) {
+                                this.$ = 0;
+                            }
+                            break;
+                        case 32 /* EnsureIsArray */:
                             if (MoreUtils_1.isArray(virtualStack[vsl])) {
                                 this.$ = virtualStack[vsl];
                             }
@@ -204,36 +205,36 @@ var Parser = (function () {
                                 this.$ = [virtualStack[vsl]];
                             }
                             break;
-                        case 33 /* ENSURE_YYTEXT_ARRAY */:
+                        case 33 /* EnsureYYTextIsArray */:
                             var result_2 = [], arr = eval("[" + rawValueOfReduceOriginToken + "]");
                             arr.forEach(function (item) {
                                 result_2.push(item);
                             });
                             this.$ = result_2;
                             break;
-                        case 34 /* REDUCE_INT */:
-                        case 35 /* REDUCE_PERCENT */:
+                        case 34 /* ReduceInt */:
+                        case 35 /* ReducePercent */:
                             virtualStack[vsl - 2].push(virtualStack[vsl]);
                             this.$ = virtualStack[vsl - 2];
                             break;
-                        case 36 /* WRAP_CURRENT_INDEX_TOKEN_AS_ARRAY */:
+                        case 36 /* WrapCurrentTokenAsArray */:
                             this.$ = [virtualStack[vsl]];
                             break;
-                        case 37 /* ENSURE_LAST_TWO_IN_ARRAY_AND_PUSH */:
+                        case 37 /* EnsureLastTwoINArrayAndPush */:
                             this.$ = (MoreUtils_1.isArray(virtualStack[vsl - 2]) ? virtualStack[vsl - 2] : [virtualStack[vsl - 2]]);
                             this.$.push(virtualStack[vsl]);
                             break;
-                        case 38 /* REFLEXIVE_REDUCE */:
+                        case 38 /* ReflexiveReduce */:
                             this.$ = virtualStack[vsl];
                             break;
-                        case 39 /* REDUCE_FLOAT */:
+                        case 39 /* ReduceFloat */:
                             this.$ = parseFloat(virtualStack[vsl - 2] + '.' + virtualStack[vsl]);
                             break;
-                        case 40 /* REDUCE_PREV_AS_PERCENT */:
+                        case 40 /* ReducePrevAsPercent */:
                             this.$ = virtualStack[vsl - 1] * 0.01;
                             break;
-                        case 41 /* REDUCE_LAST_THREE_A */:
-                        case 42 /* REDUCE_LAST_THREE_B */:
+                        case 41 /* ReduceLastThreeA */:
+                        case 42 /* ReduceLastThreeB */:
                             this.$ = virtualStack[vsl - 2] + virtualStack[vsl - 1] + virtualStack[vsl];
                             break;
                     }
@@ -243,7 +244,7 @@ var Parser = (function () {
                 }
             }
         },
-        defaultActions: { 19: [ParserConstants_1.REDUCE, 1 /* RETURN_LAST */] },
+        defaultActions: { 19: [ParserConstants_1.REDUCE, 1 /* ReturnLast */] },
         parseError: function parseError(str, hash) {
             if (hash.recoverable) {
                 this.trace(str);
@@ -426,7 +427,7 @@ var Parser = (function () {
                 //   Reduce: enough tokens have been gathered to reduce input through evaluation.
                 //   Accept: return.
                 switch (action[0]) {
-                    case ParserConstants_1.SHIFT:// Shift
+                    case ParserConstants_1.SHIFT:
                         stack.push(symbol);
                         semanticValueStack.push(lexer.yytext);
                         locationStack.push(lexer.yylloc);
@@ -452,7 +453,7 @@ var Parser = (function () {
                             preErrorSymbol = null;
                         }
                         break;
-                    case ParserConstants_1.REDUCE:// Reduce
+                    case ParserConstants_1.REDUCE:
                         // console.log("REDUCE", "literal", lexer.yytext, "   symbol", symbol, "   symbol name", SYMBOL_INDEX_TO_NAME[symbol], "   action", action,
                         //     "   stack", stack, "   semanticValueStack", semanticValueStack);
                         var currentProduction = ParserConstants_1.PRODUCTIONS[action[1]];
@@ -756,115 +757,115 @@ var Parser = (function () {
             options: {},
             mapRuleIndexToSymbolEnumeration: function (ruleIndex) {
                 switch (ruleIndex) {
-                    case 0 /* WHITE_SPACE */:
+                    case 0 /* WhiteSpace */:
                         // skip whitespace
                         break;
-                    case 1 /* DOUBLE_QUOTES */:
-                        return ParserConstants_1.Symbol.STRING;
-                    case 2 /* SINGLE_QUOTES */:
-                        return ParserConstants_1.Symbol.STRING;
-                    case 3 /* FORMULA_NAME */:
-                        return ParserConstants_1.Symbol.FUNCTION;
-                    case 6 /* $_A1_CELL */:
-                        return ParserConstants_1.Symbol.FIXEDCELL;
-                    case 7 /* A1_CELL */:
-                        return ParserConstants_1.Symbol.CELL_UPPER;
-                    case 8 /* FORMULA_NAME_SIMPLE */:
-                        return ParserConstants_1.Symbol.FUNCTION;
-                    case 9 /* VARIABLE */:
-                        return ParserConstants_1.Symbol.VARIABLE;
-                    case 10 /* SIMPLE_VARIABLE */:
-                        return ParserConstants_1.Symbol.VARIABLE;
-                    case 11 /* INTEGER */:
-                        return ParserConstants_1.Symbol.NUMBER_UPPER;
-                    case 12 /* OPEN_AND_CLOSE_OF_ARRAY */:
-                        return ParserConstants_1.Symbol.ARRAY;
-                    case 13 /* DOLLAR_SIGN */:
+                    case 1 /* DoubleQuotes */:
+                        return Symbols_1.Symbol.String;
+                    case 2 /* SingleQuotes */:
+                        return Symbols_1.Symbol.String;
+                    case 3 /* FormulaName */:
+                        return Symbols_1.Symbol.Function;
+                    case 6 /* $A1Cell */:
+                        return Symbols_1.Symbol.FixedCell;
+                    case 7 /* A1Cell */:
+                        return Symbols_1.Symbol.CellUpper;
+                    case 8 /* FormulaNameSimple */:
+                        return Symbols_1.Symbol.Function;
+                    case 9 /* Variable */:
+                        return Symbols_1.Symbol.Variable;
+                    case 10 /* SimpleVariable */:
+                        return Symbols_1.Symbol.Variable;
+                    case 11 /* Integer */:
+                        return Symbols_1.Symbol.NumberUpper;
+                    case 12 /* SelfContainedArray */:
+                        return Symbols_1.Symbol.Array;
+                    case 13 /* DollarSign */:
                         // skip whitespace??
                         break;
-                    case 14 /* AMPERSAND_SIGN */:
-                        return ParserConstants_1.Symbol.AMPERSAND;
-                    case 15 /* SINGLE_WHITESPACE */:
+                    case 14 /* Ampersand */:
+                        return Symbols_1.Symbol.Ampersand;
+                    case 15 /* SingleWhitespace */:
                         return ' ';
-                    case 16 /* PERIOD */:
-                        return ParserConstants_1.Symbol.DECIMAL;
-                    case 17 /* COLON */:
-                        return ParserConstants_1.Symbol.COLON;
-                    case 18 /* SEMI_COLON */:
-                        return ParserConstants_1.Symbol.SEMI_COLON;
-                    case 19 /* COMMA */:
-                        return ParserConstants_1.Symbol.COMMA;
-                    case 20 /* ASTERISK */:
-                        return ParserConstants_1.Symbol.ASTERISK;
-                    case 21 /* FORWARD_SLASH */:
-                        return ParserConstants_1.Symbol.DIVIDE;
-                    case 22 /* MINUS_SIGN */:
-                        return ParserConstants_1.Symbol.MINUS;
-                    case 23 /* PLUS_SIGN */:
-                        return ParserConstants_1.Symbol.PLUS;
-                    case 24 /* CARET_SIGN */:
-                        return ParserConstants_1.Symbol.CARROT;
-                    case 25 /* OPEN_PAREN */:
-                        return ParserConstants_1.Symbol.LEFT_PAREN;
-                    case 26 /* CLOSE_PAREN */:
-                        return ParserConstants_1.Symbol.RIGHT_PAREN;
-                    case 27 /* GREATER_THAN_SIGN */:
-                        return ParserConstants_1.Symbol.GREATER_THAN;
-                    case 28 /* LESS_THAN_SIGN */:
-                        return ParserConstants_1.Symbol.LESS_THAN;
-                    case 30 /* OPEN_DOUBLE_QUOTE */:
+                    case 16 /* Period */:
+                        return Symbols_1.Symbol.Decimal;
+                    case 17 /* Colon */:
+                        return Symbols_1.Symbol.Colon;
+                    case 18 /* Semicolon */:
+                        return Symbols_1.Symbol.Semicolon;
+                    case 19 /* Comma */:
+                        return Symbols_1.Symbol.Comma;
+                    case 20 /* Asterisk */:
+                        return Symbols_1.Symbol.Asterisk;
+                    case 21 /* ForwardSlash */:
+                        return Symbols_1.Symbol.Divide;
+                    case 22 /* Minus */:
+                        return Symbols_1.Symbol.Minus;
+                    case 23 /* Plus */:
+                        return Symbols_1.Symbol.Plus;
+                    case 24 /* Caret */:
+                        return Symbols_1.Symbol.Carrot;
+                    case 25 /* OpenParen */:
+                        return Symbols_1.Symbol.LeftParen;
+                    case 26 /* CloseParen */:
+                        return Symbols_1.Symbol.RightParen;
+                    case 27 /* GreaterThan */:
+                        return Symbols_1.Symbol.GreaterThan;
+                    case 28 /* LessThanSign */:
+                        return Symbols_1.Symbol.LessThan;
+                    case 30 /* OpenDoubleQuote */:
                         return '"';
-                    case 31 /* OPEN_SINGLE_QUITE */:
+                    case 31 /* OpenSingleQuote */:
                         return "'";
-                    case 32 /* EXCLAMATION_POINT_RULE */:
+                    case 32 /* ExclamationPoint */:
                         return "!";
-                    case 33 /* EQUALS_SIGN */:
-                        return ParserConstants_1.Symbol.EQUALS;
-                    case 34 /* PERCENT_SIGN */:
-                        return ParserConstants_1.Symbol.PERCENT;
-                    case 35 /* FULL_ERROR */:
-                        return ParserConstants_1.Symbol.FULL_ERROR;
-                    case 36 /* END_OF_STRING */:
-                        return ParserConstants_1.Symbol.EOF;
+                    case 33 /* Equals */:
+                        return Symbols_1.Symbol.Equals;
+                    case 34 /* Percent */:
+                        return Symbols_1.Symbol.Percent;
+                    case 35 /* FullError */:
+                        return Symbols_1.Symbol.FullError;
+                    case 36 /* EndOfString */:
+                        return Symbols_1.Symbol.EOF;
                 }
             },
             conditions: {
                 INITIAL: {
                     rules: [
-                        0 /* WHITE_SPACE */,
-                        1 /* DOUBLE_QUOTES */,
-                        2 /* SINGLE_QUOTES */,
-                        3 /* FORMULA_NAME */,
-                        6 /* $_A1_CELL */,
-                        7 /* A1_CELL */,
-                        8 /* FORMULA_NAME_SIMPLE */,
-                        9 /* VARIABLE */,
-                        10 /* SIMPLE_VARIABLE */,
-                        11 /* INTEGER */,
-                        12 /* OPEN_AND_CLOSE_OF_ARRAY */,
-                        13 /* DOLLAR_SIGN */,
-                        14 /* AMPERSAND_SIGN */,
-                        15 /* SINGLE_WHITESPACE */,
-                        16 /* PERIOD */,
-                        17 /* COLON */,
-                        18 /* SEMI_COLON */,
-                        19 /* COMMA */,
-                        20 /* ASTERISK */,
-                        21 /* FORWARD_SLASH */,
-                        22 /* MINUS_SIGN */,
-                        23 /* PLUS_SIGN */,
-                        24 /* CARET_SIGN */,
-                        25 /* OPEN_PAREN */,
-                        26 /* CLOSE_PAREN */,
-                        27 /* GREATER_THAN_SIGN */,
-                        28 /* LESS_THAN_SIGN */,
-                        30 /* OPEN_DOUBLE_QUOTE */,
-                        31 /* OPEN_SINGLE_QUITE */,
-                        32 /* EXCLAMATION_POINT_RULE */,
-                        33 /* EQUALS_SIGN */,
-                        34 /* PERCENT_SIGN */,
-                        35 /* FULL_ERROR */,
-                        36 /* END_OF_STRING */,
+                        0 /* WhiteSpace */,
+                        1 /* DoubleQuotes */,
+                        2 /* SingleQuotes */,
+                        3 /* FormulaName */,
+                        6 /* $A1Cell */,
+                        7 /* A1Cell */,
+                        8 /* FormulaNameSimple */,
+                        9 /* Variable */,
+                        10 /* SimpleVariable */,
+                        11 /* Integer */,
+                        12 /* SelfContainedArray */,
+                        13 /* DollarSign */,
+                        14 /* Ampersand */,
+                        15 /* SingleWhitespace */,
+                        16 /* Period */,
+                        17 /* Colon */,
+                        18 /* Semicolon */,
+                        19 /* Comma */,
+                        20 /* Asterisk */,
+                        21 /* ForwardSlash */,
+                        22 /* Minus */,
+                        23 /* Plus */,
+                        24 /* Caret */,
+                        25 /* OpenParen */,
+                        26 /* CloseParen */,
+                        27 /* GreaterThan */,
+                        28 /* LessThanSign */,
+                        30 /* OpenDoubleQuote */,
+                        31 /* OpenSingleQuote */,
+                        32 /* ExclamationPoint */,
+                        33 /* Equals */,
+                        34 /* Percent */,
+                        35 /* FullError */,
+                        36 /* EndOfString */,
                         37
                     ],
                     "inclusive": true

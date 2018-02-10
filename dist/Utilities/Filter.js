@@ -4,7 +4,7 @@ var Errors_1 = require("../Errors");
 /**
  * Static class to help filter down Arrays
  */
-var Filter = /** @class */ (function () {
+var Filter = (function () {
     function Filter() {
     }
     /**

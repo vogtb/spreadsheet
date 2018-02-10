@@ -3,7 +3,7 @@ exports.__esModule = true;
 /**
  * Build a regular expression step by step, to make it easier to build and read the resulting regular expressions.
  */
-var DateRegExBuilder = /** @class */ (function () {
+var DateRegExBuilder = (function () {
     function DateRegExBuilder() {
         this.regexString = "";
     }
@@ -182,7 +182,7 @@ var DateRegExBuilder = /** @class */ (function () {
     DateRegExBuilder.prototype.build = function () {
         return new RegExp(this.regexString, 'i');
     };
-    DateRegExBuilder.ZERO_OR_MORE_SPACES = "\\s*";
     return DateRegExBuilder;
 }());
+DateRegExBuilder.ZERO_OR_MORE_SPACES = "\\s*";
 exports.DateRegExBuilder = DateRegExBuilder;

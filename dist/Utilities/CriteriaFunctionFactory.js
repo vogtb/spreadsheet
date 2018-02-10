@@ -23,7 +23,7 @@ function wildCardRegex(c) {
 /**
  * Creates a criteria function to evaluate elements in a range in an *IF function.
  */
-var CriteriaFunctionFactory = /** @class */ (function () {
+var CriteriaFunctionFactory = (function () {
     function CriteriaFunctionFactory() {
     }
     /**

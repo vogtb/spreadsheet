@@ -39,7 +39,7 @@ productions[ReduceActions.AsString] = new ReductionPair(Symbol.Expression, 1);
 productions[ReduceActions.Ampersand] = new ReductionPair(Symbol.Expression, 3);
 productions[ReduceActions.Equals] = new ReductionPair(Symbol.Expression, 3);
 productions[ReduceActions.Plus] = new ReductionPair(Symbol.Expression, 3);
-productions[ReduceActions.LastNumber] = new ReductionPair(Symbol.Expression, 3);
+productions[ReduceActions.LastExpression] = new ReductionPair(Symbol.Expression, 3);
 productions[ReduceActions.LTE] = new ReductionPair(Symbol.Expression, 4);
 productions[ReduceActions.GTE] = new ReductionPair(Symbol.Expression, 4);
 productions[ReduceActions.NotEqual] = new ReductionPair(Symbol.Expression, 4);
@@ -968,19 +968,19 @@ table[State.VariableSeq_Decimal_Variable] = ObjectBuilder
   .add(Symbol.Decimal, [REDUCE, ReduceActions.EnsureLastTwoINArrayAndPush])
   .build();
 table[State.Expression_RightParen] = ObjectBuilder
-  .add(Symbol.EOF, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.Ampersand, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.Equals, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.Plus, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.RightParen, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.LessThan, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.GreaterThan, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.Minus, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.Asterisk, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.Divide, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.Carrot, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.Semicolon, [REDUCE, ReduceActions.LastNumber])
-  .add(Symbol.Comma, [REDUCE, ReduceActions.LastNumber])
+  .add(Symbol.EOF, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.Ampersand, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.Equals, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.Plus, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.RightParen, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.LessThan, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.GreaterThan, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.Minus, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.Asterisk, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.Divide, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.Carrot, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.Semicolon, [REDUCE, ReduceActions.LastExpression])
+  .add(Symbol.Comma, [REDUCE, ReduceActions.LastExpression])
   .build();
 table[State.Function_RightParenNoArguments] = ObjectBuilder
   .add(Symbol.EOF, [REDUCE, ReduceActions.CallFunctionLastBlank])

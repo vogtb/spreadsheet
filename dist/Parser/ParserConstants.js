@@ -31,7 +31,7 @@ productions[6 /* AsString */] = new ReductionPair_1.ReductionPair(Symbols_1.Symb
 productions[7 /* Ampersand */] = new ReductionPair_1.ReductionPair(Symbols_1.Symbol.Expression, 3);
 productions[8 /* Equals */] = new ReductionPair_1.ReductionPair(Symbols_1.Symbol.Expression, 3);
 productions[9 /* Plus */] = new ReductionPair_1.ReductionPair(Symbols_1.Symbol.Expression, 3);
-productions[10 /* LastNumber */] = new ReductionPair_1.ReductionPair(Symbols_1.Symbol.Expression, 3);
+productions[10 /* LastExpression */] = new ReductionPair_1.ReductionPair(Symbols_1.Symbol.Expression, 3);
 productions[11 /* LTE */] = new ReductionPair_1.ReductionPair(Symbols_1.Symbol.Expression, 4);
 productions[12 /* GTE */] = new ReductionPair_1.ReductionPair(Symbols_1.Symbol.Expression, 4);
 productions[13 /* NotEqual */] = new ReductionPair_1.ReductionPair(Symbols_1.Symbol.Expression, 4);
@@ -867,19 +867,19 @@ table[56 /* VariableSeq_Decimal_Variable */] = ObjectBuilder_1.ObjectBuilder
     .add(Symbols_1.Symbol.Decimal, [REDUCE, 37 /* EnsureLastTwoINArrayAndPush */])
     .build();
 table[57 /* Expression_RightParen */] = ObjectBuilder_1.ObjectBuilder
-    .add(Symbols_1.Symbol.EOF, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.Ampersand, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.Equals, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.Plus, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.RightParen, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.LessThan, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.GreaterThan, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.Minus, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.Asterisk, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.Divide, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.Carrot, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.Semicolon, [REDUCE, 10 /* LastNumber */])
-    .add(Symbols_1.Symbol.Comma, [REDUCE, 10 /* LastNumber */])
+    .add(Symbols_1.Symbol.EOF, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.Ampersand, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.Equals, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.Plus, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.RightParen, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.LessThan, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.GreaterThan, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.Minus, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.Asterisk, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.Divide, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.Carrot, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.Semicolon, [REDUCE, 10 /* LastExpression */])
+    .add(Symbols_1.Symbol.Comma, [REDUCE, 10 /* LastExpression */])
     .build();
 table[58 /* Function_RightParenNoArguments */] = ObjectBuilder_1.ObjectBuilder
     .add(Symbols_1.Symbol.EOF, [REDUCE, 23 /* CallFunctionLastBlank */])

@@ -203,8 +203,8 @@ test("Sheet, parse boolean literals", function(){
 });
 
 test("Sheet, parse comparison logic inside parentheses", function(){
-  // assertEquals(parser.parse('(1=1)'), true); // TODO: [ISSUE-013]
-  // assertEquals(parser.parse('(1=2)'), false); // TODO: [ISSUE-013]
+  assertFormulaEquals('=(1=1)', true);
+  assertFormulaEquals('=(1=2)', false);
   assertFormulaEquals('=(1=1)+2', 3);
 });
 
@@ -220,4 +220,3 @@ test("Sheet state sequence: (number, ampersand, expression)", function(){
   assertFormulaEquals('=10&"str"', "10str");
   assertFormulaEquals('=10 & TRUE', "10TRUE");
 });
-

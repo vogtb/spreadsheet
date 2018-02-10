@@ -169,8 +169,8 @@ test("Parse boolean literals", function(){
 });
 
 test("Parse boolean logic", function(){
-  // assertFormulaEquals('=(1=1)', true); // TODO: [ISSUE-013]
-  // assertFormulaEquals('=(1=2)', false); // TODO: [ISSUE-013]
+  assertFormulaEquals('=(1=1)', true);
+  assertFormulaEquals('=(1=2)', false);
   assertFormulaEquals('=(1=1)+2', 3);
 
 });
@@ -296,7 +296,7 @@ test("Combinations of expressions and operators", function(){
   test("Combinations of expressions and operators, equality operator", function(){
     assertFormulaEquals('=10 = 10', true);
     assertFormulaEquals('=10 = TRUE', false);
-    // assertFormulaEquals('=10 = "10"', true); // TODO: [ISSUE-009]
+    assertFormulaEquals('=10 = "10"', false);
     assertFormulaEquals('=10 = (2*2)', false);
     assertFormulaEquals('=10 = SUM(1, 2)', false);
     // assertFormulaEquals('=10 >= [10]', 10); // TODO: [ISSUE-007]

@@ -31,11 +31,6 @@ Right now, arrays and reference literals in a formula are parsed using JS `eval`
 ### [ISSUE-008] Error literals should be thrown
 Error literals in valid locations should throw themselves. For example "=10 + #DIV?/0!" should throw a Divide-By-Zero error.
 
-
-### [ISSUE-009] Equality checking should check for type and value
-Currently '=10 = "10"' is true, when it should be false.
-
-
 ### [ISSUE-010] Input should be able to start with a decimal.
 Currently '=.1' should parse properly. Could be solved by going back from handling number input in reg-ex to handling it with the parser logic. See [ISSUE-011].
 
@@ -46,10 +41,6 @@ Currently '=0.e1' should parse properly.  Could be solved by going back from han
 
 ### [ISSUE-012] Strings should only start with double quotes.
 Single quotes are reserved for variables, like sheet names.
-
-
-### [ISSUE-013] Equality checking inside parentheses should return boolean values
-For example '=(1=1)' should return true.
 
 
 ### [ISSUE-014] Cell reference ranges should not return nested values

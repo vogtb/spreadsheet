@@ -50,8 +50,8 @@ var Parser = (function () {
                     case 9 /* Plus */:
                         this.$ = Math_1.SUM(virtualStack[vsl - 2], virtualStack[vsl]);
                         break;
-                    case 10 /* LastNumber */:
-                        this.$ = TypeConverter_1.TypeConverter.valueToNumber(virtualStack[vsl - 1]);
+                    case 10 /* LastExpression */:
+                        this.$ = virtualStack[vsl - 1];
                         break;
                     case 11 /* LTE */:
                         this.$ = Math_1.LTE(virtualStack[vsl - 3], virtualStack[vsl]);
@@ -167,7 +167,7 @@ var Parser = (function () {
                         case 7 /* Ampersand */:
                         case 8 /* Equals */:
                         case 9 /* Plus */:
-                        case 10 /* LastNumber */:
+                        case 10 /* LastExpression */:
                         case 11 /* LTE */:
                         case 12 /* GTE */:
                         case 13 /* NotEqual */:

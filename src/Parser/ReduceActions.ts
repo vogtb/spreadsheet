@@ -7,7 +7,7 @@ const enum ReduceActions {
   Ampersand = 7,
   Equals = 8,
   Plus = 9,
-  LastNumber = 10,
+  LastExpression = 10,
   LTE = 11,
   GTE = 12,
   NotEqual = 13,

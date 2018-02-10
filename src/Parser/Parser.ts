@@ -90,8 +90,8 @@ let Parser = (function () {
           case ReduceActions.Plus:
             this.$ = SUM(virtualStack[vsl - 2], virtualStack[vsl]);
             break;
-          case ReduceActions.LastNumber:
-            this.$ = TypeConverter.valueToNumber(virtualStack[vsl - 1]);
+          case ReduceActions.LastExpression:
+            this.$ = virtualStack[vsl - 1];
             break;
           case ReduceActions.LTE:
             this.$ = LTE(virtualStack[vsl - 3], virtualStack[vsl]);
@@ -206,7 +206,7 @@ let Parser = (function () {
             case ReduceActions.Ampersand:
             case ReduceActions.Equals:
             case ReduceActions.Plus:
-            case ReduceActions.LastNumber:
+            case ReduceActions.LastExpression:
             case ReduceActions.LTE:
             case ReduceActions.GTE:
             case ReduceActions.NotEqual:

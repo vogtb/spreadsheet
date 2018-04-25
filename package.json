@@ -17,5 +17,6 @@
   },
   "devDependencies": {
     "typescript": "^2.3.2"
-  }
+  },
+  "types": "./dist/Sheet.d.ts"
 }

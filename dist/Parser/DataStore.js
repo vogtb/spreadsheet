@@ -7,7 +7,7 @@ var Cell_1 = require("../Cell");
 /**
  * Cell DataStore that stores cells in memory.
  */
-var DataStore = (function () {
+var DataStore = /** @class */ (function () {
     function DataStore() {
         /**
          * Holds cells inside an object for quick access.

@@ -9,7 +9,7 @@ var MoreUtils_1 = require("./Utilities/MoreUtils");
 /**
  * Represents a spreadsheet parser and data-store that act together as a functional spreadsheet.
  */
-var Sheet = (function () {
+var Sheet = /** @class */ (function () {
     function Sheet() {
         this.parser = Parser_1.FormulaParser(this);
         this.dataStore = new DataStore_1.DataStore();

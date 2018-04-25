@@ -290,7 +290,7 @@ var WEEKNUM = function (date, shiftType) {
         if (dm.weekYear() !== dm.year()) {
             week = dm.weeksInYear() + 1;
         }
-        if (dayOfWeek === 0) {
+        if (dayOfWeek === 0) { // sunday shift back
             return week - 1;
         }
         return week;
@@ -299,7 +299,7 @@ var WEEKNUM = function (date, shiftType) {
         if (dm.weekYear() !== dm.year()) {
             week = dm.weeksInYear() + 1;
         }
-        if (dayOfWeek <= 1) {
+        if (dayOfWeek <= 1) { // sunday, monday shift back
             return week - 1;
         }
         return week;
@@ -308,7 +308,7 @@ var WEEKNUM = function (date, shiftType) {
         if (dm.weekYear() !== dm.year()) {
             week = dm.weeksInYear() + 1;
         }
-        if (dayOfWeek <= 2) {
+        if (dayOfWeek <= 2) { // sunday, monday, tuesday shift back
             return week - 1;
         }
         return week;

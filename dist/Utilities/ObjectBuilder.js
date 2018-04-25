@@ -4,7 +4,7 @@ exports.__esModule = true;
  * Utility class to help build objects programmatically. Basically this allows me to have source code where constants
  * are keys in objects.
  */
-var ObjectBuilder = (function () {
+var ObjectBuilder = /** @class */ (function () {
     function ObjectBuilder() {
         this.o = {};
     }

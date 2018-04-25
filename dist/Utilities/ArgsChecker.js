@@ -4,7 +4,7 @@ var Errors_1 = require("../Errors");
 /**
  * Static class to check argument length within expected ranges when calling functions.
  */
-var ArgsChecker = (function () {
+var ArgsChecker = /** @class */ (function () {
     function ArgsChecker() {
     }
     /**

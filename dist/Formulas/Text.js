@@ -44,7 +44,7 @@ exports.ARABIC = ARABIC;
 var CHAR = function (value) {
     ArgsChecker_1.ArgsChecker.checkLength(arguments, 1, "CHAR");
     var n = TypeConverter_1.TypeConverter.firstValueAsNumber(value);
-    if (n < 1 || n > 1114112) {
+    if (n < 1 || n > 1114112) { //limit
         throw new Errors_1.NumError("Function CHAR parameter 1 value " + n + " is out of range.");
     }
     return String.fromCharCode(n);

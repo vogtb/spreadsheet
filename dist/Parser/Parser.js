@@ -427,7 +427,7 @@ var Parser = (function () {
                 //   Reduce: enough tokens have been gathered to reduce input through evaluation.
                 //   Accept: return.
                 switch (action[0]) {
-                    case ParserConstants_1.SHIFT:
+                    case ParserConstants_1.SHIFT: // Shift
                         stack.push(symbol);
                         semanticValueStack.push(lexer.yytext);
                         locationStack.push(lexer.yylloc);
@@ -438,7 +438,7 @@ var Parser = (function () {
                         if (Formulas_1.Formulas.isTryCatchFormula(lexer.yytext)) {
                             catchFailuresOn = true;
                         }
-                        if (!preErrorSymbol) {
+                        if (!preErrorSymbol) { // normal execution/no error
                             yyleng = lexer.yyleng;
                             yytext = lexer.yytext;
                             yylineno = lexer.yylineno;
@@ -453,7 +453,7 @@ var Parser = (function () {
                             preErrorSymbol = null;
                         }
                         break;
-                    case ParserConstants_1.REDUCE:
+                    case ParserConstants_1.REDUCE: // Reduce
                         // console.log("REDUCE", "literal", lexer.yytext, "   symbol", symbol, "   symbol name", SYMBOL_INDEX_TO_NAME[symbol], "   action", action,
                         //     "   stack", stack, "   semanticValueStack", semanticValueStack);
                         var currentProduction = ParserConstants_1.PRODUCTIONS[action[1]];
@@ -754,7 +754,11 @@ var Parser = (function () {
                     return this.conditions.INITIAL.rules;
                 }
             },
-            options: {},
+            options: {
+            // backtrack_lexer?
+            // ranges?
+            // flex?
+            },
             mapRuleIndexToSymbolEnumeration: function (ruleIndex) {
                 switch (ruleIndex) {
                     case 0 /* WhiteSpace */:

@@ -29,7 +29,7 @@ exports.PARSE_ERROR = PARSE_ERROR;
 /**
  * Execution or parsing produced a null value, or intersection of ranges produced zero cells.
  */
-var NullError = (function (_super) {
+var NullError = /** @class */ (function (_super) {
     __extends(NullError, _super);
     function NullError(message) {
         var _this = _super.call(this, message) || this;
@@ -42,7 +42,7 @@ exports.NullError = NullError;
 /**
  * Attempt to divide by zero, including division by an empty cell.
  */
-var DivZeroError = (function (_super) {
+var DivZeroError = /** @class */ (function (_super) {
     __extends(DivZeroError, _super);
     function DivZeroError(message) {
         var _this = _super.call(this, message) || this;
@@ -55,7 +55,7 @@ exports.DivZeroError = DivZeroError;
 /**
  * Parameter is wrong type, or value is incompatible, or cannot be parsed, converted, or manipulated.
  */
-var ValueError = (function (_super) {
+var ValueError = /** @class */ (function (_super) {
     __extends(ValueError, _super);
     function ValueError(message) {
         var _this = _super.call(this, message) || this;
@@ -68,7 +68,7 @@ exports.ValueError = ValueError;
 /**
  * Reference to invalid cell, range, or empty range.
  */
-var RefError = (function (_super) {
+var RefError = /** @class */ (function (_super) {
     __extends(RefError, _super);
     function RefError(message) {
         var _this = _super.call(this, message) || this;
@@ -81,7 +81,7 @@ exports.RefError = RefError;
 /**
  * Unrecognized/deleted name.
  */
-var NameError = (function (_super) {
+var NameError = /** @class */ (function (_super) {
     __extends(NameError, _super);
     function NameError(message) {
         var _this = _super.call(this, message) || this;
@@ -94,7 +94,7 @@ exports.NameError = NameError;
 /**
  * Failed to meet domain constraints (e.g., input number too high or too low).
  */
-var NumError = (function (_super) {
+var NumError = /** @class */ (function (_super) {
     __extends(NumError, _super);
     function NumError(message) {
         var _this = _super.call(this, message) || this;
@@ -107,7 +107,7 @@ exports.NumError = NumError;
 /**
  * Lookup functions which failed and NA() return this value.
  */
-var NAError = (function (_super) {
+var NAError = /** @class */ (function (_super) {
     __extends(NAError, _super);
     function NAError(message) {
         var _this = _super.call(this, message) || this;
@@ -120,7 +120,7 @@ exports.NAError = NAError;
 /**
  * Input could not be parsed.
  */
-var ParseError = (function (_super) {
+var ParseError = /** @class */ (function (_super) {
     __extends(ParseError, _super);
     function ParseError(message) {
         var _this = _super.call(this, message) || this;

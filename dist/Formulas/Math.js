@@ -684,7 +684,7 @@ var COUNTIFS = function () {
             }
             var criteriaEvaluation = criteriaEvaluationFunctions[x + 1];
             if (otherCriteriaEvaluationSuccessfulSoFar) {
-                if (!criteriaEvaluation(filteredValues[x][i])) {
+                if (!criteriaEvaluation(filteredValues[x][i])) { // evaluate THIS value with x+1 index, which is criteria.
                     otherCriteriaEvaluationSuccessfulSoFar = false;
                 }
             }

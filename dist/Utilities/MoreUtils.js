@@ -98,7 +98,7 @@ exports.A1toRowColCoordinates = A1toRowColCoordinates;
  * Class for building formatted strings with commas, forced number of leading and trailing zeros, and arbitrary leading
  * and trailing strings.
  */
-var NumberStringBuilder = (function () {
+var NumberStringBuilder = /** @class */ (function () {
     function NumberStringBuilder() {
         this.shouldUseComma = false;
         this.integerZeroCount = 1; // e.g. default to "0.1"

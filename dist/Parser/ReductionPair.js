@@ -3,7 +3,7 @@ exports.__esModule = true;
 /**
  * Represents the length to reduce the stack by, and the replacement symbol that will replace those tokens in the stack.
  */
-var ReductionPair = (function () {
+var ReductionPair = /** @class */ (function () {
     function ReductionPair(replacementSymbol, length) {
         this.lengthToReduceStackBy = length;
         this.replacementSymbol = replacementSymbol;

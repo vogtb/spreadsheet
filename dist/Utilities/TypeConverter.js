@@ -73,19 +73,19 @@ function isDefined(x) {
  */
 function matchTimestampAndMutateMoment(timestampString, momentToMutate) {
     var matches = timestampString.match(TIMESTAMP);
-    if (matches && matches[1] !== undefined) {
+    if (matches && matches[1] !== undefined) { // 10am
         var hours = parseInt(matches[2]);
         if (hours > 12) {
             throw new Error();
         }
         momentToMutate.add(hours, 'hours');
     }
-    else if (matches && matches[6] !== undefined) {
+    else if (matches && matches[6] !== undefined) { // 10:10
         var hours = parseInt(matches[7]);
         var minutes = parseInt(matches[8]);
         momentToMutate.add(hours, 'hours').add(minutes, 'minutes');
     }
-    else if (matches && matches[11] !== undefined) {
+    else if (matches && matches[11] !== undefined) { // 10:10am
         var hours = parseInt(matches[13]);
         var minutes = parseInt(matches[14]);
         var pmTrue = (matches[16].toLowerCase() === "pm");
@@ -103,13 +103,13 @@ function matchTimestampAndMutateMoment(timestampString, momentToMutate) {
         }
         momentToMutate.add(minutes, 'minutes');
     }
-    else if (matches && matches[17] !== undefined) {
+    else if (matches && matches[17] !== undefined) { // 10:10:10
         var hours = parseInt(matches[19]);
         var minutes = parseInt(matches[20]);
         var seconds = parseInt(matches[21]);
         momentToMutate.add(hours, 'hours').add(minutes, 'minutes').add(seconds, 'seconds');
     }
-    else if (matches && matches[23] !== undefined) {
+    else if (matches && matches[23] !== undefined) { // // 10:10:10am
         var hours = parseInt(matches[25]);
         var minutes = parseInt(matches[26]);
         var seconds = parseInt(matches[27]);
@@ -136,7 +136,7 @@ function matchTimestampAndMutateMoment(timestampString, momentToMutate) {
 /**
  * Static class of helpers used to convert let ious types to each other.
  */
-var TypeConverter = (function () {
+var TypeConverter = /** @class */ (function () {
     function TypeConverter() {
     }
     /**
@@ -782,10 +782,10 @@ var TypeConverter = (function () {
         var v = (((hours % 24) * 60 * 60) + ((minutes) * 60) + (seconds)) / 86400;
         return v % 1;
     };
+    TypeConverter.ORIGIN_MOMENT = moment.utc([1899, 11, 30]).startOf("day");
+    TypeConverter.SECONDS_IN_DAY = 86400;
     return TypeConverter;
 }());
-TypeConverter.ORIGIN_MOMENT = moment.utc([1899, 11, 30]).startOf("day");
-TypeConverter.SECONDS_IN_DAY = 86400;
 exports.TypeConverter = TypeConverter;
 /**
  * Catches divide by zero situations and throws them as errors
@@ -794,7 +794,7 @@ exports.TypeConverter = TypeConverter;
  */
 var checkForDevideByZero = function (n) {
     n = +n; // Coerce to number.
-    if (!n) {
+    if (!n) { // Matches +0, -0, NaN
         throw new Errors_1.DivZeroError("Evaluation of function caused a divide by zero error.");
     }
     return n;
